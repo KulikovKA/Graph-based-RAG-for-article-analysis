@@ -1,6 +1,6 @@
 # Карта донорских репозиториев
 
-Срез проверки: 2026-09-28. Использовать ссылки и закреплять commit SHA в lockfile реализации. Это исследование кода и публичных интерфейсов, а не обещание стабильного API будущих версий.
+Срез проверки: 2026-09-29. В implementation tasks закреплять проверенные версии/commit SHA. Ссылки на PriorArtRAG ниже все ведут на один commit `fcaad8482c7df5d8106d4041c45d732f18d8c295`, чтобы upstream drift не менял смысл references.
 
 ## LightRAG — основной Graph-RAG кандидат
 
@@ -26,15 +26,36 @@
 | Путь | Проверенный механизм | Решение |
 |---|---|---|
 | [core/api.py](https://github.com/pqaidevteam/pqai/blob/master/core/api.py) | Patent/NPL search, фильтры, snippets, mapping; импорт требует AWS env/S3 | Не переносить сервис; взять UX/контрактные идеи |
-| [core/search.py](https://github.com/pqaidevteam/pqai/blob/master/core/search.py) | Поиск по индексам и ranking кандидатов | Reference для candidate fusion |
+| [core/search.py](https://github.com/pqaidevteam/pqai/blob/master/core/search.py) | Поиск по индексам и ranking кандидатов | Reference для patent candidate retrieval/ranking; fusion reference — PriorArtRAG |
 | [core/reranking.py](https://github.com/pqaidevteam/pqai/blob/master/core/reranking.py) | `Ranker`, `CustomRanker`, `ConceptMatchRanker` с model assets | Проверить методику, выбрать компактный локальный reranker измерением |
 | [core/snippet.py](https://github.com/pqaidevteam/pqai/blob/master/core/snippet.py) | Sentence/span extraction и feature mapping | Переосмыслить с детерминированным span + offsets; код использует случайный контекст и тяжёлые импорты |
 | [core/highlighter.py](https://github.com/pqaidevteam/pqai/blob/master/core/highlighter.py) | Подсветка терминов | Не копировать HTML replacement; безопасная подсветка на клиенте |
 | [core/documents.py](https://github.com/pqaidevteam/pqai/blob/master/core/documents.py) | Модель Patent/Document | Reference для нормализации, не схема хранения |
 
-## Prior-Art-Engine — недоступен на дату проверки
+## PriorArtRAG — decomposition, retrieval и grounding patterns
 
-Указанный URL [nimajz/Prior-Art-Engine](https://github.com/nimajz/Prior-Art-Engine) и GitHub API вернули 404 2026-09-28. [Индексированный README](https://github.com/nimajz/Prior-Art-Engine) описывал OpenAlex arm, dense retrieval, cross-encoder и MIT, но исходники и LICENSE сейчас нельзя проверить. **Не копировать код, не указывать точные пути или поведение как факт.** В `ARCH-001` повторить проверку URL/commit/fork и снять блокировку лишь после просмотра дерева и LICENSE. OpenAlex adapter и двухступенчатый rerank проектировать по официальным API и измерениям независимо от этого донора.
+Основной третий reference: [ABHIJEET-MUNESHWAR/PriorArtRAG на проверенном commit](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/tree/fcaad8482c7df5d8106d4041c45d732f18d8c295), SHA `fcaad8482c7df5d8106d4041c45d732f18d8c295` (commit от 2026-08-02). Проверены существование repository и commit, дерево файлов и [MIT LICENSE](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/LICENSE).
+
+| Pinned upstream file | Проверенный pattern | Использование в нашем проекте |
+|---|---|---|
+| [priorartrag/domain/decompose.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/decompose.py) | Bounded subqueries по элементам disclosure/claim; исходный query всегда сохраняется, есть fallback при пустой декомпозиции | Reference для декомпозиции технических признаков в RET-001; ограничить число запросов и сохранять исходный запрос |
+| [priorartrag/domain/pipeline.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/pipeline.py) | Композиция lexical+dense → fusion → rerank → aggregate; результаты стадий и timings | Reference для границ стадий, timings и degradation behavior retrieval pipeline; не импортировать реализацию индекса |
+| [priorartrag/domain/fusion.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/fusion.py) | Reciprocal-rank fusion и weighted/linear fusion | Reference для candidate fusion; оценить на нашем размеченном наборе и наших каналах |
+| [priorartrag/domain/rerank.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/rerank.py) | Отдельный типизированный Protocol reranker и explainable score contributions | Reference для контракта стадии; CPU-модель/алгоритм выбираем отдельно benchmark-ом |
+| [priorartrag/domain/grounding.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/grounding.py) | `EvidenceSet`, `CitationVerifier`; выявление uncited assertions, phantom citations и fabricated quotes; один repair attempt и deterministic template fallback | Ключевой reference для ANALYST-001 и проверки evidence до показа ответа; адаптировать к нашим стабильным evidence IDs и API DTO |
+| [priorartrag/adapters/llm/generator.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/adapters/llm/generator.py) | Генератор создаёт draft, а verifier остаётся отдельной доверенной границей | Reference для Smart Qwen → deterministic validator |
+| [priorartrag/app/ports.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/app/ports.py) | Outbound зависимости оформлены как Python Protocol ports | Reference для `InferenceProvider`, source/storage/cache interfaces |
+| [EVALUATION.md](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/EVALUATION.md) | Retrieval/grounding gates, regressions и каталог failure cases | Reference для citation/grounding tests и отчёта EVAL-001; не копировать заявленные чужие численные результаты |
+
+Ограничения reuse: не переносить собственные BM25/HNSW/sharding реализации вместо Qdrant; не переносить GraphQL/Kafka/Prometheus/Grafana/CQRS целиком; не использовать PriorArtRAG как основу приложения. Наша архитектура остаётся собственной: EPO/OpenAlex adapters, PostgreSQL, Qdrant + Neo4j, optional LightRAG context, наши retrieval/fusion/rerank/evidence/LLM/API contracts. PriorArtRAG — reference для decomposition/retrieval/fusion/grounding/citation/evaluation patterns. Если буквально копировать MIT-код, сохранить copyright и LICENSE notice и указать изменённые файлы.
+
+### Историческая заметка: nimajz/Prior-Art-Engine
+
+URL [nimajz/Prior-Art-Engine](https://github.com/nimajz/Prior-Art-Engine) был проверен 2026-09-28 и оказался недоступен через GitHub (404). Его исходники и LICENSE не подтверждались; он исключён из активных donors и implementation dependencies. Replacement — доступный и pinned PriorArtRAG выше.
+
+## Дополнительный reference для source adapters: mcp-prior-art
+
+Не основной донор и не runtime/architecture dependency: [chasewhughes/mcp-prior-art](https://github.com/chasewhughes/mcp-prior-art). Проверенный файл [`src/mcp_prior_art/apis/epo.py`](https://github.com/chasewhughes/mcp-prior-art/blob/main/src/mcp_prior_art/apis/epo.py) использует async `httpx`, EPO OAuth2 client-credentials flow, `tenacity` retry/backoff, CQL search и parsing OPS response. Использовать только как reference для SRC-001 adapter structure. Перепроверять OAuth, endpoints, XML/JSON shapes, quota headers, retries и обработку ошибок по [официальной документации EPO OPS](https://www.epo.org/en/searching-for-patents/data/web-services/ops) и [fair-use policy](https://www.epo.org/en/service-support/ordering/fair-use); не копировать его детали без проверки. EPO реализация не должна зависеть от MCP server.
 
 ## Внешние API
 

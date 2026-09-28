@@ -53,7 +53,7 @@ flowchart LR
 
 | ID | Фаза | Priority | Model / thinking | Depends | Статус |
 |---|---|---|---|---|---|
-| ARCH-001 | 0 Доноры | P0 | Astra / High | — | готова |
+| ARCH-001 | 0 Доноры | P0 | Astra / High | — | ожидает |
 | ARCH-002 | 0 Архитектурный review | P0 | Astra / High | ARCH-001 | ожидает |
 | SKEL-001 | 1 Каркас | P0 | Sol / Medium | ARCH-002 | ожидает |
 | INFRA-001 | 2 Инфраструктура | P0 | Sol / Medium | SKEL-001 | ожидает |
@@ -80,17 +80,17 @@ flowchart LR
 | TEST-001 | 14 Regression/security | P1 | Astra / High | GRAPHUI-001,EVAL-001,OBS-001,AUTH-001 | ожидает |
 | REL-001 | 15 Release/demo | P1 | Sol / Medium | TEST-001 | ожидает |
 
-Поскольку LR-001 имеет риск несовместимости, у RET-001 есть допустимый P0 fallback: отключаемый LightRAG adapter с пустым результатом. Фактическое подключение LightRAG остаётся P1; RET-001 не блокируется недоступностью донора Prior-Art-Engine. Graph UI и eval также P1: после P0 задач система уже отвечает через API и базовый чат.
+Поскольку LR-001 имеет риск несовместимости, у RET-001 есть допустимый P0 fallback: отключаемый LightRAG adapter с пустым результатом. Фактическое подключение LightRAG остаётся P1; RET-001 использует PriorArtRAG только как pinned reference patterns и не зависит от его runtime. Graph UI и eval также P1: после P0 задач система уже отвечает через API и базовый чат.
 
 ## Детализация
 
 ### ARCH-001 — Проверить доноров и зафиксировать версии
 
 - **Цель/зачем:** подтвердить фактические API, лицензии и границы reuse до написания интеграций; исключить архитектуру на вымышленных интерфейсах.
-- **Depends / priority:** нет; P0. **Files:** docs/REPO_MAP.md, docs/DECISIONS.md, dependency lock/ADR. **References:** LightRAG paths в REPO_MAP, PQAI core/search.py/core/reranking.py/core/snippet.py, URL Prior-Art-Engine.
-- **Сделать:** закрепить commit/tag LightRAG/PQAI; проверить `ainsert_custom_kg`, context-only query, source provenance, Neo4j/Qdrant config тестовым spike; повторно проверить 404 третьего репо и найти официальный доступный commit только если он существует; сверить LICENSE и transitive deps. Обновить карту и ADR-003/007.
-- **Приёмка/тесты:** записаны проверенные версии, реальные сигнатуры и результаты минимального smoke; для недоступного кода явно указано «не проверено»; нет ссылок на несуществующие пути. **Не делать:** не форкать целые сервисы, не придумывать API.
-- **Context:** только REPO_MAP, DECISIONS и перечисленные файлы доноров. **Модель:** Astra/High. **Размер:** L, 2–4 ч агента, 45 мин review. **Риск:** upstream drift/404.
+- **Depends / priority:** нет; P0. **Files:** docs/REPO_MAP.md, docs/DECISIONS.md, dependency lock/ADR. **References:** LightRAG [lightrag/base.py](https://github.com/HKUDS/LightRAG/blob/main/lightrag/base.py), [lightrag/lightrag.py](https://github.com/HKUDS/LightRAG/blob/main/lightrag/lightrag.py), [examples/insert_custom_kg.py](https://github.com/HKUDS/LightRAG/blob/main/examples/insert_custom_kg.py); PQAI [core/search.py](https://github.com/pqaidevteam/pqai/blob/master/core/search.py), [core/reranking.py](https://github.com/pqaidevteam/pqai/blob/master/core/reranking.py), [core/snippet.py](https://github.com/pqaidevteam/pqai/blob/master/core/snippet.py); PriorArtRAG pinned files [decompose.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/decompose.py), [pipeline.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/pipeline.py), [fusion.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/fusion.py), [rerank.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/rerank.py), [grounding.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/grounding.py), [generator.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/adapters/llm/generator.py), [ports.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/app/ports.py), [EVALUATION.md](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/EVALUATION.md); mcp-prior-art [epo.py](https://github.com/chasewhughes/mcp-prior-art/blob/main/src/mcp_prior_art/apis/epo.py) as optional source adapter reference.
+- **Сделать:** pin LightRAG and PQAI commit/tag and PriorArtRAG SHA `fcaad8482c7df5d8106d4041c45d732f18d8c295`; verify all linked files and licenses; check `ainsert_custom_kg`, context-only query, source provenance, Neo4j/Qdrant config in a minimal LightRAG smoke; review PriorArtRAG decomposition/fusion/grounding contracts; compare EPO adapter reference with official OPS/fair-use docs. Update REPO_MAP and ADR-003/007.
+- **Приёмка/тесты:** pinned IDs and file links resolve, MIT notices confirmed, minimal LightRAG smoke records actual result, and only reusable patterns/risks are documented. **Не делать:** не искать replacement PriorArtRAG, не importировать его service architecture, не форкать целые сервисы, не придумывать API.
+- **Context:** REPO_MAP, DECISIONS and only linked upstream files/docs. **Модель:** Astra/High. **Размер:** L, 2–4 ч агента, 45 мин review. **Риск:** upstream drift and integration incompatibility.
 
 ### ARCH-002 — Независимая проверка planning package
 
@@ -123,7 +123,7 @@ flowchart LR
 ### SRC-001 — Адаптер EPO OPS
 
 - **Цель/зачем:** независимый от бизнес-логики источник патентов с точным provenance.
-- **Depends / priority:** DB-001; P0. **Files:** src/app/integrations/epo.py, src/app/domain/source.py, tests/fixtures/epo/, tests/integration/test_epo.py. **References:** docs/REPO_MAP.md, [официальный OPS](https://www.epo.org/en/searching-for-patents/data/web-services/ops), [fair use](https://www.epo.org/en/service-support/ordering/fair-use).
+- **Depends / priority:** DB-001; P0. **Files:** src/app/integrations/epo.py, src/app/domain/source.py, tests/fixtures/epo/, tests/integration/test_epo.py. **References:** docs/REPO_MAP.md, optional [mcp-prior-art EPO adapter](https://github.com/chasewhughes/mcp-prior-art/blob/main/src/mcp_prior_art/apis/epo.py) for structure/OAuth/httpx/retry/parsing ideas only, [официальный OPS](https://www.epo.org/en/searching-for-patents/data/web-services/ops), [fair use](https://www.epo.org/en/service-support/ordering/fair-use).
 - **Сделать:** OAuth credential handling, search/fetch, XML parsing, throttling headers, 429/retry/backoff, поля claims/description только где доступны, canonical patent IDs и source URLs. **Приёмка/тесты:** fixture XML нормализуется, missing field обозначен, quota/retry соблюдены, credentials не в логах. **Не делать:** не парсить Espacenet HTML, не распространять raw corpus.
 - **Context:** REPO_MAP, DATA_MODEL и официальный OPS spec, только adapter code. **Модель:** Sol/High. **Размер:** L, 2–4 ч, review 45 мин. **Риск:** учёт/квоты EPO и неполный full text.
 
@@ -186,22 +186,22 @@ flowchart LR
 ### RET-001 — Candidate retrieval и fusion
 
 - **Цель/зачем:** получить ограниченный набор патентов/работ без дорогой генерации.
-- **Depends / priority:** IDX-001,GRAPH-001; P0. LR-001 опционален и не блокирует P0. **Files:** src/app/services/retrieval.py, src/app/domain/evidence.py, tests/integration/test_retrieval.py. **References:** docs/ARCHITECTURE.md, docs/GRAPH_SCHEMA.md, docs/REPO_MAP.md; PQAI core/search.py как reference.
-- **Сделать:** query construction из идеи, параллельные vector/metadata/graph кандидаты, optional LightRAG context, canonical dedup, bounded pool, score normalization, partial-source status. **Приёмка/тесты:** top IDs стабильны на fixture corpus, дубликаты слиты, отсутствие канала явно отражено, чужой/private evidence не попадает. **Не делать:** не отправлять десятки целых патентов analyst, не вызывать LLM-as-judge.
+- **Depends / priority:** IDX-001,GRAPH-001; P0. LR-001 опционален и не блокирует P0. **Files:** src/app/services/retrieval.py, src/app/domain/evidence.py, tests/integration/test_retrieval.py. **References:** docs/ARCHITECTURE.md, docs/GRAPH_SCHEMA.md, docs/REPO_MAP.md; PQAI [core/search.py](https://github.com/pqaidevteam/pqai/blob/master/core/search.py) для patent retrieval; PriorArtRAG pinned [decompose.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/decompose.py), [pipeline.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/pipeline.py) и [fusion.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/fusion.py) для bounded feature decomposition, staged retrieval и rank fusion; LightRAG — только optional graph context.
+- **Сделать:** query construction и bounded feature subqueries с обязательным исходным запросом/fallback; parallel Qdrant/metadata/domain-graph candidate retrieval, optional LightRAG context, canonical dedup, fusion, partial-source status. **Приёмка/тесты:** top IDs стабильны на fixture corpus, каждый feature subquery bounded, исходный query сохранён при пустой decomposition, дубликаты слиты, отсутствие канала явно отражено, чужой/private evidence не попадает. **Не делать:** не отправлять десятки целых патентов analyst, не вызывать LLM-as-judge, не заменять Qdrant индексом PriorArtRAG.
 - **Context:** ARCHITECTURE/GRAPH_SCHEMA/REPO_MAP и retrieval/index adapters. **Модель:** Sol/High. **Размер:** L, 2–4 ч, review 45 мин. **Риск:** score calibration и неполный корпус.
 
 ### RANK-001 — Лёгкий reranker и evidence pack
 
 - **Цель/зачем:** сузить кандидатов до объяснимых фрагментов под token budget.
-- **Depends / priority:** RET-001; P0. **Files:** src/app/services/rerank.py, src/app/services/evidence_pack.py, tests/unit/test_evidence_pack.py. **References:** docs/LLM_CONTRACTS.md, PQAI core/reranking.py/core/snippet.py, LightRAG lightrag/rerank.py.
+- **Depends / priority:** RET-001; P0. **Files:** src/app/services/rerank.py, src/app/services/evidence_pack.py, tests/unit/test_evidence_pack.py. **References:** docs/LLM_CONTRACTS.md, PQAI [core/reranking.py](https://github.com/pqaidevteam/pqai/blob/master/core/reranking.py)/[core/snippet.py](https://github.com/pqaidevteam/pqai/blob/master/core/snippet.py), LightRAG [lightrag/rerank.py](https://github.com/HKUDS/LightRAG/blob/main/lightrag/rerank.py), PriorArtRAG pinned [domain/rerank.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/rerank.py) for typed stage contract. PriorArtRAG [domain/fusion.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/fusion.py) is already applied in RET-001; do not duplicate fusion implementation here.
 - **Сделать:** CPU benchmark двух компактных вариантов на размеченной мини-выборке, выбрать один; section-aware snippets с offsets, diversity, top 10–15 docs, budget enforcement. **Приёмка/тесты:** все pack IDs существуют, spans совпадают с revision, pack не превышает configured tokens, deterministic tie-break. **Не делать:** не копировать случайные snippet окна PQAI, не исполнять HTML из источника.
 - **Context:** LLM_CONTRACTS/EVALUATION, названные upstream files и rerank modules. **Модель:** Sol/Medium. **Размер:** M, 1–2 ч, review 30 мин. **Риск:** слабое качество CPU reranker.
 
 ### ANALYST-001 — Доказательный анализ Smart Qwen
 
 - **Цель/зачем:** получить сравнение признаков и вывод в пределах evidence pack.
-- **Depends / priority:** RANK-001,LLM-001; P0. **Files:** src/app/services/analyst.py, prompts/analyst_v1.txt, tests/unit/test_analyst.py. **References:** docs/LLM_CONTRACTS.md, docs/API_CONTRACTS.md, docs/EVALUATION.md.
-- **Сделать:** typed input/output, source citation validator, uncertainty/coverage handling, one retry, deterministic fallback; логировать версии и token counts. **Приёмка/тесты:** несуществующий evidence ID отвергнут; partial corpus помечен; ответ не объявляет юридическую новизну; long evidence урезается budget. **Не делать:** не принимать свободный текст модели как финальный без проверки ссылок.
+- **Depends / priority:** RANK-001,LLM-001; P0. **Files:** src/app/services/analyst.py, prompts/analyst_v1.txt, tests/unit/test_analyst.py. **References:** docs/LLM_CONTRACTS.md, docs/API_CONTRACTS.md, docs/EVALUATION.md; ключевые PriorArtRAG pinned references [grounding.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/grounding.py) и [generator.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/adapters/llm/generator.py).
+- **Сделать:** typed evidence set и draft output, validator на uncited assertions, phantom citations и fabricated quotes; при провале один repair attempt; после второго провала deterministic safe fallback. Архитектурный принцип: **LLM drafts → deterministic citation/evidence validator → repair once → deterministic safe fallback**. Это reference pattern, а не требование копировать реализацию 1:1. **Приёмка/тесты:** несуществующий evidence ID, uncited assertion и quote absent from evidence отвергнуты; ровно один repair; fallback ссылается только на evidence snapshot; partial corpus помечен; ответ не объявляет юридическую новизну; long evidence урезается budget. **Не делать:** не принимать свободный текст модели как финальный без проверки ссылок.
 - **Context:** три названных docs и analyst/evidence/provider modules. **Модель:** Sol/High. **Размер:** L, 2–3 ч, review 45 мин. **Риск:** галлюцинации с внешне валидными ссылками.
 
 ### JOB-001 — Оркестрация analysis jobs и SSE events
@@ -242,8 +242,8 @@ flowchart LR
 ### EVAL-001 — 100-case offline harness
 
 - **Цель/зачем:** измерять регрессии качества и цитат между версиями.
-- **Depends / priority:** API-001; P1. **Files:** eval/cases/, eval/run.py, eval/judge.py, eval/report.py, tests/eval/. **References:** docs/EVALUATION.md, docs/LLM_CONTRACTS.md.
-- **Сделать:** case schema и ~100 обезличенных запросов, frozen corpus/index, run artifact versions, structured judge, сравнение baseline, HTML/Markdown report. **Приёмка/тесты:** повторный запуск по одному snapshot воспроизводит input metadata; 100% citation IDs валидны; отчёт показывает per-case diff и пороги. **Не делать:** не включать judge в production path, не сравнивать отдельные RAG архитектуры как цель.
+- **Depends / priority:** API-001; P1. **Files:** eval/cases/, eval/run.py, eval/judge.py, eval/report.py, tests/eval/. **References:** docs/EVALUATION.md, docs/LLM_CONTRACTS.md, PriorArtRAG pinned [EVALUATION.md](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/EVALUATION.md) for retrieval/grounding regression and failure-case ideas.
+- **Сделать:** case schema и ~100 обезличенных запросов, frozen corpus/index, run artifact versions, structured judge, citation/grounding regression cases (uncited, phantom, fabricated quote, repair/fallback), сравнение baseline, HTML/Markdown report. **Приёмка/тесты:** повторный запуск по одному snapshot воспроизводит input metadata; 100% citation IDs валидны; отчёт показывает per-case diff и пороги. **Не делать:** не включать judge в production path, не сравнивать разные RAG architectures; диплом не превращается в такое сравнение.
 - **Context:** EVALUATION/LLM_CONTRACTS и eval modules. **Модель:** Sol/High. **Размер:** L, 3–5 ч, review 45 мин. **Риск:** bias judge/разметки.
 
 ### OBS-001 — Логи, метрики, health
@@ -271,7 +271,7 @@ flowchart LR
 
 | Milestone | После | Проверяемое демо |
 |---|---|---|
-| M0 architecture frozen | ARCH-002 | pinned donor versions, независимый review, согласованные docs/ADR; 404 донор явно отмечен |
+| M0 architecture frozen | ARCH-002 | pinned donor versions, независимый review, согласованные docs/ADR; PriorArtRAG paths и историческая заметка проверены |
 | M1 infrastructure boots | DB-001 | Compose health + migrations, извне виден только Caddy |
 | M2 documents ingested | ING-001 | EPO+OpenAlex fixture → document revision + chunks |
 | M3 retrieval works | RANK-001 | идея → top documents, snippets и evidence IDs |

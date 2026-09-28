@@ -26,6 +26,6 @@ Vite/React/TypeScript даёт достаточно интерактивност
 
 Каждое существенное утверждение содержит evidence ID из immutable snapshot; ответ формулируется в пределах найденного корпуса, без вывода о юридической новизне. Сбой/пробел источника явно показывается пользователю.
 
-## ADR-007 — Недоступный донор, 2026-09-28, blocked reference
+## ADR-007 — Замена prior-art reference donor, 2026-09-29, accepted
 
-Prior-Art-Engine из исходного задания вернул 404; нельзя подтверждать код и лицензию только старым индексированным README. Phase 0 повторно проверяет источник. План OpenAlex и rerank не зависит от доступа к нему.
+`nimajz/Prior-Art-Engine` был проверен и оказался недоступен через GitHub; его код и LICENSE не подтверждены, поэтому зависимость от него исключена. Найден доступный replacement `ABHIJEET-MUNESHWAR/PriorArtRAG`, pinned commit `fcaad8482c7df5d8106d4041c45d732f18d8c295`, LICENSE MIT. Используем только проверенные retrieval/decomposition/fusion/grounding/citation/evaluation patterns из путей, перечисленных в [REPO_MAP.md](REPO_MAP.md). Он не является основой приложения. Не переносить его BM25/HNSW/sharding, GraphQL/Kafka/Prometheus/Grafana/CQRS; сохранять upstream copyright/license при буквальном копировании. Наша архитектура остаётся Qdrant + Neo4j + optional LightRAG context.
