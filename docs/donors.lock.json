@@ -1,0 +1,226 @@
+{
+    "scope":  "Donor source pins; not a production dependency lock",
+    "donors":  [
+                   {
+                       "repository":  "HKUDS/LightRAG",
+                       "license":  "MIT",
+                       "files":  [
+                                     {
+                                         "url":  "https://github.com/HKUDS/LightRAG/blob/453dce83d6d0354a06e46c8d4029a0895c4e054b/LICENSE",
+                                         "path":  "LICENSE",
+                                         "sha256":  "0c16924564059e493c86854574660a47ed1dcc2a476ba7b5f949d3f2f73a1984"
+                                     },
+                                     {
+                                         "url":  "https://github.com/HKUDS/LightRAG/blob/453dce83d6d0354a06e46c8d4029a0895c4e054b/pyproject.toml",
+                                         "path":  "pyproject.toml",
+                                         "sha256":  "cbeb6e6e201a36913d73597e4f9b6148c152751666a9cecc4a2b0301916f5ab0"
+                                     },
+                                     {
+                                         "url":  "https://github.com/HKUDS/LightRAG/blob/453dce83d6d0354a06e46c8d4029a0895c4e054b/lightrag/lightrag.py",
+                                         "path":  "lightrag/lightrag.py",
+                                         "sha256":  "f92e25bf1bf8082dba64f604fe22badaeaa69ef2eaa34d23c5058059be8031d3"
+                                     },
+                                     {
+                                         "url":  "https://github.com/HKUDS/LightRAG/blob/453dce83d6d0354a06e46c8d4029a0895c4e054b/lightrag/base.py",
+                                         "path":  "lightrag/base.py",
+                                         "sha256":  "e7f0ec700659071d616b4c81c8711626d512d356d0036ce6f8da8d9a37a19f28"
+                                     },
+                                     {
+                                         "url":  "https://github.com/HKUDS/LightRAG/blob/453dce83d6d0354a06e46c8d4029a0895c4e054b/lightrag/operate.py",
+                                         "path":  "lightrag/operate.py",
+                                         "sha256":  "176585e3f686574ab98657b666982302ce47d58229baacb529ef601bd6799326"
+                                     },
+                                     {
+                                         "url":  "https://github.com/HKUDS/LightRAG/blob/453dce83d6d0354a06e46c8d4029a0895c4e054b/lightrag/kg/neo4j_impl.py",
+                                         "path":  "lightrag/kg/neo4j_impl.py",
+                                         "sha256":  "7b982323ccda833d320807565783156c56986f49bf48e931746fd0e5b8084853"
+                                     },
+                                     {
+                                         "url":  "https://github.com/HKUDS/LightRAG/blob/453dce83d6d0354a06e46c8d4029a0895c4e054b/lightrag/kg/qdrant_impl.py",
+                                         "path":  "lightrag/kg/qdrant_impl.py",
+                                         "sha256":  "778983a944c3ba5143f0b2a3a42fffa701276b99ddec6bb90d169db8b6106161"
+                                     },
+                                     {
+                                         "url":  "https://github.com/HKUDS/LightRAG/blob/453dce83d6d0354a06e46c8d4029a0895c4e054b/examples/insert_custom_kg.py",
+                                         "path":  "examples/insert_custom_kg.py",
+                                         "sha256":  "7ffd137ca7041c95efc10d88be1220381c3e78e758250727b176f3501898a33a"
+                                     },
+                                     {
+                                         "url":  "https://github.com/HKUDS/LightRAG/blob/453dce83d6d0354a06e46c8d4029a0895c4e054b/lightrag/rerank.py",
+                                         "path":  "lightrag/rerank.py",
+                                         "sha256":  "b919d3452cffca75fdfea09507dc329e3afc77bf655e7abc965f3f6c28b653f9"
+                                     },
+                                     {
+                                         "url":  "https://github.com/HKUDS/LightRAG/blob/453dce83d6d0354a06e46c8d4029a0895c4e054b/lightrag_webui/src/features/GraphViewer.tsx",
+                                         "path":  "lightrag_webui/src/features/GraphViewer.tsx",
+                                         "sha256":  "c1d2628ae9893495f23f19603bd2d7aaf86a6287015a4ea69c85b25a6999b7a4"
+                                     },
+                                     {
+                                         "url":  "https://github.com/HKUDS/LightRAG/blob/453dce83d6d0354a06e46c8d4029a0895c4e054b/lightrag/utils.py",
+                                         "path":  "lightrag/utils.py",
+                                         "sha256":  "8c49d4b0150fdfc3343d85770a46c0c49da5b6c6a81c09eb5ca10a997c8dcdbe"
+                                     },
+                                     {
+                                         "url":  "https://github.com/HKUDS/LightRAG/blob/453dce83d6d0354a06e46c8d4029a0895c4e054b/lightrag/utils_pipeline.py",
+                                         "path":  "lightrag/utils_pipeline.py",
+                                         "sha256":  "fcd8e4155bc9d6850246caa83fcb2bcffe65e364efac178dfe3e1e54d1d74c90"
+                                     }
+                                 ],
+                       "commit_date":  "2026-09-26T08:33:35Z",
+                       "copyright":  "Copyright (c) 2025 LightRAG Team",
+                       "tree":  "20a23b48c2382ee944700a87cb6d2941fc4d6838",
+                       "usage":  "optional-context-adapter-candidate",
+                       "commit":  "453dce83d6d0354a06e46c8d4029a0895c4e054b"
+                   },
+                   {
+                       "repository":  "pqaidevteam/pqai",
+                       "license":  "MIT",
+                       "files":  [
+                                     {
+                                         "url":  "https://github.com/pqaidevteam/pqai/blob/56342aaac5d9bf626f9413e5e49819e70709ce2f/LICENSE",
+                                         "path":  "LICENSE",
+                                         "sha256":  "e15f6cbd6af13c6400bfb6bfc0aecc7d3b71b677b03670adf6744b66c61209a8"
+                                     },
+                                     {
+                                         "url":  "https://github.com/pqaidevteam/pqai/blob/56342aaac5d9bf626f9413e5e49819e70709ce2f/requirements.txt",
+                                         "path":  "requirements.txt",
+                                         "sha256":  "3f32206e4c66d7ce5d42e8edada70ce0f17fd807fcfa2aba631d5eb4aa38741f"
+                                     },
+                                     {
+                                         "url":  "https://github.com/pqaidevteam/pqai/blob/56342aaac5d9bf626f9413e5e49819e70709ce2f/core/api.py",
+                                         "path":  "core/api.py",
+                                         "sha256":  "aa2e406a4c8d6e2e9196fe5dc6ca4695f164832b744b0c4e075a024ab22cf8ee"
+                                     },
+                                     {
+                                         "url":  "https://github.com/pqaidevteam/pqai/blob/56342aaac5d9bf626f9413e5e49819e70709ce2f/core/search.py",
+                                         "path":  "core/search.py",
+                                         "sha256":  "ebe7f145cbf0a80ce30bb37ac715d19334edcf0ae0232dcd87e2aec02dc0b1f0"
+                                     },
+                                     {
+                                         "url":  "https://github.com/pqaidevteam/pqai/blob/56342aaac5d9bf626f9413e5e49819e70709ce2f/core/reranking.py",
+                                         "path":  "core/reranking.py",
+                                         "sha256":  "b25ded5283e5b50a804c99e2fb6ea342ef0eaab1929ab1fb8fdfd9c510dd6e0a"
+                                     },
+                                     {
+                                         "url":  "https://github.com/pqaidevteam/pqai/blob/56342aaac5d9bf626f9413e5e49819e70709ce2f/core/snippet.py",
+                                         "path":  "core/snippet.py",
+                                         "sha256":  "26eb318815326dd627d99aa67760a2197fc4164a9cd611e2b01d0563384b360b"
+                                     },
+                                     {
+                                         "url":  "https://github.com/pqaidevteam/pqai/blob/56342aaac5d9bf626f9413e5e49819e70709ce2f/core/highlighter.py",
+                                         "path":  "core/highlighter.py",
+                                         "sha256":  "5fc9010e423c57611fe1f5af9352877e6b89258082309f0cb1f9c98bd129073a"
+                                     },
+                                     {
+                                         "url":  "https://github.com/pqaidevteam/pqai/blob/56342aaac5d9bf626f9413e5e49819e70709ce2f/core/documents.py",
+                                         "path":  "core/documents.py",
+                                         "sha256":  "f44255bc8d1774003b270304ff8ef0ddb0e4c84e0323472659f81ee4196c59d9"
+                                     }
+                                 ],
+                       "commit_date":  "2026-07-10T06:01:13Z",
+                       "copyright":  "Copyright 2021 AT\u0026T Intellectual Property. All other rights reserved.",
+                       "tree":  "575b348f68743dac62f9754e30f6a349c645b937",
+                       "usage":  "reference-only",
+                       "commit":  "56342aaac5d9bf626f9413e5e49819e70709ce2f"
+                   },
+                   {
+                       "repository":  "ABHIJEET-MUNESHWAR/PriorArtRAG",
+                       "license":  "MIT",
+                       "files":  [
+                                     {
+                                         "url":  "https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/LICENSE",
+                                         "path":  "LICENSE",
+                                         "sha256":  "2ab8a9aee3506e8797f01fdb277eef6c9359717262b44d4abd0e6fddb2409d62"
+                                     },
+                                     {
+                                         "url":  "https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/pyproject.toml",
+                                         "path":  "pyproject.toml",
+                                         "sha256":  "a05e6f97b5929e03d0d1b4604255fcf74d89b2d975c9c12eb863c3dcf8e0babb"
+                                     },
+                                     {
+                                         "url":  "https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/decompose.py",
+                                         "path":  "priorartrag/domain/decompose.py",
+                                         "sha256":  "1904480d0243a420a4ea05e628ab48669993bfeb2fd66c3505ac5ad8a42ad7d5"
+                                     },
+                                     {
+                                         "url":  "https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/pipeline.py",
+                                         "path":  "priorartrag/domain/pipeline.py",
+                                         "sha256":  "909f5b36a56f633147d256e232085a5d2b73fa424437c3f940f64d04d16d2741"
+                                     },
+                                     {
+                                         "url":  "https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/fusion.py",
+                                         "path":  "priorartrag/domain/fusion.py",
+                                         "sha256":  "6aef38d956ffcf3f966e534bc5f511e38186b04899c66598afd864a1a3f51d76"
+                                     },
+                                     {
+                                         "url":  "https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/rerank.py",
+                                         "path":  "priorartrag/domain/rerank.py",
+                                         "sha256":  "55a79e84a77ae8effefe7c2f4a324ece8470c7838a9c509361a541125d37c4ee"
+                                     },
+                                     {
+                                         "url":  "https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/grounding.py",
+                                         "path":  "priorartrag/domain/grounding.py",
+                                         "sha256":  "dd69397f93e14d07de71bb0bf181e0f79931128c4de13859dc3a4b3725c7227d"
+                                     },
+                                     {
+                                         "url":  "https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/adapters/llm/generator.py",
+                                         "path":  "priorartrag/adapters/llm/generator.py",
+                                         "sha256":  "2332b6b0a3041ce984ab1bf67d9ff89ecf29095a6df53264393c2506efcbcc3c"
+                                     },
+                                     {
+                                         "url":  "https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/app/ports.py",
+                                         "path":  "priorartrag/app/ports.py",
+                                         "sha256":  "06dbf26da29fce78cc0f362ceba8f2e95639c979cfe01d25978ac48265787373"
+                                     },
+                                     {
+                                         "url":  "https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/EVALUATION.md",
+                                         "path":  "EVALUATION.md",
+                                         "sha256":  "57234b47af590c0c6ff61a6ee799c7fe153430cdcc0f592e6f21abff6462bad3"
+                                     },
+                                     {
+                                         "url":  "https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/app/service.py",
+                                         "path":  "priorartrag/app/service.py",
+                                         "sha256":  "62a02044ee5a4a0ffda8dc5ae3ddd22476408fcb316411c1f4a2a86d2a1e1bc7"
+                                     },
+                                     {
+                                         "url":  "https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/config/settings.py",
+                                         "path":  "priorartrag/config/settings.py",
+                                         "sha256":  "d468f27ba3b0216cdf6ae18b7ef77a12741ab01a77d42393646cc4b605e06151"
+                                     }
+                                 ],
+                       "commit_date":  "2026-08-02T07:26:41Z",
+                       "copyright":  "Copyright (c) 2025 Abhijeet Ashok Muneshwar",
+                       "tree":  "32c27d21e01283b7583682ce6a9462e1c4a60191",
+                       "usage":  "reference-only",
+                       "commit":  "fcaad8482c7df5d8106d4041c45d732f18d8c295"
+                   },
+                   {
+                       "repository":  "chasewhughes/mcp-prior-art",
+                       "license":  "MIT",
+                       "files":  [
+                                     {
+                                         "url":  "https://github.com/chasewhughes/mcp-prior-art/blob/eae73ff170b058772ca74e97b13eade853420e83/LICENSE",
+                                         "path":  "LICENSE",
+                                         "sha256":  "04128fb58d3962cc3f680cf6bfe67209f21afdcf8a664a72118c6a4b271331e1"
+                                     },
+                                     {
+                                         "url":  "https://github.com/chasewhughes/mcp-prior-art/blob/eae73ff170b058772ca74e97b13eade853420e83/pyproject.toml",
+                                         "path":  "pyproject.toml",
+                                         "sha256":  "91ccdf135695cae56a9f5d51b8252d4cd3f36061659e2606b43a7704cfaf0e5b"
+                                     },
+                                     {
+                                         "url":  "https://github.com/chasewhughes/mcp-prior-art/blob/eae73ff170b058772ca74e97b13eade853420e83/src/mcp_prior_art/apis/epo.py",
+                                         "path":  "src/mcp_prior_art/apis/epo.py",
+                                         "sha256":  "eb11e2476baa1e2223123184f50947c8095dc593a4e68f68f61331391022216a"
+                                     }
+                                 ],
+                       "commit_date":  "2026-03-26T02:34:01Z",
+                       "copyright":  "Copyright (c) 2026 Chase Hughes",
+                       "tree":  "0006745ed7b87e49daeaded7cae0cdf83c3811d4",
+                       "usage":  "reference-only",
+                       "commit":  "eae73ff170b058772ca74e97b13eade853420e83"
+                   }
+               ],
+    "task":  "ARCH-001",
+    "verified_on":  "2026-09-29"
+}

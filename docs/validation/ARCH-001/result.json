@@ -1,0 +1,97 @@
+{
+  "python": "3.12.13",
+  "lightrag": "1.5.8",
+  "neo4j_driver": "6.3.1",
+  "qdrant_client": "1.17.1",
+  "run_id": "e8f8d678f9",
+  "checks": {
+    "custom_kg_insert_input_unchanged": true,
+    "source_alias_to_chunk_to_document": true,
+    "context_and_structured_references": true,
+    "repeat_insert_vector_counts_stable": true,
+    "second_workspace_empty": true,
+    "zero_llm_calls": true
+  },
+  "limitations_observed": {
+    "file_path_normalized_to_basename": true,
+    "same_source_alias_keeps_last_chunk": true,
+    "identical_content_overwrites_document_provenance": true
+  },
+  "retrieval": {
+    "status": "success",
+    "message": "Query processed successfully",
+    "data": {
+      "entities": [
+        {
+          "entity_name": "Sensor",
+          "entity_type": "COMPONENT",
+          "description": "Sensor",
+          "source_id": "chunk-81b86c3105c58a37d6b2a510abe4c245",
+          "file_path": "chunk-7",
+          "created_at": 1790631374
+        },
+        {
+          "entity_name": "ThermalProbe",
+          "entity_type": "COMPONENT",
+          "description": "ThermalProbe",
+          "source_id": "chunk-81b86c3105c58a37d6b2a510abe4c245",
+          "file_path": "chunk-7",
+          "created_at": 1790631374
+        }
+      ],
+      "relationships": [
+        {
+          "src_id": "Sensor",
+          "tgt_id": "ThermalProbe",
+          "description": "Sensor uses ThermalProbe",
+          "keywords": "measurement",
+          "weight": 1.0,
+          "source_id": "chunk-81b86c3105c58a37d6b2a510abe4c245",
+          "file_path": "chunk-7",
+          "created_at": 1790631374
+        }
+      ],
+      "chunks": [
+        {
+          "reference_id": "1",
+          "content": "Sensor measures temperature using a thermal probe.",
+          "file_path": "chunk-7",
+          "chunk_id": "chunk-81b86c3105c58a37d6b2a510abe4c245"
+        }
+      ],
+      "references": [
+        {
+          "reference_id": "1",
+          "file_path": "chunk-7"
+        }
+      ]
+    },
+    "metadata": {
+      "query_mode": "mix",
+      "keywords": {
+        "high_level": [
+          "measurement"
+        ],
+        "low_level": [
+          "Sensor"
+        ]
+      },
+      "processing_info": {
+        "total_entities_found": 2,
+        "total_relations_found": 1,
+        "entities_after_truncation": 2,
+        "relations_after_truncation": 1,
+        "merged_chunks_count": 1,
+        "final_chunks_count": 1
+      }
+    }
+  },
+  "context_sha256": "b715f488910f24947a784ba2bc06c0809c16ab529364f875359534e84c853baf",
+  "qdrant_counts": {
+    "lightrag_vdb_entities_arch001_fixture_4d": 6,
+    "lightrag_vdb_relationships_arch001_fixture_4d": 3,
+    "lightrag_vdb_chunks_arch001_fixture_4d": 3
+  },
+  "llm_calls": 0,
+  "status": "passed_with_documented_donor_limitations"
+}
