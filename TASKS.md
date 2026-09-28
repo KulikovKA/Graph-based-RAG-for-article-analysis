@@ -12,7 +12,8 @@
 
 ```mermaid
 flowchart LR
-  A[ARCH-001] --> S[SKEL-001]
+  A[ARCH-001] --> AR[ARCH-002]
+  AR --> S[SKEL-001]
   S --> I[INFRA-001]
   I --> D[DB-001]
   D --> E[SRC-001 EPO]
@@ -53,7 +54,8 @@ flowchart LR
 | ID | Фаза | Priority | Model / thinking | Depends | Статус |
 |---|---|---|---|---|---|
 | ARCH-001 | 0 Доноры | P0 | Astra / High | — | готова |
-| SKEL-001 | 1 Каркас | P0 | Sol / Medium | ARCH-001 | ожидает |
+| ARCH-002 | 0 Архитектурный review | P0 | Astra / High | ARCH-001 | ожидает |
+| SKEL-001 | 1 Каркас | P0 | Sol / Medium | ARCH-002 | ожидает |
 | INFRA-001 | 2 Инфраструктура | P0 | Sol / Medium | SKEL-001 | ожидает |
 | DB-001 | 2 Данные | P0 | Sol / Medium | INFRA-001 | ожидает |
 | SRC-001 | 3 EPO | P0 | Sol / High | DB-001 | ожидает |
@@ -90,10 +92,17 @@ flowchart LR
 - **Приёмка/тесты:** записаны проверенные версии, реальные сигнатуры и результаты минимального smoke; для недоступного кода явно указано «не проверено»; нет ссылок на несуществующие пути. **Не делать:** не форкать целые сервисы, не придумывать API.
 - **Context:** только REPO_MAP, DECISIONS и перечисленные файлы доноров. **Модель:** Astra/High. **Размер:** L, 2–4 ч агента, 45 мин review. **Риск:** upstream drift/404.
 
+### ARCH-002 — Независимая проверка planning package
+
+- **Цель/зачем:** найти ложные предположения о донорах, противоречия между документами, циклы зависимостей, слишком крупные задачи и недостающие критерии до архитектурного freeze.
+- **Depends / priority:** ARCH-001; P0. **Files:** docs/*.md, TASKS.md. **References:** pinned donor paths из REPO_MAP.md и результаты spike ARCH-001.
+- **Сделать:** провести adversarial review отдельным рабочим проходом; проверить data/API/LLM/graph contracts друг против друга, модельные рекомендации и стоимость задач; исправить найденное и записать решения в DECISIONS.md. **Приёмка/тесты:** dependency graph без циклов, все P0 задачи достижимы, ссылки/версии действительны, противоречий по ownership, evidence IDs и статусам run нет; список замечаний и исправлений сохранён. **Не делать:** не перепроектировать систему без доказанного дефекта и не начинать production-код.
+- **Context:** сначала ARCHITECTURE/REPO_MAP/TASKS, затем только документы, в которых обнаружен конфликт; не перечитывать доноров целиком. **Модель:** Astra/High. **Размер:** M, 1–2 ч, review 30 мин. **Риск:** непроверенная согласованность при изменении upstream.
+
 ### SKEL-001 — Каркас и контрактные границы
 
 - **Цель/зачем:** создать Python package и frontend skeleton без бизнес-логики, чтобы имплементация шла по документированным границам.
-- **Depends / priority:** ARCH-001; P0. **Files:** pyproject.toml, src/app/{api,domain,services,integrations,storage,workers}, frontend/, tests/, .env.example. **References:** docs/ARCHITECTURE.md, docs/API_CONTRACTS.md, docs/DECISIONS.md.
+- **Depends / priority:** ARCH-002; P0. **Files:** pyproject.toml, src/app/{api,domain,services,integrations,storage,workers}, frontend/, tests/, .env.example. **References:** docs/ARCHITECTURE.md, docs/API_CONTRACTS.md, docs/DECISIONS.md.
 - **Сделать:** package layout, DI interfaces, lint/type/test commands, README для dev; закрепить версии и license inventory. **Приёмка/тесты:** пустое FastAPI приложение импортируется, frontend собирается, lint/typecheck проходят. **Не делать:** не создавать микросервисы и альтернативные RAG pipeline.
 - **Context:** три названных docs и дерево проекта; доноров не перечитывать. **Модель:** Sol/Medium. **Размер:** M, 1–2 ч, review 20 мин. **Риск:** слишком тесные зависимости модулей.
 
@@ -262,7 +271,7 @@ flowchart LR
 
 | Milestone | После | Проверяемое демо |
 |---|---|---|
-| M0 architecture frozen | ARCH-001 | pinned donor versions, согласованные docs/ADR; 404 донор явно отмечен |
+| M0 architecture frozen | ARCH-002 | pinned donor versions, независимый review, согласованные docs/ADR; 404 донор явно отмечен |
 | M1 infrastructure boots | DB-001 | Compose health + migrations, извне виден только Caddy |
 | M2 documents ingested | ING-001 | EPO+OpenAlex fixture → document revision + chunks |
 | M3 retrieval works | RANK-001 | идея → top documents, snippets и evidence IDs |
@@ -274,4 +283,4 @@ flowchart LR
 | M9 100-query evaluation | EVAL-001 | отчёт по 100 кейсам и baseline diff |
 | M10 MVP release candidate | TEST-001 + REL-001 | clean install, restore, eval/security gates |
 
-**Критический путь:** ARCH→SKEL→INFRA→DB→SRC→ING→IDX/GRAPH→RET→RANK→ANALYST→JOB→API→AUTH→UI→GRAPHUI→TEST→REL. Длиннейшие риски: EPO доступ/квоты, LightRAG compatibility, CPU latency, качество evidence/citations. Сумма оценок ~45–65 ч агентской работы плюс 10–15 ч review, без скачивания корпуса и ожидания внешних аккаунтов. Astra escalation: ARCH-001, TEST-001 и только системные дефекты без ясной причины. P0 после UI-001 даёт функциональный MVP; P1 дополняет graph UI, evaluation и release hardening. P2 задачи фиксировать позже на основании измерений, не прятать их в P0.
+**Критический путь:** ARCH-001→ARCH-002→SKEL→INFRA→DB→SRC→ING→IDX/GRAPH→RET→RANK→ANALYST→JOB→API→AUTH→UI→GRAPHUI→TEST→REL. Длиннейшие риски: EPO доступ/квоты, LightRAG compatibility, CPU latency, качество evidence/citations. Сумма оценок ~47–67 ч агентской работы плюс 10–15 ч review, без скачивания корпуса и ожидания внешних аккаунтов. Astra escalation: ARCH-001, ARCH-002, TEST-001 и только системные дефекты без ясной причины. P0 после UI-001 даёт функциональный MVP; P1 дополняет graph UI, evaluation и release hardening. P2 задачи фиксировать позже на основании измерений, не прятать их в P0.
