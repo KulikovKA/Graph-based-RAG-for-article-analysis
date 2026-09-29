@@ -48,6 +48,7 @@ services:
       REDIS_URL: redis://:${REDIS_PASSWORD:-local-dev-only-change-me}@redis:6379/0
       EPO_CONSUMER_KEY: ${EPO_CONSUMER_KEY:-}
       EPO_CONSUMER_SECRET: ${EPO_CONSUMER_SECRET:-}
+      OPENALEX_API_KEY: ${OPENALEX_API_KEY:-}
       PYTHONDONTWRITEBYTECODE: "1"
     depends_on:
       api: { condition: service_started }

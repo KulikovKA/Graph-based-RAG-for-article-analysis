@@ -1,0 +1,26 @@
+{
+  "id": "https://openalex.org/W1234567890",
+  "title": "Graph retrieval for research",
+  "abstract_inverted_index": {
+    "Graph": [0],
+    "retrieval": [1],
+    "supports": [2],
+    "research.": [3]
+  },
+  "publication_date": "2024-04-12",
+  "updated_date": "2025-02-03T04:05:06Z",
+  "doi": "https://doi.org/10.1234/example",
+  "primary_location": {
+    "landing_page_url": "https://journal.example/article/1"
+  },
+  "language": "en",
+  "authorships": [
+    {"author": {"id": "https://openalex.org/A123", "display_name": "Ada Researcher"}},
+    {"author": {"id": "https://openalex.org/A456", "display_name": "Boris Scientist"}}
+  ],
+  "topics": [
+    {"id": "https://openalex.org/T123", "display_name": "Information retrieval", "score": 0.87}
+  ],
+  "referenced_works": ["https://openalex.org/W9876543210"],
+  "cited_by_count": 17
+}

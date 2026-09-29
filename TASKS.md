@@ -111,7 +111,7 @@ flowchart LR
 | DB-001 | 2 Данные | P0 | Sol / Medium | INFRA-001 | выполнена |
 | DB-002 | Репозитории, outbox и lease primitives | P0 | Sol / High | DB-001 | выполнена |
 | SRC-001 | 3 EPO | P0 | Sol / High | DB-002 | выполнена |
-| SRC-002 | 3 OpenAlex | P0 | Sol / Medium | DB-002 | ожидает |
+| SRC-002 | 3 OpenAlex | P0 | Sol / Medium | DB-002 | выполнена |
 | ING-001 | 3 Ingestion | P0 | Sol / High | SRC-001,SRC-002 | ожидает |
 | EVAL-000 | Мини-набор для разработки retrieval | P0 | Sol / Medium | ING-001 | ожидает |
 | IDX-001 | 4 Qdrant | P0 | Sol / Medium | ING-001,LLM-002 | ожидает |
@@ -203,6 +203,7 @@ flowchart LR
 
 ### SRC-002 — Адаптер OpenAlex
 
+- **Результат (2026-09-29):** реализованы независимый контракт научной работы и OpenAlex adapter: поиск с cursor pagination, получение по ID, восстановление доступного abstract из inverted index, авторы, темы, ссылки, цитирования и source URL. Nullable поля сохраняются со статусом наличия. Необязательный API key передаётся через заголовок; запросы учитывают лимиты, 429/5xx и ограниченные повторы. Синтетические фикстуры с/без abstract и 7 тестов адаптера прошли; общий pytest, Ruff, mypy, Docker Compose config и интеграционные тесты в контейнере прошли. Полный snapshot не загружался. Публикация сверяется по `task.md`.
 - **Цель/зачем:** второй независимый источник научных работ.
 - **Depends / priority:** DB-002; P0. **Files:** src/app/integrations/openalex.py, src/app/domain/source.py, tests/fixtures/openalex/, tests/integration/test_openalex.py. **References:** docs/REPO_MAP.md, [OpenAlex developers](https://developers.openalex.org/).
 - **Сделать:** search/fetch/pagination по текущему API, reconstruct abstract там, где доступен, authors/topics/references/citations, source URL, rate-limit/retry, nullable поля. **Приёмка/тесты:** fixtures с/без abstract, повторный fetch идемпотентен, ошибки 429/5xx управляемы. **Не делать:** не загружать полный OpenAlex snapshot на хост.
