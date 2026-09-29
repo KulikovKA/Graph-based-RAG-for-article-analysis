@@ -7,7 +7,13 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.integrations.qdrant import QdrantIndex, VectorHit, VectorPoint
-from app.storage.models import DocumentRevision, EvidenceChunk, IndexMember, SourceDocument
+from app.storage.models import (
+    DocumentRevision,
+    EvidenceChunk,
+    IndexGeneration,
+    IndexMember,
+    SourceDocument,
+)
 
 
 class Embedder(Protocol):
@@ -70,6 +76,12 @@ class IndexingService:
         """Check Qdrant candidates against the pinned PostgreSQL generation."""
         if not 1 <= limit <= 100:
             raise ValueError("invalid search limit")
+        generation = self.session.get(IndexGeneration, generation_id)
+        if generation is None:
+            raise LookupError("index generation not found")
+        qdrant_version = generation.config_versions_json.get("qdrant", {})
+        if qdrant_version.get("projection_version") != self.index.spec.projection_version:
+            raise ValueError("embedding projection version mismatch")
         results: list[VectorHit] = []
         offset = 0
         while len(results) < limit:

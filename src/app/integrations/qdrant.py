@@ -4,10 +4,12 @@ import hashlib
 import math
 import re
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 from uuid import UUID
 
 import httpx
+import yaml
 
 
 @dataclass(frozen=True)
@@ -30,6 +32,17 @@ class EmbeddingSpec:
             raise ValueError("embedding namespace must contain letters or digits")
         identity = f"{self.namespace}\0{self.model_id}\0{self.model_version}\0{self.dimension}"
         return f"{prefix}_chunks_{hashlib.sha256(identity.encode()).hexdigest()[:24]}"
+
+    @property
+    def projection_version(self) -> str:
+        return f"{self.model_id}@{self.model_version}:d{self.dimension}"
+
+    @classmethod
+    def from_config(cls, namespace: str, path: Path) -> "EmbeddingSpec":
+        config = yaml.safe_load(path.read_text(encoding="utf-8"))
+        embedding = config["embedding"]
+        return cls(namespace, embedding["model_id"], embedding["digest"],
+                   embedding["dimension"])
 
 
 def validate_vector(vector: list[float], dimension: int) -> None:
