@@ -106,7 +106,7 @@ flowchart LR
 |---|---|---|---|---|---|
 | ARCH-001 | 0 Доноры | P0 | Astra / High | — | выполнена |
 | ARCH-002 | 0 Архитектурный review | P0 | Astra / High | ARCH-001 | выполнена |
-| SKEL-001 | 1 Каркас | P0 | Sol / Medium | ARCH-002 | ожидает |
+| SKEL-001 | 1 Каркас | P0 | Sol / Medium | ARCH-002 | ожидает публикации |
 | INFRA-001 | 2 Инфраструктура | P0 | Sol / Medium | SKEL-001 | ожидает |
 | DB-001 | 2 Данные | P0 | Sol / Medium | INFRA-001 | ожидает |
 | DB-002 | Репозитории, outbox и lease primitives | P0 | Sol / High | DB-001 | ожидает |
@@ -160,6 +160,7 @@ flowchart LR
 
 ### SKEL-001 — Каркас и контрактные границы
 
+- **Результат (2026-09-29):** создан Python package `src/app` с FastAPI factory, базовыми RunV1/AnswerV1/EvidenceV1 DTO, DI ports, health/redaction scaffold; добавлен React/TypeScript/Vite skeleton, команды разработки, `.env.example`, lock-файлы и license inventory. Проверки: pytest (3), Ruff, mypy, compileall, frontend build/typecheck/ESLint; npm audit — 0 vulnerabilities. Коммит ожидает push.
 - **Цель/зачем:** создать Python package и frontend skeleton без бизнес-логики, чтобы имплементация шла по документированным границам.
 - **Depends / priority:** ARCH-002; P0. **Files:** pyproject.toml, src/app/{api,domain,services,integrations,storage,workers}, frontend/, tests/, .env.example. **References:** docs/ARCHITECTURE.md, docs/API_CONTRACTS.md, docs/DECISIONS.md.
 - **Сделать:** package layout, DI interfaces, lint/type/test commands, README для dev; закрепить версии и license inventory. **Приёмка/тесты:** пустое FastAPI приложение импортируется, frontend собирается, lint/typecheck проходят. **Не делать:** не создавать микросервисы и альтернативные RAG pipeline.
