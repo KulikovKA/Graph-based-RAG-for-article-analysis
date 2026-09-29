@@ -117,7 +117,7 @@ flowchart LR
 | ING-001 | 3 Ingestion | P0 | Sol / High | SRC-001,SRC-002 | выполнена |
 | EVAL-000 | Мини-набор для разработки retrieval | P0 | Sol / Medium | ING-001 | выполнена |
 | IDX-001 | 4 Qdrant | P0 | Sol / Medium | ING-001,LLM-002 | выполнена |
-| GRAPH-001 | 4 Neo4j | P0 | Sol / High | ING-001,IDX-001,LLM-002 | ожидает публикации |
+| GRAPH-001 | 4 Neo4j | P0 | Sol / High | ING-001,IDX-001,LLM-002 | выполнена |
 | LR-001 | 4 LightRAG | P1 | Sol / High | GRAPH-001,LLM-002,ARCH-001 | ожидает |
 | LLM-001 | 5 Inference | P0 | Sol / High | INFRA-001 | выполнена |
 | LLM-002 | Выбор локальных весов и CPU smoke | P0 | Sol / High | LLM-001 | выполнена |
@@ -238,7 +238,7 @@ flowchart LR
 
 ### GRAPH-001 — Доменный Neo4j граф
 
-- **Результат (2026-09-29):** allowlisted Neo4j projection, durable graph facts/extraction markers, provenance validation, revision cleanup and capped one-hop traversal implemented. PostgreSQL/Qdrant/Neo4j Compose integration and full pytest suite pass; awaiting commit push verification.
+- **Результат (2026-09-29):** allowlisted Neo4j projection, durable graph facts/extraction markers, provenance validation, revision cleanup and capped one-hop traversal implemented. PostgreSQL/Qdrant/Neo4j Compose integration and full pytest suite pass; commit `4ef8bdc` опубликован в `main` и проверен по удалённому SHA.
 - **Цель/зачем:** фиксированная патентная онтология с доказательными связями.
 - **Depends / priority:** ING-001,IDX-001,LLM-002; P0. **Files:** src/app/integrations/neo4j.py, src/app/services/graph_index.py, migrations/neo4j/, tests/integration/test_graph.py. **References:** docs/GRAPH_SCHEMA.md, LightRAG neo4j_impl.py только для namespace проверки.
 - **Сделать:** constraints/indexes, allowlist labels/edges, validated extraction с evidence IDs, upsert/remove revision provenance, bounded traversal. **Приёмка/тесты:** ни один LLM type вне enum не записан, все disclosure edges имеют provenance, 1-hop query bounded, ревизионное удаление корректно. **Не делать:** не писать приватные идеи в общий граф, не принимать raw Cypher от клиента.
