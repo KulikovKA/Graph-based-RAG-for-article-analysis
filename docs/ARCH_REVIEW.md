@@ -94,6 +94,6 @@ python docs/validation/ARCH-002/check_plan.py --online --output docs/validation/
 
 ## Итог и оставшиеся gates
 
-Критерии review выполнены; planning baseline зафиксирован решениями ADR-008–010. Публикация ARCH-002: ожидает commit/push и сверки origin/main согласно task.md. Следующая отдельная задача — SKEL-001.
+Критерии review выполнены; planning baseline зафиксирован решениями ADR-008–010. ARCH-002 опубликована: коммит `d06c8d88aff7555ac0b1cea46284884562a9b392`, push в origin/main успешен; local HEAD и remote refs/heads/main совпали. Статус обновлён после этой проверки согласно task.md. Следующая отдельная задача — SKEL-001.
 
 Неизмеренные CPU/RSS/latency, реальная транзакционная изоляция/ownership, качество русского grounding, доступ EPO/OpenAlex, восстановление и 100-case baseline остаются явными implementation gates в TASKS. Planning review не подтверждает их прохождение. Production-код не добавлялся; новый Python-файл проверяет только документацию и source pins.
