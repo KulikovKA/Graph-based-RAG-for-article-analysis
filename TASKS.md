@@ -116,7 +116,7 @@ flowchart LR
 | SRC-002 | 3 OpenAlex | P0 | Sol / Medium | DB-002 | выполнена |
 | ING-001 | 3 Ingestion | P0 | Sol / High | SRC-001,SRC-002 | выполнена |
 | EVAL-000 | Мини-набор для разработки retrieval | P0 | Sol / Medium | ING-001 | выполнена |
-| IDX-001 | 4 Qdrant | P0 | Sol / Medium | ING-001,LLM-002 | ожидает |
+| IDX-001 | 4 Qdrant | P0 | Sol / Medium | ING-001,LLM-002 | выполнена |
 | GRAPH-001 | 4 Neo4j | P0 | Sol / High | ING-001,IDX-001,LLM-002 | ожидает |
 | LR-001 | 4 LightRAG | P1 | Sol / High | GRAPH-001,LLM-002,ARCH-001 | ожидает |
 | LLM-001 | 5 Inference | P0 | Sol / High | INFRA-001 | выполнена |
