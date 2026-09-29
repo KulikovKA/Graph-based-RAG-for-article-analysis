@@ -6,9 +6,9 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 WORKDIR /opt/app
 COPY pyproject.toml README.md ./
 COPY src ./src
-COPY alembic.ini ./
+RUN python -m pip install --no-cache-dir '.[dev]'
 COPY migrations ./migrations
-RUN python -m pip install --no-cache-dir .
+COPY alembic.ini ./
+COPY tests ./tests
 
-EXPOSE 8000
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["pytest", "tests/integration/test_db.py"]

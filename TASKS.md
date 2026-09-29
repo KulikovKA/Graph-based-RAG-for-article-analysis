@@ -108,7 +108,7 @@ flowchart LR
 | ARCH-002 | 0 Архитектурный review | P0 | Astra / High | ARCH-001 | выполнена |
 | SKEL-001 | 1 Каркас | P0 | Sol / Medium | ARCH-002 | выполнена |
 | INFRA-001 | 2 Инфраструктура | P0 | Sol / Medium | SKEL-001 | выполнена |
-| DB-001 | 2 Данные | P0 | Sol / Medium | INFRA-001 | ожидает |
+| DB-001 | 2 Данные | P0 | Sol / Medium | INFRA-001 | ожидает публикации |
 | DB-002 | Репозитории, outbox и lease primitives | P0 | Sol / High | DB-001 | ожидает |
 | SRC-001 | 3 EPO | P0 | Sol / High | DB-002 | ожидает |
 | SRC-002 | 3 OpenAlex | P0 | Sol / Medium | DB-002 | ожидает |
@@ -178,6 +178,7 @@ flowchart LR
 
 ### DB-001 — Схема PostgreSQL и ограничения
 
+- **Результат (2026-09-29):** добавлены SQLAlchemy-модели и неизменяемая Alembic baseline-схема из 23 таблиц с owner/revision/chunk/run FK, partial unique для одного активного run и индексами по DATA_MODEL. `migrate` применяет миграции до запуска API; добавлены session/engine primitives и изолированный PostgreSQL round-trip test. `ruff check .`, `mypy src`, `pytest` (3 passed, 1 skipped без DB URL), `docker compose config --quiet`, `docker compose build api`, и `docker compose --profile tools run --build --rm db-test` (1 passed) выполнены. Изменения ещё не опубликованы.
 - **Цель/зачем:** обеспечить ownership, воспроизводимые версии идей и надёжное переиндексирование.
 - **Depends / priority:** INFRA-001; P0. **Files:** src/app/storage/models.py, migrations/, src/app/storage/repositories.py, tests/integration/test_db.py. **References:** docs/DATA_MODEL.md, docs/MEMORY_AND_CACHE.md.
 - **Сделать:** таблицы/constraints/индексы DATA_MODEL, включая sessions, analysis_jobs, run_evidence, graph_facts и index generations. **Приёмка/тесты:** upgrade/downgrade на пустой/fixture БД, FK revision/chunk/run и unique idempotency/one-active-run проверены. **Не делать:** не реализовывать worker orchestration; repositories/outbox logic — DB-002.

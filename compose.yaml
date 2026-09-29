@@ -62,7 +62,7 @@ services:
 
   migrate:
     image: article-analysis-api:local
-    command: ["python", "-m", "app.storage.migrate_stub"]
+    command: ["alembic", "upgrade", "head"]
     restart: "no"
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-article_app}:${POSTGRES_PASSWORD:-local-dev-only-change-me}@postgres:5432/${POSTGRES_DB:-article_analysis}
@@ -70,6 +70,17 @@ services:
     depends_on:
       postgres: { condition: service_healthy }
     networks: [backend]
+
+  db-test:
+    profiles: [tools]
+    build: { context: ., dockerfile: docker/Dockerfile.tests }
+    image: article-analysis-tests:local
+    environment:
+      TEST_DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-article_app}:${POSTGRES_PASSWORD:-local-dev-only-change-me}@postgres:5432/${POSTGRES_DB:-article_analysis}
+    depends_on:
+      postgres: { condition: service_healthy }
+    networks: [backend]
+    restart: "no"
 
   postgres:
     image: postgres:17.11-bookworm

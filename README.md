@@ -8,7 +8,7 @@
 
 - Python 3.11 или 3.12: `python -m pip install -e ".[dev]"`, `uvicorn app.main:app --app-dir src`, `ruff check .`, `mypy src`, `pytest`.
 - Node.js/npm: `cd frontend`, `npm install`, `npm run dev`; проверки: `npm run lint`, `npm run typecheck`, `npm run build`, `npm test`.
-- `GET /health/live` проверяет процесс; `/health/ready` намеренно отвечает 503 до подключения обязательных зависимостей в INFRA-001.
+- `GET /health/live` проверяет процесс; `/health/ready` остаётся 503 до появления проверок PostgreSQL и очереди в DB-002.
 - Никогда не помещайте секреты в `.env.example`; локальный `.env` игнорируется Git.
 - Состав, версии и лицензии зависимостей SKEL-001 перечислены в [docs/LICENSES.md](docs/LICENSES.md).
 
@@ -21,4 +21,4 @@
 - [Развёртывание](docs/DEPLOYMENT.md), [безопасность](docs/SECURITY.md), [оценка качества](docs/EVALUATION.md)
 - [ARCH-002: замечания, исправления и проверка согласованности](docs/ARCH_REVIEW.md)
 
-Planning baseline после ARCH-001/ARCH-002: 2026-09-29. Каркас и Compose bootstrap описаны в [TASKS.md](TASKS.md) и [документации развёртывания](docs/DEPLOYMENT.md). Следующая задача — DB-001. Перед реализацией интеграций проверяйте актуальные версии API и условия источников; завершённый planning review не означает готовность production-системы.
+Planning baseline после ARCH-001/ARCH-002: 2026-09-29. Каркас и Compose bootstrap описаны в [TASKS.md](TASKS.md) и [документации развёртывания](docs/DEPLOYMENT.md). Следующая задача — DB-002. Перед реализацией интеграций проверяйте актуальные версии API и условия источников; завершённый planning review не означает готовность production-системы.

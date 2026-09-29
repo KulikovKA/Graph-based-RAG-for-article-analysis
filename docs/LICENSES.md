@@ -9,6 +9,9 @@ adding or upgrading a dependency; preserve upstream notices when distributing bi
 | FastAPI | 0.115.12 | MIT |
 | Pydantic | 2.11.3 | MIT |
 | Uvicorn | 0.34.0 | BSD-3-Clause |
+| Alembic | 1.20.0 | MIT |
+| Psycopg | 3.3.6 | LGPL-3.0-only |
+| SQLAlchemy | 2.0.54 | MIT |
 | setuptools (build) | 75.8.0 | MIT |
 | httpx (dev) | 0.28.1 | BSD-3-Clause |
 | mypy (dev) | 1.15.0 | MIT |
