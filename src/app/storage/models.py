@@ -469,6 +469,7 @@ class GraphFact(Base):
             "provenance_kind IN ('source_text','abstract','metadata','synthetic')",
             name="ck_graph_facts_provenance",
         ),
+        UniqueConstraint("logical_key_hash", name="uq_graph_facts_logical_key_hash"),
         Index("ix_graph_facts_revision", "revision_id"),
     )
 
@@ -481,11 +482,31 @@ class GraphFact(Base):
     span_start: Mapped[int | None] = mapped_column(Integer)
     span_end: Mapped[int | None] = mapped_column(Integer)
     metadata_pointer: Mapped[dict[str, Any] | None] = mapped_column(JSONB)
+    provenance_key: Mapped[str] = mapped_column(String(768), nullable=False)
+    logical_key_hash: Mapped[str] = mapped_column(String(64), nullable=False)
     provenance_kind: Mapped[str] = mapped_column(String(32), nullable=False)
     extractor_version: Mapped[str] = mapped_column(String(128), nullable=False)
     vocabulary_version: Mapped[str] = mapped_column(String(128), nullable=False)
     confidence: Mapped[float | None]
     validated_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
+class GraphExtractionState(Base):
+    """Маркер завершённого извлечения, в том числе корректного пустого результата."""
+
+    __tablename__ = "graph_extraction_states"
+    __table_args__ = (
+        ForeignKeyConstraint(["revision_id"], ["document_revisions.id"], ondelete="CASCADE"),
+        CheckConstraint("fact_count >= 0", name="ck_graph_extraction_states_fact_count"),
+    )
+
+    revision_id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
+    extractor_version: Mapped[str] = mapped_column(String(128), primary_key=True)
+    vocabulary_version: Mapped[str] = mapped_column(String(128), primary_key=True)
+    fact_count: Mapped[int] = mapped_column(Integer, nullable=False)
+    completed_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
 
 
 class RevisionIndexAck(Base):

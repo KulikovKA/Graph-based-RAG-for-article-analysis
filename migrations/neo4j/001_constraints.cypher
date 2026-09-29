@@ -1,0 +1,16 @@
+CREATE CONSTRAINT uq_patent_key IF NOT EXISTS FOR (n:Patent) REQUIRE n.key IS UNIQUE;
+CREATE CONSTRAINT uq_scientific_work_key IF NOT EXISTS FOR (n:ScientificWork) REQUIRE n.key IS UNIQUE;
+CREATE CONSTRAINT uq_technical_feature_key IF NOT EXISTS FOR (n:TechnicalFeature) REQUIRE n.key IS UNIQUE;
+CREATE CONSTRAINT uq_technology_key IF NOT EXISTS FOR (n:Technology) REQUIRE n.key IS UNIQUE;
+CREATE CONSTRAINT uq_classification_key IF NOT EXISTS FOR (n:Classification) REQUIRE n.key IS UNIQUE;
+CREATE CONSTRAINT uq_applicant_key IF NOT EXISTS FOR (n:Applicant) REQUIRE n.key IS UNIQUE;
+CREATE CONSTRAINT uq_inventor_key IF NOT EXISTS FOR (n:Inventor) REQUIRE n.key IS UNIQUE;
+CREATE CONSTRAINT uq_author_key IF NOT EXISTS FOR (n:Author) REQUIRE n.key IS UNIQUE;
+CREATE CONSTRAINT uq_fact_discloses_feature IF NOT EXISTS FOR ()-[r:DISCLOSES_FEATURE]-() REQUIRE r.fact_id IS UNIQUE;
+CREATE CONSTRAINT uq_fact_uses_technology IF NOT EXISTS FOR ()-[r:USES_TECHNOLOGY]-() REQUIRE r.fact_id IS UNIQUE;
+CREATE CONSTRAINT uq_fact_classified_as IF NOT EXISTS FOR ()-[r:CLASSIFIED_AS]-() REQUIRE r.fact_id IS UNIQUE;
+CREATE CONSTRAINT uq_fact_cites IF NOT EXISTS FOR ()-[r:CITES]-() REQUIRE r.fact_id IS UNIQUE;
+CREATE CONSTRAINT uq_fact_applied_by IF NOT EXISTS FOR ()-[r:APPLIED_BY]-() REQUIRE r.fact_id IS UNIQUE;
+CREATE CONSTRAINT uq_fact_invented_by IF NOT EXISTS FOR ()-[r:INVENTED_BY]-() REQUIRE r.fact_id IS UNIQUE;
+CREATE CONSTRAINT uq_fact_authored_by IF NOT EXISTS FOR ()-[r:AUTHORED_BY]-() REQUIRE r.fact_id IS UNIQUE;
+CREATE CONSTRAINT uq_fact_related_to IF NOT EXISTS FOR ()-[r:RELATED_TO]-() REQUIRE r.fact_id IS UNIQUE;
