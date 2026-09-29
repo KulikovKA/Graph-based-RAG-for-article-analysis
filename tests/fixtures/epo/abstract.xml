@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ops:world-patent-data xmlns:ops="http://ops.epo.org" xmlns="http://www.epo.org/exchange">
+  <exchange-documents><exchange-document country="EP" doc-number="1000000" kind="A1">
+    <abstract lang="en"><p>A sensor measures temperature.</p></abstract>
+  </exchange-document></exchange-documents>
+</ops:world-patent-data>

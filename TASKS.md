@@ -110,7 +110,7 @@ flowchart LR
 | INFRA-001 | 2 Инфраструктура | P0 | Sol / Medium | SKEL-001 | выполнена |
 | DB-001 | 2 Данные | P0 | Sol / Medium | INFRA-001 | выполнена |
 | DB-002 | Репозитории, outbox и lease primitives | P0 | Sol / High | DB-001 | выполнена |
-| SRC-001 | 3 EPO | P0 | Sol / High | DB-002 | ожидает |
+| SRC-001 | 3 EPO | P0 | Sol / High | DB-002 | выполнена |
 | SRC-002 | 3 OpenAlex | P0 | Sol / Medium | DB-002 | ожидает |
 | ING-001 | 3 Ingestion | P0 | Sol / High | SRC-001,SRC-002 | ожидает |
 | EVAL-000 | Мини-набор для разработки retrieval | P0 | Sol / Medium | ING-001 | ожидает |
@@ -194,6 +194,7 @@ flowchart LR
 
 ### SRC-001 — Адаптер EPO OPS
 
+- **Результат (2026-09-29):** реализованы независимый контракт патентного источника и EPO OPS adapter: OAuth с учётом срока token, XML-нормализация публикации и URL Espacenet, поиск/получение biblio/abstract, выборочная загрузка доступных claims/description, ограничение темпа, bounded retry и обработка 403/429/503. Состояния `not_configured`, `empty`, `unavailable` различаются. Синтетические XML-фикстуры и 8 тестов адаптера прошли; общий pytest, Ruff, mypy, Docker Compose config и сборка API-образа прошли. Реальный OPS не вызывался без учётных данных; ограничения квот между несколькими процессами должны учитываться при ING-001. Публикация сверяется по `task.md`.
 - **Цель/зачем:** независимый от бизнес-логики источник патентов с точным provenance.
 - **Depends / priority:** DB-002; P0. **Files:** src/app/integrations/epo.py, src/app/domain/source.py, tests/fixtures/epo/, tests/integration/test_epo.py. **References:** docs/REPO_MAP.md, optional [mcp-prior-art EPO adapter](https://github.com/chasewhughes/mcp-prior-art/blob/eae73ff170b058772ca74e97b13eade853420e83/src/mcp_prior_art/apis/epo.py) for structure/OAuth/httpx/retry/parsing ideas only, [официальный OPS](https://www.epo.org/en/searching-for-patents/data/web-services/ops), [fair use](https://www.epo.org/en/service-support/ordering/fair-use).
 - **Сделать:** OAuth credential handling, search/fetch, XML parsing, throttling headers, 429/retry/backoff, поля claims/description только где доступны, canonical patent IDs и source URLs. **Приёмка/тесты:** fixture XML нормализуется, missing field обозначен, quota/retry соблюдены, credentials не в логах. **Не делать:** не парсить Espacenet HTML, не распространять raw corpus.

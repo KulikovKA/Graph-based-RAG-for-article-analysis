@@ -13,7 +13,7 @@ adding or upgrading a dependency; preserve upstream notices when distributing bi
 | Psycopg | 3.3.6 | LGPL-3.0-only |
 | SQLAlchemy | 2.0.54 | MIT |
 | setuptools (build) | 75.8.0 | MIT |
-| httpx (dev) | 0.28.1 | BSD-3-Clause |
+| httpx | 0.28.1 | BSD-3-Clause |
 | mypy (dev) | 1.15.0 | MIT |
 | pytest (dev) | 8.3.5 | MIT |
 | Ruff (dev) | 0.11.5 | MIT |

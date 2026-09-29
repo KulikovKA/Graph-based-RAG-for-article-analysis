@@ -46,6 +46,8 @@ services:
       APP_LOG_LEVEL: ${APP_LOG_LEVEL:-INFO}
       DATABASE_URL: postgresql://${POSTGRES_USER:-article_app}:${POSTGRES_PASSWORD:-local-dev-only-change-me}@postgres:5432/${POSTGRES_DB:-article_analysis}
       REDIS_URL: redis://:${REDIS_PASSWORD:-local-dev-only-change-me}@redis:6379/0
+      EPO_CONSUMER_KEY: ${EPO_CONSUMER_KEY:-}
+      EPO_CONSUMER_SECRET: ${EPO_CONSUMER_SECRET:-}
       PYTHONDONTWRITEBYTECODE: "1"
     depends_on:
       api: { condition: service_started }

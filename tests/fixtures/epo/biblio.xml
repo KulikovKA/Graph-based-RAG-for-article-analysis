@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ops:world-patent-data xmlns:ops="http://ops.epo.org" xmlns="http://www.epo.org/exchange">
+  <exchange-documents><exchange-document country="EP" doc-number="1000000" kind="A1">
+    <bibliographic-data>
+      <publication-reference><document-id document-id-type="docdb">
+        <country>EP</country><doc-number>1000000</doc-number><kind>A1</kind><date>20000517</date>
+      </document-id></publication-reference>
+      <invention-title lang="en">Temperature sensor</invention-title>
+    </bibliographic-data>
+  </exchange-document></exchange-documents>
+</ops:world-patent-data>

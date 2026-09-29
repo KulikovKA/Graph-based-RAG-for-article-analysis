@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ops:world-patent-data xmlns:ops="http://ops.epo.org" xmlns="http://www.epo.org/exchange">
+  <ops:fulltext-inquiry><ops:inquiry-result>
+    <ops:fulltext-instance lang="EN" desc="claims" />
+  </ops:inquiry-result></ops:fulltext-inquiry>
+</ops:world-patent-data>
