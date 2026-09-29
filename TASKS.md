@@ -107,7 +107,7 @@ flowchart LR
 | ARCH-001 | 0 Доноры | P0 | Astra / High | — | выполнена |
 | ARCH-002 | 0 Архитектурный review | P0 | Astra / High | ARCH-001 | выполнена |
 | SKEL-001 | 1 Каркас | P0 | Sol / Medium | ARCH-002 | выполнена |
-| INFRA-001 | 2 Инфраструктура | P0 | Sol / Medium | SKEL-001 | ожидает публикации |
+| INFRA-001 | 2 Инфраструктура | P0 | Sol / Medium | SKEL-001 | выполнена |
 | DB-001 | 2 Данные | P0 | Sol / Medium | INFRA-001 | ожидает |
 | DB-002 | Репозитории, outbox и lease primitives | P0 | Sol / High | DB-001 | ожидает |
 | SRC-001 | 3 EPO | P0 | Sol / High | DB-002 | ожидает |
@@ -169,7 +169,7 @@ flowchart LR
 
 ### INFRA-001 — Compose и локальная сеть
 
-- **Результат (2026-09-29):** добавлен Compose bootstrap с API, worker, PostgreSQL, Redis, Neo4j, Qdrant, миграционным stub и профилями Caddy `dev`/`prod` плюс необязательным Ollama `cpu`. Базы закрыты internal network без host ports; только Caddy публикует loopback. Образы закреплены версиями, healthchecks/volumes/memory limits настроены. Проверены `docker compose config` и все профили, образы собраны; все семь сервисов поднялись healthy; Caddy `/health/live` → 200, `/health/ready` → 503 до DB-001/002; host port audit подтвердил только Caddy. Ожидает публикации.
+- **Результат (2026-09-29):** добавлен Compose bootstrap с API, worker, PostgreSQL, Redis, Neo4j, Qdrant, миграционным stub и профилями Caddy `dev`/`prod` плюс необязательным Ollama `cpu`. Базы закрыты internal network без host ports; только Caddy публикует loopback. Образы закреплены версиями, healthchecks/volumes/memory limits настроены. Проверены `docker compose config` и все профили, образы собраны; все семь сервисов поднялись healthy; Caddy `/health/live` → 200, `/health/ready` → 503 до DB-001/002; host port audit подтвердил только Caddy. Опубликовано в коммите `03e0d9b2f7de271d0a4c8cbd9ac1237c039a5971`, наличие в `origin/main` сверено.
 - **Цель/зачем:** воспроизводимый запуск баз, прокси и worker на одном ПК.
 - **Depends / priority:** SKEL-001; P0. **Files:** compose.yaml, docker/, Caddyfile, .env.example, docs/DEPLOYMENT.md. **References:** docs/DEPLOYMENT.md, docs/SECURITY.md.
 - **Сделать:** сервисы и private network, health checks, volumes, limits из DEPLOYMENT, dev/prod profiles, контейнер миграций. **Приёмка/тесты:** `docker compose config` и запуск health; с хоста опубликован только Caddy. **Не делать:** не публиковать DB/inference порты, не добавлять Kubernetes/Kafka.
