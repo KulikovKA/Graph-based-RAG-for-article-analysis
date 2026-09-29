@@ -112,7 +112,7 @@ flowchart LR
 | DB-002 | Репозитории, outbox и lease primitives | P0 | Sol / High | DB-001 | выполнена |
 | SRC-001 | 3 EPO | P0 | Sol / High | DB-002 | выполнена |
 | SRC-002 | 3 OpenAlex | P0 | Sol / Medium | DB-002 | выполнена |
-| ING-001 | 3 Ingestion | P0 | Sol / High | SRC-001,SRC-002 | ожидает |
+| ING-001 | 3 Ingestion | P0 | Sol / High | SRC-001,SRC-002 | выполнена |
 | EVAL-000 | Мини-набор для разработки retrieval | P0 | Sol / Medium | ING-001 | ожидает |
 | IDX-001 | 4 Qdrant | P0 | Sol / Medium | ING-001,LLM-002 | ожидает |
 | GRAPH-001 | 4 Neo4j | P0 | Sol / High | ING-001,IDX-001,LLM-002 | ожидает |
@@ -211,6 +211,7 @@ flowchart LR
 
 ### ING-001 — Нормализация и ingestion worker
 
+- **Результат (2026-09-29):** добавлены общая модель документа, EPO/OpenAlex mapping, SHA-256 payload/chunk hashes, section/language-aware chunks с offsets, идемпотентные revisions/jobs и outbox. Публикация создаёт новое поколение только после ACK обоих обязательных backend-ов по точным ожидаемым версиям. Проверено PostgreSQL интеграционными тестами и unit-тестами нормализации.
 - **Цель/зачем:** единый проверяемый документ и chunk для обоих источников.
 - **Depends / priority:** SRC-001,SRC-002; P0. **Files:** src/app/services/ingestion.py, src/app/workers/ingest.py, src/app/domain/documents.py, tests/integration/test_ingestion.py. **References:** docs/DATA_MODEL.md, docs/ARCHITECTURE.md, adapters.
 - **Сделать:** canonical IDs, language/section-aware chunking, content hashes, revision/outbox, повтор/частичный сбой, activation only after indexes confirmed. **Приёмка/тесты:** одинаковый payload не создаёт дубликаты, изменённый — новую ревизию, claims/abstract offsets и source links сохраняются, частичный сбой не публикует ревизию. **Не делать:** не отправлять полные документы в LLM.
