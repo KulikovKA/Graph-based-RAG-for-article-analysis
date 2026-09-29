@@ -18,7 +18,7 @@
 | Retrieval service | Параллельные кандидаты, дедупликация, rerank, evidence packing | Qdrant, PostgreSQL, Neo4j, LightRAG adapter |
 | LightRAG adapter | Контекстный поиск по разрешённым публичным документам | Отдельный namespace в Neo4j/Qdrant; только context API |
 | Domain graph | Типизированные связи документов и признаков | Neo4j с контролируемой онтологией |
-| Analyst | Сравнение и ответ с цитатами | Smart Qwen через InferenceProvider |
+| Analyst | Structured analysis признаков и evidence | Reasoning-capable Smart Analyst через InferenceProvider |
 | PostgreSQL | Истина для пользователей, идей, версий, запусков, источников | Транзакции, outbox, job state |
 | Redis | Горячий кеш и rate limiting | Восстанавливаемые значения, не источник истины |
 
@@ -37,9 +37,12 @@ flowchart LR
   R -- нет --> E[Saved evidence snapshot]
   H --> K[Dedup + rerank + evidence pack]
   K --> E
-  E --> L[Analyst: Qwen]
-  L --> V[Validate citations + persist run]
-  V --> C
+  E --> L[Reasoning Analyst: AnalysisV1]
+  L --> V[Validate / repair once / fallback]
+  V --> D[Deterministic AnswerV1 + public analysis]
+  D --> T[Validate projections + atomic terminal commit]
+  T --> SE[Durable SSE: summary + answer chunks]
+  SE --> C
 ```
 
 Planner предлагает patch, deterministic shell проверяет ссылки на существующие feature IDs, применяет его с optimistic concurrency и решает, можно ли переиспользовать evidence. Изменение смыслового признака, настроек retrieval или версии индекса для нового анализа запускает новый поиск. Объяснение уже найденного источника с явным source_run_id использует сохранённые evidence snapshot и idea_version исходного run даже после смены индекса; текущую идею conversation оно не изменяет. Каждый run сохраняет immutable входы, версии моделей и ссылки на фрагменты.
@@ -82,3 +85,15 @@ ING-001 проверяет барьер на fake index ports. IDX-001/GRAPH-001
 ## Наблюдаемость
 
 Структурированные логи: request/run ID, псевдонимный user ID, stage, latency, TTFT, token counts, cache hit, document IDs, retry/error code. Минимальные health и redaction появляются в SKEL/INFRA/API; OBS-001 добавляет метрики и retention. `/health/live` проверяет процесс; `/health/ready` — PostgreSQL, schema version, приём durable jobs и свежий worker heartbeat (503 при отказе). Qdrant/Neo4j/inference отражаются отдельно как capabilities; готовность очереди не обещает успешный анализ. INFRA проверяет bootstrap profile до реальных весов, LLM-002 — отдельный CPU gate. Полный пользовательский текст не логируется.
+
+## Reasoning и validated streaming — ADR-011
+
+Текущие локальные кандидаты: Planner `LFM2.5-8B-A1B`, Analyst `gpt-oss:20b`. Это baseline для LLM-002, не закреплённые runtime dependencies: revision, quantization, tokenizer, лицензия, поддержка JSON и размещение в RAM требуют измерения. Planner классифицирует intent, извлекает признаки и предлагает patch/retrieval; глубокое сравнение патентов выполняет только Analyst.
+
+Выбран вариант B: один reasoning pass выдаёт закрытый structured `AnalysisV1`; validator проверяет его, затем deterministic renderer строит существующий `AnswerV1` и публичную проекцию «Ход анализа». Обе проекции проверяются до общей terminal transaction. Второго LLM rendering pass нет. Raw thinking/analysis channel отбрасывается внутри adapter: ни API/SSE/UI, ни durable storage, ни логи/traces его не получают. Подробности DTO — [LLM_CONTRACTS](LLM_CONTRACTS.md), публичного формата — [API_CONTRACTS](API_CONTRACTS.md).
+
+До результата UI показывает фактические этапы, число применённых признаков, кандидатов после дедупликации и документов после rerank/packing. Во время долгого reasoning доступны текущий этап, прошедшее время, состояние соединения и отмена. Нет выдуманных процентов, промежуточных findings или сообщения «проверено» до проверки. Semantic summary появляется только после общей проверки/commit; требование безопасности имеет приоритет над примерным порядком UX. Затем SSE постепенно доставляет уже сохранённое отображение ответа. Это полезный streaming этапов и presentation, но он не сокращает само время reasoning. Desktop/mobile имеют одинаковую последовательность, сворачиваемый «Ход анализа» и возможность сразу показать полный committed ответ.
+
+Authoritative result — immutable completed run: AnswerV1 + outcome + evidence snapshot/coverage в PostgreSQL. AnalysisV1 хранит проверенный вход renderer, public analysis и presentation — его согласованные проекции той же версии. Повторное подключение не вызывает LLM и не перерендеривает исторический ответ новой версией шаблона. Compaction сохраняет public summary, presentation и последний progress в run. Qdrant/Neo4j generations, owner isolation и historical source_run_id не меняются.
+
+Метрики разделены: queue wait; planner/retrieval/rerank; analyst call и отдельно reasoning/final-output duration (если измеримы); validation, deterministic rendering, terminal commit; model TTFT; time to first visible progress, validated summary и first answer delta; total run latency. Последние три считаются от приёма run, серверное время доступности отделено от фактического отображения в браузере. Total run заканчивается terminal commit, delivery/render может продолжаться после него. Неподдержанные reasoning/output token counts и интервалы имеют null + причину, не 0 и не оценку по длине текста. Логи содержат только allowlist metadata; численные SLO фиксируются после LLM-002. Подробные критерии — [EVALUATION](EVALUATION.md).

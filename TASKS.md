@@ -2,6 +2,8 @@
 
 Статус документа: planning baseline от 2026-09-29. Здесь нет отметок «выполнено» для будущей реализации. После любой завершённой задачи обязателен отдельный commit и **успешный push** в `https://github.com/KulikovKA/Graph-based-RAG-for-article-analysis`; до проверки удалённого коммита статус остаётся «ожидает публикации». Это же правило изложено в [task.md](task.md).
 
+Изменение baseline 2026-09-29: [ADR-011](docs/DECISIONS.md#adr-011--reasoning-analyst-и-validated-streaming-2026-09-29-accepted-planning), [adversarial review](docs/REASONING_STREAMING_REVIEW.md). Выбран AnalysisV1 → deterministic AnswerV1/public summary → atomic commit → SSE. LFM2.5-8B-A1B / gpt-oss:20b — кандидаты LLM-002. Новых задач нет: расширены существующие cards; DAG прежний. Дополнения ADR-011 нормативны для будущей реализации; статусы implementation-задач не изменены. DB-001/002 остаются исторически завершёнными; следующая миграция projections и atomic publication входят в JOB-002.
+
 ## Шаблон задания агенту
 
 «Выполни только задачу ID ниже. Прочитай указанные в её Context документы и сначала просмотри только указанные Files/references; проверь предположения по реальному коду выбранных версий. Сохрани существующие контракты, не делай посторонних рефакторингов. Добавь/обнови смысловые тесты и запусти их. Отчитайся: изменённые файлы, решения, выполненные проверки, оставшиеся риски. Отметь acceptance criteria и статус лишь после их выполнения. Проверь staged файлы на секреты/данные, сделай отдельный commit и push; проверь commit на GitHub. Если push не прошёл, оставь статус «ожидает публикации».»
@@ -251,6 +253,8 @@ flowchart LR
 
 ### LLM-001 — InferenceProvider и CPU queue
 
+- **Дополнение ADR-011 / приёмка:** расширить complete_json schema/options/cancellation/result metadata по LLM_CONTRACTS; отделять и отбрасывать reasoning на adapter boundary. Fake providers с отдельным/смешанным channel, truncated JSON, unsupported effort, timeout и поздним ответом: ни raw reasoning, ни exception bodies в domain/SSE/logs. Все четыре метода сохраняются, stream_text внутренний. Отмена не освобождает generation slot до подтверждения остановки backend; hanging backend блокирует новые calls. Heartbeat работает независимо от tokens. Нужны timings hooks уже здесь, OBS-001 лишь агрегирует их.
+
 - **Цель/зачем:** отделить модель от бизнес-логики и ограничить RAM/конкуренцию.
 - **Depends / priority:** INFRA-001; P0. **Files:** src/app/domain/inference.py, src/app/integrations/inference_http.py, src/app/workers/inference.py, tests/contract/test_inference.py. **References:** docs/LLM_CONTRACTS.md, docs/DEPLOYMENT.md.
 - **Сделать:** InferenceProvider complete_json/stream_text/embed/rerank, timeout/cancel/usage/TTFT, DI и общий single-generation semaphore с bounded queue. **Приёмка/тесты:** fake provider contract tests, timeout/cancel освобождают слот, endpoint заменяется настройкой. Реальные веса/RSS — LLM-002. **Не делать:** не хардкодить модель в domain, не публиковать inference порт.
@@ -258,9 +262,11 @@ flowchart LR
 
 ### LLM-002 — Выбор локальных весов и CPU smoke
 
+- **Дополнение ADR-011 / приёмка:** первые кандидаты Planner LFM2.5-8B-A1B и Analyst gpt-oss:20b; pin фактические runtime IDs/hash/quantization только после gate. Проверить thinking + strict final JSON, bounded context/reasoning/output, channel isolation, cancellation, sequential loading и unload. Измерить cold/warm и оба направления model switch, peak RSS/container/host RAM/swap с полным Compose, model TTFT отдельно от validated-result latency, reasoning/output metadata availability. Нынешние 12 GiB inference не считаются достаточными заранее. Gate failure требует документированного выбора/повторного benchmark, без тихого изменения domain контрактов. Files дополнительно: compose.yaml, .env.example; утверждённые budgets/версии записать в deployment/model inventory. Это не полный EVAL.
+
 - **Цель/зачем:** зафиксировать модельные артефакты, RAM и реально поддержанные методы
 - **Depends / priority:** LLM-001; P0. **Files:** config/models.yaml, scripts/benchmark_inference.py, docs/DEPLOYMENT.md, model inventory. **References:** docs/LLM_CONTRACTS.md, docs/DEPLOYMENT.md.
-- **Сделать:** выбрать planner/Smart Qwen/embedding и baseline rerank, pin revision/hash/license/tokenizer; cold/warm CPU probe и общий лимит генераций. **Приёмка/тесты:** complete_json/embed/rerank работают на выбранных весах, dimensions стабильны, RSS/latency/TTFT записаны, cancel освобождает слот; downloads отделены от оценки времени. **Не делать:** не обещать latency до измерения и не выполнять полный EVAL.
+- **Сделать:** выбрать Planner/Smart Analyst/embedding и baseline rerank, pin revision/hash/license/tokenizer; cold/warm CPU probe и общий лимит генераций. **Приёмка/тесты:** complete_json/embed/rerank работают на выбранных весах, dimensions стабильны, RSS/latency/TTFT записаны, cancel освобождает слот после остановки backend; downloads отделены от оценки времени. **Не делать:** не обещать latency до измерения и не выполнять полный EVAL.
 - **Context:** LLM_CONTRACTS/DEPLOYMENT, provider LLM-001, только выбранные model cards. **Модель:** Sol/High. **Размер:** M, 1–2 ч, review 30 мин. **Риск:** CPU/RAM и лицензии весов.
 
 ### PLAN-001 — Intent planner и versioned patch
@@ -295,7 +301,9 @@ flowchart LR
 - **Context:** LLM_CONTRACTS/EVALUATION, названные upstream files и rerank modules. **Модель:** Sol/Medium. **Размер:** M, 1–2 ч, review 30 мин. **Риск:** слабое качество CPU reranker.
 - **Уточнение ARCH-002:** Мини-разметка уже существует в EVAL-000. Budget всего prompt измерять tokenizer выбранного Analyst; snapshot/IDs фиксировать только после selection, сохранять Unicode offsets.
 
-### ANALYST-001 — Доказательный анализ Smart Qwen
+### ANALYST-001 — Доказательный анализ reasoning-capable Analyst
+
+- **Дополнение ADR-011 / приёмка:** Files дополнительно src/app/domain/contracts.py и deterministic renderer. Реализовать минимальный AnalysisV1, его validator, AnswerV1/PublicAnalysisV1/AnswerPresentationV1 и проверку согласованности проекций. Один repair всего, без второго LLM rendering pass. Тестировать relation/document/feature mismatch, gaps только в selected pack, uncertain/conflicting, точные Unicode quotes и injection в extra fields. Summary claims/limitations — только элементы AnswerV1; renderer не добавляет facts. Невалидный/неполный JSON или timeout не даёт findings; fallback игнорирует rejected relations, проходит прежний validator. Отдельный тест: внешне корректная цитата не доказывает semantic faithfulness. Сохранение/публикация остаётся JOB-002.
 
 - **Цель/зачем:** получить сравнение признаков и вывод в пределах evidence pack.
 - **Depends / priority:** RANK-001,LLM-002; P0. **Files:** src/app/services/analyst.py, prompts/analyst_v1.txt, tests/unit/test_analyst.py. **References:** docs/LLM_CONTRACTS.md, docs/API_CONTRACTS.md, docs/EVALUATION.md; ключевые PriorArtRAG pinned references [grounding.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/grounding.py) и [generator.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/adapters/llm/generator.py).
@@ -305,12 +313,16 @@ flowchart LR
 
 ### JOB-001 — Оркестрация analysis jobs
 
+- **Дополнение ADR-011 / приёмка:** определить typed stage/progress callbacks для JOB-002 без зависимости на SSE transport; counts происходят из Planner CAS/retrieval dedup/final packing. Sequential Planner→retrieval→Analyst lifecycle, deadline включает загрузку/repair, lease heartbeat не блокируется reasoning. Тестировать cancel при load/reasoning/final-output/repair, provider timeout после thinking до JSON, late response и crash перед результатом. Ни частичный JSON, ни reasoning не становятся fallback. Общий generation slot не переиспользуется до остановки backend. Контракт результата — проверенный bundle Analyst, terminal state не ждёт delivery клиенту.
+
 - **Цель/зачем:** выдержать долгую CPU генерацию, отмену и повторное подключение клиента.
 - **Depends / priority:** PLAN-001,STATE-001,ANALYST-001; P0. **Files:** src/app/services/analysis_run.py, src/app/workers/analysis.py, src/app/storage/jobs.py, tests/integration/test_jobs.py. **References:** docs/ARCHITECTURE.md, docs/API_CONTRACTS.md, docs/DATA_MODEL.md.
 - **Сделать:** оркестрацию pending/running/completed/failed/cancelled по DATA_MODEL, bounded retry и lease fencing, однократный planner CAS, idempotency и cancel checks. **Приёмка/тесты:** crash/restart сохраняет входы и не повторяет patch; stale worker не публикует результат; повтор key не создаёт второй run; verified fallback даёт completed/safe_fallback, invalid fallback — failed. Events publication/replay — JOB-002. **Не делать:** не полагаться на Redis как durable queue.
 - **Context:** ARCHITECTURE/API_CONTRACTS/DATA_MODEL и job modules. **Модель:** Sol/High. **Размер:** M, 1–2 ч, review 35 мин. **Риск:** двойная генерация после lease expiry.
 
 ### JOB-002 — Проверенная публикация результата и SSE replay
+
+- **Дополнение ADR-011 / приёмка:** Files дополнительно src/app/storage/{models,repositories,jobs}.py, migrations/versions/ и migration tests. Следующей миграцией добавить analysis_json/public_analysis_json/answer_presentation_json/progress_json и legacy marker по DATA_MODEL; не менять 0001/0002. Проверить upgrade/downgrade и старые runs без AnalysisV1. Atomic progress/state/event writes; terminal transaction содержит все result projections и verification(completed)/analysis_summary/answer_started/deltas/completed. Sequence allocator, terminal uniqueness, cancel/lease fencing обязательны для каждого события. Проверить crash до/после commit, uncertain commit outcome, slow reader, duplicate delivery, reconnect на каждом chunk и compaction/reset; реконструированный text/hash совпадает с persisted presentation, renderer/LLM при replay не вызывается. Bounded chunk/event sizes и retention не удаляют run projections.
 
 - **Цель/зачем:** исключить утечку draft и потерю terminal event после reconnect
 - **Depends / priority:** JOB-001; P0. **Files:** src/app/services/run_events.py, src/app/services/analysis_run.py, tests/integration/test_run_events.py. **References:** docs/API_CONTRACTS.md, docs/DATA_MODEL.md.
@@ -325,6 +337,8 @@ flowchart LR
 - **Context:** SECURITY/API_CONTRACTS/DEPLOYMENT и auth/routes. **Модель:** Sol/High. **Размер:** M, 1–2 ч, review 40 мин. **Риск:** cross-user leak.
 
 ### API-001 — FastAPI v1 и поток ответов
+
+- **Дополнение ADR-011 / приёмка:** RunV1 с progress/public_analysis/answer_presentation, typed event payloads по API_CONTRACTS; tests запрещают AnalysisV1/raw reasoning в API. Проверить Last-Event-ID, missing/stale/future cursor, terminal cursor, reset replace, session revoke/ownership на replay. GET результата возможен до окончания доставки deltas; cancel тогда возвращает completed. Реальный Caddy flush без buffering, heartbeat, bounded backpressure/disconnect без отмены run; Files включают Caddyfile/docker proxy config только при необходимости. OpenAPI и SSE fixture contract согласованы с DTO; GraphV1 по-прежнему P1.
 
 - **Цель/зачем:** реализовать стабильный frontend/backend контракт.
 - **Depends / priority:** JOB-002,AUTH-001; P0. **Files:** src/app/api/routes/{conversations,runs,sources,health}.py, src/app/api/schemas.py, tests/contract/test_api.py. **References:** docs/API_CONTRACTS.md, docs/SECURITY.md.
@@ -341,6 +355,8 @@ flowchart LR
 
 ### UI-001 — Адаптивный чат и источники
 
+- **Дополнение ADR-011 / приёмка:** desktop/mobile показывают фактические стадии/счётчики, elapsed и cancel во время reasoning; без фиктивных процентов и spinner-only экрана. Проверенный сворачиваемый «Ход анализа» и status проверки появляются после commit, затем gradual answer. Test viewports 375 и 1280 px, reduced-motion/show-all, partial/no-evidence/fallback, historical follow-up. Dedupe run+seq, chunk_index/hash, reset заменяет частичный текст/summary, completed заменяет ответ authoritative DTO; повторная доставка не дублирует claims. Cancel во время presentation не удаляет completed результат. Не показывать raw reasoning или непроверенный factual draft. Browser hooks измеряют first progress/summary/delta display отдельно от серверных timings.
+
 - **Цель/зачем:** дать работающий desktop/mobile интерфейс для идеи, ответа и первоисточников.
 - **Depends / priority:** API-001; P0. **Files:** frontend/src/{api,features/chat,features/sources,components}, frontend/tests/. **References:** docs/API_CONTRACTS.md, docs/ARCHITECTURE.md.
 - **Сделать:** login, conversations, chat, idea version indicator, SSE statuses/answer, citation source cards, partial coverage notice, responsive layout. **Приёмка/тесты:** сценарий с новым запросом и follow-up на мобильной ширине; клики по evidence ведут к карточке и внешнему source URL; reconnect работает. **Не делать:** не рендерить raw HTML модели, не делать тяжёлый SSR runtime.
@@ -356,12 +372,16 @@ flowchart LR
 
 ### EVAL-001 — Offline harness и regression report
 
+- **Дополнение ADR-011 / приёмка:** включить критерии PublicAnalysis faithfulness/unsupported relations/согласованности с AnswerV1, no-reasoning-leakage и replay из EVALUATION. Не сохранять raw thinking/drafts в eval artifacts. Safety fixtures обязательны раньше в соответствующих P0 cards, EVAL не блокирует их разработку.
+
 - **Цель/зачем:** измерять регрессии качества и цитат между версиями.
 - **Depends / priority:** API-001,EVAL-000; P1. **Files:** eval/cases/, eval/run.py, eval/judge.py, eval/report.py, tests/eval/. **References:** docs/EVALUATION.md, docs/LLM_CONTRACTS.md, PriorArtRAG pinned [EVALUATION.md](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/EVALUATION.md) for retrieval/grounding regression and failure-case ideas.
 - **Сделать:** harness по 10-case dev fixture EVAL-000: frozen corpus/index, versioned run artifacts, structured judge, citation/grounding regressions, baseline diff, HTML/Markdown report. **Приёмка/тесты:** fixture run сохраняет input metadata и выявляет намеренно плохие citation/quote/fallback; disabled judge не входит в production. Полный 100-case baseline — EVAL-002. **Не делать:** не сравнивать разные RAG architectures и не включать judge в production path.
 - **Context:** EVALUATION/LLM_CONTRACTS и eval modules. **Модель:** Sol/High. **Размер:** M, 1–2 ч, review 35 мин. **Риск:** bias judge/разметки.
 
 ### EVAL-002 — 100 случаев и baseline evaluation
+
+- **Дополнение ADR-011 / приёмка:** отчёт отдельно оценивает semantic поддержку relations/public summary, cite validity, gaps/uncertainty и measured latency/RAM/model switch; unsupported публичные claims — defects. Не считать пустые findings искусственным 100% grounding; model TTFT и пользовательские milestones различаются.
 
 - **Цель/зачем:** получить измеренный baseline на подготовленной разметке
 - **Depends / priority:** EVAL-001; P1. **Files:** eval/cases/, eval/artifacts/, docs/EVALUATION.md. **References:** docs/EVALUATION.md, harness EVAL-001.
@@ -370,6 +390,8 @@ flowchart LR
 
 ### OBS-001 — Логи, метрики, health
 
+- **Дополнение ADR-011 / приёмка:** агрегировать ранние timings hooks LLM/JOB/API/UI: planner/retrieval/rerank/analyst reasoning/final-output/validation/render/commit/total, queue wait, model TTFT и user first progress/summary/delta. Unknown usage/timings = null/reason, не 0; отдельно server availability и browser display. Fake thinking sentinel отсутствует в success/error/timeout/cancel traces и логах; metadata allowlist без provider bodies. Измерить RSS/switch metrics с привязкой к model/config, без high-cardinality model content.
+
 - **Цель/зачем:** диагностировать latency и сбои без утечки идей/секретов.
 - **Depends / priority:** API-001; P1. **Files:** src/app/observability/, src/app/api/routes/health.py, tests/unit/test_logging.py. **References:** docs/ARCHITECTURE.md, docs/SECURITY.md.
 - **Сделать:** structured request/run stage logs, TTFT/token/cache metrics, liveness/readiness, redaction и retention. **Приёмка/тесты:** simulated error сохраняет IDs и stage code, но не prompt/cookie/key; readiness различает critical/degraded. **Не делать:** не добавлять большой monitoring stack без измеренной необходимости.
@@ -377,6 +399,8 @@ flowchart LR
 - **Уточнение ARCH-002:** Не переопределять ранние health contracts. Отдельно измерять model TTFT и время до проверенного ответа; model token streams не сохранять в событиях.
 
 ### TEST-001 — Сквозная проверка и adversarial review
+
+- **Дополнение ADR-011 / приёмка:** матрица reasoning timeout/truncation/repair/fallback, cancel и stale worker, crash до/после terminal commit, chunk duplicates/compaction/reconnect/slow client, отозванная сессия и чужой run. Ноль raw reasoning sentinel в DB/API/SSE/UI/logs/traces; summary/AnswerV1/presentation согласованы; desktop/mobile реально показывают progress и committed chunks через Caddy. Проверить model loading/RAM gates и сохранение historical source_run_id/generation/evidence invariants. Наличие citations не заменяет semantic review.
 
 - **Цель/зачем:** проверить согласованность системы на реальном Compose и враждебных входах.
 - **Depends / priority:** GRAPHUI-001,EVAL-002,OBS-001,AUTH-002; P1. **Files:** tests/e2e/, tests/security/, docs/DECISIONS.md, TASKS.md. **References:** все docs по конкретным найденным дефектам, отчёт eval.

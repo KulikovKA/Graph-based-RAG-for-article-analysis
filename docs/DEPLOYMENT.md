@@ -11,7 +11,7 @@
 | redis | 6379 | нет | 512 / 128 MiB; maxmemory 256 MiB |
 | neo4j | 7687/7474 | нет | 4 GiB / 2 GiB; heap 1 GiB, page cache 1 GiB |
 | qdrant | 6333 | нет | 3 GiB / 1 GiB |
-| inference | provider-specific | нет | 12 GiB / 6 GiB, один concurrent generation |
+| inference | provider-specific | нет | 12 GiB / 6 GiB — прежняя bootstrap гипотеза, требует повторного LLM-002 gate для новых кандидатов; один concurrent generation |
 
 Сумма limits ~25 ГБ, оставляет память ОС/Docker. Значения — стартовые гипотезы: после benchmark на реальной модели проверить RSS, swap, холодный запуск, одновременный ingestion/search и пиковый индекс. CPU inference может быть медленным; не обещать latency до замеров. У inference volume с весами вне Git. Базы имеют отдельные volumes и health checks. Запуск `docker compose --profile cpu up -d`; сервисы должны восстанавливаться после restart. Для разработки разрешён ручной доступ к БД лишь через `docker compose exec`, без публичного port mapping.
 
@@ -22,6 +22,18 @@
 Проверки M1: `docker compose config`, health баз и bootstrap api/worker, отсутствие опубликованных портов Postgres/Redis/Neo4j/Qdrant/inference. До LLM-002 inference запускается опциональным profile: отсутствие весов не ломает bootstrap health. DB-001 применяет Alembic schema upgrade; DB-002 добавляет транзакционные репозитории и реальный queue heartbeat. Полный CPU profile с весами получает собственный gate LLM-002. Минимальные health/redaction не откладываются до OBS-001.
 
 До AUTH-001 Caddy слушает только loopback; после auth/isolation gate допускается доверенный LAN. Перед внешним demo: TLS, login, CSRF/CORS, rate limits и восстановление backup. Один worker обслуживает analysis и ingestion очереди; отдельный общий semaphore ограничивает **все** генеративные роли (planner, extractor, analyst), а embedding/rerank имеют собственные RAM/batch лимиты. Ingestion не запускает вторую тяжёлую генерацию в обход очереди. Budget 6k input не гарантирует размещение двух моделей; загрузку/выгрузку и RSS измерить в LLM-002.
+
+## План CPU lifecycle по ADR-011 (реализуют LLM-001/002)
+
+Предпочтительные кандидаты: Planner `LFM2.5-8B-A1B`, reasoning Analyst `gpt-oss:20b`. Точные runtime model IDs, quantization и revisions закрепляются только после benchmark. Нынешний inference limit 12 GiB не считается достаточным для Analyst; при OOM/свопе gate не пройден. Пересмотр лимита допускается лишь с измеренным общим пиком ОС/WSL/Docker, PostgreSQL/Neo4j/Qdrant, embedding/rerank и генерации на 32 GB RAM. MoE active parameters не равны объёму всех весов в памяти.
+
+Один worker и общий semaphore удерживаются на время generation и остановки backend request. Lifecycle: загрузить Planner → получить/проверить JSON, при необходимости repair → выгрузить Planner → retrieval/embedding/rerank → загрузить Analyst → structured analysis/единственный repair → выгрузить Analyst → deterministic validation/render/commit. Между двумя Analyst calls того же bounded repair допускается оставить модель загруженной. Ingestion/extractor подчиняется тому же semaphore; release lease или HTTP disconnect не доказывает остановку вычисления. После cancel/timeout подтверждать остановку либо блокировать новые генерации до recovery; нельзя запускать вторую модель поверх зависшей первой.
+
+Для Ollama deployment-кандидат: `OLLAMA_MAX_LOADED_MODELS=1`, `OLLAMA_NUM_PARALLEL=1`; `keep_alive=0` при завершении роли/переключении. Это adapter/deployment policy, не поля domain/API. Документация описывает лимит одновременно загруженных моделей и выгрузку через keep_alive; соответствие pinned image проверяется в LLM-002. Если embedding/rerank используют тот же runtime, они тоже участвуют в загрузке/вытеснении. Источник: [Ollama FAQ](https://docs.ollama.com/faq), проверено 2026-09-29.
+
+Benchmark отдельно измеряет cold start, warm same-model call, Planner→Analyst и Analyst→Planner switch, load/unload time, process RSS и peak container/host RAM, swap, model TTFT и время до validated result. Нужен реальный полный workload с базами, а не только CLI одной модели. Warm keep-alive после run — только ограниченная настройка по результатам gate; одновременно держать обе генеративные модели не требуется. Веса и raw provider dumps в Git не входят. Совместимость thinking + structured output проверяется для конкретной пары runtime/model: [thinking](https://docs.ollama.com/capabilities/thinking), [structured outputs](https://docs.ollama.com/capabilities/structured-outputs). Это источники для adapter tests, не обещание возможностей установленного образа.
+
+SSE использует существующий Caddy/API. API-001 проверяет flush и отсутствие buffering на реальном proxy, heartbeat и reconnect при долгом inference; write timeout/backpressure ограничены, disconnect клиента не удерживает worker. Публикация уже committed ответа не держит generation semaphore. Никаких WebSocket/Kafka или новых сервисов.
 
 ## Compose bootstrap (INFRA-001)
 

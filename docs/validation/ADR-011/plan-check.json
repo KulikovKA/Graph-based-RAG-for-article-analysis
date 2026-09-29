@@ -1,0 +1,73 @@
+{
+  "task": "ADR-011",
+  "status": "passed",
+  "tasks": 32,
+  "hard_dependencies": 51,
+  "roots": [
+    "ARCH-001"
+  ],
+  "topological_order": [
+    "ARCH-001",
+    "ARCH-002",
+    "SKEL-001",
+    "INFRA-001",
+    "DB-001",
+    "DB-002",
+    "SRC-001",
+    "SRC-002",
+    "ING-001",
+    "EVAL-000",
+    "LLM-001",
+    "LLM-002",
+    "IDX-001",
+    "GRAPH-001",
+    "LR-001",
+    "PLAN-001",
+    "STATE-001",
+    "RET-001",
+    "RANK-001",
+    "ANALYST-001",
+    "JOB-001",
+    "JOB-002",
+    "AUTH-001",
+    "API-001",
+    "AUTH-002",
+    "UI-001",
+    "GRAPHUI-001",
+    "EVAL-001",
+    "EVAL-002",
+    "OBS-001",
+    "TEST-001",
+    "REL-001"
+  ],
+  "p0_tasks": 24,
+  "p0_has_no_p1_prerequisites": true,
+  "mermaid_matches_cards_and_table": true,
+  "local_links_checked": 69,
+  "donor_files": 35,
+  "online_sources_verified": false,
+  "donors": [],
+  "estimates_all": {
+    "agent_hours_min": 43.5,
+    "agent_hours_max": 83.0,
+    "review_minutes": 1180
+  },
+  "estimates_remaining": {
+    "agent_hours_min": 40.5,
+    "agent_hours_max": 77.0,
+    "review_minutes": 1105
+  },
+  "implementation_tasks_max_2h": 20,
+  "implementation_tasks": 30,
+  "model_task_counts": {
+    "Astra/High": 3,
+    "Sol/Medium": 13,
+    "Sol/High": 15,
+    "Luna/Medium": 1
+  },
+  "limits": "Planning DAG, links and diff checks only; no runtime, CPU benchmark or evaluation. Estimates from historical checker exclude only ARCH-001/002 and are not current remaining-work estimates.",
+  "checker": "docs/validation/ARCH-002/check_plan.py (reused offline)",
+  "adr_001_through_010_unchanged": true,
+  "tracked_changes_docs_only": true,
+  "review": "docs/REASONING_STREAMING_REVIEW.md"
+}
