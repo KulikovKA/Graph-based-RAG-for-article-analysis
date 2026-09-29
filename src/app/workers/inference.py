@@ -27,6 +27,9 @@ class GenerationGate:
     def blocked(self) -> bool:
         return self._poisoned
 
+    def quarantine(self) -> None:
+        self._poisoned = True
+
     def recover(self) -> None:
         """Вызывать после внешней проверки остановки backend-запроса."""
         if self._slot.locked():
@@ -70,7 +73,7 @@ class GenerationGate:
                 except TimeoutError:
                     self._poisoned = True
                 except Exception:
-                    pass
+                    self._poisoned = True
             raise
         finally:
             if heartbeat_task is not None:

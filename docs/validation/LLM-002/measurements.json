@@ -1,0 +1,374 @@
+{
+  "inventory": {
+    "ollama_version": "ollama version is 0.34.4",
+    "models": {
+      "lfm2.5:8b-a1b-q4_K_M": {
+        "digest": "9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2",
+        "bytes": 5156075525,
+        "quantization": "Q4_K_M",
+        "architecture": "lfm2moe"
+      },
+      "gpt-oss:20b": {
+        "digest": "17052f91a42e97930aa6e28a6c6c06a983e6a58dbb00434885a0cf5313e376f7",
+        "bytes": 13793441244,
+        "quantization": "MXFP4",
+        "architecture": "gptoss"
+      },
+      "qwen3-embedding:0.6b": {
+        "digest": "ac6da0dfba84a81fdbfbaf330198c33cd77c4cdfc53e8bc50eb581914a15621d",
+        "bytes": 639150858,
+        "quantization": "Q8_0",
+        "architecture": "qwen3"
+      }
+    }
+  },
+  "embedding": {
+    "dimension": 1024,
+    "batch_size": 3,
+    "stable_shape": true,
+    "repeat_max_abs_delta": 0.0,
+    "ru_query_en_technical_cosine": 0.6950582691858223,
+    "ru_query_unrelated_cosine": 0.28129232574894564,
+    "invalid_inputs_rejected": 3,
+    "pre_cancel_rejected": true,
+    "short_deadline_timed_out": true,
+    "cold": {
+      "elapsed_ms": 3703.3,
+      "ollama_rss_bytes": 1299578880,
+      "reranker_rss_bytes": 0,
+      "host_used_bytes": 16570871808,
+      "swap_used_bytes": 4661280768
+    },
+    "warm": {
+      "elapsed_ms": 1988.0,
+      "ollama_rss_bytes": 1299734528,
+      "reranker_rss_bytes": 0,
+      "host_used_bytes": 16582336512,
+      "swap_used_bytes": 4661280768
+    },
+    "warm_texts_per_second": 1.51
+  },
+  "reranker": {
+    "calls": [
+      {
+        "phase": "cold",
+        "scores": [
+          0.9937100410461426,
+          5.34913269802928e-05,
+          2.4300239601871e-05
+        ],
+        "relevant_first": true,
+        "elapsed_ms": 10072.1,
+        "ollama_rss_bytes": 100032512,
+        "reranker_rss_bytes": 1782648832,
+        "host_used_bytes": 17854570496,
+        "swap_used_bytes": 4659130368
+      },
+      {
+        "phase": "warm",
+        "scores": [
+          0.9937100410461426,
+          5.34913269802928e-05,
+          2.4300239601871e-05
+        ],
+        "relevant_first": true,
+        "elapsed_ms": 1150.2,
+        "ollama_rss_bytes": 100032512,
+        "reranker_rss_bytes": 1783250944,
+        "host_used_bytes": 17849552896,
+        "swap_used_bytes": 4659130368
+      }
+    ],
+    "pre_cancel_rejected": true,
+    "short_deadline_timed_out": true
+  },
+  "mini": {
+    "corpus_documents": 8,
+    "evaluated_cases": 9,
+    "recall_at_10": 1.0,
+    "recall_at_20": 1.0,
+    "mrr": 1.0,
+    "top_3_hit_rate": 1.0,
+    "cases": [
+      {
+        "case_id": "EVAL000-DEV-001",
+        "recall_at_10": 1.0,
+        "recall_at_20": 1.0,
+        "reciprocal_rank": 1.0,
+        "top_3_hit": true
+      },
+      {
+        "case_id": "EVAL000-DEV-002",
+        "recall_at_10": 1.0,
+        "recall_at_20": 1.0,
+        "reciprocal_rank": 1.0,
+        "top_3_hit": true
+      },
+      {
+        "case_id": "EVAL000-DEV-003",
+        "recall_at_10": 1.0,
+        "recall_at_20": 1.0,
+        "reciprocal_rank": 1.0,
+        "top_3_hit": true
+      },
+      {
+        "case_id": "EVAL000-DEV-004",
+        "recall_at_10": 1.0,
+        "recall_at_20": 1.0,
+        "reciprocal_rank": 1.0,
+        "top_3_hit": true
+      },
+      {
+        "case_id": "EVAL000-DEV-005",
+        "recall_at_10": 1.0,
+        "recall_at_20": 1.0,
+        "reciprocal_rank": 1.0,
+        "top_3_hit": true
+      },
+      {
+        "case_id": "EVAL000-DEV-006",
+        "recall_at_10": 1.0,
+        "recall_at_20": 1.0,
+        "reciprocal_rank": 1.0,
+        "top_3_hit": true
+      },
+      {
+        "case_id": "EVAL000-DEV-007",
+        "recall_at_10": 1.0,
+        "recall_at_20": 1.0,
+        "reciprocal_rank": 1.0,
+        "top_3_hit": true
+      },
+      {
+        "case_id": "EVAL000-DEV-008",
+        "recall_at_10": 1.0,
+        "recall_at_20": 1.0,
+        "reciprocal_rank": 1.0,
+        "top_3_hit": true
+      },
+      {
+        "case_id": "EVAL000-DEV-010",
+        "recall_at_10": 1.0,
+        "recall_at_20": 1.0,
+        "reciprocal_rank": 1.0,
+        "top_3_hit": true
+      }
+    ],
+    "rerank_check": {
+      "case_id": "EVAL000-DEV-008",
+      "candidate_source_ids": [
+        "W999999999004",
+        "ZZ9000004A1",
+        "W999999999003",
+        "W999999999002"
+      ],
+      "reranked_source_ids": [
+        "W999999999004",
+        "ZZ9000004A1",
+        "W999999999002",
+        "W999999999003"
+      ],
+      "top_1_hit_before": true,
+      "top_1_hit_after": true
+    }
+  },
+  "planner": {
+    "calls": [
+      {
+        "phase": "cold",
+        "schema_valid": true,
+        "metadata": {
+          "provider": "ollama",
+          "model_id": "lfm2.5:8b-a1b-q4_K_M",
+          "model_revision": "9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2",
+          "finish_reason": "stop",
+          "model_ttft_ms": 9171.999999991385,
+          "model_ttft_reason": null,
+          "reasoning_duration_ms": null,
+          "reasoning_duration_reason": "not_reported_separately",
+          "reasoning_tokens": null,
+          "reasoning_tokens_reason": "not_reported_separately",
+          "output_duration_ms": 0.0,
+          "output_duration_reason": null,
+          "output_tokens": 19,
+          "output_tokens_reason": null,
+          "total_ms": 9171.999999991385,
+          "load_ms": 7851.0602,
+          "load_reason": null
+        },
+        "elapsed_ms": 10490.4,
+        "ollama_rss_bytes": 5391155200,
+        "reranker_rss_bytes": 0,
+        "host_used_bytes": 19502800896,
+        "swap_used_bytes": 4651307008
+      },
+      {
+        "phase": "warm",
+        "schema_valid": true,
+        "metadata": {
+          "provider": "ollama",
+          "model_id": "lfm2.5:8b-a1b-q4_K_M",
+          "model_revision": "9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2",
+          "finish_reason": "stop",
+          "model_ttft_ms": 92.99999999348074,
+          "model_ttft_reason": null,
+          "reasoning_duration_ms": null,
+          "reasoning_duration_reason": "not_reported_separately",
+          "reasoning_tokens": null,
+          "reasoning_tokens_reason": "not_reported_separately",
+          "output_duration_ms": 1375.0,
+          "output_duration_reason": null,
+          "output_tokens": 19,
+          "output_tokens_reason": null,
+          "total_ms": 1467.9999999934807,
+          "load_ms": 3.4682,
+          "load_reason": null
+        },
+        "elapsed_ms": 2496.7,
+        "ollama_rss_bytes": 5391241216,
+        "reranker_rss_bytes": 0,
+        "host_used_bytes": 19501137920,
+        "swap_used_bytes": 4651307008
+      }
+    ],
+    "truncated_rejected": true,
+    "single_repair_schema_valid": true
+  },
+  "analyst": {
+    "calls": [
+      {
+        "phase": "cold",
+        "schema_shape_valid": true,
+        "relation_count": 1,
+        "citation_offsets_valid": true,
+        "raw_reasoning_in_result": false,
+        "first_attempt_error_code": null,
+        "repair_attempted": false,
+        "repair_valid": null,
+        "metadata": {
+          "provider": "ollama",
+          "model_id": "gpt-oss:20b",
+          "model_revision": "17052f91a42e97930aa6e28a6c6c06a983e6a58dbb00434885a0cf5313e376f7",
+          "finish_reason": "stop",
+          "model_ttft_ms": 23703.000000008615,
+          "model_ttft_reason": null,
+          "reasoning_duration_ms": null,
+          "reasoning_duration_reason": "not_reported_separately",
+          "reasoning_tokens": null,
+          "reasoning_tokens_reason": "not_reported_separately",
+          "output_duration_ms": 19812.000000005355,
+          "output_duration_reason": null,
+          "output_tokens": null,
+          "output_tokens_reason": "provider_count_includes_reasoning_or_missing",
+          "total_ms": 44842.99999999348,
+          "load_ms": 18462.4217,
+          "load_reason": null
+        },
+        "first_attempt": {
+          "elapsed_ms": 46246.2,
+          "ollama_rss_bytes": 14162214912,
+          "reranker_rss_bytes": 0,
+          "host_used_bytes": 28234543104,
+          "swap_used_bytes": 4651626496,
+          "compose_total_bytes": 1927960065
+        },
+        "repair": null,
+        "validated_result_latency_ms": null,
+        "validated_result_latency_reason": "JOB-002_not_implemented"
+      },
+      {
+        "phase": "warm",
+        "schema_shape_valid": true,
+        "relation_count": 1,
+        "citation_offsets_valid": true,
+        "raw_reasoning_in_result": false,
+        "first_attempt_error_code": null,
+        "repair_attempted": false,
+        "repair_valid": null,
+        "metadata": {
+          "provider": "ollama",
+          "model_id": "gpt-oss:20b",
+          "model_revision": "17052f91a42e97930aa6e28a6c6c06a983e6a58dbb00434885a0cf5313e376f7",
+          "finish_reason": "stop",
+          "model_ttft_ms": 453.00000000861473,
+          "model_ttft_reason": null,
+          "reasoning_duration_ms": null,
+          "reasoning_duration_reason": "not_reported_separately",
+          "reasoning_tokens": null,
+          "reasoning_tokens_reason": "not_reported_separately",
+          "output_duration_ms": 19016.00000000326,
+          "output_duration_reason": null,
+          "output_tokens": null,
+          "output_tokens_reason": "provider_count_includes_reasoning_or_missing",
+          "total_ms": 25297.00000002049,
+          "load_ms": 13.3717,
+          "load_reason": null
+        },
+        "first_attempt": {
+          "elapsed_ms": 26221.0,
+          "ollama_rss_bytes": 14175866880,
+          "reranker_rss_bytes": 0,
+          "host_used_bytes": 28310118400,
+          "swap_used_bytes": 4656300032,
+          "compose_total_bytes": 2035382481
+        },
+        "repair": null,
+        "validated_result_latency_ms": null,
+        "validated_result_latency_reason": "JOB-002_not_implemented"
+      }
+    ]
+  },
+  "cancel": {
+    "outcome": "InferenceCancelled",
+    "gate_blocked": false,
+    "model_unloaded": true,
+    "elapsed_ms": 2541.6,
+    "ollama_rss_bytes": 14106914816,
+    "reranker_rss_bytes": 0,
+    "host_used_bytes": 29204905984,
+    "swap_used_bytes": 4657950720
+  },
+  "switch": {
+    "calls": [
+      {
+        "role": "planner_first",
+        "valid": true,
+        "loaded_generators": [
+          "lfm2.5:8b-a1b-q4_K_M"
+        ],
+        "ttft_ms": 8500.0,
+        "elapsed_ms": 9755.4,
+        "ollama_rss_bytes": 5386907648,
+        "reranker_rss_bytes": 0,
+        "host_used_bytes": 20596768768,
+        "swap_used_bytes": 4657946624
+      },
+      {
+        "role": "analyst",
+        "valid": true,
+        "loaded_generators": [
+          "gpt-oss:20b"
+        ],
+        "ttft_ms": 22156.00000001723,
+        "elapsed_ms": 23164.6,
+        "ollama_rss_bytes": 14133465088,
+        "reranker_rss_bytes": 0,
+        "host_used_bytes": 29123989504,
+        "swap_used_bytes": 4661714944
+      },
+      {
+        "role": "planner_after_analyst",
+        "valid": true,
+        "loaded_generators": [
+          "lfm2.5:8b-a1b-q4_K_M"
+        ],
+        "ttft_ms": 8780.999999988126,
+        "elapsed_ms": 9891.8,
+        "ollama_rss_bytes": 5385744384,
+        "reranker_rss_bytes": 0,
+        "host_used_bytes": 20555808768,
+        "swap_used_bytes": 4661563392
+      }
+    ]
+  }
+}

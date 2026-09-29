@@ -49,6 +49,7 @@ services:
       EPO_CONSUMER_KEY: ${EPO_CONSUMER_KEY:-}
       EPO_CONSUMER_SECRET: ${EPO_CONSUMER_SECRET:-}
       OPENALEX_API_KEY: ${OPENALEX_API_KEY:-}
+      INFERENCE_BASE_URL: ${INFERENCE_BASE_URL:-http://host.docker.internal:11434}
       PYTHONDONTWRITEBYTECODE: "1"
     depends_on:
       api: { condition: service_started }
@@ -169,8 +170,8 @@ services:
       retries: 5
       start_period: 30s
     networks: [backend]
-    mem_limit: 12g
-    mem_reservation: 6g
+    mem_limit: 16g
+    mem_reservation: 8g
 
   caddy-dev:
     image: article-analysis-web:local

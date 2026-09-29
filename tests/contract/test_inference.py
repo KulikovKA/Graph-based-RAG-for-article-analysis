@@ -34,7 +34,8 @@ class FakeReranker:
         return [float(query in item) for item in documents]
 
 
-def _provider(frames: list[dict[str, Any]], *, base_url: str = "http://local-a") -> tuple[
+def _provider(frames: list[dict[str, Any]], *, base_url: str = "http://local-a",
+              embedding_batch_size: int = 16) -> tuple[
     OllamaProvider, httpx.AsyncClient, list[str]
 ]:
     visited: list[str] = []
@@ -42,13 +43,16 @@ def _provider(frames: list[dict[str, Any]], *, base_url: str = "http://local-a")
     def handler(request: httpx.Request) -> httpx.Response:
         visited.append(str(request.url))
         if request.url.path == "/api/embed":
-            return httpx.Response(200, json={"embeddings": [[1.0, 2.0], [2.0, 3.0]]})
+            count = len(json.loads(request.content)["input"])
+            return httpx.Response(200, json={"embeddings": [
+                [float(index + 1), float(index + 2)] for index in range(count)
+            ]})
         return httpx.Response(200, text="\n".join(json.dumps(frame) for frame in frames) + "\n")
 
     client = httpx.AsyncClient(base_url=base_url, transport=httpx.MockTransport(handler))
     provider = OllamaProvider(client, gate=GenerationGate(), model_revisions={"m": "digest"},
                               supported_efforts={"m": {"low", "medium"}},
-                              reranker=FakeReranker())
+                              reranker=FakeReranker(), embedding_batch_size=embedding_batch_size)
     return provider, client, visited
 
 
@@ -117,6 +121,20 @@ def test_unsupported_effort_fails_before_transport() -> None:
                     schema={"type": "object"}, max_output_tokens=32,
                     reasoning_effort="high")
             assert visited == []
+        finally:
+            await client.aclose()
+
+    asyncio.run(exercise())
+
+
+def test_embedding_batches_are_bounded() -> None:
+    async def exercise() -> None:
+        provider, client, visited = _provider([], embedding_batch_size=1)
+        try:
+            vectors = await provider.embed(model_id="embed", request_id="r",
+                                           texts=["first", "second"])
+            assert vectors == [[1.0, 2.0], [1.0, 2.0]]
+            assert visited == ["http://local-a/api/embed", "http://local-a/api/embed"]
         finally:
             await client.aclose()
 

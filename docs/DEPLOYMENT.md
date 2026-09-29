@@ -11,9 +11,9 @@
 | redis | 6379 | нет | 512 / 128 MiB; maxmemory 256 MiB |
 | neo4j | 7687/7474 | нет | 4 GiB / 2 GiB; heap 1 GiB, page cache 1 GiB |
 | qdrant | 6333 | нет | 3 GiB / 1 GiB |
-| inference | provider-specific | нет | 12 GiB / 6 GiB — прежняя bootstrap гипотеза, требует повторного LLM-002 gate для новых кандидатов; один concurrent generation |
+| inference | provider-specific | нет | 16 GiB / 8 GiB для отдельного контейнерного профиля; один concurrent generation |
 
-Сумма limits ~25 ГБ, оставляет память ОС/Docker. Значения — стартовые гипотезы: после benchmark на реальной модели проверить RSS, swap, холодный запуск, одновременный ingestion/search и пиковый индекс. CPU inference может быть медленным; не обещать latency до замеров. У inference volume с весами вне Git. Базы имеют отдельные volumes и health checks. Запуск `docker compose --profile cpu up -d`; сервисы должны восстанавливаться после restart. Для разработки разрешён ручной доступ к БД лишь через `docker compose exec`, без публичного port mapping.
+Сумма limits контейнерного профиля ~29 ГБ; лимиты не равны фактическому расходу памяти. Для проверенного host Ollama профиль `cpu` не запускается: проектные контейнеры занимали около 1.7 ГБ, а модели измерялись как процессы Windows. CPU inference может быть медленным; см. фактические значения ниже. У контейнерного inference volume с весами вне Git. Базы имеют отдельные volumes и health checks. Для разработки разрешён ручной доступ к БД лишь через `docker compose exec`, без публичного port mapping.
 
 Конфиг: `.env.example` без значений секретов, реальные `.env` игнорируются Git; EPO client credentials, DB passwords, session keys, provider endpoints — через env/secrets. Миграции БД идут отдельной командой перед api/worker. Backup: PostgreSQL dump + Neo4j/Qdrant snapshots или переиндексация из сохранённых нормализованных ревизий; регулярная проба восстановления обязательна перед release. Redis в backup не нужен.
 
@@ -23,9 +23,26 @@
 
 До AUTH-001 Caddy слушает только loopback; после auth/isolation gate допускается доверенный LAN. Перед внешним demo: TLS, login, CSRF/CORS, rate limits и восстановление backup. Один worker обслуживает analysis и ingestion очереди; отдельный общий semaphore ограничивает **все** генеративные роли (planner, extractor, analyst), а embedding/rerank имеют собственные RAM/batch лимиты. Ingestion не запускает вторую тяжёлую генерацию в обход очереди. Budget 6k input не гарантирует размещение двух моделей; загрузку/выгрузку и RSS измерить в LLM-002.
 
-## План CPU lifecycle по ADR-011 (реализуют LLM-001/002)
+## CPU baseline LLM-002 на локальном Ollama
 
-Предпочтительные кандидаты: Planner `LFM2.5-8B-A1B`, reasoning Analyst `gpt-oss:20b`. Точные runtime model IDs, quantization и revisions закрепляются только после benchmark. Нынешний inference limit 12 GiB не считается достаточным для Analyst; при OOM/свопе gate не пройден. Пересмотр лимита допускается лишь с измеренным общим пиком ОС/WSL/Docker, PostgreSQL/Neo4j/Qdrant, embedding/rerank и генерации на 32 GB RAM. MoE active parameters не равны объёму всех весов в памяти.
+Проверенный путь на Windows использует уже установленный Ollama 0.34.4 на host. Контейнеры приложения получают фиксированный `INFERENCE_BASE_URL=http://host.docker.internal:11434`; доступ из Compose API-контейнера к `/api/version` проверен (HTTP 200). Ollama не публикуется через Caddy. Отдельный `inference` profile с собственным volume не содержит скачанных пользователем весов и **не является проверенным runtime** этих измерений. Его лимит 16 GiB основан на наблюдаемом RSS 14.17 ГБ плюс запас; перед выбором этого пути требуется отдельный запуск с закреплёнными весами и достаточной памятью Docker Desktop. На текущем Docker Desktop доступно 15.28 GiB, поэтому этот профиль с Analyst не проверялся.
+
+Версии, digest, quantization, размер, license и SHA файлов reranker записаны в [model inventory](model_inventory.json). Короткий воспроизводимый gate запускается `python scripts/benchmark_inference.py <phase>`; результаты без текстов prompt/ответов сохранены в [measurements](validation/LLM-002/measurements.json). Перед benchmark reranker надо один раз скачать официальный `Qwen/Qwen3-Reranker-0.6B` по revision из inventory через `huggingface_hub.snapshot_download`; далее скрипт использует `local_files_only=True` и offline flags. Веса и HF/Ollama cache находятся вне Git. Ollama-модели сверяются по digest до измерений; уже присутствующие Planner и Analyst повторно не скачиваются.
+
+| Роль | Cold / warm latency | Пик RSS | Наблюдение |
+|---|---:|---:|---|
+| Embedding, 3 текста | 3.70 / 1.99 с | 1.30 ГБ Ollama tree | API вернул 1024 dimensions, batch и повтор стабильны |
+| Reranker, 3 passages | 9.82 / 1.29 с | 1.78 ГБ child process | RU query ранжирует EN technical passage первым |
+| Planner | 10.49 / 2.50 с | 5.39 ГБ Ollama tree | русский запрос, structured JSON валиден; обрезанный JSON отклонён и одна repair-попытка успешна |
+| Analyst | 46.25 / 26.22 с | 14.18 ГБ Ollama tree | AnalysisV1 с точной цитатой и offsets, final без raw reasoning; TTFT 23.70 / 0.45 с |
+
+Для Analyst host used достиг 30.64 ГБ в первом прогоне; в повторном прогоне с проверкой цитаты peak составил 28.31 ГБ, а суммарный peak проектных Compose-контейнеров — 2.04 ГБ. Pagefile used в первом прогоне вырос примерно с 3.47 до 4.70 ГБ, в повторном оставался около 4.65 ГБ; Windows API здесь не дал счётчиков page-in/page-out. Это реальный риск latency/памяти на 32 ГБ, а не обещание безопасной одновременной загрузки. Planner→Analyst→Planner дал примерно 9.76→23.16→9.89 с с одним загруженным генеративным model ID на каждом шаге. Отмена тёплого Analyst вернула `InferenceCancelled` за 2.54 с, `/api/ps` подтвердил выгрузку, слот остался доступен. `reasoning_tokens` и duration остаются `null`: Ollama не отдаёт их как отдельные надёжные метрики. Model TTFT отличается от времени готового проверенного результата; последний появится в JOB-002/OBS-001. Один ранний Analyst вызов дал невалидный JSON и был отклонён; повтор с `temperature=0` дал валидный AnalysisV1. Это подтверждает необходимость одного repair и fallback, а не гарантию каждого draft.
+
+Предпочтительный `sentence-transformers CrossEncoder` в локальной связке 5.3.0/Transformers 5.1.0 создал отсутствующий в checkpoint `score.weight` и не обработал batch без padding token. Этот путь не используется для relevance. Baseline reranker — [официальная схема Qwen](https://huggingface.co/Qwen/Qwen3-Reranker-0.6B) с causal-LM yes/no logits через Transformers, в отдельном CPU-процессе с принудительной остановкой при cancel/timeout. Offline startup и ранжирование проверены на закреплённом snapshot. Mini retrieval на EVAL-000: 8 synthetic documents, 9 непустых cases, MRR 1.0; Recall@10/20 = 1.0 тривиален при восьми документах. Для RU case 008 reranker сохранил релевантный источник на первом месте и поменял порядок двух менее релевантных кандидатов. Это smoke, а не сравнительная оценка качества моделей.
+
+## CPU lifecycle по ADR-011
+
+Фактические IDs, quantization и digests Planner/Analyst закреплены в model inventory. Прежний container limit 12 GiB меньше измеренного RSS Analyst; увеличенный лимит 16 GiB остаётся непроверенным для отдельного Docker runtime. При OOM или активном свопе workload gate требует повторного измерения и настройки. MoE active parameters не равны объёму всех весов в памяти.
 
 Один worker и общий semaphore удерживаются на время generation и остановки backend request. Lifecycle: загрузить Planner → получить/проверить JSON, при необходимости repair → выгрузить Planner → retrieval/embedding/rerank → загрузить Analyst → structured analysis/единственный repair → выгрузить Analyst → deterministic validation/render/commit. Между двумя Analyst calls того же bounded repair допускается оставить модель загруженной. Ingestion/extractor подчиняется тому же semaphore; release lease или HTTP disconnect не доказывает остановку вычисления. После cancel/timeout подтверждать остановку либо блокировать новые генерации до recovery; нельзя запускать вторую модель поверх зависшей первой.
 
@@ -47,4 +64,4 @@ SSE использует существующий Caddy/API. API-001 прове�
 
 `migrate` — отдельный одноразовый контейнер-зависимость перед API/worker и запускает `alembic upgrade head`. Интеграционный round-trip тест запускается отдельно: `docker compose --profile tools run --build --rm db-test`; он создаёт временную PostgreSQL-схему, проверяет миграцию и constraints, затем удаляет только эту схему. API container healthcheck проверяет liveness; `/health/ready` остаётся 503 до появления реальных schema/queue readiness gates в DB-002. Worker healthcheck подтверждает только жизнь bootstrap процесса, а не наличие durable queue.
 
-Начальные образы закреплены тегами в `compose.yaml` и `docker/Dockerfile.*`; обновлять их следует отдельным review с повторной проверкой поддержки, лицензий и конфигурации. Docker Desktop memory allocation должен быть достаточен для суммарных лимитов сервисов; inference с лимитом 12 GiB по умолчанию не запускается.
+Начальные образы закреплены тегами в `compose.yaml` и `docker/Dockerfile.*`; обновлять их следует отдельным review с повторной проверкой поддержки, лицензий и конфигурации. Docker Desktop memory allocation должен быть достаточен для суммарных лимитов сервисов; отдельный inference profile по умолчанию не запускается.

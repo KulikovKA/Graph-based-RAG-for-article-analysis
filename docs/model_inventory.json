@@ -1,0 +1,53 @@
+{
+  "recorded_on": "2026-09-29",
+  "runtime": {
+    "ollama_version": "0.34.4",
+    "transformers_version": "5.1.0",
+    "torch_version": "2.11.0",
+    "huggingface_hub_version": "1.28.0",
+    "psutil_version": "7.2.2"
+  },
+  "models": {
+    "planner": {
+      "provider": "ollama",
+      "id": "lfm2.5:8b-a1b-q4_K_M",
+      "digest": "9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2",
+      "bytes": 5156075525,
+      "quantization": "Q4_K_M",
+      "license": "LFM Open License v1.0"
+    },
+    "analyst": {
+      "provider": "ollama",
+      "id": "gpt-oss:20b",
+      "digest": "17052f91a42e97930aa6e28a6c6c06a983e6a58dbb00434885a0cf5313e376f7",
+      "bytes": 13793441244,
+      "quantization": "MXFP4",
+      "license": "Apache-2.0"
+    },
+    "embedding": {
+      "provider": "ollama",
+      "id": "qwen3-embedding:0.6b",
+      "digest": "ac6da0dfba84a81fdbfbaf330198c33cd77c4cdfc53e8bc50eb581914a15621d",
+      "bytes": 639150858,
+      "quantization": "Q8_0",
+      "measured_dimension": 1024,
+      "upstream_license": "Apache-2.0",
+      "registry": "https://ollama.com/library/qwen3-embedding:0.6b"
+    },
+    "reranker": {
+      "provider": "huggingface",
+      "repository": "Qwen/Qwen3-Reranker-0.6B",
+      "revision": "e61197ed45024b0ed8a2d74b80b4d909f1255473",
+      "license": "Apache-2.0",
+      "model_file": "model.safetensors",
+      "model_bytes": 1191588280,
+      "model_sha256": "27cd75a405b9c1b46b59abfd88aaa209e6fed2a1972cde9b70e7659537c5e65b",
+      "tokenizer_file": "tokenizer.json",
+      "tokenizer_sha256": "aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4",
+      "tokenizer_config_sha256": "253153d0738ceb4c668d2eff957714dd2bea0b56de772a9fdccd96cbf517e6a0",
+      "runtime": "transformers==5.1.0; torch==2.11.0; isolated CPU process",
+      "repository_url": "https://huggingface.co/Qwen/Qwen3-Reranker-0.6B"
+    }
+  },
+  "benchmark": "docs/validation/LLM-002/measurements.json"
+}

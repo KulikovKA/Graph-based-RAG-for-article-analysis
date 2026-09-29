@@ -14,6 +14,12 @@ build/
 dist/
 *.egg-info/
 data/
+/models/
+/.cache/
+/huggingface_cache/
+/ollama_cache/
+*.gguf
+*.safetensors
 frontend/*.tsbuildinfo
 frontend/node_modules/
 frontend/dist/
