@@ -42,7 +42,7 @@ flowchart LR
   V --> C
 ```
 
-Planner предлагает patch, deterministic shell проверяет ссылки на существующие feature IDs, применяет его с optimistic concurrency и решает, можно ли переиспользовать evidence. Изменение смыслового признака, настроек retrieval или версии индекса запускает новый поиск. Вопрос об уже найденном источнике использует сохранённый evidence snapshot. Каждый run сохраняет immutable входы, версии моделей и ссылки на фрагменты.
+Planner предлагает patch, deterministic shell проверяет ссылки на существующие feature IDs, применяет его с optimistic concurrency и решает, можно ли переиспользовать evidence. Изменение смыслового признака, настроек retrieval или версии индекса для нового анализа запускает новый поиск. Объяснение уже найденного источника с явным source_run_id использует сохранённые evidence snapshot и idea_version исходного run даже после смены индекса; текущую идею conversation оно не изменяет. Каждый run сохраняет immutable входы, версии моделей и ссылки на фрагменты.
 
 ## Offline flow
 
@@ -53,16 +53,19 @@ flowchart LR
   AD --> N[Normalize + provenance]
   N --> PG[PostgreSQL metadata + chunks]
   N --> X[Typed feature extraction + validation]
-  X --> G[Neo4j domain graph]
+  X --> F[PostgreSQL graph facts]
+  F --> G[Neo4j domain graph]
   N --> EM[Embedding]
   EM --> Q[Qdrant]
-  N --> LR[LightRAG custom KG/context index]
+  PG -. optional public projection .-> LR[LightRAG context index: ADR-003]
   PG --> J[Offline eval harness]
   G --> J
   Q --> J
 ```
 
-Идемпотентность: source + external ID + source revision/content hash. Обновление документа создаёт новую ревизию и outbox-событие на переиндексацию. До подтверждения всех индексов новая ревизия не становится активной для поиска. При частичном сбое повторяем операцию, не публикуя неполный документ.
+Идемпотентность: source + external ID + source revision/content hash. Обновление создаёт immutable content revision и outbox-событие. Для активации обязательны ACK Qdrant и доменного Neo4j по той же revision и версиям indexer/extractor; optional LightRAG не входит в этот барьер. Проверенные graph facts сначала сохраняются в PostgreSQL. После ACK одной транзакцией публикуются новый index generation и active revision. При частичном сбое предыдущая generation остаётся доступной; retrieval фиксирует generation и перепроверяет membership кандидатов в PostgreSQL. Подробности — [DATA_MODEL](DATA_MODEL.md).
+
+ING-001 проверяет барьер на fake index ports. IDX-001/GRAPH-001 подключают реальные consumers; GRAPH-001 закрывает сквозной gate активации обоих индексов. Это порядок разработки, не циклическая зависимость задач. Прямой custom KG LightRAG не переносит доменный provenance: его публичная проекция даёт только кандидатов, которые повторно разрешаются в нашем evidence store (ADR-003).
 
 ## Поиск и граф
 
@@ -72,8 +75,10 @@ flowchart LR
 
 ## Исполнение и сбои
 
-Очередь analysis jobs в PostgreSQL, один inference worker на CPU. API отдаёт `202` и SSE по `run_id`; события можно повторить по `Last-Event-ID`. Отмена помечает job, worker проверяет флаг между этапами. InferenceProvider имеет методы `complete_json`, `stream_text`, `embed`, `rerank` с таймаутами и cancellation. Сбой источника помечается как partial coverage; ответ не выдаёт ложной полноты. Сбой Smart LLM оставляет run в failed и сохраняет диагностический код без полного prompt.
+Очередь analysis jobs в PostgreSQL, один worker с общим лимитом генерации на CPU. API отдаёт `202` и SSE по `run_id`; приём запроса, idempotency и lease fencing описаны в [DATA_MODEL](DATA_MODEL.md), HTTP и replay — в [API_CONTRACTS](API_CONTRACTS.md). Отмена проверяется между этапами и перед terminal commit. InferenceProvider имеет `complete_json`, `stream_text`, `embed`, `rerank`; stream_text доступен внутренним потребителям, сырой поток модели клиенту не передаётся.
+
+Единый run status: `pending`, `running`, `completed`, `failed`, `cancelled`. Сбой источника отражается в coverage. Невалидный draft допускает одну repair-попытку; timeout/ошибка генератора ведёт к проверенному deterministic fallback. Сохранённый fallback или сообщение о пустом evidence завершает run как `completed` с явным outcome; `failed` означает, что безопасный результат не удалось проверить/сохранить, либо обязательный этап не выполним. Citation validator проверяет структуру ссылок и буквальные spans, а смысловую достоверность оценивает отдельный offline review. Terminal answer и события публикуются атомарно после валидации, поэтому непроверенный текст не виден ни в GET, ни в SSE.
 
 ## Наблюдаемость
 
-Структурированные логи: request/run ID, псевдонимный user ID, stage, latency, TTFT, token counts, cache hit, document IDs, retry/error code. `/health/live` не обращается к зависимостям; `/health/ready` проверяет обязательные PostgreSQL и очередь, а деградацию Qdrant/Neo4j/inference показывает отдельно. Полный пользовательский текст не логируется.
+Структурированные логи: request/run ID, псевдонимный user ID, stage, latency, TTFT, token counts, cache hit, document IDs, retry/error code. Минимальные health и redaction появляются в SKEL/INFRA/API; OBS-001 добавляет метрики и retention. `/health/live` проверяет процесс; `/health/ready` — PostgreSQL, schema version, приём durable jobs и свежий worker heartbeat (503 при отказе). Qdrant/Neo4j/inference отражаются отдельно как capabilities; готовность очереди не обещает успешный анализ. INFRA проверяет bootstrap profile до реальных весов, LLM-002 — отдельный CPU gate. Полный пользовательский текст не логируется.

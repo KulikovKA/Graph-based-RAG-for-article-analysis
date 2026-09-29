@@ -11,3 +11,7 @@ Threat model: пользователь вводит произвольный т�
 - Логи/backup: не логировать полные идеи, prompts, cookie, токены и raw responses. Шифрование диска/backup, доступ администратора, проверка восстановления и срока хранения. Удаление пользователя удаляет личные conversation/idea/run и очищает связанные caches, сохраняя разрешённые публичные документы.
 
 Перед внешним demo провести проверку TLS, CORS/CSRF, session fixation, horizontal IDOR, prompt injection, SSRF, dependency versions, exposed ports и secret scanning. Запретить external demo при провале любой критичной проверки.
+
+ARCH-002: AUTH-001 реализуется до API-001. До auth gate Compose доступен только на loopback для оператора; LAN разрешается после auth/isolation gate, внешний доступ — после release security gate. Для MVP выбран локальный password login с Argon2id и `auth_sessions`; аккаунты создаёт оператор через CLI, публичной регистрации нет. Login проверяет Origin и rate limit, смена login обновляет session token. Logout/disable отзывает сессию; все mutations требуют CSRF. OIDC остаётся будущим adapter.
+
+Evidence endpoint всегда scoped run + evidence_id; публичный document ID не даёт доступа к чужому run/snapshot. source_run_id принадлежит той же conversation и владельцу. Graph neighbors/cursors и все query-dependent caches проверяются тем же scope. Ответные ссылки строит shell; модель не задаёт source URL. Сырой draft/repair не публикуется в SSE; проверенный fallback не означает доказанную semantic faithfulness. Данные источников не меняют allowlist инструментов/сети.

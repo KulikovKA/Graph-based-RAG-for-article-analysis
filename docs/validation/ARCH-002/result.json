@@ -1,0 +1,90 @@
+{
+  "task": "ARCH-002",
+  "status": "passed",
+  "tasks": 32,
+  "hard_dependencies": 51,
+  "roots": [
+    "ARCH-001"
+  ],
+  "topological_order": [
+    "ARCH-001",
+    "ARCH-002",
+    "SKEL-001",
+    "INFRA-001",
+    "DB-001",
+    "DB-002",
+    "SRC-001",
+    "SRC-002",
+    "ING-001",
+    "EVAL-000",
+    "LLM-001",
+    "LLM-002",
+    "IDX-001",
+    "GRAPH-001",
+    "LR-001",
+    "PLAN-001",
+    "STATE-001",
+    "RET-001",
+    "RANK-001",
+    "ANALYST-001",
+    "JOB-001",
+    "JOB-002",
+    "AUTH-001",
+    "API-001",
+    "AUTH-002",
+    "UI-001",
+    "GRAPHUI-001",
+    "EVAL-001",
+    "EVAL-002",
+    "OBS-001",
+    "TEST-001",
+    "REL-001"
+  ],
+  "p0_tasks": 24,
+  "p0_has_no_p1_prerequisites": true,
+  "mermaid_matches_cards_and_table": true,
+  "local_links_checked": 59,
+  "donor_files": 35,
+  "online_sources_verified": true,
+  "donors": [
+    {
+      "repository": "HKUDS/LightRAG",
+      "commit": "453dce83d6d0354a06e46c8d4029a0895c4e054b",
+      "tree_verified": true
+    },
+    {
+      "repository": "pqaidevteam/pqai",
+      "commit": "56342aaac5d9bf626f9413e5e49819e70709ce2f",
+      "tree_verified": true
+    },
+    {
+      "repository": "ABHIJEET-MUNESHWAR/PriorArtRAG",
+      "commit": "fcaad8482c7df5d8106d4041c45d732f18d8c295",
+      "tree_verified": true
+    },
+    {
+      "repository": "chasewhughes/mcp-prior-art",
+      "commit": "eae73ff170b058772ca74e97b13eade853420e83",
+      "tree_verified": true
+    }
+  ],
+  "estimates_all": {
+    "agent_hours_min": 43.5,
+    "agent_hours_max": 83.0,
+    "review_minutes": 1180
+  },
+  "estimates_remaining": {
+    "agent_hours_min": 40.5,
+    "agent_hours_max": 77.0,
+    "review_minutes": 1105
+  },
+  "implementation_tasks_max_2h": 20,
+  "implementation_tasks": 30,
+  "model_task_counts": {
+    "Astra/High": 3,
+    "Sol/Medium": 13,
+    "Sol/High": 15,
+    "Luna/Medium": 1
+  },
+  "limits": "Document structure and online source checks only; semantic review is recorded in ARCH_REVIEW.md. No production tests."
+}

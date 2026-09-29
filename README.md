@@ -11,5 +11,6 @@
 - [Модель данных](docs/DATA_MODEL.md), [схема графа](docs/GRAPH_SCHEMA.md)
 - [API](docs/API_CONTRACTS.md), [LLM](docs/LLM_CONTRACTS.md), [память и кеш](docs/MEMORY_AND_CACHE.md)
 - [Развёртывание](docs/DEPLOYMENT.md), [безопасность](docs/SECURITY.md), [оценка качества](docs/EVALUATION.md)
+- [ARCH-002: замечания, исправления и проверка согласованности](docs/ARCH_REVIEW.md)
 
-План зафиксирован 2026-09-28. Перед реализацией интеграций проверяйте актуальные версии API и условия источников.
+Planning baseline после ARCH-001/ARCH-002: 2026-09-29. Следующая задача — SKEL-001. Перед реализацией интеграций проверяйте актуальные версии API и условия источников; завершённый planning review не означает готовность production-системы.

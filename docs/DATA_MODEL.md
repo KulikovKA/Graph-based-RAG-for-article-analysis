@@ -1,25 +1,65 @@
 # Модель данных PostgreSQL
 
-PostgreSQL — источник истины для приложения. Внешние индексы Qdrant/Neo4j восстанавливаются из нормализованных записей и outbox. Все ID UUID, UTC timestamps, миграции Alembic. `owner_user_id` проверяется в каждом запросе через репозиторий и в интеграционных тестах.
+PostgreSQL — источник истины. Qdrant/Neo4j восстанавливаются из нормализованных записей, сохранённых graph facts и outbox. Собственные primary IDs — UUID, timestamps — UTC; внешние source IDs и Neo4j keys остаются строками. Миграции Alembic. Ownership проверяется в репозитории до обращения к кешу/индексам.
 
 | Таблица | Ключевые поля и связи | Инвариант |
 |---|---|---|
-| users | id, email_normalized, password_hash/auth_subject, created_at, disabled_at | email/subject unique; нет plaintext password |
-| conversations | id, owner_user_id FK, title, created_at, updated_at | только владелец читает/меняет |
-| messages | id, conversation_id FK, role, content, created_at, run_id? | append-only; лимит размера |
-| ideas | id, conversation_id FK, current_version_id, created_at | одна текущая версия, принадлежность через conversation |
-| idea_versions | id, idea_id FK, version_no, parent_version_id?, normalized_json, state_hash, created_by_message_id, created_at | `(idea_id, version_no)` unique; immutable; optimistic update по version_no |
-| analysis_runs | id, conversation_id, idea_version_id, status, query, evidence_snapshot_json, answer_json, config_versions_json, created_at, completed_at, error_code | immutable входы/результат после terminal status |
-| run_events | run_id, sequence_no, event_type, payload_json, created_at | `(run_id, sequence_no)` unique; SSE replay |
-| source_documents | id, source, external_id, canonical_url, kind, title, publication_date, active_revision_id | `(source, external_id)` unique; no user ownership для публичного корпуса |
-| document_revisions | id, document_id, source_updated_at, content_hash, normalized_json, ingest_state, retrieved_at | revision immutable; active после индексации |
-| evidence_chunks | id, revision_id, section, ordinal, text, offsets, hash, language | stable citation ID; source location/provenance обязательны |
-| ingestion_jobs | id, source, external_id, status, attempts, lease_until, error_code, created_at | идемпотентный retry; один active lease |
-| outbox_events | id, aggregate_id, kind, payload, processed_at, attempts | atomic с revision commit |
-| eval_cases/runs/results | case ID, input, expected evidence, snapshot refs, scores, versions | отделены от production run |
+| users | id, email_normalized, password_hash/auth_subject, created_at, disabled_at | unique email/subject, нет plaintext password |
+| auth_sessions | id, user_id, token_hash, csrf_secret_hash, expires_at, revoked_at | В БД только hash bearer token; revoke при logout/disable |
+| conversations | id, owner_user_id, title, summary_json?, summary_until_message_id?, created_at, updated_at | summary — derivation; исходные messages сохраняются |
+| messages | id, conversation_id, role, content, created_at, run_id? | append-only; size limit |
+| ideas | id, conversation_id, current_version_id, created_at | Одна идея на conversation, optimistic current pointer |
+| idea_versions | id, idea_id, version_no, parent_version_id?, normalized_json, state_hash, created_by_message_id, created_at | unique `(idea_id,version_no)`; immutable |
+| analysis_runs | id, conversation_id, owner_user_id, message_id, source_run_id?, base_idea_version_id?, expected_idea_version, idea_version_id?, planner_applied_at?, status, stage, outcome?, query, index_generation_id?, evidence_snapshot_json?, answer_json?, coverage_json, event_seq_high_water, config_versions_json, idempotency_key, request_hash, cancel_requested_at?, created_at, completed_at?, error_code? | См. lifecycle ниже; owner обязан совпадать с conversation |
+| analysis_jobs | run_id PK/FK, attempts, lease_owner?, lease_token, lease_until?, next_attempt_at, heartbeat_at? | status принадлежит run; fencing token растёт при каждом захвате |
+| run_events | run_id, sequence_no, event_type, payload_json, created_at | PK `(run_id,sequence_no)`; одна terminal запись; seq выделяется атомарно из run.event_seq_high_water, compaction не сбрасывает счётчик |
+| run_evidence | run_id, evidence_id, document_id, revision_id, chunk_id, span_start, span_end, quoted_span, source_url, retrieval_score?, rerank_score?, index_generation_id | PK `(run_id,evidence_id)`; FK chunk/revision/document согласованы; immutable после snapshot commit |
+| source_documents | id, source, external_id, canonical_url, kind, title, publication_date, active_revision_id? | unique `(source,external_id)`; только публичный корпус |
+| document_revisions | id, document_id, source_updated_at?, content_hash, normalized_json, ingest_state, retrieved_at | Content immutable, ingest_state меняется отдельно; metadata для старого run берётся из его revision |
+| evidence_chunks | id, revision_id, section, ordinal, text, section_start, section_end, hash, language | UUID scoped to revision/section/ordinal/hash, не hash текста между документами |
+| graph_facts | id, revision_id, from_key, edge_type, to_key, chunk_id?, span_start?, span_end?, metadata_pointer?, provenance_kind, extractor_version, vocabulary_version, confidence?, validated_at | Валидированные факты — durable источник Neo4j; identity/provenance см. GRAPH_SCHEMA |
+| revision_index_acks | revision_id, backend, indexer_version, projection_version, acknowledged_at | unique `(revision_id,backend,indexer_version,projection_version)` |
+| index_generations | id, parent_id?, config_versions_json, created_at | Immutable published manifest; указатель current переключается атомарно |
+| index_catalog | id, current_generation_id | Один указатель на опубликованное поколение корпуса, transactional CAS |
+| index_members | generation_id, document_id, revision_id | PK `(generation_id,document_id)`; FK на точную revision |
+| ingestion_jobs | id, source, external_id, payload_hash, status, attempts, lease_token, lease_until?, error_code?, created_at | Повтор одного payload идемпотентен; fencing аналогичен analysis |
+| outbox_events | id, aggregate_id, kind, payload, processed_at?, attempts | Atomic с revision/fact commit; ACK по каждому consumer отдельно |
+| eval_cases/runs/results | case ID, input, expected evidence, snapshot refs, scores, versions | Отделены от production run |
 
-`normalized_json` идеи: `domain`, массив `features[{id, text, normalized_term?, weight}]`, `technologies[]`, `constraints[]`, `language`. Текст без уверенного происхождения не перезаписывает исходную формулировку. Patch добавляет/удаляет/заменяет признаки по ID, не по позиции. `state_hash` — SHA-256 канонического JSON, включая schema version; не содержит личных ID. Сравнение версий позволяет показать изменение C→D.
+## Идея и приём сообщения
 
-Evidence snapshot хранит список `{evidence_id, document_id, revision_id, chunk_id, quoted_span, source_url, retrieval_score, rerank_score, index_version}`. Ответ ссылается только на evidence IDs snapshot. Для воспроизводимости старые ревизии не удаляются, пока есть ссылки из run; retention и экспорт задаются отдельной политикой. Сообщение пользователя, run и idea version создаются атомарно там, где возможно; ошибки внешних сервисов не откатывают исходное сообщение.
+`normalized_json`: `schema_version`, `domain`, `features[{id,text,normalized_term?,weight}]`, `technologies[]`, `constraints[]`, `language`. Feature IDs — UUID, назначаемые shell; patch оперирует ID, а не позициями. Replace сохраняет ID логического признака, изменение текста меняет state hash; удалённые ID повторно не использовать. `state_hash` — SHA-256 канонического JSON семантических полей + schema version, исключая personal/feature UUID и timestamps; порядок нормализуется детерминированно.
 
-Индексы: conversations(owner_user_id, updated_at), messages(conversation_id, created_at), idea_versions(idea_id, version_no desc), analysis_runs(conversation_id, created_at desc), source_documents(source, external_id), evidence_chunks(revision_id, section), ingestion_jobs(status, lease_until). PII минимизировать: использовать auth subject, шифрование диска хоста/backup и право на удаление пользовательских данных с учётом зависимых run.
+В MVP один нетерминальный run на conversation: partial unique index по conversation при status pending/running. Сообщение, run и analysis job создаются одной транзакцией после ownership, quota и проверки `expected_idea_version` (0, если идеи ещё нет). Unique `(owner_user_id,conversation_id,idempotency_key)` возвращает прежний run при том же каноническом request_hash; иной payload с тем же ключом — 409. Idempotency lookup предшествует проверке занятого conversation/текущей версии; авторизация всегда раньше lookup. Ключ живёт столько же, сколько run.
+
+Planner работает асинхронно. `base_idea_version_id`, query, request/config inputs фиксируются при приёме. Worker в одной транзакции делает CAS current version, создаёт новую version при реальном patch и однократно связывает `idea_version_id`/`planner_applied_at`. Retry не применяет patch повторно. Поздний конфликт завершает run failed с `IDEA_VERSION_CONFLICT`; он не меняет уже отправленный HTTP 202. Для clarify без существующей идеи `idea_version_id=null`, outcome=clarification. Внешний сбой не удаляет исходное сообщение.
+
+## Run lifecycle — единственный enum для DATA/API/JOB
+
+| Переход | Условие |
+|---|---|
+| pending → running | Захват job lease с новым fencing token |
+| running → pending | Только ограниченный retry транзиентного сбоя/истёкшего lease; сохраняются immutable inputs и уже применённый patch |
+| pending/running → cancelled | CAS по нетерминальному status и cancel request; результат не публикуется |
+| running → completed | Проверенные AnswerV1 + snapshot + outcome и terminal events сохранены одной транзакцией |
+| pending/running → failed | Исчерпан retry, version conflict, обязательная dependency недоступна или safe fallback невалиден |
+
+Terminal states неизменяемы; повтор анализа после них создаёт новый run. Worker продлевает lease; запись результата разрешена только текущему lease_token, с проверкой cancel_requested_at и нетерминального status. Отмена выигрывает, если её флаг закоммичен до terminal CAS. Устаревший worker не может записать answer/events. Повтор вычисления после crash допустим, двойная публикация — нет. Retry/deadline budget задаётся в config и записывается в run; отмена не вызывает fallback.
+
+Для completed `outcome ∈ {analysis,safe_fallback,no_evidence,clarification}`; для failed/cancelled outcome и answer null. Coverage и warnings — данные результата, не дополнительные statuses. Ошибка LLM → проверенный safe_fallback; отсутствие результатов успешного поиска → no_evidence; отказ всех разрешённых retrieval channels → failed/RETRIEVAL_UNAVAILABLE. При частичном отказе оставшихся каналов достаточно для анализа только с явным coverage.partial.
+
+## Evidence и сохранённые запуски
+
+`chunk_id` — FK на конкретную ревизию. `evidence_id` — UUID выбранного span в snapshot, назначается shell и не равен donor reference_id. Один chunk может давать несколько evidence entries. `span_start/span_end` — полуинтервал Unicode code-point offsets в **chunk.text**, `quoted_span == chunk.text[start:end]`; `section_start/end` chunks — offsets в нормализованном тексте section данной revision. Нормализация версионирована; frontend получает готовый span, не пересчитывает Python offsets как UTF-16 indices.
+
+`evidence_snapshot_json` — каноническая сериализация run_evidence и metadata соответствующих revisions; записывается атомарно с этими строками до Analyst, затем immutable. Ответ может ссылаться только на snapshot своего run. FK run_evidence запрещает удалить revision/chunk с активными ссылками. После удаления личного run удаляются его snapshot/ссылки; разрешённые публичные документы остаются по retention policy.
+
+`explain_evidence` требует `source_run_id` той же conversation, ownership и completed source run. Копируется его snapshot с прежними evidence IDs и явно отмеченным historical context; run.idea_version_id связывается с версией исходного run, current_version conversation не меняется. expected_idea_version при приёме всё равно проверяет текущую conversation, base_idea_version_id сохраняет этот вход; новая active index generation не инвалидирует такой вопрос. Нельзя одновременно применять смысловой patch и трактовать результат как объяснение прежнего snapshot. Для новой идеи/изменения признака/общего нового поиска используется текущая generation; старый run остаётся воспроизводимым по данным, без обещания побайтно повторить LLM-генерацию.
+
+## Индексация и чтение
+
+ING фиксирует revision/chunks/outbox. GRAPH сохраняет валидированные graph_facts до Neo4j projection. Барьер активации ждёт только обязательные `qdrant` и `domain_graph` ACK одной revision и ожидаемых версий. Новая revision без признаков допускает ACK пустой валидной graph projection. Optional LightRAG обновляется независимо и никогда не блокирует публикацию.
+
+После ACK PostgreSQL одной транзакцией меняет active_revision_id и current index generation с immutable membership. RET фиксирует generation в начале поиска, ограничивает запросы доступными revision IDs и обязательно отбрасывает кандидаты вне её membership после чтения индексов. При недоступной проекции сообщает degradation; не подменяет revision новой. Индексы сохраняют необходимые поколения на время активных searches; исторический evidence читается из PostgreSQL. Смена embedding модели/размерности создаёт новую коллекцию и generation после полного reindex; версии словаря/extractor также фиксируются.
+
+Нужны индексы conversations(owner_user_id,updated_at), messages(conversation_id,created_at), idea_versions(idea_id,version_no), runs(conversation_id,created_at), jobs(next_attempt_at,lease_until), chunks(revision_id,section), graph_facts(revision_id), memberships(generation_id,revision_id), sessions(token_hash). Межтабличные owner/idea/run/chunk соответствия проверяются FK/unique constraints где возможно, иначе в одной транзакции repository и негативными integration tests. PII минимизируется; disk/backup encryption и удаление пользователя учитывают зависимые run и sessions.
