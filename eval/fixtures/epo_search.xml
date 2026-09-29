@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ops:world-patent-data xmlns:ops="http://ops.epo.org" xmlns="http://www.epo.org/exchange">
+  <exchange-documents>
+    <exchange-document country="ZZ" doc-number="9000001" kind="A1">
+      <bibliographic-data><invention-title lang="en">Synthetic phase-change thermal storage module</invention-title></bibliographic-data>
+      <abstract lang="en"><p>A thermal storage module places a sealed phase-change salt pack inside a graphite shell. The shell spreads heat to an aluminum fin array during discharge. The module stores heat from a solar collector for release after sunset.</p></abstract>
+    </exchange-document>
+    <exchange-document country="ZZ" doc-number="9000002" kind="A1">
+      <bibliographic-data><invention-title lang="en">Synthetic silica aerogel pipe coating</invention-title></bibliographic-data>
+      <abstract lang="en"><p>A silica aerogel layer covers the outside of a stainless steel pipe. A porous ceramic mesh supports the layer and limits cracking during thermal cycling. The coating reduces heat loss in the synthetic test rig.</p></abstract>
+    </exchange-document>
+    <exchange-document country="ZZ" doc-number="9000003" kind="A1">
+      <bibliographic-data><invention-title lang="en">Synthetic sodium-ion cell and cathode binder</invention-title></bibliographic-data>
+      <abstract lang="en"><p>A sodium-ion cell uses a hard-carbon anode and a Prussian-blue cathode. A water-based binder holds cathode particles on an aluminum current collector. The synthetic test module operates at room temperature.</p></abstract>
+    </exchange-document>
+    <exchange-document country="ZZ" doc-number="9000004" kind="A1">
+      <bibliographic-data><invention-title lang="en">Synthetic cellulose filtration membrane</invention-title></bibliographic-data>
+      <abstract lang="en"><p>A cellulose membrane separates two liquid chambers in a synthetic filtration cell. A porous ceramic coating traps filler particles while water passes through the membrane. The fixture contains no measurements of service life.</p></abstract>
+    </exchange-document>
+  </exchange-documents>
+</ops:world-patent-data>

@@ -1,0 +1,202 @@
+{
+  "corpus_id": "EVAL-000-SYNTHETIC-1",
+  "version": 1,
+  "frozen_at": "2026-09-29",
+  "purpose": "Небольшой неизменяемый synthetic corpus для retrieval-разработки EVAL-000.",
+  "license": {
+    "spdx_id": "CC0-1.0",
+    "name": "CC0 1.0 Universal",
+    "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+  },
+  "provenance": {
+    "origin": "synthetic",
+    "created_for": "Graph-based RAG for article analysis, EVAL-000",
+    "contains_external_source_text": false,
+    "contains_personal_data": false,
+    "authors": "Авторы и организация не моделируются; названия, идентификаторы и текст вымышлены."
+  },
+  "reserved_dev_ids": {
+    "case_id_pattern": "^EVAL000-DEV-[0-9]{3}$",
+    "case_ids": [
+      "EVAL000-DEV-001",
+      "EVAL000-DEV-002",
+      "EVAL000-DEV-003",
+      "EVAL000-DEV-004",
+      "EVAL000-DEV-005",
+      "EVAL000-DEV-006",
+      "EVAL000-DEV-007",
+      "EVAL000-DEV-008",
+      "EVAL000-DEV-009",
+      "EVAL000-DEV-010"
+    ],
+    "canonical_source_ids": [
+      "W999999999001",
+      "W999999999002",
+      "W999999999003",
+      "W999999999004",
+      "ZZ9000001A1",
+      "ZZ9000002A1",
+      "ZZ9000003A1",
+      "ZZ9000004A1"
+    ],
+    "policy": "Зарезервировано только для split=dev; не копировать эти ID в validation или holdout EVAL-002."
+  },
+  "ingestion": {
+    "epo_ops": "parse_documents(bytes) -> from_epo(PatentDocument) -> canonical_external_id -> chunk_sections",
+    "openalex": "parse_work(json) -> from_openalex(ScientificWork) -> canonical_external_id -> chunk_sections",
+    "chunk_size": 1200,
+    "offset_unit": "Unicode code points; полуинтервал [start,end) внутри chunk.text."
+  },
+  "files": [
+    {
+      "path": "eval/fixtures/epo_search.xml",
+      "sha256": "09be4126afc1d98527d4a4e748f9dae88510a23bdcd608877d212b3cddbb14c1"
+    },
+    {
+      "path": "eval/fixtures/openalex/W999999999001.json",
+      "sha256": "56cf461f4f9b38aa63da2b3905810c17268e3276d7f087f5d1590fb8cf154c3c"
+    },
+    {
+      "path": "eval/fixtures/openalex/W999999999002.json",
+      "sha256": "688a1e19f04e2f361371902c86bcf8bff595b7d91e9c894aa754bd97cfdd5b90"
+    },
+    {
+      "path": "eval/fixtures/openalex/W999999999003.json",
+      "sha256": "48aaba2751de042fe40fb078d2947579b8e3a67c88a01feaeda0e78f35cf4b62"
+    },
+    {
+      "path": "eval/fixtures/openalex/W999999999004.json",
+      "sha256": "200d998db23d894fb7b82aa8d9fcc8702bec23014ba77a685961edcbb29c6aa0"
+    }
+  ],
+  "documents": [
+    {
+      "source": "openalex",
+      "external_id": "W999999999001",
+      "raw_external_id": "W999999999001",
+      "canonical_url": "https://openalex.org/W999999999001",
+      "kind": "article",
+      "title": "Synthetic bench study of phase-change heat release",
+      "publication_date": "2025-01-10",
+      "sections": [
+        {
+          "name": "abstract",
+          "text": "The synthetic bench study measures heat release from a phase-change salt pack surrounded by a graphite enclosure. A fin array reduces temperature variation during discharge. No outdoor performance is reported.",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "source": "openalex",
+      "external_id": "W999999999002",
+      "raw_external_id": "W999999999002",
+      "canonical_url": "https://openalex.org/W999999999002",
+      "kind": "article",
+      "title": "Synthetic study of reinforced silica coatings",
+      "publication_date": "2025-02-11",
+      "sections": [
+        {
+          "name": "abstract",
+          "text": "This synthetic materials study tests a silica aerogel coating on a stainless steel tube. Ceramic mesh reinforcement reduces visible cracks after repeated thermal cycles. The study reports no full-scale installation.",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "source": "openalex",
+      "external_id": "W999999999003",
+      "raw_external_id": "W999999999003",
+      "canonical_url": "https://openalex.org/W999999999003",
+      "kind": "article",
+      "title": "Synthetic sodium-ion binder comparison",
+      "publication_date": "2025-03-12",
+      "sections": [
+        {
+          "name": "abstract",
+          "text": "A synthetic sodium-ion cell study compares a hard-carbon anode with two water-based cathode binders. The cell with binder B retains more capacity after 50 cycles in the fixture. These invented measurements are for retrieval tests only.",
+          "language": "en"
+        }
+      ]
+    },
+    {
+      "source": "openalex",
+      "external_id": "W999999999004",
+      "raw_external_id": "W999999999004",
+      "canonical_url": "https://openalex.org/W999999999004",
+      "kind": "article",
+      "title": "Синтетический тест целлюлозной мембраны",
+      "publication_date": "2025-04-13",
+      "sections": [
+        {
+          "name": "abstract",
+          "text": "Синтетический тест описывает целлюлозную мембрану с пористым керамическим покрытием. Покрытие удерживает частицы наполнителя, но испытание не измеряет срок службы. Эти вымышленные данные созданы только для теста поиска.",
+          "language": "ru"
+        }
+      ]
+    },
+    {
+      "source": "epo_ops",
+      "external_id": "ZZ9000001A1",
+      "raw_external_id": "ZZ.9000001.A1",
+      "canonical_url": "https://worldwide.espacenet.com/patent/search?q=pn%3DZZ9000001A1",
+      "kind": "patent",
+      "title": "Synthetic phase-change thermal storage module",
+      "publication_date": null,
+      "sections": [
+        {
+          "name": "abstract",
+          "text": "A thermal storage module places a sealed phase-change salt pack inside a graphite shell. The shell spreads heat to an aluminum fin array during discharge. The module stores heat from a solar collector for release after sunset.",
+          "language": null
+        }
+      ]
+    },
+    {
+      "source": "epo_ops",
+      "external_id": "ZZ9000002A1",
+      "raw_external_id": "ZZ.9000002.A1",
+      "canonical_url": "https://worldwide.espacenet.com/patent/search?q=pn%3DZZ9000002A1",
+      "kind": "patent",
+      "title": "Synthetic silica aerogel pipe coating",
+      "publication_date": null,
+      "sections": [
+        {
+          "name": "abstract",
+          "text": "A silica aerogel layer covers the outside of a stainless steel pipe. A porous ceramic mesh supports the layer and limits cracking during thermal cycling. The coating reduces heat loss in the synthetic test rig.",
+          "language": null
+        }
+      ]
+    },
+    {
+      "source": "epo_ops",
+      "external_id": "ZZ9000003A1",
+      "raw_external_id": "ZZ.9000003.A1",
+      "canonical_url": "https://worldwide.espacenet.com/patent/search?q=pn%3DZZ9000003A1",
+      "kind": "patent",
+      "title": "Synthetic sodium-ion cell and cathode binder",
+      "publication_date": null,
+      "sections": [
+        {
+          "name": "abstract",
+          "text": "A sodium-ion cell uses a hard-carbon anode and a Prussian-blue cathode. A water-based binder holds cathode particles on an aluminum current collector. The synthetic test module operates at room temperature.",
+          "language": null
+        }
+      ]
+    },
+    {
+      "source": "epo_ops",
+      "external_id": "ZZ9000004A1",
+      "raw_external_id": "ZZ.9000004.A1",
+      "canonical_url": "https://worldwide.espacenet.com/patent/search?q=pn%3DZZ9000004A1",
+      "kind": "patent",
+      "title": "Synthetic cellulose filtration membrane",
+      "publication_date": null,
+      "sections": [
+        {
+          "name": "abstract",
+          "text": "A cellulose membrane separates two liquid chambers in a synthetic filtration cell. A porous ceramic coating traps filler particles while water passes through the membrane. The fixture contains no measurements of service life.",
+          "language": null
+        }
+      ]
+    }
+  ]
+}

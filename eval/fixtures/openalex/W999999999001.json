@@ -1,0 +1,104 @@
+{
+  "id": "https://openalex.org/W999999999001",
+  "title": "Synthetic bench study of phase-change heat release",
+  "abstract_inverted_index": {
+    "The": [
+      0
+    ],
+    "synthetic": [
+      1
+    ],
+    "bench": [
+      2
+    ],
+    "study": [
+      3
+    ],
+    "measures": [
+      4
+    ],
+    "heat": [
+      5
+    ],
+    "release": [
+      6
+    ],
+    "from": [
+      7
+    ],
+    "a": [
+      8,
+      14
+    ],
+    "phase-change": [
+      9
+    ],
+    "salt": [
+      10
+    ],
+    "pack": [
+      11
+    ],
+    "surrounded": [
+      12
+    ],
+    "by": [
+      13
+    ],
+    "graphite": [
+      15
+    ],
+    "enclosure.": [
+      16
+    ],
+    "A": [
+      17
+    ],
+    "fin": [
+      18
+    ],
+    "array": [
+      19
+    ],
+    "reduces": [
+      20
+    ],
+    "temperature": [
+      21
+    ],
+    "variation": [
+      22
+    ],
+    "during": [
+      23
+    ],
+    "discharge.": [
+      24
+    ],
+    "No": [
+      25
+    ],
+    "outdoor": [
+      26
+    ],
+    "performance": [
+      27
+    ],
+    "is": [
+      28
+    ],
+    "reported.": [
+      29
+    ]
+  },
+  "publication_date": "2025-01-10",
+  "updated_date": null,
+  "doi": null,
+  "primary_location": null,
+  "language": "en",
+  "authorships": [],
+  "topics": [],
+  "referenced_works": [],
+  "cited_by_count": 0,
+  "fixture_origin": "synthetic; not an OpenAlex record"
+}

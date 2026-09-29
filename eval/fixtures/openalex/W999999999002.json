@@ -1,0 +1,102 @@
+{
+  "id": "https://openalex.org/W999999999002",
+  "title": "Synthetic study of reinforced silica coatings",
+  "abstract_inverted_index": {
+    "This": [
+      0
+    ],
+    "synthetic": [
+      1
+    ],
+    "materials": [
+      2
+    ],
+    "study": [
+      3,
+      25
+    ],
+    "tests": [
+      4
+    ],
+    "a": [
+      5,
+      10
+    ],
+    "silica": [
+      6
+    ],
+    "aerogel": [
+      7
+    ],
+    "coating": [
+      8
+    ],
+    "on": [
+      9
+    ],
+    "stainless": [
+      11
+    ],
+    "steel": [
+      12
+    ],
+    "tube.": [
+      13
+    ],
+    "Ceramic": [
+      14
+    ],
+    "mesh": [
+      15
+    ],
+    "reinforcement": [
+      16
+    ],
+    "reduces": [
+      17
+    ],
+    "visible": [
+      18
+    ],
+    "cracks": [
+      19
+    ],
+    "after": [
+      20
+    ],
+    "repeated": [
+      21
+    ],
+    "thermal": [
+      22
+    ],
+    "cycles.": [
+      23
+    ],
+    "The": [
+      24
+    ],
+    "reports": [
+      26
+    ],
+    "no": [
+      27
+    ],
+    "full-scale": [
+      28
+    ],
+    "installation.": [
+      29
+    ]
+  },
+  "publication_date": "2025-02-11",
+  "updated_date": null,
+  "doi": null,
+  "primary_location": null,
+  "language": "en",
+  "authorships": [],
+  "topics": [],
+  "referenced_works": [],
+  "cited_by_count": 0,
+  "fixture_origin": "synthetic; not an OpenAlex record"
+}

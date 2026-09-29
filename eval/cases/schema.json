@@ -1,0 +1,254 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://graph-based-rag.invalid/eval/cases/eval.case.v1.schema.json",
+  "title": "EVAL-000 development case",
+  "description": "Один синтетический retrieval-кейс dev split. Source status описывает fixture-сценарий для каждого адаптера.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "case_id",
+    "split",
+    "scenario",
+    "query",
+    "provenance",
+    "expected"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "eval.case.v1"
+    },
+    "case_id": {
+      "type": "string",
+      "pattern": "^EVAL000-DEV-[0-9]{3}$"
+    },
+    "split": {
+      "const": "dev"
+    },
+    "scenario": {
+      "enum": [
+        "single_source",
+        "multi_source",
+        "empty",
+        "partial",
+        "unicode_offsets"
+      ]
+    },
+    "query": {
+      "type": "string",
+      "minLength": 8
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "corpus_id",
+        "origin",
+        "license_spdx",
+        "contains_external_source_text",
+        "contains_personal_data"
+      ],
+      "properties": {
+        "corpus_id": {
+          "const": "EVAL-000-SYNTHETIC-1"
+        },
+        "origin": {
+          "const": "synthetic"
+        },
+        "license_spdx": {
+          "const": "CC0-1.0"
+        },
+        "contains_external_source_text": {
+          "const": false
+        },
+        "contains_personal_data": {
+          "const": false
+        }
+      }
+    },
+    "expected": {
+      "type": "object",
+      "additionalProperties": false,
+        "required": [
+          "coverage",
+          "source_status",
+          "expected_source_ids",
+          "omitted_source_ids",
+          "spans"
+      ],
+      "properties": {
+        "coverage": {
+          "enum": [
+            "complete",
+            "no_evidence",
+            "partial"
+          ]
+        },
+        "source_status": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "epo_ops",
+            "openalex"
+          ],
+          "properties": {
+            "epo_ops": {
+              "enum": [
+                "ok",
+                "empty",
+                "unavailable"
+              ]
+            },
+            "openalex": {
+              "enum": [
+                "ok",
+                "empty",
+                "unavailable"
+              ]
+            }
+          }
+        },
+        "expected_source_ids": {
+          "$ref": "#/$defs/sourceIds"
+        },
+        "omitted_source_ids": {
+          "$ref": "#/$defs/sourceIds"
+        },
+        "spans": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/span"
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sourceIds": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^(ZZ[0-9]{7}A1|W999999999[0-9]{3})$"
+      }
+    },
+    "span": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_id",
+        "section",
+        "chunk_ordinal",
+        "start",
+        "end",
+        "quote"
+      ],
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "pattern": "^(ZZ[0-9]{7}A1|W999999999[0-9]{3})$"
+        },
+        "section": {
+          "type": "string",
+          "const": "abstract"
+        },
+        "chunk_ordinal": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "start": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "quote": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "expected": {
+            "properties": {
+              "coverage": {
+                "const": "no_evidence"
+              }
+            },
+            "required": [
+              "coverage"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "expected": {
+            "properties": {
+              "expected_source_ids": {
+                "maxItems": 0
+              },
+              "omitted_source_ids": {
+                "maxItems": 0
+              },
+              "spans": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "expected": {
+            "properties": {
+              "coverage": {
+                "const": "partial"
+              }
+            },
+            "required": [
+              "coverage"
+            ]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "expected": {
+            "properties": {
+              "omitted_source_ids": {
+                "minItems": 1
+              },
+              "source_status": {
+                "anyOf": [
+                  {
+                    "properties": {
+                      "epo_ops": {
+                        "const": "unavailable"
+                      }
+                    }
+                  },
+                  {
+                    "properties": {
+                      "openalex": {
+                        "const": "unavailable"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

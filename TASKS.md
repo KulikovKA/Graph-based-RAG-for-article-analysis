@@ -113,7 +113,7 @@ flowchart LR
 | SRC-001 | 3 EPO | P0 | Sol / High | DB-002 | выполнена |
 | SRC-002 | 3 OpenAlex | P0 | Sol / Medium | DB-002 | выполнена |
 | ING-001 | 3 Ingestion | P0 | Sol / High | SRC-001,SRC-002 | выполнена |
-| EVAL-000 | Мини-набор для разработки retrieval | P0 | Sol / Medium | ING-001 | ожидает |
+| EVAL-000 | Мини-набор для разработки retrieval | P0 | Sol / Medium | ING-001 | выполнена |
 | IDX-001 | 4 Qdrant | P0 | Sol / Medium | ING-001,LLM-002 | ожидает |
 | GRAPH-001 | 4 Neo4j | P0 | Sol / High | ING-001,IDX-001,LLM-002 | ожидает |
 | LR-001 | 4 LightRAG | P1 | Sol / High | GRAPH-001,LLM-002,ARCH-001 | ожидает |
@@ -224,6 +224,7 @@ flowchart LR
 - **Depends / priority:** ING-001; P0. **Files:** eval/cases/schema.json, eval/fixtures/, eval/cases/dev_smoke.jsonl. **References:** docs/EVALUATION.md, docs/DATA_MODEL.md.
 - **Сделать:** 10 synthetic/licensed dev cases и маленький frozen corpus, expected external source IDs/spans, cases для пустого/частичного поиска. **Приёмка/тесты:** fixtures нормализуются ING-001, expected spans существуют; provenance/license записаны, нет личных данных; dev IDs зарезервированы и не попадут в holdout. **Не делать:** не собирать 100-case corpus или запускать judge.
 - **Context:** EVALUATION/DATA_MODEL, fixtures ING-001. **Модель:** Sol/Medium. **Размер:** M, 1–2 ч, review 25 мин. **Риск:** качество разметки.
+- **Результат (2026-09-29):** добавлены 10 синтетических dev cases и frozen corpus из 8 документов под CC0-1.0; в JSONL размечены 19 точных spans, включая empty, partial и Unicode offsets. Manifest хранит provenance, SHA-256 fixtures и резервирует `EVAL000-DEV-*` и синтетические source IDs только за dev. Проверки: schema/JSONL и spans прошли; 8 fixtures прошли EPO/OpenAlex parser и ING normalizer; `pytest tests/unit/test_ingestion_normalization.py` — 3 passed.
 
 ### IDX-001 — Qdrant индекс и embedding versioning
 

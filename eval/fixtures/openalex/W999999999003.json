@@ -1,0 +1,120 @@
+{
+  "id": "https://openalex.org/W999999999003",
+  "title": "Synthetic sodium-ion binder comparison",
+  "abstract_inverted_index": {
+    "A": [
+      0
+    ],
+    "synthetic": [
+      1
+    ],
+    "sodium-ion": [
+      2
+    ],
+    "cell": [
+      3,
+      15
+    ],
+    "study": [
+      4
+    ],
+    "compares": [
+      5
+    ],
+    "a": [
+      6
+    ],
+    "hard-carbon": [
+      7
+    ],
+    "anode": [
+      8
+    ],
+    "with": [
+      9,
+      16
+    ],
+    "two": [
+      10
+    ],
+    "water-based": [
+      11
+    ],
+    "cathode": [
+      12
+    ],
+    "binders.": [
+      13
+    ],
+    "The": [
+      14
+    ],
+    "binder": [
+      17
+    ],
+    "B": [
+      18
+    ],
+    "retains": [
+      19
+    ],
+    "more": [
+      20
+    ],
+    "capacity": [
+      21
+    ],
+    "after": [
+      22
+    ],
+    "50": [
+      23
+    ],
+    "cycles": [
+      24
+    ],
+    "in": [
+      25
+    ],
+    "the": [
+      26
+    ],
+    "fixture.": [
+      27
+    ],
+    "These": [
+      28
+    ],
+    "invented": [
+      29
+    ],
+    "measurements": [
+      30
+    ],
+    "are": [
+      31
+    ],
+    "for": [
+      32
+    ],
+    "retrieval": [
+      33
+    ],
+    "tests": [
+      34
+    ],
+    "only.": [
+      35
+    ]
+  },
+  "publication_date": "2025-03-12",
+  "updated_date": null,
+  "doi": null,
+  "primary_location": null,
+  "language": "en",
+  "authorships": [],
+  "topics": [],
+  "referenced_works": [],
+  "cited_by_count": 0,
+  "fixture_origin": "synthetic; not an OpenAlex record"
+}
