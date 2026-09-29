@@ -119,7 +119,7 @@ flowchart LR
 | IDX-001 | 4 Qdrant | P0 | Sol / Medium | ING-001,LLM-002 | ожидает |
 | GRAPH-001 | 4 Neo4j | P0 | Sol / High | ING-001,IDX-001,LLM-002 | ожидает |
 | LR-001 | 4 LightRAG | P1 | Sol / High | GRAPH-001,LLM-002,ARCH-001 | ожидает |
-| LLM-001 | 5 Inference | P0 | Sol / High | INFRA-001 | ожидает |
+| LLM-001 | 5 Inference | P0 | Sol / High | INFRA-001 | выполнена |
 | LLM-002 | Выбор локальных весов и CPU smoke | P0 | Sol / High | LLM-001 | ожидает |
 | PLAN-001 | 5 Planner | P0 | Sol / High | LLM-001,DB-002 | ожидает |
 | STATE-001 | 8 Memory/cache | P0 | Sol / Medium | DB-002 | ожидает |
