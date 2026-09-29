@@ -23,7 +23,7 @@ PostgreSQL — источник истины. Qdrant/Neo4j восстанавл�
 | index_catalog | id, current_generation_id | Один указатель на опубликованное поколение корпуса, transactional CAS |
 | index_members | generation_id, document_id, revision_id | PK `(generation_id,document_id)`; FK на точную revision |
 | ingestion_jobs | id, source, external_id, payload_hash, status, attempts, lease_token, lease_until?, error_code?, created_at | Повтор одного payload идемпотентен; fencing аналогичен analysis |
-| outbox_events | id, aggregate_id, kind, payload, processed_at?, attempts | Atomic с revision/fact commit; ACK по каждому consumer отдельно |
+| outbox_events / outbox_acks | event id, aggregate_id, kind, payload; `(event_id,consumer)` ACK | Atomic с revision/fact commit; независимый durable ACK каждого consumer, повторная доставка допустима |
 | eval_cases/runs/results | case ID, input, expected evidence, snapshot refs, scores, versions | Отделены от production run |
 
 ## Идея и приём сообщения

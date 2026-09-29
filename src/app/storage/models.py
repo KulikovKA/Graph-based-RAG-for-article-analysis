@@ -601,6 +601,20 @@ class OutboxEvent(Base):
     processed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
 
+class OutboxAck(Base):
+    """A consumer's durable acknowledgement of one outbox event."""
+
+    __tablename__ = "outbox_acks"
+
+    event_id: Mapped[UUID] = mapped_column(
+        ForeignKey("outbox_events.id", ondelete="CASCADE"), primary_key=True
+    )
+    consumer: Mapped[str] = mapped_column(String(128), primary_key=True)
+    acknowledged_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+
+
 class EvalCase(Base):
     __tablename__ = "eval_cases"
 

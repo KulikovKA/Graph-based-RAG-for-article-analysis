@@ -109,7 +109,7 @@ flowchart LR
 | SKEL-001 | 1 Каркас | P0 | Sol / Medium | ARCH-002 | выполнена |
 | INFRA-001 | 2 Инфраструктура | P0 | Sol / Medium | SKEL-001 | выполнена |
 | DB-001 | 2 Данные | P0 | Sol / Medium | INFRA-001 | выполнена |
-| DB-002 | Репозитории, outbox и lease primitives | P0 | Sol / High | DB-001 | ожидает |
+| DB-002 | Репозитории, outbox и lease primitives | P0 | Sol / High | DB-001 | выполнена |
 | SRC-001 | 3 EPO | P0 | Sol / High | DB-002 | ожидает |
 | SRC-002 | 3 OpenAlex | P0 | Sol / Medium | DB-002 | ожидает |
 | ING-001 | 3 Ingestion | P0 | Sol / High | SRC-001,SRC-002 | ожидает |
@@ -186,6 +186,7 @@ flowchart LR
 
 ### DB-002 — Репозитории, outbox и lease primitives
 
+- **Результат (2026-09-29):** owner-scoped read/accept, сериализованный приём run с idempotency и проверкой версии, однократный CAS idea version, lease claim/heartbeat/fenced completion, per-consumer outbox ACK и миграция `0002_outbox_acks`. В изолированном PostgreSQL прошли тесты повторного ключа, чужого владельца, версии, истёкшего lease, независимых ACK и FK на referenced chunk; Ruff и mypy прошли. Публикация проверяется по `task.md`.
 - **Цель/зачем:** закрепить транзакционные invariants до интеграций
 - **Depends / priority:** DB-001; P0. **Files:** src/app/storage/repositories.py, src/app/storage/jobs.py, tests/integration/test_db.py. **References:** docs/DATA_MODEL.md, docs/MEMORY_AND_CACHE.md.
 - **Сделать:** owner-scoped repositories, CAS version, idempotency, outbox ACK, lease fencing. **Приёмка/тесты:** одинаковый key/body возвращает один run, иной body даёт conflict; stale lease не пишет результат; чужой owner не читает запись; referenced chunk не удаляется. **Не делать:** не оркестрировать весь analysis pipeline.
