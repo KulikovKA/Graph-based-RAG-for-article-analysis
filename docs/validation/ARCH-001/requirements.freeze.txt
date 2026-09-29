@@ -1,4 +1,4 @@
-# Observed Linux/Python 3.12 smoke environment; install LightRAG from donors.lock.json separately.
+# Зафиксированное окружение проверки Linux/Python 3.12; LightRAG из donors.lock.json устанавливается отдельно.
 aiohappyeyeballs==2.7.1
 aiohttp==3.14.3
 aiosignal==1.4.0

@@ -1,1 +1,1 @@
-"""Framework independent domain contracts."""
+"""Контракты предметной области, независимые от фреймворка."""

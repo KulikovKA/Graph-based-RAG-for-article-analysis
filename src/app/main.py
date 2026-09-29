@@ -1,4 +1,4 @@
-"""FastAPI application factory with no startup side effects."""
+"""Фабрика приложения FastAPI без побочных эффектов при запуске."""
 
 from fastapi import FastAPI
 

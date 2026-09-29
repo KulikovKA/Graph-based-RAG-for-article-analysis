@@ -1,4 +1,4 @@
-"""Disposable ARCH-001 donor probe; no application code or real model calls."""
+"""Временная проверка доноров ARCH-001 без кода приложения и вызовов модели."""
 import asyncio
 import hashlib
 import json
@@ -24,7 +24,7 @@ class CharacterTokenizer:
 
 
 async def embed(texts):
-    # Constant vectors deliberately test plumbing, never retrieval relevance.
+    # Постоянные векторы проверяют интеграцию, а не релевантность поиска.
     return np.tile(np.array([1, 0, 0, 0], dtype=np.float32), (len(texts), 1))
 
 
@@ -117,7 +117,7 @@ async def main():
         assert not isolated.get("data", {}).get("chunks")
         report["checks"]["second_workspace_empty"] = True
 
-        # Document the donor's provenance counterexamples in a separate workspace.
+        # Контрпримеры происхождения данных донора проверяются в отдельном рабочем пространстве.
         probe = make_rag("provenance")
         await probe.initialize_storages()
         try:

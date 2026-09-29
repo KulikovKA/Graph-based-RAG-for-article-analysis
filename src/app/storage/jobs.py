@@ -1,7 +1,7 @@
-"""Durable job leases, fenced writes and per-consumer outbox acknowledgements.
+"""Постоянные аренды заданий, защита записей и подтверждения outbox по потребителям.
 
-Methods use the caller's transaction; callers commit only after all related rows
-have been written. A lease token is valid only while its deadline is in the future.
+Методы работают в транзакции вызывающего кода; её фиксируют после записи всех
+связанных строк. Токен аренды действует только до истечения её срока.
 """
 
 from datetime import timedelta
@@ -108,7 +108,7 @@ class JobRepository:
         return True
 
     def request_cancel(self, run_id: UUID, *, owner_id: UUID) -> bool:
-        # Match claim/complete lock order, so cancellation cannot race publication.
+        # Порядок блокировок совпадает с захватом и завершением, исключая гонку отмены и публикации.
         job = self.session.scalar(
             select(AnalysisJob).where(AnalysisJob.run_id == run_id).with_for_update()
         )

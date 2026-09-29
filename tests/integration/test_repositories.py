@@ -1,4 +1,4 @@
-"""Transactional repository invariants against an isolated PostgreSQL schema."""
+"""Проверки транзакционных инвариантов репозиториев в изолированной схеме PostgreSQL."""
 
 import os
 from datetime import timedelta

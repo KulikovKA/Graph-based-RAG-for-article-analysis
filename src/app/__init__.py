@@ -1,1 +1,1 @@
-"""Application package for article analysis."""
+"""Пакет приложения для анализа статей."""

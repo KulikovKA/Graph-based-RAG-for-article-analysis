@@ -1,4 +1,4 @@
-"""Bootstrap liveness/readiness endpoints; detailed capability health is added with infra."""
+"""Начальные проверки доступности; подробная проверка зависимостей появится позже."""
 
 from collections.abc import Mapping
 
@@ -14,6 +14,6 @@ async def liveness() -> dict[str, str]:
 
 @router.get("/health/ready", include_in_schema=True)
 async def readiness(response: Response) -> Mapping[str, str]:
-    # Bootstrap has no durable stores yet. Do not imply dependency readiness.
+    # Постоянные хранилища пока не подключены; готовность зависимостей не подтверждена.
     response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
     return {"status": "not_ready", "reason": "dependencies_not_configured"}

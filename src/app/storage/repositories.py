@@ -1,4 +1,4 @@
-"""Database engine and session setup shared by API and workers."""
+"""Настройка движка БД и сессий для API и фоновых обработчиков."""
 
 from typing import Any
 from uuid import UUID
@@ -20,19 +20,19 @@ from app.storage.models import (
 
 
 def make_engine(database_url: str, *, pool_pre_ping: bool = True) -> Engine:
-    """Create a SQLAlchemy engine, normalizing PostgreSQL URLs to psycopg 3."""
+    """Создать движок SQLAlchemy, приводя адрес PostgreSQL к формату psycopg 3."""
     if database_url.startswith("postgresql://"):
         database_url = database_url.replace("postgresql://", "postgresql+psycopg://", 1)
     return create_engine(database_url, pool_pre_ping=pool_pre_ping)
 
 
 def make_session_factory(engine: Engine) -> sessionmaker[Session]:
-    """Return a factory for non-expiring synchronous sessions."""
+    """Вернуть фабрику синхронных сессий без сброса объектов после commit."""
     return sessionmaker(bind=engine, autoflush=False, expire_on_commit=False)
 
 
 class RepositoryConflict(Exception):
-    """The request cannot be applied to the current durable state."""
+    """Запрос несовместим с текущим состоянием в БД."""
 
 
 class IdempotencyConflict(RepositoryConflict):
@@ -48,10 +48,10 @@ class ActiveRunConflict(RepositoryConflict):
 
 
 class OwnedRepository:
-    """Owner-scoped operations within a caller-managed transaction.
+    """Операции с проверкой владельца в транзакции вызывающего кода.
 
-    The caller commits the session. Locking the conversation serializes accepts and
-    idea updates, including the first idea version before an Idea row exists.
+    Вызывающий код фиксирует сессию. Блокировка диалога упорядочивает приём
+    запросов и обновление идеи, включая создание первой версии.
     """
 
     def __init__(self, session: Session) -> None:

@@ -1,4 +1,4 @@
-"""Idle worker entrypoint until durable jobs arrive in JOB-001."""
+"""Точка входа простаивающего обработчика до появления заданий в JOB-001."""
 
 import signal
 import time

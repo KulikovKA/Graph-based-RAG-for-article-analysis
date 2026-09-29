@@ -1,7 +1,7 @@
-"""SQLAlchemy schema for durable application state.
+"""Схема SQLAlchemy для постоянного состояния приложения.
 
-Cross-row invariants are expressed as PostgreSQL constraints wherever possible. The
-baseline migration snapshots this metadata; later changes use new Alembic revisions.
+Межстрочные инварианты по возможности заданы ограничениями PostgreSQL. Начальная
+миграция фиксирует эту схему; последующие изменения оформляются миграциями Alembic.
 """
 
 from datetime import UTC, date, datetime
@@ -602,7 +602,7 @@ class OutboxEvent(Base):
 
 
 class OutboxAck(Base):
-    """A consumer's durable acknowledgement of one outbox event."""
+    """Постоянное подтверждение события outbox отдельным потребителем."""
 
     __tablename__ = "outbox_acks"
 

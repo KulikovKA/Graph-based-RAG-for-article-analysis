@@ -1,1 +1,1 @@
-"""HTTP API adapters."""
+"""Адаптеры HTTP API."""

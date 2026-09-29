@@ -1,4 +1,4 @@
-"""Small, deterministic redaction helpers for structured logs."""
+"""Простые детерминированные функции скрытия данных в структурированных логах."""
 
 import re
 from collections.abc import Mapping
@@ -9,7 +9,7 @@ _BEARER = re.compile(r"(?i)\bBearer\s+\S+")
 
 
 def redact(value: Any) -> Any:
-    """Redact sensitive fields and bearer credentials without logging request bodies."""
+    """Скрыть секретные поля и токены, не записывая тело запроса в лог."""
     if isinstance(value, Mapping):
         return {key: "[REDACTED]" if _SENSITIVE_KEY.search(str(key)) else redact(item)
                 for key, item in value.items()}

@@ -1,1 +1,1 @@
-"""External system adapters."""
+"""Адаптеры внешних систем."""

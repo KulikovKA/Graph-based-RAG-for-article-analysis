@@ -1,4 +1,4 @@
-"""Validate planning metadata and source pins; does not test application behavior."""
+"""Проверка плана и закреплённых версий источников без проверки работы приложения."""
 import argparse
 import hashlib
 import json
@@ -72,7 +72,7 @@ def check(online=False):
     manifest = json.loads((ROOT/'docs/donors.lock.json').read_text(encoding='utf-8'))
     pinned_urls = {f['url'] for d in manifest['donors'] for f in d['files']}
     link_count = 0
-    # Historical ARCH-001 report is immutable evidence, included in link validation.
+    # Исторический отчёт ARCH-001 неизменяем и участвует в проверке ссылок.
     docs = [ROOT/'README.md', ROOT/'TASKS.md', ROOT/'task.md', *sorted((ROOT/'docs').rglob('*.md'))]
     for path in docs:
         content = path.read_text(encoding='utf-8')

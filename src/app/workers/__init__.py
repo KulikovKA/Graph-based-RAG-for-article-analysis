@@ -1,1 +1,1 @@
-"""Background worker entrypoints."""
+"""Точки входа фоновых обработчиков."""

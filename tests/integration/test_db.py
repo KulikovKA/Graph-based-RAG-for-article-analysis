@@ -1,4 +1,4 @@
-"""PostgreSQL migration and constraint checks run only in an isolated schema."""
+"""Проверки миграций и ограничений PostgreSQL в изолированной схеме."""
 
 import os
 from uuid import uuid4

@@ -1,4 +1,4 @@
-"""Durable acknowledgements for independent outbox consumers."""
+"""Постоянные подтверждения для независимых потребителей outbox."""
 
 import sqlalchemy as sa
 from alembic import op

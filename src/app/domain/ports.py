@@ -1,4 +1,4 @@
-"""Dependency inversion ports shared by services and adapters."""
+"""Общие интерфейсы сервисов и адаптеров для инверсии зависимостей."""
 
 from typing import Protocol
 

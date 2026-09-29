@@ -1,1 +1,1 @@
-"""Persistence adapters and repositories."""
+"""Адаптеры хранения и репозитории."""

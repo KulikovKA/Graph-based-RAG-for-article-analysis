@@ -1,4 +1,4 @@
-"""Shared v1 DTOs. Business rules and persistence are intentionally out of scope here."""
+"""Общие DTO версии v1; бизнес-правила и хранение определены в других модулях."""
 
 from datetime import datetime
 from typing import Literal

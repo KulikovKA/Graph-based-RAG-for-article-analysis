@@ -1,4 +1,4 @@
-"""Initial durable PostgreSQL schema snapshot; do not edit after release."""
+"""Снимок начальной схемы PostgreSQL; после публикации не менять её DDL."""
 
 from alembic import op
 
