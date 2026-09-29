@@ -21,4 +21,4 @@
 - [Развёртывание](docs/DEPLOYMENT.md), [безопасность](docs/SECURITY.md), [оценка качества](docs/EVALUATION.md)
 - [ARCH-002: замечания, исправления и проверка согласованности](docs/ARCH_REVIEW.md)
 
-Planning baseline после ARCH-001/ARCH-002: 2026-09-29. Следующая задача — SKEL-001. Перед реализацией интеграций проверяйте актуальные версии API и условия источников; завершённый planning review не означает готовность production-системы.
+Planning baseline после ARCH-001/ARCH-002: 2026-09-29. Каркас и Compose bootstrap описаны в [TASKS.md](TASKS.md) и [документации развёртывания](docs/DEPLOYMENT.md). Следующая задача — DB-001. Перед реализацией интеграций проверяйте актуальные версии API и условия источников; завершённый planning review не означает готовность production-системы.
