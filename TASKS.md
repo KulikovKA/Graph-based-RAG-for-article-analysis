@@ -126,7 +126,7 @@ flowchart LR
 | RET-001 | 6 Retrieval | P0 | Sol / High | IDX-001,GRAPH-001 | выполнена |
 | RANK-001 | 6 Reranking | P0 | Sol / Medium | RET-001,LLM-002,EVAL-000 | выполнена |
 | ANALYST-001 | 7 Analyst | P0 | Sol / High | RANK-001,LLM-002 | выполнена |
-| JOB-001 | 8 Jobs | P0 | Sol / High | PLAN-001,STATE-001,ANALYST-001 | ожидает публикации |
+| JOB-001 | 8 Jobs | P0 | Sol / High | PLAN-001,STATE-001,ANALYST-001 | выполнена |
 | JOB-002 | Проверенная публикация результата и SSE replay | P0 | Sol / High | JOB-001 | ожидает |
 | AUTH-001 | 12 Multi-user/security | P0 | Sol / High | STATE-001 | ожидает |
 | API-001 | 9 API | P0 | Sol / Medium | JOB-002,AUTH-001 | ожидает |
@@ -325,7 +325,7 @@ flowchart LR
 
 ### JOB-001 — Оркестрация analysis jobs
 
-- **Результат (2026-09-30; ожидает публикации):** добавлены PostgreSQL polling worker с lease heartbeat/fencing/bounded retry, последовательный Planner → retrieval/dedup → rerank/pack → Analyst pipeline, сохранение Planner CAS и неизменяемого evidence snapshot до генерации, typed progress callbacks и проверка Analyst bundle. Проверено: повторный ключ использует существующий run; после рестарта planner patch не повторяется; устаревшая lease и поздний ответ не завершают run; cancel работает во время load/reasoning/final output/repair; timeout даёт только валидированный safe fallback. PostgreSQL integration: 12 passed; pytest unit/contract/jobs: passed (5 PostgreSQL tests skipped без TEST_DATABASE_URL); Ruff, mypy, Compose config и сборка worker image прошли.
+- **Результат (2026-09-30):** добавлены PostgreSQL polling worker с lease heartbeat/fencing/bounded retry, последовательный Planner → retrieval/dedup → rerank/pack → Analyst pipeline, сохранение Planner CAS и неизменяемого evidence snapshot до генерации, typed progress callbacks и проверка Analyst bundle. Проверено: повторный ключ использует существующий run; после рестарта planner patch не повторяется; устаревшая lease и поздний ответ не завершают run; cancel работает во время load/reasoning/final output/repair; timeout даёт только валидированный safe fallback. PostgreSQL integration: 12 passed; pytest unit/contract/jobs: passed (5 PostgreSQL tests skipped без TEST_DATABASE_URL); Ruff, mypy, Compose config и сборка worker image прошли. Коммит `628e8ad681447867e5f3933a939a215367a75946` опубликован; SHA `origin/main` проверен и совпал.
 
 - **Дополнение ADR-011 / приёмка:** определить typed stage/progress callbacks для JOB-002 без зависимости на SSE transport; counts происходят из Planner CAS/retrieval dedup/final packing. Sequential Planner→retrieval→Analyst lifecycle, deadline включает загрузку/repair, lease heartbeat не блокируется reasoning. Тестировать cancel при load/reasoning/final-output/repair, provider timeout после thinking до JSON, late response и crash перед результатом. Ни частичный JSON, ни reasoning не становятся fallback. Общий generation slot не переиспользуется до остановки backend. Контракт результата — проверенный bundle Analyst, terminal state не ждёт delivery клиенту.
 
