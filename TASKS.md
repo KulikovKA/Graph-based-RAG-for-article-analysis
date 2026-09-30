@@ -2,7 +2,7 @@
 
 Статус документа: planning baseline от 2026-09-29. Здесь нет отметок «выполнено» для будущей реализации. После любой завершённой задачи обязателен отдельный commit и **успешный push** в `https://github.com/KulikovKA/Graph-based-RAG-for-article-analysis`; до проверки удалённого коммита статус остаётся «ожидает публикации». Это же правило изложено в [task.md](task.md).
 
-Изменение baseline 2026-09-29: [ADR-011](docs/DECISIONS.md#adr-011--reasoning-analyst-и-validated-streaming-2026-09-29-accepted-planning), [adversarial review](docs/REASONING_STREAMING_REVIEW.md). Выбран AnalysisV1 → deterministic AnswerV1/public summary → atomic commit → SSE. Analyst заменён на `gemma4:26b-a4b-it-mtp-q4_K_M`; повторные LLM-002 и RANK-001 завершены 2026-09-30. GPT-OSS результаты сохранены как исторические. Следующая задача — ANALYST-001; порядок DAG прежний. Дополнения ADR-011 нормативны для будущей реализации. DB-001/002 остаются исторически завершёнными; следующая миграция projections и atomic publication входят в JOB-002.
+Изменение baseline 2026-09-29: [ADR-011](docs/DECISIONS.md#adr-011--reasoning-analyst-и-validated-streaming-2026-09-29-accepted-planning), [adversarial review](docs/REASONING_STREAMING_REVIEW.md). Выбран AnalysisV1 → deterministic AnswerV1/public summary → atomic commit → SSE. Analyst заменён на `gemma4:26b-a4b-it-mtp-q4_K_M`; повторные LLM-002, RANK-001 и ANALYST-001 завершены 2026-09-30. GPT-OSS результаты сохранены как исторические. Порядок DAG прежний. Дополнения ADR-011 нормативны для будущей реализации. DB-001/002 остаются исторически завершёнными; следующая миграция projections и atomic publication входят в JOB-002.
 
 ## Шаблон задания агенту
 
@@ -125,7 +125,7 @@ flowchart LR
 | STATE-001 | 8 Memory/cache | P0 | Sol / Medium | DB-002 | выполнена |
 | RET-001 | 6 Retrieval | P0 | Sol / High | IDX-001,GRAPH-001 | выполнена |
 | RANK-001 | 6 Reranking | P0 | Sol / Medium | RET-001,LLM-002,EVAL-000 | выполнена |
-| ANALYST-001 | 7 Analyst | P0 | Sol / High | RANK-001,LLM-002 | ожидает |
+| ANALYST-001 | 7 Analyst | P0 | Sol / High | RANK-001,LLM-002 | выполнена |
 | JOB-001 | 8 Jobs | P0 | Sol / High | PLAN-001,STATE-001,ANALYST-001 | ожидает |
 | JOB-002 | Проверенная публикация результата и SSE replay | P0 | Sol / High | JOB-001 | ожидает |
 | AUTH-001 | 12 Multi-user/security | P0 | Sol / High | STATE-001 | ожидает |
@@ -321,6 +321,7 @@ flowchart LR
 - **Сделать:** typed evidence set и draft output, validator на uncited assertions, phantom citations и fabricated quotes; при провале один repair attempt; после второго провала deterministic safe fallback. Архитектурный принцип: **LLM drafts → deterministic citation/evidence validator → repair once → deterministic safe fallback**. Это reference pattern, а не требование копировать реализацию 1:1. **Приёмка/тесты:** несуществующий evidence ID, uncited assertion и quote absent from evidence отвергнуты; ровно один repair; fallback ссылается только на evidence snapshot; partial corpus помечен; ответ не объявляет юридическую новизну; long evidence урезается budget. **Не делать:** не принимать свободный текст модели как финальный без проверки ссылок.
 - **Context:** три названных docs и analyst/evidence/provider modules. **Модель:** Sol/High. **Размер:** L, 2–3 ч, review 45 мин. **Риск:** галлюцинации с внешне валидными ссылками.
 - **Уточнение ARCH-002:** Использовать единый AnswerV1; limitations добавляет shell. Validator не доказывает semantic entailment; нужны русские quote/offset cases и различие timeout/cancel/invalid fallback.
+- **Результат (2026-09-30):** AnalysisV1 validator, одноразовый repair и deterministic AnswerV1/public/presentation renderer реализованы; safe fallback игнорирует rejected relations. 22 целевых и 66 unit-тестов прошли, Ruff/mypy чистые. Semantic faithfulness не доказывается структурной проверкой и зафиксирована отдельным тестом. Отчёт: [ANALYST-001](docs/validation/ANALYST-001/README.md). Publication/storage остаётся JOB-002.
 
 ### JOB-001 — Оркестрация analysis jobs
 
