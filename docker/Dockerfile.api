@@ -6,6 +6,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 WORKDIR /opt/app
 COPY pyproject.toml README.md ./
 COPY src ./src
+COPY prompts ./prompts
 COPY alembic.ini ./
 COPY migrations ./migrations
 RUN python -m pip install --no-cache-dir .

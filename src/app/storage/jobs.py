@@ -50,11 +50,13 @@ class JobRepository:
     ) -> tuple[AnalysisJob, AnalysisRun] | None:
         job = self.session.scalar(
             select(AnalysisJob).where(AnalysisJob.run_id == run_id).with_for_update()
+            .execution_options(populate_existing=True)
         )
         if job is None:
             return None
         run = self.session.scalar(
             select(AnalysisRun).where(AnalysisRun.id == run_id).with_for_update()
+            .execution_options(populate_existing=True)
         )
         assert run is not None
         if (
@@ -80,6 +82,11 @@ class JobRepository:
         job.heartbeat_at = now
         self.session.flush()
         return True
+
+    def fenced_run(self, run_id: UUID, *, worker: str, token: int) -> AnalysisRun | None:
+        """Заблокировать job/run для составной записи в транзакции вызывающего сервиса."""
+        fenced = self._fenced(run_id, worker=worker, token=token)
+        return fenced[1] if fenced is not None else None
 
     def complete(
         self,

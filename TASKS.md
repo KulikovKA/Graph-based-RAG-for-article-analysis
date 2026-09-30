@@ -121,7 +121,7 @@ flowchart LR
 | LR-001 | 4 LightRAG | P1 | Sol / High | GRAPH-001,LLM-002,ARCH-001 | ожидает |
 | LLM-001 | 5 Inference | P0 | Sol / High | INFRA-001 | выполнена |
 | LLM-002 | Выбор локальных весов и CPU smoke | P0 | Sol / High | LLM-001 | выполнена |
-| PLAN-001 | 5 Planner | P0 | Sol / High | LLM-001,DB-002 | ожидает |
+| PLAN-001 | 5 Planner | P0 | Sol / High | LLM-001,DB-002 | ожидает публикации |
 | STATE-001 | 8 Memory/cache | P0 | Sol / Medium | DB-002 | ожидает |
 | RET-001 | 6 Retrieval | P0 | Sol / High | IDX-001,GRAPH-001 | ожидает |
 | RANK-001 | 6 Reranking | P0 | Sol / Medium | RET-001,LLM-002,EVAL-000 | ожидает |
@@ -271,6 +271,8 @@ flowchart LR
 - **Context:** LLM_CONTRACTS/DEPLOYMENT, provider LLM-001, только выбранные model cards. **Модель:** Sol/High. **Размер:** M, 1–2 ч, review 30 мин. **Риск:** CPU/RAM и лицензии весов.
 
 ### PLAN-001 — Intent planner и versioned patch
+
+- **Результат (2026-09-30):** реализованы строгий PlannerV1, один repair/fallback, patch по UUID с CAS/lease и однократным planner_applied_at, semantic state hash и deterministic retrieval/reuse. Исторический explain копирует snapshot/evidence без отката текущей идеи. [Отчёт и критерии](docs/validation/PLAN-001/README.md): 57 тестов на fake inference и реальном PostgreSQL, Ruff/mypy — успешно. Статус: ожидает публикации; commit/push и удалённая сверка ещё не выполнены.
 
 - **Цель/зачем:** различать новую идею, изменение признака и вопрос к существующему evidence.
 - **Depends / priority:** LLM-001,DB-002; P0. **Files:** src/app/domain/planner.py, src/app/services/idea_state.py, prompts/planner_v1.txt, tests/unit/test_planner.py. **References:** docs/LLM_CONTRACTS.md, docs/DATA_MODEL.md.
