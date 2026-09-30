@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "task": "LLM-003",
+  "recorded_on": "2026-09-30",
+  "status": "blocked_before_comparative_benchmark",
+  "host": {
+    "os": "Windows 11 Pro",
+    "cpu": "AMD64 Family 25 Model 117, approx 3.8 GHz",
+    "physical_memory_mb": 32061,
+    "available_physical_memory_mb_at_inspection": 13634,
+    "virtual_memory_committed_mb_at_inspection": 37516,
+    "virtual_memory_limit_mb": 40588,
+    "virtual_memory_available_mb_at_inspection": 3072,
+    "gpu_acceleration_confirmed": false
+  },
+  "runtime": {
+    "ollama": "0.34.4",
+    "compose_services": "healthy_at_inspection"
+  },
+  "resource_context": {
+    "gemma4_prior_llm_002_peak_rss_bytes": 20600000000,
+    "gemma4_prior_llm_002_warm_host_swap_bytes": 5320000000,
+    "note": "Prior smoke measurement only; not an LLM-003 comparison. Current free physical and virtual memory are insufficient evidence of safe headroom for the required full role-switch protocol."
+  },
+  "candidates": {
+    "planner": [
+      {"tag": "granite4.2:3b", "digest": "40577dc168a3a9ad34e9a1234e0c2570be86097fa75a236d4574ae985705d3c4", "size_bytes": 2244023965, "quantization": "Q4_K_M"},
+      {"tag": "qwen3.5:4b-q4_K_M", "digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd", "size_bytes": 3389983735, "quantization": "Q4_K_M"},
+      {"tag": "lfm2.5:8b-a1b-q4_K_M", "digest": "9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2", "size_bytes": 5156075525, "quantization": "Q4_K_M", "role": "current_reference"}
+    ],
+    "analyst": [
+      {"tag": "lfm2.5:8b-a1b-q4_K_M", "digest": "9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2", "size_bytes": 5156075525, "quantization": "Q4_K_M"},
+      {"tag": "lfm2:24b-a2b", "digest": "d6c816d74887ed480a3afd5baa2dd2a5987ef6b359b8661e80e1e9fb3501650c", "size_bytes": 14415742358, "quantization": "Q4_K_M"},
+      {"tag": "gemma4:26b-a4b-it-mtp-q4_K_M", "digest": "001e5dafc3c77684c2307ebc6ab8e336e10c9b18eca52acf547d72fc83c3ca8c", "size_bytes": 18731025629, "quantization": "Q4_K_M", "role": "current_reference"}
+    ],
+    "graph_extractor": [
+      {"tag": "granite4.2:3b", "digest": "40577dc168a3a9ad34e9a1234e0c2570be86097fa75a236d4574ae985705d3c4", "size_bytes": 2244023965, "quantization": "Q4_K_M"},
+      {"tag": "qwen3.5:4b-q4_K_M", "digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd", "size_bytes": 3389983735, "quantization": "Q4_K_M"},
+      {"tag": "lfm2.5:8b-a1b-q4_K_M", "digest": "9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2", "size_bytes": 5156075525, "quantization": "Q4_K_M"}
+    ]
+  },
+  "benchmark": {
+    "dataset": "eval/cases/dev_smoke.jsonl is not sufficient for the required three-role gold evaluation",
+    "comparative_runs_executed": false,
+    "case_count": null,
+    "thresholds_frozen_before_runs": false,
+    "scores": null,
+    "latency": null,
+    "peak_rss": null,
+    "swap": null,
+    "reason": "No reviewed versioned gold set for all roles; host currently has 13.6 GB available RAM and only 3.0 GB virtual memory available while the prior Gemma 4 smoke peaked at 20.6 GB RSS."
+  },
+  "production_decision": {
+    "planner": null,
+    "analyst": null,
+    "graph_extractor": null,
+    "config_changed": false,
+    "mass_backfill_allowed": false
+  },
+  "acceptance": {
+    "llm_002_artifacts_preserved": true,
+    "gold_set_ready": false,
+    "hard_gates_passed": false,
+    "production_versions_pinned": false
+  }
+}
