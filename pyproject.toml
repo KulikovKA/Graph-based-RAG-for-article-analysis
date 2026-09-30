@@ -35,6 +35,9 @@ inference = [
   "torch==2.11.0",
   "transformers==5.1.0",
 ]
+lightrag = [
+  "lightrag-hku @ git+https://github.com/HKUDS/LightRAG.git@453dce83d6d0354a06e46c8d4029a0895c4e054b",
+]
 
 [tool.setuptools.packages.find]
 where = ["src"]

@@ -118,7 +118,7 @@ flowchart LR
 | EVAL-000 | Мини-набор для разработки retrieval | P0 | Sol / Medium | ING-001 | выполнена |
 | IDX-001 | 4 Qdrant | P0 | Sol / Medium | ING-001,LLM-002 | выполнена |
 | GRAPH-001 | 4 Neo4j | P0 | Sol / High | ING-001,IDX-001,LLM-002 | выполнена |
-| LR-001 | 4 LightRAG | P1 | Sol / High | GRAPH-001,LLM-002,ARCH-001 | ожидает |
+| LR-001 | 4 LightRAG | P1 | Sol / High | GRAPH-001,LLM-002,ARCH-001 | выполнена |
 | LLM-001 | 5 Inference | P0 | Sol / High | INFRA-001 | выполнена |
 | LLM-002 | Выбор локальных весов и CPU smoke | P0 | Sol / High | LLM-001 | выполнена |
 | PLAN-001 | 5 Planner | P0 | Sol / High | LLM-001,DB-002 | выполнена |
@@ -283,7 +283,7 @@ flowchart LR
 ### STATE-001 — Память, кеш и изоляция
 
 - **Цель/зачем:** durable разговор и безопасный повторный доступ к evidence.
-- **Результат (2026-09-30):** добавлены owner-scoped операции conversation/message/idea history и derived summary checkpoint поверх PostgreSQL; Redis cache keys используют HMAC tenant scope и версионированные query/idea/generation/config dimensions, сбои Redis превращаются в miss/write-skip. Unit: 2 passed; PostgreSQL integration tests пропущены, так как `TEST_DATABASE_URL` не задан.
+- **Результат (2026-09-30):** добавлены owner-scoped операции conversation/message/idea history и derived summary checkpoint поверх PostgreSQL; Redis cache keys используют HMAC tenant scope и версионированные query/idea/generation/config dimensions, сбои Redis превращаются в miss/write-skip. Unit: 2 passed; PostgreSQL integration tests пропущены, так как `TEST_DATABASE_URL` не задан. Commit/push и проверка `origin/main` — обязательный publication gate ниже.
 - **Depends / priority:** DB-002; P0. **Files:** src/app/services/conversations.py, src/app/integrations/redis_cache.py, tests/integration/test_memory.py. **References:** docs/MEMORY_AND_CACHE.md, docs/DATA_MODEL.md, docs/SECURITY.md.
 - **Сделать:** CRUD conversation/messages/versions, summary как derivation, cache keys/TTL/versioning, owner-scoped read, Redis failure fallback. **Приёмка/тесты:** две сессии не видят данные друг друга; потеря Redis не теряет состояние; старый run воспроизводит старую версию идеи/evidence. **Не делать:** не хранить transcript/idea только в Redis, не кешировать по тексту без user scope.
 - **Context:** три названных docs и conversation/cache files. **Модель:** Sol/Medium. **Размер:** M, 1–2 ч, review 30 мин. **Риск:** cache cross-user leak.

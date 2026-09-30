@@ -22,6 +22,8 @@ Custom KG не удовлетворяет нашим provenance invariants: од
 
 Не использовать прямой custom KG импорт как перенос доменного графа. LightRAG namespaces/коллекции отделить от продукта; исключить случайные `NEO4J_WORKSPACE`/`QDRANT_WORKSPACE` overrides. LR-001 сохраняет gates на update/delete/revision mapping, timeout и работу основного retrieval при отключённом адаптере. Этот smoke не подтверждает качество поиска, безопасность всех tenant-сценариев или восстановление после сбоя.
 
+Реализация LR-001: `LightRAGAdapter` добавляет уникальный opaque key к донорскому chunk, но текст для потребителя берёт только через `PostgresEvidenceResolver`. Resolver требует членство chunk revision в зафиксированной `index_generation` и допускает только EPO/OpenAlex. Поэтому donor `file_path`, `chunk_id` и текст сами по себе не считаются provenance; одинаковые тексты разных документов получают независимые ключи, а старые revision keys отбрасываются новой generation. Ошибка/таймаут query возвращает статус optional-канала без текста исключения. Установка runtime необязательна (`.[lightrag]`) и закреплена на проверенном commit; LightRAG не генерирует ответ, rerank отключён.
+
 ## ADR-004 — Caddy + статический React, 2026-09-28, accepted
 
 Vite/React/TypeScript даёт достаточно интерактивности для чата/графа без server-side frontend runtime. Caddy упрощает TLS. Sigma из LightRAG служит референсом, наш UI показывает только scoped subgraph.
