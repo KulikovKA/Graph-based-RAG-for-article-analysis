@@ -72,6 +72,8 @@ def test_owner_idempotency_version_and_fencing(engine) -> None:  # type: ignore[
             query="idea",
         )
         assert created
+        # Keep this fencing test focused on the legacy repository completion contract.
+        run.legacy_projection = True
         run_id, message_id = run.id, run.message_id
     with Session(engine) as session, session.begin():
         repo = OwnedRepository(session)
@@ -262,13 +264,14 @@ def test_conversation_memory_is_durable_and_owner_scoped(engine) -> None:  # typ
             normalized={"schema_version": 1, "features": [{"id": "f1", "text": "old"}]},
             state_hash="b" * 64,
         )
+        version_id = version.id
         message_id = run.message_id
 
     with Session(engine) as session, session.begin():
         service = ConversationService(session)
         assert [item.id for item in service.list_conversations(owner)] == [conversation_id]
         assert [item.id for item in service.messages(owner, conversation_id)] == [message_id]
-        assert [item.id for item in service.idea_versions(owner, conversation_id)] == [version.id]
+        assert [item.id for item in service.idea_versions(owner, conversation_id)] == [version_id]
         service.set_summary(owner, conversation_id, {"topics": ["idea"]}, message_id)
         assert service.summary(owner, conversation_id) == (
             {"topics": ["idea"]},

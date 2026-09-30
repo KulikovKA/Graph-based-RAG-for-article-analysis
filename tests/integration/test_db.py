@@ -265,3 +265,87 @@ def test_migrations_round_trip_and_database_invariants() -> None:
         with admin_engine.begin() as connection:
             connection.execute(text(f'DROP SCHEMA IF EXISTS "{schema}" CASCADE'))
         admin_engine.dispose()
+
+
+def test_publication_migration_preserves_legacy_completed_run() -> None:
+    assert TEST_DATABASE_URL is not None
+    admin_engine = create_engine(TEST_DATABASE_URL)
+    schema = f"legacy_run_test_{uuid4().hex}"
+    with admin_engine.begin() as connection:
+        connection.execute(text(f'CREATE SCHEMA "{schema}"'))
+    scoped_url = (
+        TEST_DATABASE_URL
+        + ("&" if "?" in TEST_DATABASE_URL else "?")
+        + f"options=-csearch_path%3D{schema}"
+    )
+    engine = create_engine(scoped_url)
+    config = _alembic_config(scoped_url)
+    owner_id, conversation_id, message_id, run_id = (uuid4() for _ in range(4))
+    try:
+        command.upgrade(config, "0003_graph_fact_recovery")
+        with engine.begin() as connection:
+            connection.execute(
+                text("INSERT INTO users (id, email_normalized) VALUES (:id, :email)"),
+                {"id": owner_id, "email": f"{owner_id}@legacy.test"},
+            )
+            connection.execute(
+                text("INSERT INTO conversations (id, owner_user_id) VALUES (:id, :owner)"),
+                {"id": conversation_id, "owner": owner_id},
+            )
+            connection.execute(
+                text(
+                    "INSERT INTO messages (id, conversation_id, role, content) "
+                    "VALUES (:id, :conversation, 'assistant', 'legacy answer')"
+                ),
+                {"id": message_id, "conversation": conversation_id},
+            )
+            connection.execute(
+                text(
+                    "INSERT INTO analysis_runs (id, conversation_id, owner_user_id, message_id, "
+                    "expected_idea_version, status, stage, outcome, query, answer_json, "
+                    "coverage_json, event_seq_high_water, config_versions_json, idempotency_key, "
+                    "request_hash) VALUES (:id, :conversation, :owner, :message, 0, "
+                    "'completed', 'completed', 'no_evidence', 'legacy query', '{}'::jsonb, "
+                    "'{}'::jsonb, 0, '{}'::jsonb, 'legacy-key', :request_hash)"
+                ),
+                {
+                    "id": run_id,
+                    "conversation": conversation_id,
+                    "owner": owner_id,
+                    "message": message_id,
+                    "request_hash": "a" * 64,
+                },
+            )
+        command.upgrade(config, "head")
+        with engine.connect() as connection:
+            row = connection.execute(
+                text(
+                    "SELECT answer_json, analysis_json, public_analysis_json, "
+                    "answer_presentation_json, legacy_projection, progress_json "
+                    "FROM analysis_runs WHERE id = :id"
+                ),
+                {"id": run_id},
+            ).one()
+            assert row.answer_json == {}
+            assert row.analysis_json is None
+            assert row.public_analysis_json is None
+            assert row.answer_presentation_json is None
+            assert row.legacy_projection is True
+            assert row.progress_json == {}
+        command.downgrade(config, "0003_graph_fact_recovery")
+        with engine.connect() as connection:
+            columns = set(
+                connection.execute(
+                    text(
+                        "SELECT column_name FROM information_schema.columns "
+                        "WHERE table_schema = current_schema() AND table_name = 'analysis_runs'"
+                    )
+                ).scalars()
+            )
+        assert "analysis_json" not in columns
+        command.upgrade(config, "head")
+    finally:
+        engine.dispose()
+        with admin_engine.begin() as connection:
+            connection.execute(text(f'DROP SCHEMA IF EXISTS "{schema}" CASCADE'))
+        admin_engine.dispose()

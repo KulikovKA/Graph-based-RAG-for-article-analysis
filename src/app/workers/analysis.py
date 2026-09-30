@@ -17,8 +17,10 @@ from app.services.analysis_run import (
     ProgressCallback,
     RetryableJobFailure,
     RunCancelled,
+    StageProgress,
     TerminalJobFailure,
 )
+from app.services.run_events import append_progress
 from app.storage.jobs import JobLease, JobRepository
 from app.storage.models import AnalysisRun
 
@@ -88,7 +90,7 @@ class AnalysisWorker:
                 lease_token=lease.token,
                 attempt=lease.attempt,
                 cancel=cancel,
-                progress=self.progress,
+                progress=lambda update: self._persist_progress(lease, update),
             )
             if cancel.is_set():
                 self._finish_cancelled(lease)
@@ -156,24 +158,75 @@ class AnalysisWorker:
     def _complete(self, lease: JobLease, result: object) -> bool:
         outcome = getattr(result, "outcome", None)
         answer = getattr(result, "answer", None)
+        analysis = getattr(result, "analysis", None)
+        public_analysis = getattr(result, "public_analysis", None)
+        answer_presentation = getattr(result, "presentation", None)
         if outcome not in ("analysis", "safe_fallback", "no_evidence", "clarification"):
             raise TerminalJobFailure("INVALID_ANALYST_RESULT")
         if answer is None or not callable(getattr(answer, "model_dump", None)):
             raise TerminalJobFailure("INVALID_ANALYST_RESULT")
+        projections = {
+            "answer": answer.model_dump(mode="json"),
+            "analysis": analysis.model_dump(mode="json") if analysis is not None else None,
+            "public_analysis": (
+                public_analysis.model_dump(mode="json") if public_analysis is not None else None
+            ),
+            "answer_presentation": (
+                answer_presentation.model_dump(mode="json")
+                if answer_presentation is not None
+                else None
+            ),
+        }
+        try:
+            with self.session_factory() as session, session.begin():
+                coverage = session.scalar(
+                    select(AnalysisRun.coverage_json).where(AnalysisRun.id == lease.run_id)
+                )
+                if coverage is None:
+                    return False
+                return JobRepository(session).complete(
+                    lease.run_id,
+                    worker=lease.worker,
+                    token=lease.token,
+                    outcome=outcome,
+                    answer=projections["answer"],
+                    coverage=coverage,
+                    analysis=projections["analysis"],
+                    public_analysis=projections["public_analysis"],
+                    answer_presentation=projections["answer_presentation"],
+                )
+        except Exception:
+            # Resolve an unknown COMMIT outcome before the worker loop can retry inference.
+            try:
+                with self.session_factory() as session:
+                    saved = session.get(AnalysisRun, lease.run_id)
+                    if (
+                        saved is not None
+                        and saved.status == "completed"
+                        and saved.outcome == outcome
+                        and saved.answer_json == projections["answer"]
+                        and saved.analysis_json == projections["analysis"]
+                        and saved.public_analysis_json == projections["public_analysis"]
+                        and saved.answer_presentation_json == projections["answer_presentation"]
+                    ):
+                        return True
+            except Exception:
+                pass
+            raise
+
+    async def _persist_progress(self, lease: JobLease, update: StageProgress) -> None:
         with self.session_factory() as session, session.begin():
-            run = session.scalar(
-                select(AnalysisRun.coverage_json).where(AnalysisRun.id == lease.run_id)
-            )
-            if run is None:
-                return False
-            return JobRepository(session).complete(
+            persisted = append_progress(
+                session,
                 lease.run_id,
                 worker=lease.worker,
                 token=lease.token,
-                outcome=outcome,
-                answer=answer.model_dump(mode="json"),
-                coverage=run,
+                update=update,
             )
+        if not persisted:
+            raise LeaseLost("lease lost while persisting progress")
+        if self.progress is not None:
+            await self.progress(update)
 
     def _finish_cancelled(self, lease: JobLease) -> bool:
         with self.session_factory() as session, session.begin():
@@ -195,6 +248,7 @@ class AnalysisWorker:
                 worker=lease.worker,
                 token=lease.token,
                 delay=timedelta(seconds=delay),
+                reason_code=error_code,
             )
         if requeued:
             logger.warning(

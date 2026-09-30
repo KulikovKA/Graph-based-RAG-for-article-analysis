@@ -84,6 +84,8 @@ def accept(session, owner, conversation, version, source=None):  # type: ignore[
         request_hash="a" * 64,
         source_run_id=source,
     )
+    # These tests exercise historical planner state independently of ADR-011 publication.
+    run.legacy_projection = True
     token = JobRepository(session).claim(run.id, worker="planner", duration=timedelta(minutes=5))
     assert token == 1
     return run

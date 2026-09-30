@@ -85,6 +85,22 @@ class JobRepository:
             job.lease_owner = None
             job.lease_until = None
             job.heartbeat_at = now
+            from app.services.run_events import add_event
+
+            add_event(
+                self.session,
+                run,
+                "cancelled",
+                {
+                    "schema_version": 1,
+                    "run": {
+                        "id": str(run.id),
+                        "status": run.status,
+                        "stage": run.stage,
+                        "error_code": None,
+                    },
+                },
+            )
             self.session.flush()
             return None
         job.lease_token += 1
@@ -209,6 +225,18 @@ class JobRepository:
         run.index_generation_id = generation_id
         self.session.add_all(rows)
         self.session.flush()
+        from app.services.run_events import add_event
+
+        add_event(
+            self.session,
+            run,
+            "sources_ready",
+            {
+                "schema_version": 1,
+                "sources": snapshot.get("sources", []),
+                "coverage": coverage,
+            },
+        )
         return True
 
     def fenced_run(self, run_id: UUID, *, worker: str, token: int) -> AnalysisRun | None:
@@ -225,6 +253,9 @@ class JobRepository:
         outcome: str,
         answer: dict[str, Any],
         coverage: dict[str, Any],
+        analysis: dict[str, Any] | None = None,
+        public_analysis: dict[str, Any] | None = None,
+        answer_presentation: dict[str, Any] | None = None,
     ) -> bool:
         if outcome not in ("analysis", "safe_fallback", "no_evidence", "clarification"):
             raise ValueError("invalid outcome")
@@ -232,15 +263,40 @@ class JobRepository:
         if fenced is None:
             return False
         job, run = fenced
+        if not run.legacy_projection and (
+            public_analysis is None
+            or answer_presentation is None
+            or (outcome == "analysis" and analysis is None)
+        ):
+            raise ValueError("new publication contracts require verified result projections")
+        if (public_analysis is None) != (answer_presentation is None) or (
+            public_analysis is not None and outcome == "analysis" and analysis is None
+        ):
+            raise ValueError("result projections must be published as a verified bundle")
         run.status = "completed"
         run.stage = "completed"
         run.outcome = outcome
         run.answer_json = answer
+        run.analysis_json = analysis
+        run.public_analysis_json = public_analysis
+        run.answer_presentation_json = answer_presentation
         run.coverage_json = coverage
         run.error_code = None
         run.completed_at = utcnow()
+        if run.progress_json.get("stage") == "verification":
+            run.progress_json = {**run.progress_json, "phase": "completed"}
         job.lease_owner = None
         job.lease_until = None
+        if public_analysis is not None and answer_presentation is not None:
+            from app.services.run_events import add_event, result_events, run_snapshot
+
+            for event_type, payload in result_events(
+                public_analysis=public_analysis or {},
+                presentation=answer_presentation or {},
+                outcome=outcome,
+                run_snapshot=run_snapshot(run),
+            ):
+                add_event(self.session, run, event_type, payload)
         self.session.flush()
         return True
 
@@ -251,6 +307,7 @@ class JobRepository:
         worker: str,
         token: int,
         delay: timedelta,
+        reason_code: str = "RETRYABLE_FAILURE",
     ) -> bool:
         if delay < timedelta(0):
             raise ValueError("retry delay cannot be negative")
@@ -264,6 +321,21 @@ class JobRepository:
         job.lease_until = None
         job.next_attempt_at = utcnow() + delay
         job.heartbeat_at = utcnow()
+        run.progress_json = {
+            "schema_version": 1,
+            "attempt": job.attempts,
+            "stage": "accepted",
+            "phase": "waiting",
+            "counts": {},
+        }
+        from app.services.run_events import add_event
+
+        add_event(
+            self.session,
+            run,
+            "run_requeued",
+            {"schema_version": 1, "reason_code": reason_code, "progress": run.progress_json},
+        )
         self.session.flush()
         return True
 
@@ -288,6 +360,14 @@ class JobRepository:
         job.lease_owner = None
         job.lease_until = None
         job.heartbeat_at = utcnow()
+        from app.services.run_events import add_event, run_snapshot
+
+        add_event(
+            self.session,
+            run,
+            "failed",
+            {"schema_version": 1, "run": run_snapshot(run)},
+        )
         self.session.flush()
         return True
 
@@ -318,6 +398,14 @@ class JobRepository:
         job.lease_owner = None
         job.lease_until = None
         job.heartbeat_at = now
+        from app.services.run_events import add_event, run_snapshot
+
+        add_event(
+            self.session,
+            run,
+            "cancelled",
+            {"schema_version": 1, "run": run_snapshot(run)},
+        )
         self.session.flush()
         return True
 

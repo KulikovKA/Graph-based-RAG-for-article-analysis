@@ -245,6 +245,21 @@ class AnalysisRun(Base):
             "status = 'completed' OR answer_json IS NULL", name="ck_runs_answer_terminal"
         ),
         CheckConstraint(
+            "legacy_projection OR status <> 'completed' OR "
+            "(answer_json IS NOT NULL AND public_analysis_json IS NOT NULL "
+            "AND answer_presentation_json IS NOT NULL)",
+            name="ck_runs_publication_projections",
+        ),
+        CheckConstraint(
+            "legacy_projection OR outcome <> 'analysis' OR analysis_json IS NOT NULL",
+            name="ck_runs_analysis_projection",
+        ),
+        CheckConstraint(
+            "status = 'completed' OR (analysis_json IS NULL AND public_analysis_json IS NULL "
+            "AND answer_presentation_json IS NULL)",
+            name="ck_runs_nonterminal_projections",
+        ),
+        CheckConstraint(
             "length(idempotency_key) BETWEEN 1 AND 255", name="ck_runs_idempotency_key"
         ),
         UniqueConstraint(
@@ -280,6 +295,11 @@ class AnalysisRun(Base):
     )
     evidence_snapshot_json: Mapped[dict[str, Any] | None] = mapped_column(JSONB)
     answer_json: Mapped[dict[str, Any] | None] = mapped_column(JSONB)
+    analysis_json: Mapped[dict[str, Any] | None] = mapped_column(JSONB)
+    public_analysis_json: Mapped[dict[str, Any] | None] = mapped_column(JSONB)
+    answer_presentation_json: Mapped[dict[str, Any] | None] = mapped_column(JSONB)
+    progress_json: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False, default=dict)
+    legacy_projection: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
     coverage_json: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False, default=dict)
     event_seq_high_water: Mapped[int] = mapped_column(BigInteger, nullable=False, default=0)
     config_versions_json: Mapped[dict[str, Any]] = mapped_column(

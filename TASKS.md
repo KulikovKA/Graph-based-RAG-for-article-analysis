@@ -138,7 +138,7 @@ flowchart LR
 | RANK-001 | 6 Reranking | P0 | Sol / Medium | RET-001,LLM-002,EVAL-000 | выполнена |
 | ANALYST-001 | 7 Analyst | P0 | Sol / High | RANK-001,LLM-002 | выполнена |
 | JOB-001 | 8 Jobs | P0 | Sol / High | PLAN-001,STATE-001,ANALYST-001 | выполнена |
-| JOB-002 | Проверенная публикация результата и SSE replay | P0 | Sol / High | JOB-001 | ожидает |
+| JOB-002 | Проверенная публикация результата и SSE replay | P0 | Sol / High | JOB-001 | ожидает публикации |
 | AUTH-001 | 12 Multi-user/security | P0 | Sol / High | STATE-001 | ожидает |
 | API-001 | 9 API | P0 | Sol / Medium | JOB-002,AUTH-001 | ожидает |
 | AUTH-002 | Внешний доступ и проверка периметра | P1 | Sol / High | API-001,AUTH-001 | ожидает |
@@ -373,6 +373,7 @@ flowchart LR
 - **Depends / priority:** JOB-001; P0. **Files:** src/app/services/run_events.py, src/app/services/analysis_run.py, tests/integration/test_run_events.py. **References:** docs/API_CONTRACTS.md, docs/DATA_MODEL.md.
 - **Сделать:** атомарный answer/status/events commit, replay, snapshot reset после compaction, terminal/cancel fencing. **Приёмка/тесты:** invalid draft не появляется ни в GET, ни в events; reconnect/старый cursor видит terminal outcome; crash до/после commit не дублирует terminal event. **Не делать:** не стримить сырой provider output.
 - **Context:** API_CONTRACTS/DATA_MODEL, jobs JOB-001. **Модель:** Sol/High. **Размер:** M, 1–2 ч, review 35 мин. **Риск:** публикация до валидации.
+- **Результат (2026-09-30, ожидает публикации):** добавлены migration 0004, result projections, durable progress/event writes, verification-only terminal batch, replay primitives и snapshot reset после compaction; старые completed runs остаются legacy. Полный pytest с PostgreSQL: passed; Ruff и mypy чистые.
 
 ### AUTH-001 — Сессии и базовая изоляция
 

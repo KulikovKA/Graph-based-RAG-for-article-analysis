@@ -972,12 +972,6 @@ class AnalysisRunService:
         idea_version_id: UUID | None = None,
     ) -> None:
         self._check(cancel, None)
-        if phase == "started":
-            with self.session_factory() as session, session.begin():
-                if not JobRepository(session).set_stage(
-                    run_id, worker=worker, token=token, stage=stage
-                ):
-                    raise LeaseLost("lease lost updating stage")
         if callback is not None:
             await callback(
                 StageProgress(

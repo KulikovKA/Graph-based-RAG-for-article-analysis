@@ -159,6 +159,14 @@ class OwnedRepository:
             stage="accepted",
             query=query,
             coverage_json={},
+            progress_json={
+                "schema_version": 1,
+                "attempt": 0,
+                "stage": "accepted",
+                "phase": "waiting",
+                "counts": {},
+            },
+            legacy_projection=False,
             config_versions_json=config_versions or {},
             event_seq_high_water=0,
             idempotency_key=idempotency_key,
@@ -166,6 +174,14 @@ class OwnedRepository:
         )
         self.session.add(run)
         self.session.flush()
+        from app.services.run_events import add_event
+
+        add_event(
+            self.session,
+            run,
+            "run_started",
+            {"schema_version": 1, "progress": run.progress_json},
+        )
         message.run_id = run.id
         self.session.add(AnalysisJob(run_id=run.id))
         self.session.flush()
