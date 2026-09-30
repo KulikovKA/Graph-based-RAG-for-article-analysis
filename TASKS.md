@@ -2,7 +2,7 @@
 
 Статус документа: planning baseline от 2026-09-29. Здесь нет отметок «выполнено» для будущей реализации. После любой завершённой задачи обязателен отдельный commit и **успешный push** в `https://github.com/KulikovKA/Graph-based-RAG-for-article-analysis`; до проверки удалённого коммита статус остаётся «ожидает публикации». Это же правило изложено в [task.md](task.md).
 
-Изменение baseline 2026-09-29: [ADR-011](docs/DECISIONS.md#adr-011--reasoning-analyst-и-validated-streaming-2026-09-29-accepted-planning), [adversarial review](docs/REASONING_STREAMING_REVIEW.md). Выбран AnalysisV1 → deterministic AnswerV1/public summary → atomic commit → SSE. Analyst заменён на `gemma4:26b-a4b-it-mtp-q4_K_M`; повторные LLM-002, RANK-001 и ANALYST-001 завершены 2026-09-30. GPT-OSS результаты сохранены как исторические. Порядок DAG прежний. Дополнения ADR-011 нормативны для будущей реализации. DB-001/002 остаются исторически завершёнными; следующая миграция projections и atomic publication входят в JOB-002.
+Изменение baseline 2026-09-29: [ADR-011](docs/DECISIONS.md#adr-011--reasoning-analyst-и-validated-streaming-2026-09-29-accepted-planning), [adversarial review](docs/REASONING_STREAMING_REVIEW.md). Выбран AnalysisV1 → deterministic AnswerV1/public summary → atomic commit → SSE. Analyst заменён на `gemma4:26b-a4b-it-mtp-q4_K_M`; повторные LLM-002, RANK-001 и ANALYST-001 завершены 2026-09-30. GPT-OSS результаты сохранены как исторические. Дополнения ADR-011 нормативны для будущей реализации. DB-001/002 остаются исторически завершёнными; следующая миграция projections и atomic publication входят в JOB-002. План дополнен gate LLM-003 → CORPUS-001; фактический выбор production-моделей предстоит LLM-003.
 
 ## Шаблон задания агенту
 
@@ -29,6 +29,8 @@ flowchart LR
   LR_001[LR-001]
   LLM_001[LLM-001]
   LLM_002[LLM-002]
+  LLM_003[LLM-003]
+  CORPUS_001[CORPUS-001]
   PLAN_001[PLAN-001]
   STATE_001[STATE-001]
   RET_001[RET-001]
@@ -76,6 +78,13 @@ flowchart LR
   EVAL_000 --> RANK_001
   RANK_001 --> ANALYST_001
   LLM_002 --> ANALYST_001
+  PLAN_001 --> LLM_003
+  ANALYST_001 --> LLM_003
+  GRAPH_001 --> LLM_003
+  ING_001 --> CORPUS_001
+  IDX_001 --> CORPUS_001
+  GRAPH_001 --> CORPUS_001
+  LLM_003 --> CORPUS_001
   PLAN_001 --> JOB_001
   STATE_001 --> JOB_001
   ANALYST_001 --> JOB_001
@@ -100,7 +109,7 @@ flowchart LR
   LR_001 -. optional context .-> RET_001
 ```
 
-После DB-002 параллельны source adapters и STATE/AUTH; LLM-001/002 идут от INFRA независимо. IDX ждёт ING и CPU gate, GRAPH затем закрывает активацию двух индексов. После API параллельны UI, EVAL, OBS и внешний AUTH-002. Не запускать задачи, меняющие общий контракт, без согласованного baseline.
+После DB-002 параллельны source adapters и STATE/AUTH; LLM-001/002 идут от INFRA независимо. IDX ждёт ING и CPU gate, GRAPH затем закрывает активацию двух индексов. LLM-003 сравнивает три production-роли после PLAN-001, ANALYST-001 и GRAPH-001; LLM-002 и EVAL-000 уже входят в их транзитивные зависимости. CORPUS-001 начинает массовую индексацию только после LLM-003 и готовых ING/IDX/GRAPH. После API параллельны UI, EVAL, OBS и внешний AUTH-002. EVAL-001 использует frozen EVAL-000 fixture, EVAL-002 — собственный размеченный snapshot, TEST-001 — fixtures и baseline EVAL-002; массовый backfill не является их входным условием. Не запускать задачи, меняющие общий контракт, без согласованного baseline.
 
 ## Сводка задач
 
@@ -121,6 +130,8 @@ flowchart LR
 | LR-001 | 4 LightRAG | P1 | Sol / High | GRAPH-001,LLM-002,ARCH-001 | выполнена |
 | LLM-001 | 5 Inference | P0 | Sol / High | INFRA-001 | выполнена |
 | LLM-002 | Выбор локальных весов и CPU smoke | P0 | Sol / High | LLM-001 | выполнена |
+| LLM-003 | Сравнение inference-конфигураций и выбор production-моделей | P0 | Sol / High | PLAN-001,ANALYST-001,GRAPH-001 | ожидает |
+| CORPUS-001 | Initial corpus backfill EPO/OpenAlex | P0 | Sol / High | ING-001,IDX-001,GRAPH-001,LLM-003 | ожидает |
 | PLAN-001 | 5 Planner | P0 | Sol / High | LLM-001,DB-002 | выполнена |
 | STATE-001 | 8 Memory/cache | P0 | Sol / Medium | DB-002 | выполнена |
 | RET-001 | 6 Retrieval | P0 | Sol / High | IDX-001,GRAPH-001 | выполнена |
@@ -323,6 +334,26 @@ flowchart LR
 - **Уточнение ARCH-002:** Использовать единый AnswerV1; limitations добавляет shell. Validator не доказывает semantic entailment; нужны русские quote/offset cases и различие timeout/cancel/invalid fallback.
 - **Результат (2026-09-30):** AnalysisV1 validator, одноразовый repair и deterministic AnswerV1/public/presentation renderer реализованы; safe fallback игнорирует rejected relations. 22 целевых и 66 unit-тестов прошли, Ruff/mypy чистые. Semantic faithfulness не доказывается структурной проверкой и зафиксирована отдельным тестом. Отчёт: [ANALYST-001](docs/validation/ANALYST-001/README.md). Publication/storage остаётся JOB-002.
 
+### LLM-003 — Сравнение inference-конфигураций и выбор production-моделей
+
+- **Цель/зачем:** завершить выбор production-моделей отдельно для Planner, Analyst и Graph extractor до массового backfill: смена extractor меняет `extractor_version`/model identity и может потребовать повторного построения всех graph facts.
+- **Depends / priority:** PLAN-001,ANALYST-001,GRAPH-001; P0. LLM-002 и EVAL-000 достижимы транзитивно через ANALYST-001/GRAPH-001; JOB/API/UI и полный EVAL-001/002 для сравнения закрытых контрактов не нужны. **Files (будущая реализация):** eval/ или scripts/ для воспроизводимого benchmark, config/models.yaml, docs/model_inventory.json, docs/validation/LLM-003/README.md, docs/validation/LLM-003/results.json; production configuration только после решения. **References:** docs/LLM_CONTRACTS.md, docs/EVALUATION.md, docs/validation/LLM-002/, eval/cases/ и eval/fixtures/, src/app/domain/planner.py, src/app/services/analyst.py, src/app/services/graph_index.py, текущий InferenceProvider/config.
+- **Сделать:** до прогонов зафиксировать versioned benchmark dataset и gold labels, provenance, case IDs, RU/EN/mixed split, сценарии и deterministic scoring; отделить dev от holdout, сохранить одинаковые prompts, schemas, input/evidence, timeout/output budgets, hardware/Compose, runtime и warm/cold protocol для всех кандидатов. Сравнивать реальные контракты `IntentPlanner`, `AnalysisV1`/validator и `InferenceGraphExtractor` с последующей проверкой фактов, а не только свободные ответы модели. LLM-as-Judge может быть лишь вспомогательным разбором спорных случаев, не основным критерием.
+- **Planner:** минимум `granite4.2:3b` non-thinking, `qwen3.5:4b-q4_K_M` non-thinking, текущий более крупный reference `lfm2.5:8b-a1b-q4_K_M` в одинаковом non-thinking профиле. Gold-based intent accuracy, extraction признаков, add/remove/replace, UUID и `focus_evidence_ids`, `PlannerV1` validity, repair/fallback rate; RU, EN, mixed RU/EN и сложные follow-up. Измерить latency, TTFT, RAM и swap.
+- **Analyst:** минимум `lfm2.5:8b-a1b-q4_K_M` с reasoning, `LFM2-24B-A2B` в доступной локальной Q4-конфигурации и текущий reference `gemma4:26b-a4b-it-mtp-q4_K_M`. Gold-based `AnalysisV1` validity, feature matching, full/partial/no-match, точность citation ID/quote/Unicode spans, evidence adherence и unsupported claims; RU query → EN evidence → RU answer, raw reasoning privacy contract. Измерить latency, tokens/sec при достоверных счётчиках, RAM и swap; unsupported метрики записывать как null с причиной.
+- **Graph extractor:** независимо от выбора Analyst сравнить минимум `granite4.2:3b`, `qwen3.5:4b-q4_K_M`, `lfm2.5:8b-a1b-q4_K_M` через реальный `InferenceGraphExtractor` и проверку `GraphIndexingService`. Precision приоритетнее recall; gold проверяет только allowlisted `DISCLOSES_FEATURE`, exact quote, Unicode offsets, вхождение `target_text` в quote, отсутствие invented relations/identifiers, правильный empty result, JSON/schema success на RU/EN тексте. Измерить latency и RAM.
+- **Решение/приёмка:** заранее определить пороги и отчёт по каждому case/config. Hard gates имеют приоритет над aggregate score: schema correctness, citation correctness, отсутствие запрещённых graph facts и raw reasoning leakage, допустимая error/timeout rate; не прошедший gate кандидат не выбирается. При практически близком качестве предпочесть меньшую/быструю модель. Зафиксировать выбранные production Planner/Analyst/Graph extractor по отдельности, exact tags, digests/revisions, quantization, prompts и inference profiles/budgets в `docs/validation/LLM-003/README.md` и машиночитаемом `results.json`, согласовать model inventory/config и проверить CPU/RAM/swap на целевом хосте. Исторические результаты LLM-002 не переписывать. **Не делать:** не запускать массовый backfill до зафиксированного решения.
+- **Context:** LLM-002 — CPU smoke/baseline, EVAL-000 — маленький frozen fixture; новый gold dataset должен покрывать все три роли. **Модель:** Sol/High. **Размер:** L, оценить после подготовки разметки, review 60 мин. **Риск:** ошибочный выбор extractor вызовет переизвлечение graph facts для всего корпуса.
+
+### CORPUS-001 — Initial corpus backfill EPO/OpenAlex
+
+- **Цель/зачем:** воспроизводимо и возобновляемо наполнить `EPO/OpenAlex → PostgreSQL → Qdrant + Neo4j` после фиксации production-моделей в LLM-003.
+- **Depends / priority:** ING-001,IDX-001,GRAPH-001,LLM-003; P0. ING/IDX оставлены явными как входы loader и обязательного двухиндексного gate, хотя GRAPH-001 достигает их транзитивно. JOB/API/UI, LR-001 и EVAL-001/002 не блокируют построение корпуса. **Files (будущая реализация):** scripts/ или src/app/workers/ для bulk loader, config/ для профиля запуска, tests/integration/ для restart/index gates, docs/validation/CORPUS-001/ для runbook/статистики. **References:** docs/ARCHITECTURE.md, docs/DATA_MODEL.md, source adapters SRC-001/002, ingestion/indexing/graph services, решение docs/validation/LLM-003/.
+- **Сделать:** конфигурируемые source, query/filter и max documents; pagination/cursors с сохранением source-specific checkpoint, EPO/OpenAlex rate limiting и 429/5xx retry с bounded backoff. Персистентный progress/statistics по source и стадиям, graceful stop/resume; dry-run и small-run на 100–1000 документов перед масштабированием до десятков тысяч. Проверять provenance и выбранные model digests/extractor/index versions перед продолжением старого checkpoint.
+- **Идемпотентность/активация:** повтор страницы, crash и restart не создают дубликаты по source + external ID + source revision/content hash; изменившаяся source revision проходит существующий immutable revision/outbox путь. Для каждой revision обязательны ACK Qdrant и Neo4j по ожидаемым версиям до atomic activation/index generation; partial failure оставляет прежнюю active generation и позволяет безопасный replay. Optional LightRAG не входит в gate.
+- **Приёмка/тесты:** dry-run без записи, small-run с EPO и OpenAlex, прерывание и resume на границах page/ingestion/index ACK, повтор того же диапазона и обновлённой revision; сверка числа уникальных документов, revisions, активных generations и facts с progress report; ни один документ не активен после единственного ACK. Зафиксировать параметры запуска, checkpoint format и итоговые counts без скачанного текста в Git. **Не делать:** не коммитить корпус, базы, embeddings, model blobs; не расширять до постоянного scheduler/incremental polling. Зафиксировать интерфейс и checkpoint для следующей отдельной задачи incremental update.
+- **Context:** ING-001 создаёт source revisions/outbox, IDX-001 и GRAPH-001 подтверждают реальные индексы; LLM-003 закрепляет extractor identity до массовой записи. **Модель:** Sol/High. **Размер:** L, оценить после small-run, review 60 мин. **Риск:** лимиты источников, частичный checkpoint и дорогой reindex.
+
 ### JOB-001 — Оркестрация analysis jobs
 
 - **Результат (2026-09-30):** добавлены PostgreSQL polling worker с lease heartbeat/fencing/bounded retry, последовательный Planner → retrieval/dedup → rerank/pack → Analyst pipeline, сохранение Planner CAS и неизменяемого evidence snapshot до генерации, typed progress callbacks и проверка Analyst bundle. Проверено: повторный ключ использует существующий run; после рестарта planner patch не повторяется; устаревшая lease и поздний ответ не завершают run; cancel работает во время load/reasoning/final output/repair; timeout даёт только валидированный safe fallback. PostgreSQL integration: 12 passed; pytest unit/contract/jobs: passed (5 PostgreSQL tests skipped без TEST_DATABASE_URL); Ruff, mypy, Compose config и сборка worker image прошли. Коммит `628e8ad681447867e5f3933a939a215367a75946` опубликован; SHA `origin/main` проверен и совпал.
@@ -445,4 +476,4 @@ flowchart LR
 | M9 100-query evaluation | EVAL-002 | отчёт по 100 кейсам и baseline diff |
 | M10 MVP release candidate | TEST-001 + REL-001 | clean install, restore, eval/security gates |
 
-**Порядок готовности:** см. проверенный DAG выше; путь до релиза сходится через TEST-001, которому нужны graph UI, 100-case evaluation, observability и внешний auth gate. P0 заканчивается UI-001; P1 добавляет отключаемый LightRAG, graph UI, полный evaluation и release hardening. P0 работает с основным retrieval без LR-001. См. [ARCH_REVIEW](docs/ARCH_REVIEW.md) для расчёта трудозатрат и рисков.
+**Порядок готовности:** см. проверенный DAG выше; путь до релиза сходится через TEST-001, которому нужны graph UI, 100-case evaluation, observability и внешний auth gate. P0 UI/API ветвь завершается UI-001, параллельная P0 ветвь наполнения корпуса — CORPUS-001 после LLM-003. P1 добавляет отключаемый LightRAG, graph UI, полный evaluation и release hardening. P0 работает с основным retrieval без LR-001. См. [ARCH_REVIEW](docs/ARCH_REVIEW.md) для исторической оценки трудозатрат и рисков до добавления LLM-003/CORPUS-001.
