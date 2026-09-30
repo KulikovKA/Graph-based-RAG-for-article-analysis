@@ -1,66 +1,371 @@
 {
   "schema_version": 1,
   "task": "LLM-003",
-  "recorded_on": "2026-09-30",
-  "status": "blocked_before_comparative_benchmark",
-  "host": {
-    "os": "Windows 11 Pro",
-    "cpu": "AMD64 Family 25 Model 117, approx 3.8 GHz",
-    "physical_memory_mb": 32061,
-    "available_physical_memory_mb_at_inspection": 13634,
-    "virtual_memory_committed_mb_at_inspection": 37516,
-    "virtual_memory_limit_mb": 40588,
-    "virtual_memory_available_mb_at_inspection": 3072,
-    "gpu_acceleration_confirmed": false
+  "status": "comparison_complete_no_safe_production_decision",
+  "protocol": {
+    "profile": "candidate_warm",
+    "sequential": true,
+    "gold_labels_model_generated": false,
+    "latency_note": "runner call timings; RSS/swap and reliable output token counts unavailable"
   },
-  "runtime": {
-    "ollama": "0.34.4",
-    "compose_services": "healthy_at_inspection"
-  },
-  "resource_context": {
-    "gemma4_prior_llm_002_peak_rss_bytes": 20600000000,
-    "gemma4_prior_llm_002_warm_host_swap_bytes": 5320000000,
-    "note": "Prior smoke measurement only; not an LLM-003 comparison. Current free physical and virtual memory are insufficient evidence of safe headroom for the required full role-switch protocol."
-  },
-  "candidates": {
+  "roles": {
     "planner": [
-      {"tag": "granite4.2:3b", "digest": "40577dc168a3a9ad34e9a1234e0c2570be86097fa75a236d4574ae985705d3c4", "size_bytes": 2244023965, "quantization": "Q4_K_M"},
-      {"tag": "qwen3.5:4b-q4_K_M", "digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd", "size_bytes": 3389983735, "quantization": "Q4_K_M"},
-      {"tag": "lfm2.5:8b-a1b-q4_K_M", "digest": "9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2", "size_bytes": 5156075525, "quantization": "Q4_K_M", "role": "current_reference"}
-    ],
-    "analyst": [
-      {"tag": "lfm2.5:8b-a1b-q4_K_M", "digest": "9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2", "size_bytes": 5156075525, "quantization": "Q4_K_M"},
-      {"tag": "lfm2:24b-a2b", "digest": "d6c816d74887ed480a3afd5baa2dd2a5987ef6b359b8661e80e1e9fb3501650c", "size_bytes": 14415742358, "quantization": "Q4_K_M"},
-      {"tag": "gemma4:26b-a4b-it-mtp-q4_K_M", "digest": "001e5dafc3c77684c2307ebc6ab8e336e10c9b18eca52acf547d72fc83c3ca8c", "size_bytes": 18731025629, "quantization": "Q4_K_M", "role": "current_reference"}
+      {
+        "tag": "qwen3.5:4b-q4_K_M",
+        "digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+        "cases": 30,
+        "latency_ms": {
+          "median": 17277.785,
+          "p95": 45939.76
+        },
+        "passed": 14,
+        "schema_passed": 30,
+        "hard_gates_pass": true
+      },
+      {
+        "tag": "lfm2.5:8b-a1b-q4_K_M",
+        "digest": "9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2",
+        "cases": 30,
+        "latency_ms": {
+          "median": 9648.849999999999,
+          "p95": 23961.63
+        },
+        "passed": 5,
+        "schema_passed": 30,
+        "hard_gates_pass": true
+      },
+      {
+        "tag": "granite4.2:3b",
+        "digest": "40577dc168a3a9ad34e9a1234e0c2570be86097fa75a236d4574ae985705d3c4",
+        "cases": 30,
+        "latency_ms": {
+          "median": 14745.925,
+          "p95": 23172.22
+        },
+        "passed": 11,
+        "schema_passed": 30,
+        "hard_gates_pass": true
+      }
     ],
     "graph_extractor": [
-      {"tag": "granite4.2:3b", "digest": "40577dc168a3a9ad34e9a1234e0c2570be86097fa75a236d4574ae985705d3c4", "size_bytes": 2244023965, "quantization": "Q4_K_M"},
-      {"tag": "qwen3.5:4b-q4_K_M", "digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd", "size_bytes": 3389983735, "quantization": "Q4_K_M"},
-      {"tag": "lfm2.5:8b-a1b-q4_K_M", "digest": "9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2", "size_bytes": 5156075525, "quantization": "Q4_K_M"}
+      {
+        "tag": "granite4.2:3b",
+        "digest": "40577dc168a3a9ad34e9a1234e0c2570be86097fa75a236d4574ae985705d3c4",
+        "cases": 48,
+        "latency_ms": {
+          "median": 3407.48,
+          "p95": 8703.21
+        },
+        "positive_cases": 25,
+        "negative_cases": 23,
+        "valid_gold_facts": 0,
+        "gold_facts": 25,
+        "precision": 1.0,
+        "recall": 0.0,
+        "negative_cases_passed": 23,
+        "protocol_failures": 0,
+        "hard_gates_pass": true
+      },
+      {
+        "tag": "qwen3.5:4b-q4_K_M",
+        "digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+        "cases": 48,
+        "latency_ms": {
+          "median": 26879.335,
+          "p95": 39862.97
+        },
+        "positive_cases": 25,
+        "negative_cases": 23,
+        "valid_gold_facts": 1,
+        "gold_facts": 25,
+        "precision": 1.0,
+        "recall": 0.04,
+        "negative_cases_passed": 20,
+        "protocol_failures": 6,
+        "hard_gates_pass": false
+      },
+      {
+        "tag": "lfm2.5:8b-a1b-q4_K_M",
+        "digest": "9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2",
+        "cases": 48,
+        "latency_ms": {
+          "median": 14122.08,
+          "p95": 21666.93
+        },
+        "positive_cases": 25,
+        "negative_cases": 23,
+        "valid_gold_facts": 0,
+        "gold_facts": 25,
+        "precision": 1.0,
+        "recall": 0.0,
+        "negative_cases_passed": 11,
+        "protocol_failures": 24,
+        "hard_gates_pass": false
+      }
+    ],
+    "analyst": [
+      {
+        "tag": "gemma4:26b-a4b-it-mtp-q4_K_M",
+        "digest": "001e5dafc3c77684c2307ebc6ab8e336e10c9b18eca52acf547d72fc83c3ca8c",
+        "cases": 18,
+        "latency_ms": {
+          "median": 279741.405,
+          "p95": 303787.09
+        },
+        "passed": 3,
+        "schema_passed": 3,
+        "citation_passed": 3,
+        "safe_fallbacks": 15,
+        "hard_gates_pass": false
+      },
+      {
+        "tag": "lfm2.5:8b-a1b-q4_K_M",
+        "digest": "9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2",
+        "cases": 18,
+        "latency_ms": {
+          "median": 9074.07,
+          "p95": 9839.64
+        },
+        "passed": 5,
+        "schema_passed": 18,
+        "citation_passed": 18,
+        "safe_fallbacks": 0,
+        "hard_gates_pass": true
+      },
+      {
+        "tag": "lfm2:24b-a2b",
+        "digest": "d6c816d74887ed480a3afd5baa2dd2a5987ef6b359b8661e80e1e9fb3501650c",
+        "cases": 18,
+        "latency_ms": {
+          "median": 25763.5,
+          "p95": 29939.3
+        },
+        "passed": 0,
+        "schema_passed": 2,
+        "citation_passed": 2,
+        "safe_fallbacks": 16,
+        "hard_gates_pass": false
+      }
     ]
   },
-  "benchmark": {
-    "dataset": "eval/cases/dev_smoke.jsonl is not sufficient for the required three-role gold evaluation",
-    "comparative_runs_executed": false,
-    "case_count": null,
-    "thresholds_frozen_before_runs": false,
-    "scores": null,
-    "latency": null,
-    "peak_rss": null,
-    "swap": null,
-    "reason": "No reviewed versioned gold set for all roles; host currently has 13.6 GB available RAM and only 3.0 GB virtual memory available while the prior Gemma 4 smoke peaked at 20.6 GB RSS."
-  },
+  "failures": [
+    {
+      "role": "graph_extractor",
+      "tag": "lfm2.5:8b-a1b-q4_K_M",
+      "case_id": "GR-13",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "lfm2.5:8b-a1b-q4_K_M",
+      "case_id": "GR-14",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "lfm2.5:8b-a1b-q4_K_M",
+      "case_id": "GR-15",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "lfm2.5:8b-a1b-q4_K_M",
+      "case_id": "GR-16",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "lfm2.5:8b-a1b-q4_K_M",
+      "case_id": "GR-17",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "lfm2.5:8b-a1b-q4_K_M",
+      "case_id": "GR-18",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "lfm2.5:8b-a1b-q4_K_M",
+      "case_id": "GR-19",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "lfm2.5:8b-a1b-q4_K_M",
+      "case_id": "GR-20",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "lfm2.5:8b-a1b-q4_K_M",
+      "case_id": "GR-21",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "lfm2.5:8b-a1b-q4_K_M",
+      "case_id": "GR-22",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "lfm2.5:8b-a1b-q4_K_M",
+      "case_id": "GR-23",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "lfm2.5:8b-a1b-q4_K_M",
+      "case_id": "GR-24",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "lfm2.5:8b-a1b-q4_K_M",
+      "case_id": "GR-31",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "lfm2.5:8b-a1b-q4_K_M",
+      "case_id": "GR-32",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "lfm2.5:8b-a1b-q4_K_M",
+      "case_id": "GR-33",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "lfm2.5:8b-a1b-q4_K_M",
+      "case_id": "GR-34",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "lfm2.5:8b-a1b-q4_K_M",
+      "case_id": "GR-35",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "lfm2.5:8b-a1b-q4_K_M",
+      "case_id": "GR-36",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "qwen3.5:4b-q4_K_M",
+      "case_id": "GR-01",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "qwen3.5:4b-q4_K_M",
+      "case_id": "GR-02",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "qwen3.5:4b-q4_K_M",
+      "case_id": "GR-03",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "qwen3.5:4b-q4_K_M",
+      "case_id": "GR-04",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "qwen3.5:4b-q4_K_M",
+      "case_id": "GR-05",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "qwen3.5:4b-q4_K_M",
+      "case_id": "GR-06",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "lfm2.5:8b-a1b-q4_K_M",
+      "case_id": "GR-01",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "lfm2.5:8b-a1b-q4_K_M",
+      "case_id": "GR-02",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "lfm2.5:8b-a1b-q4_K_M",
+      "case_id": "GR-03",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "lfm2.5:8b-a1b-q4_K_M",
+      "case_id": "GR-04",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "lfm2.5:8b-a1b-q4_K_M",
+      "case_id": "GR-05",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    },
+    {
+      "role": "graph_extractor",
+      "tag": "lfm2.5:8b-a1b-q4_K_M",
+      "case_id": "GR-06",
+      "error_type": "InferenceProtocolError",
+      "status": "protocol_or_runtime_failure"
+    }
+  ],
   "production_decision": {
     "planner": null,
     "analyst": null,
     "graph_extractor": null,
+    "reason": "Observed semantic accuracy is too low for a safe model pin; Graph extractor candidates yielded 0/25, 1/25 and 0/25 validated facts.",
     "config_changed": false,
     "mass_backfill_allowed": false
-  },
-  "acceptance": {
-    "llm_002_artifacts_preserved": true,
-    "gold_set_ready": false,
-    "hard_gates_passed": false,
-    "production_versions_pinned": false
   }
 }

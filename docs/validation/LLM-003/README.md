@@ -1,78 +1,75 @@
-# LLM-003 — production model selection
+# LLM-003 — comparative local model evaluation
 
-Status: **blocked before comparative benchmark; no production model changes made**.
-Recorded 2026-09-30 on the configured Windows 11 host. This report is a gate
-assessment, not a model-quality result. Mass corpus backfill must remain blocked.
+Status: **comparative runs recorded; production selection remains open**. No model
+configuration was changed and `CORPUS-001` must not start.
 
-## Contracts reviewed
+## Gold fixtures and scoring
 
-The benchmark targets the existing `PlannerV1` and `IntentPlanner` in
-`src/app/domain/planner.py`, `AnalysisV1` and `Analyst` in
-`src/app/services/analyst.py`, and the `InferenceGraphExtractor` plus
-`GraphIndexingService` contract in `src/app/services/graph_index.py`. Prompts,
-schemas, repair/fallback behavior and citation provenance must remain identical
-for all candidates. Planner measures intent/patch validity and ID discipline;
-Analyst measures schema, feature matching, relations, citation membership and
-Unicode spans; graph extraction measures allowlisted facts, exact quotes and
-Unicode offsets. Structural validation alone does not establish semantic
-faithfulness.
+Fixtures are deterministic JSONL with stable case IDs, explicit labels, and
+`synthetic-CC0` provenance. The Planner set has 30 cases, Analyst 18, and Graph
+extractor 48. They cover English, Russian, and mixed language, plus planner
+intent/patch/UUID/follow-up behavior, AnalysisV1 relation and citation cases,
+and positive, negative, adversarial, and Unicode-offset graph cases. Labels are
+fixture-authored and never produced by the evaluated model. `EVAL-000/dev_smoke`
+informed applicable patterns; it is not scored as gold.
 
-## Host and runtime gate
+The runner exercises the repository's real Planner, Analyst, graph extractor,
+and graph validator. Scores are deterministic exact-label/contract checks, not
+LLM-as-judge. See [fixtures](../../../eval/llm003/) and the per-case
+[raw results](raw/).
 
-- Windows 11 Pro, AMD64 Family 25 Model 117, about 3.8 GHz; 32,061 MB physical
-  memory. GPU acceleration was not established by this inspection.
-- Ollama 0.34.4; active project Compose services are healthy.
-- At inspection: 13,634 MB available physical memory; virtual memory committed
-  37,516 MB of 40,588 MB, with 3,072 MB available.
-- LLM-002 measured Gemma 4 26B Analyst peak RSS at 20.6 GB and host swap at
-  5.32 GB warm. This host currently has less available memory than that RSS
-  alone. The 24B candidate is a 14.4 GB Q4_K_M artifact. Sequential candidate
-  comparisons with cold/warm and role switching cannot be treated as safe or
-  representative until the host is drained/restarted and enough memory headroom
-  is demonstrated.
+## Protocol
 
-## Candidate inventory observed locally
+All model runs were sequential against local Ollama 0.34.4 on the Windows host.
+Planner and Graph use the same non-thinking profile; Analyst uses `low` when
+the installed model advertises thinking and `default` otherwise. A candidate is
+kept warm for its role run and explicitly unloaded before the next candidate.
+The mixed-language Graph positive was added to the fixture before finalizing
+this report; all three Graph candidates were rerun on the affected six-case
+batch. Granite completed the batch; Qwen and LFM2.5 returned
+`InferenceProtocolError` for that batch. Their failures remain in the raw log.
 
-Digests are local Ollama registry digests at inspection. Disk size is not RAM
-usage. Exact tags and digests are recorded in `results.json`.
+Exact local Ollama identities at `ollama list`/`/api/tags` inspection:
 
-| Role | Candidate | Local observation |
-|---|---|---|
-| Planner | `granite4.2:3b` | available, 3.7B, Q4_K_M |
-| Planner | `qwen3.5:4b-q4_K_M` | available, 4.7B, Q4_K_M |
-| Planner/reference | `lfm2.5:8b-a1b-q4_K_M` | available, 8.5B, Q4_K_M; prior LLM-002 schema smoke only |
-| Analyst | `lfm2.5:8b-a1b-q4_K_M` | available; prior smoke does not compare AnalysisV1 quality |
-| Analyst | `lfm2:24b-a2b` | available, 23.8B, Q4_K_M; local tag used for the requested LFM2-24B-A2B candidate |
-| Analyst/reference | `gemma4:26b-a4b-it-mtp-q4_K_M` | available; prior LLM-002 CPU smoke, not comparative quality evidence |
-| Graph extractor | `granite4.2:3b` | available |
-| Graph extractor | `qwen3.5:4b-q4_K_M` | available |
-| Graph extractor | `lfm2.5:8b-a1b-q4_K_M` | available |
+| Tag | Digest | Size | Quantization |
+|---|---|---:|---|
+| `granite4.2:3b` | `40577dc168a3a9ad34e9a1234e0c2570be86097fa75a236d4574ae985705d3c4` | 2,244,023,965 B | Q4_K_M |
+| `qwen3.5:4b-q4_K_M` | `2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd` | 3,389,983,735 B | Q4_K_M |
+| `lfm2.5:8b-a1b-q4_K_M` | `9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2` | 5,156,075,525 B | Q4_K_M |
+| `lfm2:24b-a2b` | `d6c816d74887ed480a3afd5baa2dd2a5987ef6b359b8661e80e1e9fb3501650c` | 14,415,742,358 B | Q4_K_M |
+| `gemma4:26b-a4b-it-mtp-q4_K_M` | `001e5dafc3c77684c2307ebc6ab8e336e10c9b18eca52acf547d72fc83c3ca8c` | 18,731,025,629 B | Q4_K_M |
 
-## Why no candidate is selected
+## Results and gates
 
-The repository has only `eval/cases/dev_smoke.jsonl`; it is not the required
-versioned three-role gold dataset with RU/EN/mixed splits, per-case labels,
-provenance, dev/holdout separation and deterministic scoring. A benchmark on
-that smoke fixture would not support the hard gates in TASKS.md. No comparative
-case runs were executed, so all quality and latency scores are null in
-`results.json`. Existing LLM-002 measurements remain untouched and are not
-relabelled as LLM-003.
+The machine-readable per-candidate results, case counts, hard-gate outcomes,
+and latency summaries are in [results.json](results.json). Highlights:
 
-The acceptance threshold is not to nominate the fastest model. First prepare
-and review the gold dataset, freeze the identical prompts/schemas/inputs and
-protocol, define per-case gates and error/timeout limits, and measure RSS plus
-host/container memory and swap across cold/warm runs and Planner↔Analyst
-switches. Select each role independently only from candidates that pass every
-hard gate. If the available RAM headroom cannot safely support those runs,
-perform them on a suitably provisioned target host. Until then retain the
-existing `config/models.yaml` identities and do not start CORPUS-001.
+- **Planner:** Qwen led with 14/30 exact gold cases; Granite scored 11/30 and
+  LFM2.5 5/30. All three produced schema-valid results, but exact intent/patch
+  accuracy is too low to justify pinning a production Planner.
+- **Analyst:** LFM2.5 had 18/18 schema- and citation-valid outputs with 5/18
+  exact gold matches and no safe fallbacks. Gemma 4 matched 3/18 and fell back
+  on 15/18; LFM2-24B matched 0/18 and fell back on 16/18. The best candidate's
+  semantic match rate is insufficient for a production decision.
+- **Graph extractor:** Granite and LFM2.5 validated 0/25 gold facts; Qwen
+  validated 1/25 (4% recall). Qwen had zero invented validated facts in the
+  complete cases, but its mixed-language six-case batch had a protocol failure.
+  Precision alone does not make a near-empty extractor safe or useful for
+  corpus backfill.
 
-## Acceptance checklist
+Latency is recorded by the runner and summarized in `results.json`. Reliable
+tokens/sec, RSS, peak host/container memory, and swap attribution were not
+collected by this harness, so those figures are `null`/unavailable rather than
+inferred. The benchmark did not stop for predicted memory pressure; no model
+candidate was excluded as a resource failure. Runtime/protocol failures are
+reported per case/batch in raw results.
 
-- [ ] Versioned, provenance-backed gold cases for all three roles, with RU/EN/mixed coverage and held-out cases.
-- [ ] Frozen prompts, schemas, case IDs, runtime, hardware, timeouts/output budgets and warm/cold protocol.
-- [ ] Deterministic per-case scoring and thresholds fixed before model runs.
-- [ ] All required candidates run through the real role implementations and graph fact validation.
-- [ ] Hard schema/citation/graph-fact/privacy/error gates pass; latency and resource figures are measured.
-- [ ] Independent production choices and exact versions recorded; inventory/config updated only after evidence.
-- [x] Existing LLM-002 artifacts preserved.
+## Decision
+
+No production winners are selected. The configured production identities remain
+unchanged because the observed semantic accuracy—especially Graph recall—does
+not support a safe pin. `mass_backfill_allowed` remains false. The next useful
+step is to improve the role prompts/fixture alignment or add candidates, then
+repeat this same frozen evaluation. This is an evaluation outcome, not a RAM
+blocker. LLM-003 remains open until production choices can be supported by the
+quality gates; do not start `CORPUS-001` before that decision.
