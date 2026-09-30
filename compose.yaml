@@ -37,7 +37,8 @@ services:
     <<: *api-limits
 
   worker:
-    image: article-analysis-api:local
+    build: { context: ., dockerfile: docker/Dockerfile.worker }
+    image: article-analysis-worker:local
     init: true
     restart: unless-stopped
     command: ["python", "-m", "app.workers.bootstrap"]
@@ -45,14 +46,26 @@ services:
       APP_ENV: ${APP_ENV:-development}
       APP_LOG_LEVEL: ${APP_LOG_LEVEL:-INFO}
       DATABASE_URL: postgresql://${POSTGRES_USER:-article_app}:${POSTGRES_PASSWORD:-local-dev-only-change-me}@postgres:5432/${POSTGRES_DB:-article_analysis}
-      REDIS_URL: redis://:${REDIS_PASSWORD:-local-dev-only-change-me}@redis:6379/0
-      EPO_CONSUMER_KEY: ${EPO_CONSUMER_KEY:-}
-      EPO_CONSUMER_SECRET: ${EPO_CONSUMER_SECRET:-}
-      OPENALEX_API_KEY: ${OPENALEX_API_KEY:-}
       INFERENCE_BASE_URL: ${INFERENCE_BASE_URL:-http://host.docker.internal:11434}
+      QDRANT_URL: http://qdrant:6333
+      NEO4J_URI: bolt://neo4j:7687
+      NEO4J_USER: neo4j
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD:-local-dev-only-change-me}
+      MODEL_CONFIG_PATH: /opt/app/config/models.yaml
+      ANALYST_TOKENIZER_PATH: ${ANALYST_TOKENIZER_PATH:-/models/gemma4-tokenizer.json}
+      RERANKER_MODEL_PATH: ${RERANKER_MODEL_PATH:-/models/qwen3-reranker}
+      ANALYSIS_RUN_DEADLINE_SECONDS: ${ANALYSIS_RUN_DEADLINE_SECONDS:-1800}
+      ANALYSIS_JOB_LEASE_SECONDS: ${ANALYSIS_JOB_LEASE_SECONDS:-30}
+      ANALYSIS_JOB_HEARTBEAT_SECONDS: ${ANALYSIS_JOB_HEARTBEAT_SECONDS:-5}
+      ANALYSIS_JOB_POLL_SECONDS: ${ANALYSIS_JOB_POLL_SECONDS:-1}
+      ANALYSIS_JOB_MAX_ATTEMPTS: ${ANALYSIS_JOB_MAX_ATTEMPTS:-3}
       PYTHONDONTWRITEBYTECODE: "1"
+    volumes: [./data/models:/models:ro]
     depends_on:
-      api: { condition: service_started }
+      postgres: { condition: service_healthy }
+      neo4j: { condition: service_healthy }
+      qdrant: { condition: service_healthy }
+      migrate: { condition: service_completed_successfully }
     healthcheck:
       test: ["CMD", "python", "-c", "from pathlib import Path; assert Path('/tmp/worker.ready').is_file()"]
       interval: 15s
@@ -62,7 +75,8 @@ services:
     read_only: true
     tmpfs: [/tmp]
     networks: [backend, egress]
-    <<: *api-limits
+    mem_limit: 4g
+    mem_reservation: 1g
 
   migrate:
     image: article-analysis-api:local
