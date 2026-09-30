@@ -2,11 +2,13 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import re
 from collections.abc import Callable, Sequence
 from dataclasses import asdict, dataclass
+from pathlib import Path
 from uuid import UUID, uuid4
 
 from app.services.rerank import RankedCandidate, _terms
@@ -38,6 +40,34 @@ class EvidencePack:
     items: tuple[EvidencePackItem, ...]
     token_count: int
     token_budget: int
+
+
+class GemmaTokenCounter:
+    """Count prompt tokens with the pinned Gemma tokenizer JSON."""
+
+    def __init__(self, tokenizer: object) -> None:
+        self._tokenizer = tokenizer
+
+    @classmethod
+    def from_file(cls, path: Path, *, expected_sha256: str) -> GemmaTokenCounter:
+        actual_sha256 = hashlib.sha256(path.read_bytes()).hexdigest()
+        if actual_sha256 != expected_sha256:
+            raise ValueError("Analyst tokenizer SHA-256 does not match model inventory")
+        try:
+            from tokenizers import Tokenizer  # type: ignore[import-untyped]
+        except ImportError as exc:
+            raise RuntimeError("tokenizers is required for Gemma evidence budgeting") from exc
+        return cls(Tokenizer.from_file(str(path)))
+
+    def __call__(self, text: str) -> int:
+        encode = getattr(self._tokenizer, "encode", None)
+        if not callable(encode):
+            raise TypeError("tokenizer must provide encode(text)")
+        encoded = encode(text, add_special_tokens=True)
+        ids = getattr(encoded, "ids", None)
+        if not isinstance(ids, list):
+            raise TypeError("tokenizer encode() did not return token IDs")
+        return len(ids)
 
 
 def render_evidence_items(items: Sequence[EvidencePackItem]) -> str:

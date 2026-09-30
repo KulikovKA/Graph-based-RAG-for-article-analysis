@@ -13,6 +13,11 @@ generation:
     digest: 001e5dafc3c77684c2307ebc6ab8e336e10c9b18eca52acf547d72fc83c3ca8c
     max_output_tokens: 2048
     reasoning_efforts: [low]
+    tokenizer:
+      provider: huggingface
+      repo_id: google/gemma-4-26B-A4B-it
+      revision: f1e9a71d98d434acbad5fed4a27ea2ae83b8ff68
+      file_sha256: cc8d3a0ce36466ccc1278bf987df5f71db1719b9ca6b4118264f45cb627bfe0f
 embedding:
   provider: ollama
   model_id: qwen3-embedding:0.6b

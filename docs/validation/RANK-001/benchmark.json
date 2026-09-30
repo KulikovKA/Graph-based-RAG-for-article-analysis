@@ -11,70 +11,70 @@
       "mrr": 1.0,
       "recall_at_3": 0.8888888888888888,
       "top_3_hit_rate": 1,
-      "median_elapsed_ms": 0.2432999899610877,
+      "median_elapsed_ms": 0.24459999985992908,
       "cases": [
         {
           "case_id": "EVAL000-DEV-001",
           "recall_at_3": 1.0,
           "reciprocal_rank": 1.0,
           "top_3_hit": true,
-          "elapsed_ms": 0.285700021777302
+          "elapsed_ms": 0.2745000529102981
         },
         {
           "case_id": "EVAL000-DEV-002",
           "recall_at_3": 1.0,
           "reciprocal_rank": 1.0,
           "top_3_hit": true,
-          "elapsed_ms": 0.2261999761685729
+          "elapsed_ms": 0.24459999985992908
         },
         {
           "case_id": "EVAL000-DEV-003",
           "recall_at_3": 1.0,
           "reciprocal_rank": 1.0,
           "top_3_hit": true,
-          "elapsed_ms": 0.2432999899610877
+          "elapsed_ms": 0.25240000104531646
         },
         {
           "case_id": "EVAL000-DEV-004",
           "recall_at_3": 1.0,
           "reciprocal_rank": 1.0,
           "top_3_hit": true,
-          "elapsed_ms": 0.3436999977566302
+          "elapsed_ms": 0.2384000108577311
         },
         {
           "case_id": "EVAL000-DEV-005",
           "recall_at_3": 1.0,
           "reciprocal_rank": 1.0,
           "top_3_hit": true,
-          "elapsed_ms": 0.2112000365741551
+          "elapsed_ms": 0.2500000409781933
         },
         {
           "case_id": "EVAL000-DEV-006",
           "recall_at_3": 1.0,
           "reciprocal_rank": 1.0,
           "top_3_hit": true,
-          "elapsed_ms": 0.3084000200033188
+          "elapsed_ms": 0.2627999638207257
         },
         {
           "case_id": "EVAL000-DEV-007",
           "recall_at_3": 0.5,
           "reciprocal_rank": 1.0,
           "top_3_hit": true,
-          "elapsed_ms": 0.3341999836266041
+          "elapsed_ms": 0.21899997955188155
         },
         {
           "case_id": "EVAL000-DEV-008",
           "recall_at_3": 0.5,
           "reciprocal_rank": 1.0,
           "top_3_hit": true,
-          "elapsed_ms": 0.2145000034943223
+          "elapsed_ms": 0.2275000442750752
         },
         {
           "case_id": "EVAL000-DEV-010",
           "recall_at_3": 1.0,
           "reciprocal_rank": 1.0,
           "top_3_hit": true,
-          "elapsed_ms": 0.21719996584579349
+          "elapsed_ms": 0.23659999715164304
         }
       ]
     },
@@ -83,70 +83,70 @@
       "mrr": 1.0,
       "recall_at_3": 1.0,
       "top_3_hit_rate": 1,
-      "median_elapsed_ms": 2300.287500023842,
+      "median_elapsed_ms": 2091.892199998256,
       "cases": [
         {
           "case_id": "EVAL000-DEV-001",
           "recall_at_3": 1.0,
           "reciprocal_rank": 1.0,
           "top_3_hit": true,
-          "elapsed_ms": 9541.603100020438
+          "elapsed_ms": 8694.799600052647
         },
         {
           "case_id": "EVAL000-DEV-002",
           "recall_at_3": 1.0,
           "reciprocal_rank": 1.0,
           "top_3_hit": true,
-          "elapsed_ms": 2215.0109999929555
+          "elapsed_ms": 1987.1094000409357
         },
         {
           "case_id": "EVAL000-DEV-003",
           "recall_at_3": 1.0,
           "reciprocal_rank": 1.0,
           "top_3_hit": true,
-          "elapsed_ms": 2292.3440000158735
+          "elapsed_ms": 2091.892199998256
         },
         {
           "case_id": "EVAL000-DEV-004",
           "recall_at_3": 1.0,
           "reciprocal_rank": 1.0,
           "top_3_hit": true,
-          "elapsed_ms": 2300.287500023842
+          "elapsed_ms": 2101.445899985265
         },
         {
           "case_id": "EVAL000-DEV-005",
           "recall_at_3": 1.0,
           "reciprocal_rank": 1.0,
           "top_3_hit": true,
-          "elapsed_ms": 2316.547599970363
+          "elapsed_ms": 2045.2687999932095
         },
         {
           "case_id": "EVAL000-DEV-006",
           "recall_at_3": 1.0,
           "reciprocal_rank": 1.0,
           "top_3_hit": true,
-          "elapsed_ms": 2453.553200000897
+          "elapsed_ms": 2167.1391000272706
         },
         {
           "case_id": "EVAL000-DEV-007",
           "recall_at_3": 1.0,
           "reciprocal_rank": 1.0,
           "top_3_hit": true,
-          "elapsed_ms": 2181.1929999967106
+          "elapsed_ms": 2047.360500029754
         },
         {
           "case_id": "EVAL000-DEV-008",
           "recall_at_3": 1.0,
           "reciprocal_rank": 1.0,
           "top_3_hit": true,
-          "elapsed_ms": 2432.040899991989
+          "elapsed_ms": 2349.74749997491
         },
         {
           "case_id": "EVAL000-DEV-010",
           "recall_at_3": 1.0,
           "reciprocal_rank": 1.0,
           "top_3_hit": true,
-          "elapsed_ms": 2248.702500015497
+          "elapsed_ms": 2047.042499994859
         }
       ]
     }

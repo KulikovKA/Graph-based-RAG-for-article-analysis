@@ -2,7 +2,11 @@ import asyncio
 from uuid import uuid4
 
 from app.domain.evidence import CandidateEvidence
-from app.services.evidence_pack import build_evidence_pack, render_evidence_items
+from app.services.evidence_pack import (
+    GemmaTokenCounter,
+    build_evidence_pack,
+    render_evidence_items,
+)
 from app.services.rerank import (
     RankedCandidate,
     lexical_scores,
@@ -82,3 +86,20 @@ def test_pack_skips_candidate_when_complete_metadata_cannot_fit():
     )
     assert pack.items == ()
     assert pack.token_count <= pack.token_budget
+
+
+def test_gemma_token_counter_uses_special_tokens_and_reports_exact_id_count():
+    class Encoding:
+        ids = [2, 37, 81, 106]
+
+    class TokenizerStub:
+        add_special_tokens: bool | None = None
+
+        def encode(self, _text: str, *, add_special_tokens: bool) -> Encoding:
+            self.add_special_tokens = add_special_tokens
+            return Encoding()
+
+    tokenizer = TokenizerStub()
+    counter = GemmaTokenCounter(tokenizer)
+    assert counter("prompt + serialized evidence") == 4
+    assert tokenizer.add_special_tokens is True
