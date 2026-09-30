@@ -1,0 +1,154 @@
+{
+  "corpus_id": "EVAL-000-SYNTHETIC-1",
+  "split": "dev",
+  "candidate_policy": "all eight frozen synthetic fixture documents",
+  "qwen_model_id": "Qwen/Qwen3-Reranker-0.6B",
+  "qwen_revision": "e61197ed45024b0ed8a2d74b80b4d909f1255473",
+  "selection": "qwen3_0_6b: higher recall_at_3 on this small dev sample; BM25 remains explicit fallback",
+  "cpu_comparison": {
+    "bm25": {
+      "evaluated_cases": 9,
+      "mrr": 1.0,
+      "recall_at_3": 0.8888888888888888,
+      "top_3_hit_rate": 1,
+      "median_elapsed_ms": 0.2432999899610877,
+      "cases": [
+        {
+          "case_id": "EVAL000-DEV-001",
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0,
+          "top_3_hit": true,
+          "elapsed_ms": 0.285700021777302
+        },
+        {
+          "case_id": "EVAL000-DEV-002",
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0,
+          "top_3_hit": true,
+          "elapsed_ms": 0.2261999761685729
+        },
+        {
+          "case_id": "EVAL000-DEV-003",
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0,
+          "top_3_hit": true,
+          "elapsed_ms": 0.2432999899610877
+        },
+        {
+          "case_id": "EVAL000-DEV-004",
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0,
+          "top_3_hit": true,
+          "elapsed_ms": 0.3436999977566302
+        },
+        {
+          "case_id": "EVAL000-DEV-005",
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0,
+          "top_3_hit": true,
+          "elapsed_ms": 0.2112000365741551
+        },
+        {
+          "case_id": "EVAL000-DEV-006",
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0,
+          "top_3_hit": true,
+          "elapsed_ms": 0.3084000200033188
+        },
+        {
+          "case_id": "EVAL000-DEV-007",
+          "recall_at_3": 0.5,
+          "reciprocal_rank": 1.0,
+          "top_3_hit": true,
+          "elapsed_ms": 0.3341999836266041
+        },
+        {
+          "case_id": "EVAL000-DEV-008",
+          "recall_at_3": 0.5,
+          "reciprocal_rank": 1.0,
+          "top_3_hit": true,
+          "elapsed_ms": 0.2145000034943223
+        },
+        {
+          "case_id": "EVAL000-DEV-010",
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0,
+          "top_3_hit": true,
+          "elapsed_ms": 0.21719996584579349
+        }
+      ]
+    },
+    "qwen3_0_6b": {
+      "evaluated_cases": 9,
+      "mrr": 1.0,
+      "recall_at_3": 1.0,
+      "top_3_hit_rate": 1,
+      "median_elapsed_ms": 2300.287500023842,
+      "cases": [
+        {
+          "case_id": "EVAL000-DEV-001",
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0,
+          "top_3_hit": true,
+          "elapsed_ms": 9541.603100020438
+        },
+        {
+          "case_id": "EVAL000-DEV-002",
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0,
+          "top_3_hit": true,
+          "elapsed_ms": 2215.0109999929555
+        },
+        {
+          "case_id": "EVAL000-DEV-003",
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0,
+          "top_3_hit": true,
+          "elapsed_ms": 2292.3440000158735
+        },
+        {
+          "case_id": "EVAL000-DEV-004",
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0,
+          "top_3_hit": true,
+          "elapsed_ms": 2300.287500023842
+        },
+        {
+          "case_id": "EVAL000-DEV-005",
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0,
+          "top_3_hit": true,
+          "elapsed_ms": 2316.547599970363
+        },
+        {
+          "case_id": "EVAL000-DEV-006",
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0,
+          "top_3_hit": true,
+          "elapsed_ms": 2453.553200000897
+        },
+        {
+          "case_id": "EVAL000-DEV-007",
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0,
+          "top_3_hit": true,
+          "elapsed_ms": 2181.1929999967106
+        },
+        {
+          "case_id": "EVAL000-DEV-008",
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0,
+          "top_3_hit": true,
+          "elapsed_ms": 2432.040899991989
+        },
+        {
+          "case_id": "EVAL000-DEV-010",
+          "recall_at_3": 1.0,
+          "reciprocal_rank": 1.0,
+          "top_3_hit": true,
+          "elapsed_ms": 2248.702500015497
+        }
+      ]
+    }
+  }
+}

@@ -124,7 +124,7 @@ flowchart LR
 | PLAN-001 | 5 Planner | P0 | Sol / High | LLM-001,DB-002 | выполнена |
 | STATE-001 | 8 Memory/cache | P0 | Sol / Medium | DB-002 | выполнена |
 | RET-001 | 6 Retrieval | P0 | Sol / High | IDX-001,GRAPH-001 | выполнена |
-| RANK-001 | 6 Reranking | P0 | Sol / Medium | RET-001,LLM-002,EVAL-000 | ожидает |
+| RANK-001 | 6 Reranking | P0 | Sol / Medium | RET-001,LLM-002,EVAL-000 | выполнена |
 | ANALYST-001 | 7 Analyst | P0 | Sol / High | RANK-001,LLM-002 | ожидает |
 | JOB-001 | 8 Jobs | P0 | Sol / High | PLAN-001,STATE-001,ANALYST-001 | ожидает |
 | JOB-002 | Проверенная публикация результата и SSE replay | P0 | Sol / High | JOB-001 | ожидает |
@@ -305,6 +305,8 @@ flowchart LR
 - **Сделать:** CPU benchmark двух компактных вариантов на размеченной мини-выборке, выбрать один; section-aware snippets с offsets, diversity, top 10–15 docs, budget enforcement. **Приёмка/тесты:** все pack IDs существуют, spans совпадают с revision, pack не превышает configured tokens, deterministic tie-break. **Не делать:** не копировать случайные snippet окна PQAI, не исполнять HTML из источника.
 - **Context:** LLM_CONTRACTS/EVALUATION, названные upstream files и rerank modules. **Модель:** Sol/Medium. **Размер:** M, 1–2 ч, review 30 мин. **Риск:** слабое качество CPU reranker.
 - **Уточнение ARCH-002:** Мини-разметка уже существует в EVAL-000. Budget всего prompt измерять tokenizer выбранного Analyst; snapshot/IDs фиксировать только после selection, сохранять Unicode offsets.
+
+- **Выполнено 2026-09-30:** CPU сравнение на девяти EVAL-000 dev-кейсах выбрало pinned Qwen3-Reranker-0.6B (Recall@3 1.000 против BM25 0.889); медиана Qwen 2.30 с, BM25 0.24 мс. Реализованы deterministic tie-break, top-12 rerank, unique-document section snippets с точными Unicode chunk offsets и бюджет всего сериализованного prompt с metadata. Проверки и ограничения эксперимента: `docs/validation/RANK-001/README.md` и `benchmark.json`.
 
 ### ANALYST-001 — Доказательный анализ reasoning-capable Analyst
 
