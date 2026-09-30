@@ -123,7 +123,7 @@ flowchart LR
 | LLM-002 | Выбор локальных весов и CPU smoke | P0 | Sol / High | LLM-001 | выполнена |
 | PLAN-001 | 5 Planner | P0 | Sol / High | LLM-001,DB-002 | выполнена |
 | STATE-001 | 8 Memory/cache | P0 | Sol / Medium | DB-002 | выполнена |
-| RET-001 | 6 Retrieval | P0 | Sol / High | IDX-001,GRAPH-001 | ожидает |
+| RET-001 | 6 Retrieval | P0 | Sol / High | IDX-001,GRAPH-001 | выполнена |
 | RANK-001 | 6 Reranking | P0 | Sol / Medium | RET-001,LLM-002,EVAL-000 | ожидает |
 | ANALYST-001 | 7 Analyst | P0 | Sol / High | RANK-001,LLM-002 | ожидает |
 | JOB-001 | 8 Jobs | P0 | Sol / High | PLAN-001,STATE-001,ANALYST-001 | ожидает |
@@ -291,6 +291,7 @@ flowchart LR
 
 ### RET-001 — Candidate retrieval и fusion
 
+- **Результат (2026-09-30):** добавлен bounded query planner и параллельный retrieval по Qdrant, PostgreSQL full-text metadata и Neo4j domain graph; каждый канал проверяет membership в зафиксированной generation, только публичные источники проходят в кандидаты, результаты дедуплицируются и сливаются deterministic RRF, partial/unavailable coverage явна, LightRAG остаётся необязательным context-only каналом. Unit: 3 passed; PostgreSQL integration: 1 passed на одноразовой локальной БД; Ruff и mypy прошли.
 - **Цель/зачем:** получить ограниченный набор патентов/работ без дорогой генерации.
 - **Depends / priority:** IDX-001,GRAPH-001; P0. LR-001 опционален и не блокирует P0. **Files:** src/app/services/retrieval.py, src/app/domain/evidence.py, tests/integration/test_retrieval.py. **References:** docs/ARCHITECTURE.md, docs/GRAPH_SCHEMA.md, docs/REPO_MAP.md; PQAI [core/search.py](https://github.com/pqaidevteam/pqai/blob/56342aaac5d9bf626f9413e5e49819e70709ce2f/core/search.py) для patent retrieval; PriorArtRAG pinned [decompose.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/decompose.py), [pipeline.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/pipeline.py) и [fusion.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/fusion.py) для bounded feature decomposition, staged retrieval и rank fusion; LightRAG — только optional graph context.
 - **Сделать:** query construction и bounded feature subqueries с обязательным исходным запросом/fallback; parallel Qdrant/metadata/domain-graph candidate retrieval, optional LightRAG context, canonical dedup, fusion, partial-source status. **Приёмка/тесты:** top IDs стабильны на fixture corpus, каждый feature subquery bounded, исходный query сохранён при пустой decomposition, дубликаты слиты, отсутствие канала явно отражено, чужой/private evidence не попадает. **Не делать:** не отправлять десятки целых патентов analyst, не вызывать LLM-as-judge, не заменять Qdrant индексом PriorArtRAG.
