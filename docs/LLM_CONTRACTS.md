@@ -1,6 +1,6 @@
 # Контракты моделей и deterministic shell
 
-Две роли: Planner классифицирует intent, извлекает признаки и предлагает patch/retrieval; reasoning-capable Smart Analyst сравнивает evidence. Предпочтительные локальные кандидаты — `LFM2.5-8B-A1B` и `gpt-oss:20b` соответственно. Planner не выполняет глубокий patent reasoning. Конкретные веса, quantization, context window и CPU latency проходят LLM-002 на целевом хосте. Ни имя кандидата, ни MoE не гарантируют размещение в RAM. `InferenceProvider` скрывает local CPU, remote GPU и API provider; общий single-generation semaphore охватывает все генеративные роли.
+Две роли: Planner классифицирует intent, извлекает признаки и предлагает patch/retrieval; reasoning-capable Smart Analyst сравнивает evidence. Текущие локальные кандидаты — `LFM2.5-8B-A1B` и `gemma4:26b-a4b-it-mtp-q4_K_M` соответственно. Digest и артефакты Analyst закреплены в model inventory; CPU/RAM, structured output и reasoning возможности проверяются в LLM-002. Результаты для прежнего `gpt-oss:20b` являются историческими и не подтверждают возможности нового кандидата. Planner не выполняет глубокий patent reasoning. Конкретные веса, quantization, context window и CPU latency проходят LLM-002 на целевом хосте. Ни имя кандидата, ни MoE не гарантируют размещение в RAM. `InferenceProvider` скрывает local CPU, remote GPU и API provider; общий single-generation semaphore охватывает все генеративные роли.
 
 ## Planner v1
 

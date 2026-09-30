@@ -2,7 +2,7 @@
 
 Статус документа: planning baseline от 2026-09-29. Здесь нет отметок «выполнено» для будущей реализации. После любой завершённой задачи обязателен отдельный commit и **успешный push** в `https://github.com/KulikovKA/Graph-based-RAG-for-article-analysis`; до проверки удалённого коммита статус остаётся «ожидает публикации». Это же правило изложено в [task.md](task.md).
 
-Изменение baseline 2026-09-29: [ADR-011](docs/DECISIONS.md#adr-011--reasoning-analyst-и-validated-streaming-2026-09-29-accepted-planning), [adversarial review](docs/REASONING_STREAMING_REVIEW.md). Выбран AnalysisV1 → deterministic AnswerV1/public summary → atomic commit → SSE. LFM2.5-8B-A1B / gpt-oss:20b — кандидаты LLM-002. Новых задач нет: расширены существующие cards; DAG прежний. Дополнения ADR-011 нормативны для будущей реализации; статусы implementation-задач не изменены. DB-001/002 остаются исторически завершёнными; следующая миграция projections и atomic publication входят в JOB-002.
+Изменение baseline 2026-09-29: [ADR-011](docs/DECISIONS.md#adr-011--reasoning-analyst-и-validated-streaming-2026-09-29-accepted-planning), [adversarial review](docs/REASONING_STREAMING_REVIEW.md). Выбран AnalysisV1 → deterministic AnswerV1/public summary → atomic commit → SSE. Кандидат Analyst изменён 2026-09-30 на `gemma4:26b-a4b-it-mtp-q4_K_M`; загрузка и повторная проверка ещё не завершены. Исторические результаты `gpt-oss:20b` сохранены. LLM-002 и зависящая от токенизатора Analyst часть приёмки RANK-001 требуют повторного запуска; задачи не запускались. DAG прежний. Дополнения ADR-011 нормативны для будущей реализации. DB-001/002 остаются исторически завершёнными; следующая миграция projections и atomic publication входят в JOB-002.
 
 ## Шаблон задания агенту
 
@@ -124,7 +124,7 @@ flowchart LR
 | PLAN-001 | 5 Planner | P0 | Sol / High | LLM-001,DB-002 | выполнена |
 | STATE-001 | 8 Memory/cache | P0 | Sol / Medium | DB-002 | выполнена |
 | RET-001 | 6 Retrieval | P0 | Sol / High | IDX-001,GRAPH-001 | выполнена |
-| RANK-001 | 6 Reranking | P0 | Sol / Medium | RET-001,LLM-002,EVAL-000 | выполнена |
+| RANK-001 | 6 Reranking | P0 | Sol / Medium | RET-001,LLM-002,EVAL-000 | требует повторного запуска |
 | ANALYST-001 | 7 Analyst | P0 | Sol / High | RANK-001,LLM-002 | ожидает |
 | JOB-001 | 8 Jobs | P0 | Sol / High | PLAN-001,STATE-001,ANALYST-001 | ожидает |
 | JOB-002 | Проверенная публикация результата и SSE replay | P0 | Sol / High | JOB-001 | ожидает |
@@ -263,7 +263,9 @@ flowchart LR
 
 ### LLM-002 — Выбор локальных весов и CPU smoke
 
-- **Дополнение ADR-011 / приёмка:** первые кандидаты Planner LFM2.5-8B-A1B и Analyst gpt-oss:20b; pin фактические runtime IDs/hash/quantization только после gate. Проверить thinking + strict final JSON, bounded context/reasoning/output, channel isolation, cancellation, sequential loading и unload. Измерить cold/warm и оба направления model switch, peak RSS/container/host RAM/swap с полным Compose, model TTFT отдельно от validated-result latency, reasoning/output metadata availability. Нынешние 12 GiB inference не считаются достаточными заранее. Gate failure требует документированного выбора/повторного benchmark, без тихого изменения domain контрактов. Files дополнительно: compose.yaml, .env.example; утверждённые budgets/версии записать в deployment/model inventory. Это не полный EVAL.
+- **Результат (2026-09-30):** повторный LLM-002 пройден на `gemma4:26b-a4b-it-mtp-q4_K_M`: strict AnalysisV1 JSON/citations cold+warm, embedding/rerank smoke, cancellation/unload и переключение Planner↔Analyst прошли. Полные результаты: `docs/validation/LLM-002/README.md` и `measurements.json`; исходный GPT-OSS отчет сохранён отдельно. Output budget Analyst закреплён на 2048 после того, как 768 не вмещал AnalysisV1.
+
+- **Дополнение ADR-011 / приёмка:** кандидаты Planner LFM2.5-8B-A1B и Analyst gemma4:26b-a4b-it-mtp-q4_K_M закреплены с runtime IDs/digest/quantization после gate. Проверены thinking + strict final JSON, bounded output, channel isolation, cancellation, sequential loading/unload, cold/warm и направления model switch; измерены peak RSS/container/host RAM/swap с полным Compose и TTFT. Ollama не предоставляет reasoning token/duration и validated-result latency; ограничения записаны в отчёте. Прежние gpt-oss:20b измерения — исторический baseline. Files дополнительно: compose.yaml, .env.example; утверждённые budgets/версии записать в deployment/model inventory. Это не полный EVAL.
 
 - **Цель/зачем:** зафиксировать модельные артефакты, RAM и реально поддержанные методы
 - **Depends / priority:** LLM-001; P0. **Files:** config/models.yaml, scripts/benchmark_inference.py, docs/DEPLOYMENT.md, model inventory. **References:** docs/LLM_CONTRACTS.md, docs/DEPLOYMENT.md.
@@ -300,13 +302,15 @@ flowchart LR
 
 ### RANK-001 — Лёгкий reranker и evidence pack
 
+- **Статус 2026-09-30:** требует повторного запуска проверки бюджета всего Analyst prompt с токенизатором новой модели. Исторический результат сравнения Qwen reranker и BM25 остаётся фактическим; повторный benchmark не запускали.
+
 - **Цель/зачем:** сузить кандидатов до объяснимых фрагментов под token budget.
 - **Depends / priority:** RET-001,LLM-002,EVAL-000; P0. **Files:** src/app/services/rerank.py, src/app/services/evidence_pack.py, tests/unit/test_evidence_pack.py. **References:** docs/LLM_CONTRACTS.md, PQAI [core/reranking.py](https://github.com/pqaidevteam/pqai/blob/56342aaac5d9bf626f9413e5e49819e70709ce2f/core/reranking.py)/[core/snippet.py](https://github.com/pqaidevteam/pqai/blob/56342aaac5d9bf626f9413e5e49819e70709ce2f/core/snippet.py), LightRAG [lightrag/rerank.py](https://github.com/HKUDS/LightRAG/blob/453dce83d6d0354a06e46c8d4029a0895c4e054b/lightrag/rerank.py), PriorArtRAG pinned [domain/rerank.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/rerank.py) for typed stage contract. PriorArtRAG [domain/fusion.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/domain/fusion.py) is already applied in RET-001; do not duplicate fusion implementation here.
 - **Сделать:** CPU benchmark двух компактных вариантов на размеченной мини-выборке, выбрать один; section-aware snippets с offsets, diversity, top 10–15 docs, budget enforcement. **Приёмка/тесты:** все pack IDs существуют, spans совпадают с revision, pack не превышает configured tokens, deterministic tie-break. **Не делать:** не копировать случайные snippet окна PQAI, не исполнять HTML из источника.
 - **Context:** LLM_CONTRACTS/EVALUATION, названные upstream files и rerank modules. **Модель:** Sol/Medium. **Размер:** M, 1–2 ч, review 30 мин. **Риск:** слабое качество CPU reranker.
 - **Уточнение ARCH-002:** Мини-разметка уже существует в EVAL-000. Budget всего prompt измерять tokenizer выбранного Analyst; snapshot/IDs фиксировать только после selection, сохранять Unicode offsets.
 
-- **Выполнено 2026-09-30:** CPU сравнение на девяти EVAL-000 dev-кейсах выбрало pinned Qwen3-Reranker-0.6B (Recall@3 1.000 против BM25 0.889); медиана Qwen 2.30 с, BM25 0.24 мс. Реализованы deterministic tie-break, top-12 rerank, unique-document section snippets с точными Unicode chunk offsets и бюджет всего сериализованного prompt с metadata. Проверки и ограничения эксперимента: `docs/validation/RANK-001/README.md` и `benchmark.json`.
+- **Исторический результат 2026-09-30:** CPU сравнение на девяти EVAL-000 dev-кейсах выбрало pinned Qwen3-Reranker-0.6B (Recall@3 1.000 против BM25 0.889); медиана Qwen 2.30 с, BM25 0.24 мс. Реализованы deterministic tie-break, top-12 rerank и unique-document section snippets с точными Unicode chunk offsets. Проверки и ограничения эксперимента: `docs/validation/RANK-001/README.md` и `benchmark.json`. Проверка бюджета всего Analyst prompt требует повторного запуска с токенизатором новой модели.
 
 ### ANALYST-001 — Доказательный анализ reasoning-capable Analyst
 

@@ -18,10 +18,14 @@
     },
     "analyst": {
       "provider": "ollama",
-      "id": "gpt-oss:20b",
-      "digest": "17052f91a42e97930aa6e28a6c6c06a983e6a58dbb00434885a0cf5313e376f7",
-      "bytes": 13793441244,
-      "quantization": "MXFP4",
+      "id": "gemma4:26b-a4b-it-mtp-q4_K_M",
+      "digest": "001e5dafc3c77684c2307ebc6ab8e336e10c9b18eca52acf547d72fc83c3ca8c",
+      "bytes": 18731025629,
+      "quantization": "Q4_K_M",
+      "architecture": "gemma4",
+      "parameter_size": "25.2B",
+      "context_length": 262144,
+      "capabilities": ["completion", "vision", "tools", "thinking"],
       "license": "Apache-2.0"
     },
     "embedding": {

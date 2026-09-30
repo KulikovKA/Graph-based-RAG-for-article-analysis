@@ -88,7 +88,7 @@ ING-001 проверяет барьер на fake index ports. IDX-001/GRAPH-001
 
 ## Reasoning и validated streaming — ADR-011
 
-Текущие локальные кандидаты: Planner `LFM2.5-8B-A1B`, Analyst `gpt-oss:20b`. Это baseline для LLM-002, не закреплённые runtime dependencies: revision, quantization, tokenizer, лицензия, поддержка JSON и размещение в RAM требуют измерения. Planner классифицирует intent, извлекает признаки и предлагает patch/retrieval; глубокое сравнение патентов выполняет только Analyst.
+Текущие локальные кандидаты: Planner `LFM2.5-8B-A1B`, Analyst `gemma4:26b-a4b-it-mtp-q4_K_M`. Digest, размер, Q4_K_M, Apache-2.0 и Ollama capabilities закреплены в model inventory; tokenizer, поддержка JSON и размещение в RAM проверяются в LLM-002 на целевом хосте. Прежние измерения `gpt-oss:20b` остаются историческим baseline. Planner классифицирует intent, извлекает признаки и предлагает patch/retrieval; глубокое сравнение патентов выполняет только Analyst.
 
 Выбран вариант B: один reasoning pass выдаёт закрытый structured `AnalysisV1`; validator проверяет его, затем deterministic renderer строит существующий `AnswerV1` и публичную проекцию «Ход анализа». Обе проекции проверяются до общей terminal transaction. Второго LLM rendering pass нет. Raw thinking/analysis channel отбрасывается внутри adapter: ни API/SSE/UI, ни durable storage, ни логи/traces его не получают. Подробности DTO — [LLM_CONTRACTS](LLM_CONTRACTS.md), публичного формата — [API_CONTRACTS](API_CONTRACTS.md).
 

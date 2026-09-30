@@ -9,10 +9,10 @@ generation:
     reasoning_efforts: []
   analyst:
     provider: ollama
-    model_id: gpt-oss:20b
-    digest: 17052f91a42e97930aa6e28a6c6c06a983e6a58dbb00434885a0cf5313e376f7
-    max_output_tokens: 768
-    reasoning_efforts: [low, medium, high]
+    model_id: gemma4:26b-a4b-it-mtp-q4_K_M
+    digest: 001e5dafc3c77684c2307ebc6ab8e336e10c9b18eca52acf547d72fc83c3ca8c
+    max_output_tokens: 2048
+    reasoning_efforts: [low]
 embedding:
   provider: ollama
   model_id: qwen3-embedding:0.6b

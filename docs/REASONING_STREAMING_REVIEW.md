@@ -21,14 +21,14 @@
 | 9. Reconnecting client? | Valid cursor: seq replay/dedupe. Missing/stale после compaction: consistent RunV1/high-water reset заменяет partial view. Terminal cursor закрывает stream | API-001, UI-001 |
 | 10. Timeout после thinking до final JSON? | Thinking и partial JSON отбрасываются. Safe fallback только из committed evidence в оставшемся budget; иначе failed | LLM-001, ANALYST-001 |
 | 11. Как безопасен fallback? | Точные excerpts + scoped shell notices, без rejected relations; прежний validator для всех public projections. Пустой успешный поиск = no_evidence; отмена = cancelled | ANALYST-001, JOB-001 |
-| 12. Новая привязка к Ollama/gpt-oss? | Options/metadata в complete_json, capabilities проверяются adapter; DTO/events не знают provider channels. Имена моделей — кандидаты gate | LLM-001/002 |
+| 12. Новая привязка к конкретной Ollama-модели? | Options/metadata в complete_json, capabilities проверяются adapter; DTO/events не знают provider channels. Имена моделей — кандидаты gate | LLM-001/002 |
 
 ## Дополнительные найденные риски
 
 1. **Валидная citation не доказывает relation.** Даже точная цитата может не поддерживать full match. AnalysisV1 убирает свободные rationale/summary, renderer ограничивает формулировки, но semantic faithfulness требует разметки/ручного review. Нулевой уровень смысловых ошибок нельзя обещать архитектурой. Evidence validator не ослаблен.
 2. **Summary до verification противоречит требованию безопасности.** Порядок уточнён: verification started → общая проверка/commit → verification completed → summary → answer chunks. Поиск и reasoning показывают progress раньше, semantic statements не показывают.
 3. **Terminal уже достигнут, а браузер ещё анимирует текст.** Cancel возвращает completed; delivery не часть job lease и не повод повторить inference. UI не удерживает terminal processing ради анимации.
-4. **RAM и модельный swap могут съесть выигрыш UX.** Bootstrap 12 GiB не подтверждены для gpt-oss:20b. Последовательная загрузка уменьшает одновременное потребление, но добавляет latency; full-host gate обязателен. Производительность кандидатов не измерялась этим change.
+4. **RAM и модельный swap могут съесть выигрыш UX.** Bootstrap 12 GiB не подтверждены для прежнего `gpt-oss:20b`; его замеры не относятся к выбранному кандидату `gemma4:26b-a4b-it-mtp-q4_K_M`. Последовательная загрузка уменьшает одновременное потребление, но добавляет latency; full-host gate обязателен. Новый кандидат ожидает загрузки и измерения.
 5. **Abort HTTP не равен остановке CPU generation.** После lease expiry/worker crash recovery не начинает новую генерацию, пока backend state неизвестен; adapter/deployment gate проверяет фактическое освобождение слота.
 6. **Утечка через диагностику.** Раздельные channels недостаточны при body logging/tracing. Metadata allowlist и synthetic sentinel tests распространяются на error/repair/timeout/cancel и eval artifacts.
 7. **Replay может зависеть от нового renderer.** Persisted full presentation и public summary устраняют необходимость рендерить старый результат заново. Legacy runs явно сохраняют прежнюю схему без выдуманного AnalysisV1.

@@ -82,7 +82,7 @@ async def _measure(
 ) -> tuple[T, dict[str, Any]]:
     stop = asyncio.Event()
     peak = {"ollama_rss_bytes": 0, "reranker_rss_bytes": 0,
-            "host_used_bytes": 0, "swap_used_bytes": 0,
+            "host_used_bytes": 0, "swap_used_bytes": None,
             "compose_total_bytes": 0}
 
     async def sample() -> None:
@@ -96,7 +96,14 @@ async def _measure(
                 except (psutil.NoSuchProcess, psutil.AccessDenied):
                     pass
             peak["host_used_bytes"] = max(peak["host_used_bytes"], psutil.virtual_memory().used)
-            peak["swap_used_bytes"] = max(peak["swap_used_bytes"], psutil.swap_memory().used)
+            try:
+                swap_used = psutil.swap_memory().used
+                previous_swap = peak["swap_used_bytes"]
+                peak["swap_used_bytes"] = max(previous_swap or 0, swap_used)
+                peak.pop("swap_measurement_reason", None)
+            except (psutil.Error, OSError, RuntimeError):
+                if peak["swap_used_bytes"] is None:
+                    peak["swap_measurement_reason"] = "windows_performance_counter_unavailable"
             if time.monotonic() >= next_compose_sample:
                 compose_bytes = await asyncio.to_thread(_compose_memory_bytes)
                 if compose_bytes is not None:

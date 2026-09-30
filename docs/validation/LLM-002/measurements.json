@@ -8,11 +8,11 @@
         "quantization": "Q4_K_M",
         "architecture": "lfm2moe"
       },
-      "gpt-oss:20b": {
-        "digest": "17052f91a42e97930aa6e28a6c6c06a983e6a58dbb00434885a0cf5313e376f7",
-        "bytes": 13793441244,
-        "quantization": "MXFP4",
-        "architecture": "gptoss"
+      "gemma4:26b-a4b-it-mtp-q4_K_M": {
+        "digest": "001e5dafc3c77684c2307ebc6ab8e336e10c9b18eca52acf547d72fc83c3ca8c",
+        "bytes": 18731025629,
+        "quantization": "Q4_K_M",
+        "architecture": "gemma4"
       },
       "qwen3-embedding:0.6b": {
         "digest": "ac6da0dfba84a81fdbfbaf330198c33cd77c4cdfc53e8bc50eb581914a15621d",
@@ -21,6 +21,90 @@
         "architecture": "qwen3"
       }
     }
+  },
+  "analyst": {
+    "calls": [
+      {
+        "phase": "cold",
+        "schema_shape_valid": true,
+        "relation_count": 1,
+        "citation_offsets_valid": true,
+        "raw_reasoning_in_result": false,
+        "first_attempt_error_code": null,
+        "repair_attempted": false,
+        "repair_valid": null,
+        "validated_result_latency_ms": null,
+        "validated_result_latency_reason": "JOB-002_not_implemented",
+        "metadata": {
+          "provider": "ollama",
+          "model_id": "gemma4:26b-a4b-it-mtp-q4_K_M",
+          "model_revision": "001e5dafc3c77684c2307ebc6ab8e336e10c9b18eca52acf547d72fc83c3ca8c",
+          "finish_reason": "stop",
+          "model_ttft_ms": 30688.00000002375,
+          "model_ttft_reason": null,
+          "reasoning_duration_ms": null,
+          "reasoning_duration_reason": "not_reported_separately",
+          "reasoning_tokens": null,
+          "reasoning_tokens_reason": "not_reported_separately",
+          "output_duration_ms": 25342.99999999348,
+          "output_duration_reason": null,
+          "output_tokens": null,
+          "output_tokens_reason": "provider_count_includes_reasoning_or_missing",
+          "total_ms": 119952.99999997951,
+          "load_ms": 24721.1562,
+          "load_reason": null
+        },
+        "first_attempt": {
+          "elapsed_ms": 121830.5,
+          "ollama_rss_bytes": 20303310848,
+          "reranker_rss_bytes": 0,
+          "host_used_bytes": 31425482752,
+          "swap_used_bytes": 5594317663,
+          "compose_total_bytes": 2194010011
+        },
+        "repair": null
+      },
+      {
+        "phase": "warm",
+        "schema_shape_valid": true,
+        "relation_count": 1,
+        "citation_offsets_valid": true,
+        "raw_reasoning_in_result": false,
+        "first_attempt_error_code": null,
+        "repair_attempted": false,
+        "repair_valid": null,
+        "validated_result_latency_ms": null,
+        "validated_result_latency_reason": "JOB-002_not_implemented",
+        "metadata": {
+          "provider": "ollama",
+          "model_id": "gemma4:26b-a4b-it-mtp-q4_K_M",
+          "model_revision": "001e5dafc3c77684c2307ebc6ab8e336e10c9b18eca52acf547d72fc83c3ca8c",
+          "finish_reason": "stop",
+          "model_ttft_ms": 608.9999999967404,
+          "model_ttft_reason": null,
+          "reasoning_duration_ms": null,
+          "reasoning_duration_reason": "not_reported_separately",
+          "reasoning_tokens": null,
+          "reasoning_tokens_reason": "not_reported_separately",
+          "output_duration_ms": 24531.00000001723,
+          "output_duration_reason": null,
+          "output_tokens": null,
+          "output_tokens_reason": "provider_count_includes_reasoning_or_missing",
+          "total_ms": 113108.99999999674,
+          "load_ms": 8.1714,
+          "load_reason": null
+        },
+        "first_attempt": {
+          "elapsed_ms": 114506.1,
+          "ollama_rss_bytes": 20611297280,
+          "reranker_rss_bytes": 0,
+          "host_used_bytes": 32549289984,
+          "swap_used_bytes": 5322981376,
+          "compose_total_bytes": 2151070823
+        },
+        "repair": null
+      }
+    ]
   },
   "embedding": {
     "dimension": 1024,
@@ -33,20 +117,86 @@
     "pre_cancel_rejected": true,
     "short_deadline_timed_out": true,
     "cold": {
-      "elapsed_ms": 3703.3,
-      "ollama_rss_bytes": 1299578880,
+      "elapsed_ms": 4782.3,
+      "ollama_rss_bytes": 1243316224,
       "reranker_rss_bytes": 0,
-      "host_used_bytes": 16570871808,
-      "swap_used_bytes": 4661280768
+      "host_used_bytes": 12933230592,
+      "swap_used_bytes": 5171834880,
+      "compose_total_bytes": 1921615131
     },
     "warm": {
-      "elapsed_ms": 1988.0,
-      "ollama_rss_bytes": 1299734528,
+      "elapsed_ms": 1456.9,
+      "ollama_rss_bytes": 1243316224,
       "reranker_rss_bytes": 0,
-      "host_used_bytes": 16582336512,
-      "swap_used_bytes": 4661280768
+      "host_used_bytes": 12894408704,
+      "swap_used_bytes": 5171654656,
+      "compose_total_bytes": 0
     },
-    "warm_texts_per_second": 1.51
+    "warm_texts_per_second": 2.06
+  },
+  "planner": {
+    "calls": [
+      {
+        "phase": "cold",
+        "schema_valid": true,
+        "metadata": {
+          "provider": "ollama",
+          "model_id": "lfm2.5:8b-a1b-q4_K_M",
+          "model_revision": "9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2",
+          "finish_reason": "stop",
+          "model_ttft_ms": 6061.999999976251,
+          "model_ttft_reason": null,
+          "reasoning_duration_ms": null,
+          "reasoning_duration_reason": "not_reported_separately",
+          "reasoning_tokens": null,
+          "reasoning_tokens_reason": "not_reported_separately",
+          "output_duration_ms": 0.0,
+          "output_duration_reason": null,
+          "output_tokens": 19,
+          "output_tokens_reason": null,
+          "total_ms": 6061.999999976251,
+          "load_ms": 4597.7449,
+          "load_reason": null
+        },
+        "elapsed_ms": 7830.0,
+        "ollama_rss_bytes": 5339512832,
+        "reranker_rss_bytes": 0,
+        "host_used_bytes": 18007740416,
+        "swap_used_bytes": 4858789888,
+        "compose_total_bytes": 1921384445
+      },
+      {
+        "phase": "warm",
+        "schema_valid": true,
+        "metadata": {
+          "provider": "ollama",
+          "model_id": "lfm2.5:8b-a1b-q4_K_M",
+          "model_revision": "9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2",
+          "finish_reason": "stop",
+          "model_ttft_ms": 108.99999999674037,
+          "model_ttft_reason": null,
+          "reasoning_duration_ms": null,
+          "reasoning_duration_reason": "not_reported_separately",
+          "reasoning_tokens": null,
+          "reasoning_tokens_reason": "not_reported_separately",
+          "output_duration_ms": 781.0000000172295,
+          "output_duration_reason": null,
+          "output_tokens": 19,
+          "output_tokens_reason": null,
+          "total_ms": 890.0000000139698,
+          "load_ms": 4.525,
+          "load_reason": null
+        },
+        "elapsed_ms": 2326.0,
+        "ollama_rss_bytes": 5339512832,
+        "reranker_rss_bytes": 0,
+        "host_used_bytes": 18004123648,
+        "swap_used_bytes": 4854542336,
+        "compose_total_bytes": 0
+      }
+    ],
+    "truncated_rejected": true,
+    "single_repair_schema_valid": true
   },
   "reranker": {
     "calls": [
@@ -58,11 +208,12 @@
           2.4300239601871e-05
         ],
         "relevant_first": true,
-        "elapsed_ms": 10072.1,
-        "ollama_rss_bytes": 100032512,
-        "reranker_rss_bytes": 1782648832,
-        "host_used_bytes": 17854570496,
-        "swap_used_bytes": 4659130368
+        "elapsed_ms": 14280.3,
+        "ollama_rss_bytes": 44494848,
+        "reranker_rss_bytes": 1782853632,
+        "host_used_bytes": 14844993536,
+        "swap_used_bytes": 5070938112,
+        "compose_total_bytes": 2167260837
       },
       {
         "phase": "warm",
@@ -72,11 +223,12 @@
           2.4300239601871e-05
         ],
         "relevant_first": true,
-        "elapsed_ms": 1150.2,
-        "ollama_rss_bytes": 100032512,
-        "reranker_rss_bytes": 1783250944,
-        "host_used_bytes": 17849552896,
-        "swap_used_bytes": 4659130368
+        "elapsed_ms": 1483.5,
+        "ollama_rss_bytes": 44494848,
+        "reranker_rss_bytes": 1783562240,
+        "host_used_bytes": 14783188992,
+        "swap_used_bytes": 5058064384,
+        "compose_total_bytes": 0
       }
     ],
     "pre_cancel_rejected": true,
@@ -172,161 +324,16 @@
       "top_1_hit_after": true
     }
   },
-  "planner": {
-    "calls": [
-      {
-        "phase": "cold",
-        "schema_valid": true,
-        "metadata": {
-          "provider": "ollama",
-          "model_id": "lfm2.5:8b-a1b-q4_K_M",
-          "model_revision": "9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2",
-          "finish_reason": "stop",
-          "model_ttft_ms": 9171.999999991385,
-          "model_ttft_reason": null,
-          "reasoning_duration_ms": null,
-          "reasoning_duration_reason": "not_reported_separately",
-          "reasoning_tokens": null,
-          "reasoning_tokens_reason": "not_reported_separately",
-          "output_duration_ms": 0.0,
-          "output_duration_reason": null,
-          "output_tokens": 19,
-          "output_tokens_reason": null,
-          "total_ms": 9171.999999991385,
-          "load_ms": 7851.0602,
-          "load_reason": null
-        },
-        "elapsed_ms": 10490.4,
-        "ollama_rss_bytes": 5391155200,
-        "reranker_rss_bytes": 0,
-        "host_used_bytes": 19502800896,
-        "swap_used_bytes": 4651307008
-      },
-      {
-        "phase": "warm",
-        "schema_valid": true,
-        "metadata": {
-          "provider": "ollama",
-          "model_id": "lfm2.5:8b-a1b-q4_K_M",
-          "model_revision": "9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2",
-          "finish_reason": "stop",
-          "model_ttft_ms": 92.99999999348074,
-          "model_ttft_reason": null,
-          "reasoning_duration_ms": null,
-          "reasoning_duration_reason": "not_reported_separately",
-          "reasoning_tokens": null,
-          "reasoning_tokens_reason": "not_reported_separately",
-          "output_duration_ms": 1375.0,
-          "output_duration_reason": null,
-          "output_tokens": 19,
-          "output_tokens_reason": null,
-          "total_ms": 1467.9999999934807,
-          "load_ms": 3.4682,
-          "load_reason": null
-        },
-        "elapsed_ms": 2496.7,
-        "ollama_rss_bytes": 5391241216,
-        "reranker_rss_bytes": 0,
-        "host_used_bytes": 19501137920,
-        "swap_used_bytes": 4651307008
-      }
-    ],
-    "truncated_rejected": true,
-    "single_repair_schema_valid": true
-  },
-  "analyst": {
-    "calls": [
-      {
-        "phase": "cold",
-        "schema_shape_valid": true,
-        "relation_count": 1,
-        "citation_offsets_valid": true,
-        "raw_reasoning_in_result": false,
-        "first_attempt_error_code": null,
-        "repair_attempted": false,
-        "repair_valid": null,
-        "metadata": {
-          "provider": "ollama",
-          "model_id": "gpt-oss:20b",
-          "model_revision": "17052f91a42e97930aa6e28a6c6c06a983e6a58dbb00434885a0cf5313e376f7",
-          "finish_reason": "stop",
-          "model_ttft_ms": 23703.000000008615,
-          "model_ttft_reason": null,
-          "reasoning_duration_ms": null,
-          "reasoning_duration_reason": "not_reported_separately",
-          "reasoning_tokens": null,
-          "reasoning_tokens_reason": "not_reported_separately",
-          "output_duration_ms": 19812.000000005355,
-          "output_duration_reason": null,
-          "output_tokens": null,
-          "output_tokens_reason": "provider_count_includes_reasoning_or_missing",
-          "total_ms": 44842.99999999348,
-          "load_ms": 18462.4217,
-          "load_reason": null
-        },
-        "first_attempt": {
-          "elapsed_ms": 46246.2,
-          "ollama_rss_bytes": 14162214912,
-          "reranker_rss_bytes": 0,
-          "host_used_bytes": 28234543104,
-          "swap_used_bytes": 4651626496,
-          "compose_total_bytes": 1927960065
-        },
-        "repair": null,
-        "validated_result_latency_ms": null,
-        "validated_result_latency_reason": "JOB-002_not_implemented"
-      },
-      {
-        "phase": "warm",
-        "schema_shape_valid": true,
-        "relation_count": 1,
-        "citation_offsets_valid": true,
-        "raw_reasoning_in_result": false,
-        "first_attempt_error_code": null,
-        "repair_attempted": false,
-        "repair_valid": null,
-        "metadata": {
-          "provider": "ollama",
-          "model_id": "gpt-oss:20b",
-          "model_revision": "17052f91a42e97930aa6e28a6c6c06a983e6a58dbb00434885a0cf5313e376f7",
-          "finish_reason": "stop",
-          "model_ttft_ms": 453.00000000861473,
-          "model_ttft_reason": null,
-          "reasoning_duration_ms": null,
-          "reasoning_duration_reason": "not_reported_separately",
-          "reasoning_tokens": null,
-          "reasoning_tokens_reason": "not_reported_separately",
-          "output_duration_ms": 19016.00000000326,
-          "output_duration_reason": null,
-          "output_tokens": null,
-          "output_tokens_reason": "provider_count_includes_reasoning_or_missing",
-          "total_ms": 25297.00000002049,
-          "load_ms": 13.3717,
-          "load_reason": null
-        },
-        "first_attempt": {
-          "elapsed_ms": 26221.0,
-          "ollama_rss_bytes": 14175866880,
-          "reranker_rss_bytes": 0,
-          "host_used_bytes": 28310118400,
-          "swap_used_bytes": 4656300032,
-          "compose_total_bytes": 2035382481
-        },
-        "repair": null,
-        "validated_result_latency_ms": null,
-        "validated_result_latency_reason": "JOB-002_not_implemented"
-      }
-    ]
-  },
   "cancel": {
     "outcome": "InferenceCancelled",
     "gate_blocked": false,
     "model_unloaded": true,
-    "elapsed_ms": 2541.6,
-    "ollama_rss_bytes": 14106914816,
+    "elapsed_ms": 3377.3,
+    "ollama_rss_bytes": 20150013952,
     "reranker_rss_bytes": 0,
-    "host_used_bytes": 29204905984,
-    "swap_used_bytes": 4657950720
+    "host_used_bytes": 32973283328,
+    "swap_used_bytes": 4795920384,
+    "compose_total_bytes": 0
   },
   "switch": {
     "calls": [
@@ -336,25 +343,27 @@
         "loaded_generators": [
           "lfm2.5:8b-a1b-q4_K_M"
         ],
-        "ttft_ms": 8500.0,
-        "elapsed_ms": 9755.4,
-        "ollama_rss_bytes": 5386907648,
+        "ttft_ms": 7625.0,
+        "elapsed_ms": 9476.3,
+        "ollama_rss_bytes": 5247586304,
         "reranker_rss_bytes": 0,
-        "host_used_bytes": 20596768768,
-        "swap_used_bytes": 4657946624
+        "host_used_bytes": 18372956160,
+        "swap_used_bytes": 4775563264,
+        "compose_total_bytes": 1921887760
       },
       {
         "role": "analyst",
         "valid": true,
         "loaded_generators": [
-          "gpt-oss:20b"
+          "gemma4:26b-a4b-it-mtp-q4_K_M"
         ],
-        "ttft_ms": 22156.00000001723,
-        "elapsed_ms": 23164.6,
-        "ollama_rss_bytes": 14133465088,
+        "ttft_ms": 29045.99999997299,
+        "elapsed_ms": 34614.7,
+        "ollama_rss_bytes": 20186185728,
         "reranker_rss_bytes": 0,
-        "host_used_bytes": 29123989504,
-        "swap_used_bytes": 4661714944
+        "host_used_bytes": 32682340352,
+        "swap_used_bytes": 5141057536,
+        "compose_total_bytes": 2039475074
       },
       {
         "role": "planner_after_analyst",
@@ -362,12 +371,13 @@
         "loaded_generators": [
           "lfm2.5:8b-a1b-q4_K_M"
         ],
-        "ttft_ms": 8780.999999988126,
-        "elapsed_ms": 9891.8,
-        "ollama_rss_bytes": 5385744384,
+        "ttft_ms": 7891.00000000326,
+        "elapsed_ms": 10050.4,
+        "ollama_rss_bytes": 5179609088,
         "reranker_rss_bytes": 0,
-        "host_used_bytes": 20555808768,
-        "swap_used_bytes": 4661563392
+        "host_used_bytes": 18171469824,
+        "swap_used_bytes": 5092167680,
+        "compose_total_bytes": 1921594160
       }
     ]
   }
