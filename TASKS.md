@@ -122,7 +122,7 @@ flowchart LR
 | LLM-001 | 5 Inference | P0 | Sol / High | INFRA-001 | выполнена |
 | LLM-002 | Выбор локальных весов и CPU smoke | P0 | Sol / High | LLM-001 | выполнена |
 | PLAN-001 | 5 Planner | P0 | Sol / High | LLM-001,DB-002 | выполнена |
-| STATE-001 | 8 Memory/cache | P0 | Sol / Medium | DB-002 | ожидает |
+| STATE-001 | 8 Memory/cache | P0 | Sol / Medium | DB-002 | выполнена |
 | RET-001 | 6 Retrieval | P0 | Sol / High | IDX-001,GRAPH-001 | ожидает |
 | RANK-001 | 6 Reranking | P0 | Sol / Medium | RET-001,LLM-002,EVAL-000 | ожидает |
 | ANALYST-001 | 7 Analyst | P0 | Sol / High | RANK-001,LLM-002 | ожидает |
@@ -283,6 +283,7 @@ flowchart LR
 ### STATE-001 — Память, кеш и изоляция
 
 - **Цель/зачем:** durable разговор и безопасный повторный доступ к evidence.
+- **Результат (2026-09-30):** добавлены owner-scoped операции conversation/message/idea history и derived summary checkpoint поверх PostgreSQL; Redis cache keys используют HMAC tenant scope и версионированные query/idea/generation/config dimensions, сбои Redis превращаются в miss/write-skip. Unit: 2 passed; PostgreSQL integration tests пропущены, так как `TEST_DATABASE_URL` не задан.
 - **Depends / priority:** DB-002; P0. **Files:** src/app/services/conversations.py, src/app/integrations/redis_cache.py, tests/integration/test_memory.py. **References:** docs/MEMORY_AND_CACHE.md, docs/DATA_MODEL.md, docs/SECURITY.md.
 - **Сделать:** CRUD conversation/messages/versions, summary как derivation, cache keys/TTL/versioning, owner-scoped read, Redis failure fallback. **Приёмка/тесты:** две сессии не видят данные друг друга; потеря Redis не теряет состояние; старый run воспроизводит старую версию идеи/evidence. **Не делать:** не хранить transcript/idea только в Redis, не кешировать по тексту без user scope.
 - **Context:** три названных docs и conversation/cache files. **Модель:** Sol/Medium. **Размер:** M, 1–2 ч, review 30 мин. **Риск:** cache cross-user leak.

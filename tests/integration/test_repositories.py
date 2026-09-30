@@ -11,6 +11,7 @@ from sqlalchemy import create_engine, delete, text
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
+from app.services.conversations import ConversationService
 from app.storage.jobs import JobRepository, OutboxRepository
 from app.storage.models import (
     AnalysisJob,
@@ -231,3 +232,50 @@ def test_outbox_ack_and_referenced_chunk(engine) -> None:  # type: ignore[no-unt
         assert [e.id for e in outbox.pending("graph")] == [event_id]
     with pytest.raises(IntegrityError), Session(engine) as session, session.begin():
         session.execute(delete(EvidenceChunk).where(EvidenceChunk.id == chunk_id))
+
+
+def test_conversation_memory_is_durable_and_owner_scoped(engine) -> None:  # type: ignore[no-untyped-def]
+    owner, stranger = uuid4(), uuid4()
+    with Session(engine) as session, session.begin():
+        session.add_all(
+            [
+                User(id=owner, email_normalized=f"{owner}@example.test"),
+                User(id=stranger, email_normalized=f"{stranger}@example.test"),
+            ]
+        )
+        session.flush()
+        service = ConversationService(session)
+        conversation = service.create(owner, title="Durable")
+        conversation_id = conversation.id
+        run, _ = OwnedRepository(session).accept_run(
+            owner_id=owner,
+            conversation_id=conversation_id,
+            idempotency_key="memory-1",
+            request_hash="a" * 64,
+            expected_idea_version=0,
+            content="idea",
+            query="query",
+        )
+        version = OwnedRepository(session).apply_idea_version(
+            owner_id=owner,
+            run_id=run.id,
+            normalized={"schema_version": 1, "features": [{"id": "f1", "text": "old"}]},
+            state_hash="b" * 64,
+        )
+        message_id = run.message_id
+
+    with Session(engine) as session, session.begin():
+        service = ConversationService(session)
+        assert [item.id for item in service.list_conversations(owner)] == [conversation_id]
+        assert [item.id for item in service.messages(owner, conversation_id)] == [message_id]
+        assert [item.id for item in service.idea_versions(owner, conversation_id)] == [version.id]
+        service.set_summary(owner, conversation_id, {"topics": ["idea"]}, message_id)
+        assert service.summary(owner, conversation_id) == (
+            {"topics": ["idea"]},
+            message_id,
+        )
+        assert service.list_conversations(stranger) == []
+        with pytest.raises(LookupError):
+            service.get(stranger, conversation_id)
+        with pytest.raises(LookupError):
+            service.set_summary(stranger, conversation_id, {}, message_id)
