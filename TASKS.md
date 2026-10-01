@@ -131,6 +131,7 @@ flowchart LR
 | LLM-001 | 5 Inference | P0 | Sol / High | INFRA-001 | выполнена |
 | LLM-002 | Выбор локальных весов и CPU smoke | P0 | Sol / High | LLM-001 | выполнена |
 | LLM-003 | Сравнение inference-конфигураций и выбор production-моделей | P0 | Sol / High | PLAN-001,ANALYST-001,GRAPH-001 | выполнена |
+| LLM-005 | Relation classifier для Analyst и условный redesign pipeline | P0 | Sol / High | LLM-004,ANALYST-001 | выполнена |
 | CORPUS-001 | Initial corpus backfill EPO/OpenAlex | P0 | Sol / High | ING-001,IDX-001,GRAPH-001,LLM-003 | ожидает |
 | PLAN-001 | 5 Planner | P0 | Sol / High | LLM-001,DB-002 | выполнена |
 | STATE-001 | 8 Memory/cache | P0 | Sol / Medium | DB-002 | выполнена |
@@ -344,6 +345,17 @@ flowchart LR
 - **Graph extractor:** независимо от выбора Analyst сравнить минимум `granite4.2:3b`, `qwen3.5:4b-q4_K_M`, `lfm2.5:8b-a1b-q4_K_M` через реальный `InferenceGraphExtractor` и проверку `GraphIndexingService`. Precision приоритетнее recall; gold проверяет только allowlisted `DISCLOSES_FEATURE`, exact quote, Unicode offsets, вхождение `target_text` в quote, отсутствие invented relations/identifiers, правильный empty result, JSON/schema success на RU/EN тексте. Измерить latency и RAM.
 - **Решение/приёмка:** заранее определить пороги и отчёт по каждому case/config. Hard gates имеют приоритет над aggregate score: schema correctness, citation correctness, отсутствие запрещённых graph facts и raw reasoning leakage, допустимая error/timeout rate; не прошедший gate кандидат не выбирается. При практически близком качестве предпочесть меньшую/быструю модель. Зафиксировать выбранные production Planner/Analyst/Graph extractor по отдельности, exact tags, digests/revisions, quantization, prompts и inference profiles/budgets в `docs/validation/LLM-003/README.md` и машиночитаемом `results.json`, согласовать model inventory/config и проверить CPU/RAM/swap на целевом хосте. Исторические результаты LLM-002 не переписывать. **Не делать:** не запускать массовый backfill до зафиксированного решения.
 - **Context:** LLM-002 — CPU smoke/baseline, EVAL-000 — маленький frozen fixture; новый gold dataset должен покрывать все три роли. **Модель:** Sol/High. **Размер:** L, оценить после подготовки разметки, review 60 мин. **Риск:** ошибочный выбор extractor вызовет переизвлечение graph facts для всего корпуса.
+
+### LLM-005 — Relation classifier для Analyst и условный redesign pipeline
+
+- **Цель/зачем:** проверить Tev1 4B на тех же 18 frozen Analyst случаях и выносить relation из generative Analyst только при точности не ниже 17/18.
+- **Depends / priority:** LLM-004,ANALYST-001; P0. **Files:** scripts/tev1_relation_benchmark.py, tests/unit/test_tev1_relation_benchmark.py, docs/validation/LLM-005/, TASKS.md; production Analyst/config/inventory files меняются только при прохождении gate. **References:** eval/llm003/analyst.jsonl, prompts/analyst_v1.txt, docs/validation/LLM-004/, AnalysisV1/EvidencePack contracts, official Ollama `/v1/systemone` documentation.
+- **Phase A:** вызвать только `POST /v1/systemone` с compact feature/evidence state, exact Tev1 4B tag/digest и frozen gold. Зафиксировать per-case relation, вероятности, confidence (распределительная концентрация, не correctness probability), input bytes/tokens, latency/errors, confusion matrix и per-class accuracy. Голоса GPT-OSS baseline и LLM-004 результаты не переписывать. `<=15/18`: закончить без production integration; `16/18`: оставить borderline и production неизменным; `>=17/18`: разрешён Phase B.
+- **Phase B (conditional):** Tev1 единолично владеет relation; GPT-OSS low готовит только grounded narrative/citations; deterministic assembler владеет IDs, provenance и AnalysisV1 validation. Определить multi-evidence semantics по frozen contracts до реализации. Повторить полный 18-case E2E с hard gates schema/citations 18/18 и нулём fallback, unsupported claims и reasoning leakage. Без подтверждённого gate production config/versioning не менять.
+- **Не делать:** не вызывать Tev1 через chat API, не добавлять confidence threshold без эмпирического основания, не запускать corpus backfill, не менять Graph extractor и не изменять CORPUS-001/micro-pilot.
+- **Приёмка:** выполнен и задокументирован вариант A (кандидат не прошёл gate или не прошёл endpoint) либо вариант B (gate пройден, архитектура и E2E закрыты); результаты, тесты и список файлов опубликованы отдельным русскоязычным commit/push. До завершения benchmark задача остаётся `в работе`.
+- **Контекст:** `ollama --version` должен быть не ниже 0.35; текущая topology использует host Ollama. **Риск:** языковая переносимость и точность различий partial/uncertain на малой выборке.
+- **Результат (2026-10-01):** Phase A завершена на `tev1:4b` (15/18, 0 ошибок, ниже gate 17/18); Phase B не запускалась, production pipeline/config/inventory не менялись. Артефакты и полный разбор: [LLM-005](docs/validation/LLM-005/README.md). Целевая unit-тест-группа, полный `pytest -q`, интеграционные тесты и Ruff прошли; service-gated интеграции пропущены при незаданном TEST URL.
 
 ### CORPUS-001 — Initial corpus backfill EPO/OpenAlex
 
