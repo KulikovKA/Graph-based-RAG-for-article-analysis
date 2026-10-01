@@ -275,13 +275,25 @@ class EpoOpsClient:
         return value / 1000 if value > 1000 else value
 
     async def _request(
-        self, path: str, *, service: str, params: dict[str, str] | None = None
+        self,
+        path: str,
+        *,
+        service: str,
+        params: dict[str, str] | None = None,
+        headers: dict[str, str] | None = None,
     ) -> httpx.Response | _Failure:
         async with self._request_lock:
-            return await self._request_locked(path, service=service, params=params)
+            return await self._request_locked(
+                path, service=service, params=params, headers=headers
+            )
 
     async def _request_locked(
-        self, path: str, *, service: str, params: dict[str, str] | None = None
+        self,
+        path: str,
+        *,
+        service: str,
+        params: dict[str, str] | None = None,
+        headers: dict[str, str] | None = None,
     ) -> httpx.Response | _Failure:
         if self.clock() < self._blocked_until:
             return _Failure("quota_exhausted", self._blocked_until - self.clock())
@@ -306,6 +318,7 @@ class EpoOpsClient:
                     headers={
                         "Authorization": f"Bearer {token}",
                         "Accept": accept,
+                        **(headers or {}),
                     },
                     follow_redirects=False,
                 )
@@ -344,16 +357,31 @@ class EpoOpsClient:
             return _Failure("http_error")
         return _Failure("auth_rejected")
 
-    async def search(self, query: str, *, limit: int = 25) -> PatentResult:
+    async def search(
+        self,
+        query: str,
+        *,
+        limit: int = 25,
+        offset: int = 0,
+        filters: str | None = None,
+    ) -> PatentResult:
         if not self.configured:
             return PatentResult(SourceStatus.NOT_CONFIGURED)
-        if not query.strip() or limit < 1 or limit > 25:
-            raise ValueError("query must be non-empty and limit must be between 1 and 25")
+        if not query.strip() or limit < 1 or limit > 100 or offset < 0 or offset >= 2000:
+            raise ValueError("query, limit (1-100), or offset (0-1999) is invalid")
         escaped = query.strip().replace("\\", "\\\\").replace('"', '\\"')
+        expression = f'txt="{escaped}"'
+        if filters:
+            if not filters.strip() or len(filters) > 2000:
+                raise ValueError("filter must contain 1-2000 characters")
+            expression = f"({expression}) AND ({filters.strip()})"
+        start = offset + 1
+        end_requested = min(2000, offset + limit)
         response = await self._request(
             "published-data/search/abstract,biblio",
             service="search",
-            params={"q": f'txt="{escaped}"'},
+            params={"q": expression},
+            headers={"X-OPS-Range": f"{start}-{end_requested}"},
         )
         if isinstance(response, _Failure):
             return PatentResult(
@@ -369,12 +397,24 @@ class EpoOpsClient:
             search_nodes = _descendants(root, "biblio-search")
             if not search_nodes:
                 raise ValueError("missing search response")
-            count = search_nodes[0].get("total-result-count")
-            if not documents and count != "0":
+            count_raw = search_nodes[0].get("total-result-count")
+            count = int(count_raw) if count_raw and count_raw.isdigit() else None
+            ranges = _descendants(search_nodes[0], "range")
+            end_raw = ranges[0].get("end") if ranges else None
+            end = int(end_raw) if end_raw and end_raw.isdigit() else offset + len(documents)
+            if not documents and count != 0:
                 raise ValueError("missing publications")
         except ValueError:
             return PatentResult(SourceStatus.UNAVAILABLE, error_code="invalid_xml")
-        return PatentResult(SourceStatus.OK if documents else SourceStatus.EMPTY, documents)
+        next_offset = (
+            end if documents and count is not None and end < count and end < 2000 else None
+        )
+        return PatentResult(
+            SourceStatus.OK if documents else SourceStatus.EMPTY,
+            documents,
+            next_offset=next_offset,
+            total_count=count,
+        )
 
     async def fetch(self, external_id: str, *, include_fulltext: bool = False) -> PatentResult:
         if not self.configured:

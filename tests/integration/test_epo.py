@@ -43,6 +43,36 @@ def test_xml_normalization_and_missing_fields() -> None:
     assert documents[1].field_status["claims"] == FieldStatus.NOT_REQUESTED
 
 
+def test_search_uses_range_pagination_and_cql_filter() -> None:
+    calls: list[httpx.Request] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        calls.append(request)
+        if request.url.path.endswith("/auth/accesstoken"):
+            return httpx.Response(200, json={"access_token": "token", "expires_in": 3600})
+        content = xml("search.xml").replace(
+            b'total-result-count="2"', b'total-result-count="5"'
+        )
+        content = content.replace(
+            b"</ops:biblio-search>",
+            b'<ops:range begin="3" end="4"/></ops:biblio-search>',
+        )
+        return httpx.Response(200, content=content)
+
+    async def scenario() -> None:
+        async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as http:
+            client = EpoOpsClient(http, consumer_key="key", consumer_secret="secret")
+            result = await client.search("sensor", limit=2, offset=2, filters="pn=EP")
+            assert result.status == SourceStatus.OK
+            assert result.next_offset == 4
+            assert result.total_count == 5
+
+    asyncio.run(scenario())
+    search_request = calls[-1]
+    assert search_request.headers["X-OPS-Range"] == "3-4"
+    assert search_request.url.params["q"] == '(txt="sensor") AND (pn=EP)'
+
+
 def test_search_fetch_token_expiry_and_fulltext_availability(caplog) -> None:  # type: ignore[no-untyped-def]
     time = FakeTime()
     calls: list[str] = []

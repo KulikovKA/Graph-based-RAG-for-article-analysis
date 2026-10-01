@@ -40,6 +40,8 @@ class PatentResult:
     documents: tuple[PatentDocument, ...] = ()
     error_code: str | None = None
     retry_after_seconds: float | None = None
+    next_offset: int | None = None
+    total_count: int | None = None
 
 
 @dataclass(frozen=True)

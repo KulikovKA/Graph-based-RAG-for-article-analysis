@@ -7,7 +7,7 @@ from types import SimpleNamespace
 from uuid import uuid4
 
 import scripts.corpus_backfill as backfill
-from scripts.corpus_backfill import Checkpoint, CorpusPilot
+from scripts.corpus_backfill import Checkpoint, CorpusPilot, RunCounts
 
 from app.domain.source import SourceStatus
 
@@ -37,9 +37,21 @@ class FakeOpenAlex:
 
 def _work(work_id: str, abstract: str | None = None) -> SimpleNamespace:
     return SimpleNamespace(
+        source="openalex",
         external_id=work_id,
+        source_url=f"https://openalex.org/{work_id}",
         abstract=abstract or ("A technical abstract. " * 8),
         title=f"Paper {work_id}",
+        publication_date=None,
+        updated_at=None,
+        doi=None,
+        landing_page_url=None,
+        language="en",
+        authors=(),
+        topics=(),
+        referenced_work_ids=(),
+        cited_by_count=0,
+        field_status={},
     )
 
 
@@ -66,7 +78,8 @@ def test_max_documents_and_dry_run_do_not_write() -> None:
         _pilot(client, events).run(query="graphene gas sensor", max_documents=2, dry_run=True)
     )
     assert result.fetched == 2
-    assert result.ingested == 2
+    assert result.previewed == 2
+    assert result.ingested == 0
     assert client.fetch_calls == ["W0", "W1"]
     assert [event["stage"] for event in events].count("would_ingest") == 2
 
@@ -101,7 +114,101 @@ def test_ineligible_abstract_is_skipped_and_counted() -> None:
     result = asyncio.run(_pilot(client, events).run(query="q", max_documents=1, dry_run=True))
     assert result.fetched == 2
     assert result.skipped == 1
-    assert result.ingested == 1
+    assert result.previewed == 1
+    assert result.ingested == 0
+
+
+def test_dry_run_checkpoint_is_not_persisted(tmp_path) -> None:  # type: ignore[no-untyped-def]
+    path = tmp_path / "checkpoint.json"
+    checkpoint = Checkpoint(path, {"source": "openalex"}, persist=False)
+    checkpoint.load(resume=False, run_id="dry-run")
+    checkpoint.state["cursor"] = "next"
+    checkpoint.save()
+    assert not path.exists()
+
+
+def test_epo_source_uses_existing_adapter_contract_in_dry_run() -> None:
+    document = SimpleNamespace(
+        external_id="EP.1234567.A1",
+        title="Patent title",
+        abstract="A patent abstract with enough text to pass the runner's quality gate. " * 2,
+        country="EP",
+        publication_number="1234567",
+        kind="A1",
+        source_url="https://example.org/patent",
+        publication_date=None,
+        claims=None,
+        description=None,
+        field_status={},
+    )
+
+    class FakeEpo:
+        async def search(
+            self, query: str, *, limit: int, offset: int, filters: str | None = None
+        ) -> SimpleNamespace:
+            assert (query, limit, offset, filters) == ("sensor", 10, 0, "pn=EP")
+            return SimpleNamespace(status=SourceStatus.OK, documents=(document,), next_offset=None)
+
+        async def fetch(self, external_id: str, *, include_fulltext: bool) -> SimpleNamespace:
+            assert external_id == document.external_id
+            assert include_fulltext
+            return SimpleNamespace(status=SourceStatus.OK, documents=(document,))
+
+    events: list[dict[str, object]] = []
+    pilot = CorpusPilot(
+        client=FakeEpo(),
+        source="epo",
+        session_factory=object(),
+        qdrant=object(),
+        embedder=object(),
+        graph_index=object(),
+        run_id="epo-dry-run",
+        emit=events.append,
+    )
+    result = asyncio.run(
+        pilot.run(
+            query="sensor", max_documents=1, dry_run=True, batch_size=10, filters="pn=EP"
+        )
+    )
+    assert result.fetched == result.previewed == 1
+    assert result.ingested == 0
+    assert events[-1]["source"] == "epo"
+
+
+def test_source_all_without_epo_credentials_falls_back_to_openalex(
+    monkeypatch, tmp_path, capsys
+) -> None:  # type: ignore[no-untyped-def]
+    monkeypatch.delenv("EPO_CONSUMER_KEY", raising=False)
+    monkeypatch.delenv("EPO_CONSUMER_SECRET", raising=False)
+    calls: list[tuple[str, int]] = []
+
+    async def run_source(
+        _args: object,
+        *,
+        source: str,
+        max_documents: int,
+        checkpoint_path: object,
+        run_id: str,
+    ) -> tuple[RunCounts, dict[str, object], str]:
+        calls.append((source, max_documents))
+        return RunCounts(previewed=max_documents), {"source": source}, run_id
+
+    monkeypatch.setattr(backfill, "_run_source", run_source)
+    args = SimpleNamespace(
+        source="all",
+        query="sensor",
+        filter=None,
+        max_documents=100,
+        batch_size=25,
+        checkpoint=str(tmp_path / "checkpoint.json"),
+        stats_output=None,
+        resume=False,
+        dry_run=True,
+        run_id="all-run",
+    )
+    assert asyncio.run(backfill._run(args)) == 0
+    assert calls == [("openalex", 100)]
+    assert '"source": "epo"' in capsys.readouterr().out
 
 
 def test_fetch_failure_is_reported_without_aborting_run() -> None:

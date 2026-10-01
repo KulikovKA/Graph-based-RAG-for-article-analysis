@@ -7,6 +7,7 @@ import asyncio
 import hashlib
 import json
 import os
+import shlex
 import sys
 import time
 from collections.abc import Callable
@@ -20,13 +21,15 @@ import httpx
 import yaml
 from neo4j import AsyncGraphDatabase
 
-from app.domain.source import ScientificWork, SourceStatus
+from app.domain.source import SourceStatus
+from app.integrations.epo import EpoOpsClient
 from app.integrations.inference_http import OllamaProvider
 from app.integrations.neo4j import PROJECTION_VERSION, Neo4jGraph
 from app.integrations.openalex import OpenAlexClient
 from app.integrations.qdrant import EmbeddingSpec, QdrantIndex
 from app.services.graph_index import (
     EXTRACTOR_VERSION,
+    VOCABULARY_VERSION,
     GraphIndexingService,
     InferenceGraphExtractor,
 )
@@ -34,25 +37,38 @@ from app.services.indexing import IndexingService
 from app.services.ingestion import IngestionService
 from app.storage.repositories import make_engine, make_session_factory
 from app.workers.inference import GenerationGate
-from app.workers.ingest import from_openalex
+from app.workers.ingest import from_epo, from_openalex
 
 
 @dataclass
 class RunCounts:
     fetched: int = 0
     skipped: int = 0
+    skipped_no_text: int = 0
+    skipped_invalid: int = 0
+    previewed: int = 0
+    normalized: int = 0
     ingested: int = 0
     indexed: int = 0
+    qdrant_indexed: int = 0
+    graph_processed: int = 0
     graph_projected: int = 0
+    qdrant_acked: int = 0
+    neo4j_acked: int = 0
+    activated: int = 0
     errors: int = 0
+    failed: int = 0
+    retries: int = 0
+    wall_seconds: float = 0.0
 
 
 class Checkpoint:
     """Atomically persisted cursor and run identity; reject unsafe resume drift."""
 
-    def __init__(self, path: Path, identity: dict[str, Any]) -> None:
+    def __init__(self, path: Path, identity: dict[str, Any], *, persist: bool = True) -> None:
         self.path = path
         self.identity = identity
+        self.persist = persist
         self.state: dict[str, Any] = {}
 
     def load(self, *, resume: bool, run_id: str | None) -> None:
@@ -83,6 +99,8 @@ class Checkpoint:
         self.state = state
 
     def save(self) -> None:
+        if not self.persist:
+            return
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.state["updated_at"] = _now()
         temporary = self.path.with_suffix(self.path.suffix + ".tmp")
@@ -99,6 +117,7 @@ def _run_identity(
     filters: str | None,
     config_path: Path,
     *,
+    source: str,
     max_documents: int,
     batch_size: int,
     dry_run: bool,
@@ -107,12 +126,11 @@ def _run_identity(
     embedding = config["embedding"]
     graph = config["generation"]["graph_extractor"]
     identity = {
-        "source": "openalex",
+        "source": source,
         "query": query,
         "filter": filters,
         "max_documents": max_documents,
         "batch_size": batch_size,
-        "dry_run": dry_run,
         "embedding_model": embedding["model_id"],
         "embedding_digest": embedding["digest"],
         "dimension": embedding["dimension"],
@@ -122,6 +140,8 @@ def _run_identity(
         "graph_output_tokens": graph["max_output_tokens"],
         "graph_projection_version": PROJECTION_VERSION,
         "graph_indexer_version": EXTRACTOR_VERSION,
+        "graph_vocabulary_version": VOCABULARY_VERSION,
+        "config_identity": hashlib.sha256(config_path.read_bytes()).hexdigest(),
     }
     identity["sha256"] = hashlib.sha256(json.dumps(identity, sort_keys=True).encode()).hexdigest()
     return identity
@@ -198,7 +218,8 @@ class CorpusPilot:
     def __init__(
         self,
         *,
-        client: OpenAlexClient,
+        client: Any,
+        source: str = "openalex",
         session_factory: Any,
         qdrant: QdrantIndex,
         embedder: Any,
@@ -209,6 +230,7 @@ class CorpusPilot:
         ),
     ) -> None:
         self.client = client
+        self.source = source
         self.session_factory = session_factory
         self.qdrant = qdrant
         self.embedder = embedder
@@ -217,7 +239,7 @@ class CorpusPilot:
         self.emit = emit
 
     def _event(self, stage: str, **values: Any) -> None:
-        self.emit({"run_id": self.run_id, "stage": stage, **values})
+        self.emit({"run_id": self.run_id, "source": self.source, "stage": stage, **values})
 
     async def run(
         self,
@@ -229,50 +251,90 @@ class CorpusPilot:
         batch_size: int = 25,
         filters: str | None = None,
     ) -> RunCounts:
+        run_started = time.monotonic()
         counts = RunCounts(**(checkpoint.state.get("counts", {}) if checkpoint else {}))
-        cursor: str | None = checkpoint.state.get("cursor", "*") if checkpoint else "*"
+        initial_cursor = "*" if self.source == "openalex" else "0"
+        cursor: str | None = (
+            checkpoint.state.get("cursor", initial_cursor) if checkpoint else initial_cursor
+        )
         seen: set[str] = set()
         completed = set(checkpoint.state.get("completed", [])) if checkpoint else set()
         halted = False
-        while cursor and counts.ingested < max_documents:
+        completed_work = counts.ingested + counts.previewed
+        while cursor is not None and completed_work < max_documents:
             page_cursor = cursor
-            page = await self.client.search(
-                query, per_page=min(100, batch_size), cursor=page_cursor, filters=filters
-            )
+            if self.source == "openalex":
+                page = await self.client.search(
+                    query, per_page=min(100, batch_size), cursor=page_cursor, filters=filters
+                )
+                candidates = page.works
+                next_cursor = page.next_cursor
+            else:
+                page = await self.client.search(
+                    query,
+                    limit=min(100, batch_size),
+                    offset=int(page_cursor),
+                    filters=filters,
+                )
+                candidates = page.documents
+                next_cursor = str(page.next_offset) if page.next_offset is not None else None
+            if page.status == SourceStatus.NOT_CONFIGURED:
+                self._event("source_skipped", reason="credentials_not_configured")
+                break
+            if page.status == SourceStatus.EMPTY:
+                break
             if page.status != SourceStatus.OK:
                 counts.errors += 1
+                counts.failed += 1
                 self._event("search_failed", status=page.status.value, error=page.error_code)
                 break
-            next_cursor = page.next_cursor
-            for candidate in page.works:
-                if counts.ingested >= max_documents:
+            for candidate in candidates:
+                if completed_work >= max_documents:
                     break
                 if candidate.external_id in seen:
                     continue
                 seen.add(candidate.external_id)
                 if candidate.external_id in completed:
                     continue
-                fetched = await self.client.fetch(candidate.external_id)
-                if fetched.status != SourceStatus.OK or not fetched.works:
+                if self.source == "openalex":
+                    fetched = await self.client.fetch(candidate.external_id)
+                    source_documents = fetched.works
+                else:
+                    fetched = await self.client.fetch(candidate.external_id, include_fulltext=True)
+                    source_documents = fetched.documents
+                if fetched.status != SourceStatus.OK or not source_documents:
                     counts.errors += 1
+                    counts.failed += 1
                     self._event(
                         "fetch_failed", work_id=candidate.external_id, error=fetched.error_code
                     )
                     halted = True
                     break
-                work: ScientificWork = fetched.works[0]
+                source_document = source_documents[0]
                 counts.fetched += 1
+                title = source_document.title
+                sections = (
+                    [source_document.abstract or ""]
+                    if self.source == "openalex"
+                    else [
+                        source_document.abstract or "",
+                        source_document.claims or "",
+                        source_document.description or "",
+                    ]
+                )
+                usable_text = any(section.strip() for section in sections)
                 if (
-                    not work.title
-                    or not work.title.strip()
-                    or not work.abstract
-                    or len(work.abstract.strip()) < 80
+                    not title
+                    or not title.strip()
+                    or not usable_text
+                    or sum(len(section.strip()) for section in sections) < 80
                 ):
                     counts.skipped += 1
-                    completed.add(work.external_id)
+                    counts.skipped_no_text += 1
+                    completed.add(source_document.external_id)
                     self._event(
                         "skipped",
-                        work_id=work.external_id,
+                        work_id=source_document.external_id,
                         reason="insufficient_abstract",
                         counts=asdict(counts),
                     )
@@ -282,9 +344,15 @@ class CorpusPilot:
                         )
                         checkpoint.save()
                     continue
+                normalized = (
+                    from_openalex(source_document)
+                    if self.source == "openalex"
+                    else from_epo(source_document)
+                )
+                counts.normalized += 1
                 if dry_run:
-                    counts.ingested += 1
-                    completed.add(work.external_id)
+                    counts.previewed += 1
+                    completed_work += 1
                     if checkpoint:
                         checkpoint.state.update(
                             cursor=page_cursor, completed=sorted(completed), counts=asdict(counts)
@@ -292,8 +360,8 @@ class CorpusPilot:
                         checkpoint.save()
                     self._event(
                         "would_ingest",
-                        work_id=work.external_id,
-                        title=work.title,
+                        work_id=source_document.external_id,
+                        title=title,
                         counts=asdict(counts),
                     )
                     continue
@@ -301,24 +369,28 @@ class CorpusPilot:
                 failed_at = "postgres_ingestion"
                 try:
                     with self.session_factory.begin() as session:
-                        revision, created = IngestionService(session).ingest(from_openalex(work))
+                        revision, created = IngestionService(session).ingest(normalized)
                         revision_id = revision.id
                     failed_at = "qdrant_embedding_index"
                     with self.session_factory() as session:
                         embedder = _ProgressEmbedder(
                             self.embedder,
                             lambda event: self.emit({"run_id": self.run_id, **event}),
-                            work.external_id,
+                            source_document.external_id,
                         )
                         qdrant_index = IndexingService(session, self.qdrant, embedder)
                         point_count = await qdrant_index.index_revision(
-                            revision_id, request_id=f"{self.run_id}:{work.external_id}:qdrant"
+                            revision_id,
+                            request_id=f"{self.run_id}:{source_document.external_id}:qdrant",
                         )
+                    counts.qdrant_indexed += 1
                     qdrant_version = ("qdrant-indexer-v1", self.qdrant.spec.projection_version)
                     failed_at = "graph_extraction_neo4j_projection"
                     graph_result = await self.graph_index.index_revision(
-                        revision_id, request_id=f"{self.run_id}:{work.external_id}:graph"
+                        revision_id,
+                        request_id=f"{self.run_id}:{source_document.external_id}:graph",
                     )
+                    counts.graph_processed += 1
                     expected = {
                         "qdrant": qdrant_version,
                         "domain_graph": (
@@ -343,14 +415,18 @@ class CorpusPilot:
                             projection_version=graph_result.projection_version,
                             expected_versions=expected,
                         )
+                    counts.qdrant_acked += 1
+                    counts.neo4j_acked += 1
                     if not activated:
                         raise RuntimeError(
                             "required index acknowledgements did not activate revision"
                         )
                     counts.ingested += 1
+                    completed_work += 1
                     counts.indexed += 1
+                    counts.activated += 1
                     counts.graph_projected += 1
-                    completed.add(work.external_id)
+                    completed.add(source_document.external_id)
                     if checkpoint:
                         checkpoint.state.update(
                             cursor=page_cursor,
@@ -360,8 +436,8 @@ class CorpusPilot:
                         checkpoint.save()
                     self._event(
                         "document_complete",
-                        work_id=work.external_id,
-                        title=work.title,
+                        work_id=source_document.external_id,
+                        title=title,
                         revision_id=str(revision_id),
                         new_revision=created,
                         chunks=point_count,
@@ -372,6 +448,7 @@ class CorpusPilot:
                     )
                 except Exception as exc:  # record safe exception type; source text is never logged
                     counts.errors += 1
+                    counts.failed += 1
                     if checkpoint:
                         checkpoint.state.update(
                             cursor=page_cursor,
@@ -381,7 +458,7 @@ class CorpusPilot:
                         checkpoint.save()
                     self._event(
                         "document_failed",
-                        work_id=work.external_id,
+                        work_id=source_document.external_id,
                         error=type(exc).__name__,
                         detail=(
                             str(exc) if type(exc).__module__ == "app.domain.inference" else None
@@ -406,16 +483,20 @@ class CorpusPilot:
                 counts=asdict(counts),
             )
             checkpoint.save()
+        counts.wall_seconds = round(time.monotonic() - run_started, 3)
         self._event(
             "run_complete",
             counts=asdict(counts),
+            docs_per_minute=round(
+                (counts.activated + counts.previewed) * 60 / max(counts.wall_seconds, 0.001), 2
+            ),
             dry_run=dry_run,
             status="failed" if halted or counts.errors else "completed",
         )
         return counts
 
 
-def _build_runner(run_id: str) -> tuple[CorpusPilot, list[Any]]:
+def _build_runner(run_id: str, source: str) -> tuple[CorpusPilot, list[Any]]:
     required = ("DATABASE_URL", "QDRANT_URL", "NEO4J_PASSWORD", "INFERENCE_BASE_URL")
     missing = [key for key in required if not os.getenv(key)]
     if missing:
@@ -456,40 +537,152 @@ def _build_runner(run_id: str) -> tuple[CorpusPilot, list[Any]]:
     )
     graph_index = GraphIndexingService(sessions, graph, extractor)
     openalex = OpenAlexClient.from_environment(openalex_http)
+    epo_http = httpx.AsyncClient(timeout=30)
+    epo = EpoOpsClient.from_environment(epo_http)
     pilot = CorpusPilot(
-        client=openalex,
+        client=openalex if source == "openalex" else epo,
+        source=source,
         session_factory=sessions,
         qdrant=qdrant,
         embedder=provider,
         graph_index=graph_index,
         run_id=run_id,
     )
-    return pilot, [openalex_http, qdrant_http, http, graph, engine]
+    return pilot, [openalex_http, epo_http, qdrant_http, http, graph, engine]
 
 
-async def _run(args: argparse.Namespace) -> int:
-    if args.source != "openalex":
-        raise ValueError("this runner currently supports --source openalex")
-    run_id = args.run_id or f"corpus-{datetime.now(UTC):%Y%m%dT%H%M%SZ}-{uuid4().hex[:8]}"
+async def _preflight_runtime() -> None:
+    """Verify configured stores and inference endpoint before the first persistent write."""
+    required = ("DATABASE_URL", "QDRANT_URL", "NEO4J_PASSWORD", "INFERENCE_BASE_URL")
+    missing = [key for key in required if not os.getenv(key)]
+    if missing:
+        raise RuntimeError(f"missing environment settings: {', '.join(missing)}")
+
+    engine = make_engine(os.environ["DATABASE_URL"])
+    try:
+        await asyncio.to_thread(_check_database, engine)
+    except Exception as exc:
+        raise RuntimeError("runtime preflight failed: postgres unavailable") from exc
+    finally:
+        engine.dispose()
+
+    config_path = Path(os.getenv("MODEL_CONFIG_PATH", "config/models.yaml"))
+    namespace = os.getenv("EMBEDDING_NAMESPACE", "article-analysis-v1")
+    embedding_spec = EmbeddingSpec.from_config(namespace, config_path)
+    async with httpx.AsyncClient(timeout=5) as client:
+        for name, url in (
+            ("qdrant", f"{os.environ['QDRANT_URL'].rstrip('/')}/collections"),
+            ("inference", f"{os.environ['INFERENCE_BASE_URL'].rstrip('/')}/api/tags"),
+        ):
+            try:
+                response = await client.get(url)
+                response.raise_for_status()
+            except httpx.HTTPError as exc:
+                raise RuntimeError(f"runtime preflight failed: {name} unavailable") from exc
+            if name == "qdrant":
+                try:
+                    collections = response.json()["result"]["collections"]
+                    if not isinstance(collections, list):
+                        raise ValueError("invalid collection list")
+                    if any(item.get("name") == embedding_spec.collection for item in collections):
+                        detail = await client.get(
+                            f"{os.environ['QDRANT_URL'].rstrip('/')}/collections/"
+                            f"{embedding_spec.collection}"
+                        )
+                        detail.raise_for_status()
+                        vectors = detail.json()["result"]["config"]["params"]["vectors"]
+                        if (
+                            vectors.get("size") != embedding_spec.dimension
+                            or vectors.get("distance") != "Cosine"
+                        ):
+                            raise ValueError("vector configuration mismatch")
+                except (KeyError, TypeError, ValueError, httpx.HTTPError) as exc:
+                    raise RuntimeError(
+                        "runtime preflight failed: qdrant collection identity mismatch"
+                    ) from exc
+            if name == "inference":
+                try:
+                    payload = response.json()
+                    models = payload["models"]
+                    if not isinstance(models, list):
+                        raise ValueError("invalid model list")
+                    available = {
+                        item.get("name") or item.get("model"): item.get("digest")
+                        for item in models
+                        if isinstance(item, dict)
+                    }
+                    model_config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
+                    expected_models = (
+                        model_config["generation"]["graph_extractor"],
+                        model_config["embedding"],
+                    )
+                    for expected in expected_models:
+                        actual_digest = available.get(expected["model_id"])
+                        if actual_digest != expected["digest"]:
+                            raise ValueError("configured model identity is unavailable")
+                except (KeyError, TypeError, ValueError, OSError) as exc:
+                    raise RuntimeError(
+                        "runtime preflight failed: inference model identity mismatch"
+                    ) from exc
+
+    driver = AsyncGraphDatabase.driver(
+        os.getenv("NEO4J_URI", "bolt://localhost:7687"),
+        auth=(os.getenv("NEO4J_USER", "neo4j"), os.environ["NEO4J_PASSWORD"]),
+    )
+    try:
+        await driver.verify_connectivity()
+    except Exception as exc:
+        raise RuntimeError(
+            "runtime preflight failed: neo4j unavailable or authentication failed"
+        ) from exc
+    finally:
+        await driver.close()
+
+
+def _check_database(engine: Any) -> None:
+    from sqlalchemy import text
+
+    with engine.connect() as connection:
+        connection.execute(text("SELECT 1"))
+
+
+async def _run_source(
+    args: argparse.Namespace,
+    *,
+    source: str,
+    max_documents: int,
+    checkpoint_path: Path,
+    run_id: str,
+) -> tuple[RunCounts, dict[str, Any], str]:
+    if not args.dry_run:
+        await _preflight_runtime()
     config_path = Path(os.getenv("MODEL_CONFIG_PATH", "config/models.yaml"))
     checkpoint = Checkpoint(
-        Path(args.checkpoint),
+        checkpoint_path,
         _run_identity(
             args.query,
             args.filter,
             config_path,
-            max_documents=args.max_documents,
+            source=source,
+            max_documents=max_documents,
             batch_size=args.batch_size,
             dry_run=args.dry_run,
         ),
+        persist=not args.dry_run,
     )
     checkpoint.load(resume=args.resume, run_id=(args.run_id if args.resume else run_id))
     if args.resume and not args.run_id:
-        run_id = checkpoint.state["run_id"]
+        run_id = str(checkpoint.state["run_id"])
     if args.dry_run:
         async with httpx.AsyncClient(timeout=30) as source_http:
+            source_client = (
+                OpenAlexClient.from_environment(source_http)
+                if source == "openalex"
+                else EpoOpsClient.from_environment(source_http)
+            )
             pilot = CorpusPilot(
-                client=OpenAlexClient.from_environment(source_http),
+                client=source_client,
+                source=source,
                 session_factory=None,
                 qdrant=cast(QdrantIndex, None),
                 embedder=None,
@@ -498,18 +691,18 @@ async def _run(args: argparse.Namespace) -> int:
             )
             counts = await pilot.run(
                 query=args.query,
-                max_documents=args.max_documents,
+                max_documents=max_documents,
                 dry_run=True,
                 checkpoint=checkpoint,
                 batch_size=args.batch_size,
                 filters=args.filter,
             )
     else:
-        pilot, resources = _build_runner(run_id)
+        pilot, resources = _build_runner(run_id, source)
         try:
             counts = await pilot.run(
                 query=args.query,
-                max_documents=args.max_documents,
+                max_documents=max_documents,
                 dry_run=False,
                 checkpoint=checkpoint,
                 batch_size=args.batch_size,
@@ -522,26 +715,98 @@ async def _run(args: argparse.Namespace) -> int:
                     value = close()
                     if asyncio.iscoroutine(value):
                         await value
-    if args.stats_output:
-        stats = {
+    return counts, checkpoint.identity, run_id
+
+
+async def _run(args: argparse.Namespace) -> int:
+    run_id = args.run_id or f"corpus-{datetime.now(UTC):%Y%m%dT%H%M%SZ}-{uuid4().hex[:8]}"
+    epo_configured = bool(os.getenv("EPO_CONSUMER_KEY") and os.getenv("EPO_CONSUMER_SECRET"))
+    if args.source == "epo" and not epo_configured:
+        report = {
             "run_id": run_id,
-            "identity": checkpoint.identity,
-            "requested_documents": args.max_documents,
-            "counts": asdict(counts),
+            "source": "epo",
+            "status": "skipped",
+            "reason": "credentials_not_configured",
             "dry_run": args.dry_run,
-            "status": "failed" if counts.errors else "completed",
             "updated_at": _now(),
         }
+        print(json.dumps({"stage": "source_skipped", **report}, ensure_ascii=False))
+        if args.stats_output and not args.dry_run:
+            output = Path(args.stats_output)
+            output.parent.mkdir(parents=True, exist_ok=True)
+            output.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
+        return 0
+    if args.source == "all" and args.filter:
+        raise ValueError(
+            "--filter uses source-native syntax; run OpenAlex and EPO separately to filter both"
+        )
+    sources = [args.source] if args.source != "all" else ["openalex", "epo"]
+    skipped_sources: dict[str, str] = {}
+    if args.source == "all" and not epo_configured:
+        sources = ["openalex"]
+        skipped_sources["epo"] = "credentials_not_configured"
+        print(
+            json.dumps(
+                {"stage": "source_skipped", "source": "epo", "reason": skipped_sources["epo"]}
+            )
+        )
+    if args.source == "all" and len(sources) == 2:
+        half = (args.max_documents + 1) // 2
+        allocations = {"openalex": half, "epo": args.max_documents - half}
+        sources = [source for source in sources if allocations[source] > 0]
+    else:
+        allocations = {sources[0]: args.max_documents}
+
+    totals = RunCounts()
+    identities: dict[str, Any] = {}
+    for source in sources:
+        checkpoint_path = Path(args.checkpoint)
+        if args.source == "all":
+            checkpoint_path = checkpoint_path.with_name(
+                f"{checkpoint_path.stem}.{source}{checkpoint_path.suffix}"
+            )
+        counts, identity, run_id = await _run_source(
+            args,
+            source=source,
+            max_documents=allocations[source],
+            checkpoint_path=checkpoint_path,
+            run_id=run_id,
+        )
+        identities[source] = identity
+        for name, value in asdict(counts).items():
+            setattr(totals, name, getattr(totals, name) + value)
+    status = "failed" if totals.errors else "completed"
+    stats = {
+        "run_id": run_id,
+        "source": args.source,
+        "identities": identities,
+        "requested_documents": args.max_documents,
+        "counts": asdict(totals),
+        "docs_per_minute": round(
+            (totals.activated + totals.previewed) * 60 / max(totals.wall_seconds, 0.001), 2
+        ),
+        "skipped_sources": skipped_sources,
+        "dry_run": args.dry_run,
+        "status": status,
+        "updated_at": _now(),
+    }
+    if args.stats_output and not args.dry_run:
         Path(args.stats_output).parent.mkdir(parents=True, exist_ok=True)
         Path(args.stats_output).write_text(
             json.dumps(stats, indent=2, ensure_ascii=False), encoding="utf-8"
         )
-    return 1 if counts.errors else 0
+    elif args.stats_output and args.dry_run:
+        print(
+            json.dumps(
+                {"stage": "stats_not_written", "reason": "dry_run_has_no_persistent_writes"}
+            )
+        )
+    return 1 if totals.errors else 0
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--source", choices=["openalex"], required=True)
+    parser.add_argument("--source", choices=["openalex", "epo", "all"], required=True)
     parser.add_argument("--query", required=True)
     parser.add_argument("--filter")
     parser.add_argument("--max-documents", type=int, required=True)
@@ -559,22 +824,28 @@ def main() -> None:
     try:
         sys.exit(asyncio.run(_run(args)))
     except KeyboardInterrupt:
+        resume_args = (
+            "python scripts/corpus_backfill.py "
+            f"--source {args.source} --query {shlex.quote(args.query)} "
+            f"--max-documents {args.max_documents} --batch-size {args.batch_size} "
+            f"--checkpoint {shlex.quote(args.checkpoint)}"
+        )
+        if args.filter:
+            resume_args += f" --filter {shlex.quote(args.filter)}"
+        if args.run_id:
+            resume_args += f" --run-id {shlex.quote(args.run_id)}"
         print(
             json.dumps(
                 {
                     "stage": "interrupted",
-                    "resume_command": (
-                        f"python scripts/corpus_backfill.py --source openalex --query "
-                        f"{args.query!r} --max-documents {args.max_documents} "
-                        f"--batch-size {args.batch_size} --checkpoint {args.checkpoint} --resume"
-                    ),
+                    "resume_command": f"{resume_args} --resume",
                 }
             ),
             file=sys.stderr,
         )
         sys.exit(130)
     except Exception as exc:
-        detail = str(exc) if isinstance(exc, ValueError) else None
+        detail = str(exc) if isinstance(exc, ValueError | RuntimeError) else None
         print(
             json.dumps({"stage": "fatal", "error": type(exc).__name__, "detail": detail}),
             file=sys.stderr,

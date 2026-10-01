@@ -1,16 +1,26 @@
 {
   "status": "in_progress_blocked_before_pilot",
   "baseline_sha": "a2000abec910f08529fe367ea798ffd4507792a2",
+  "implementation_base_sha": "0c75a13f24ce4930ec241b3d551b46472ade02c7",
+  "implementation_progress": {
+    "openalex_runner": "uses production ingestion, Qdrant, graph, ACK and activation services",
+    "epo_runner": "implemented with existing EpoOpsClient and range pagination",
+    "source_all": "implemented; equal split when EPO credentials exist, OpenAlex fallback otherwise",
+    "dry_run": "source discovery/fetch only; does not persist checkpoint or stats output",
+    "resume_identity": "source/query/filter/limits plus embedding, graph model, extractor, vocabulary and projection versions",
+    "graph_output_tokens": 384,
+    "graph_output_tokens_reason": "restored frozen LLM-003 profile; no 536-token benchmark exists"
+  },
   "requested_pilot": {
     "sources": ["openalex"],
     "query": "graphene gas sensor",
     "max_documents": 100
   },
   "current_dry_run": {
-    "run_id": "corpus-20261001T195613Z-dc5dd65d",
+    "run_id": "corpus-20261001T201022Z-23016d1a",
     "source": "openalex",
     "query": "graphene gas sensor",
-    "requested_documents": 100,
+    "requested_documents": 10,
     "fetched": 0,
     "skipped": 0,
     "ingested": 0,
@@ -19,13 +29,23 @@
     "errors": 1,
     "error_category": "network_error",
     "writes_performed": false,
-    "checkpoint_identity_sha256": "2a213158ec554fc1de6657a6bf4a290a920faa21cb9752e045b7def6bc930528"
+    "checkpoint_persisted": false,
+    "stats_persisted": false,
+    "checkpoint_identity_sha256": "not_recorded_for_dry_run"
   },
   "runtime_preflight": {
     "required_environment_variables_present": false,
     "dotenv_file_present": false,
     "docker_daemon_accessible": false,
     "epo_credentials_present": false
+  },
+  "direct_service_checks": {
+    "postgresql": "port reachable; project local development credentials rejected",
+    "qdrant": "HTTP 200; intended project deployment not confirmed",
+    "neo4j": "HTTP 200; Bolt authentication rejected for project local development credentials",
+    "inference": "HTTP 200; intended project deployment/model identity not confirmed",
+    "openalex": "network_error during actual runner dry-run",
+    "epo": "not_configured"
   },
   "prior_micro10": {
     "artifact": "micro10/result.json",
@@ -43,27 +63,34 @@
     "graph_extractor_model": "qwen3.5:4b-q4_K_M",
     "graph_extractor_digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
     "graph_extractor_version": "graph-extraction-v2",
-    "max_output_tokens": 536,
+    "max_output_tokens": 384,
     "embedding_model": "qwen3-embedding:0.6b",
     "embedding_digest": "ac6da0dfba84a81fdbfbaf330198c33cd77c4cdfc53e8bc50eb581914a15621d",
     "embedding_dimension": 1024
   },
   "checks": {
-    "targeted_tests": "passed",
+    "targeted_tests": "passed: corpus runner and EPO pagination coverage",
     "full_pytest": "passed",
-    "ruff": "passed",
-    "mypy_runner_and_openalex_adapter": "passed",
+    "ruff": "passed for changed runner, source adapter and tests; whole-repo Ruff reports pre-existing errors in unrelated tracked/scratch files",
+    "mypy_runner_and_adapters": "passed",
+    "live_openalex_dry_run": "network_error; 0 fetched; no persistent writes",
+    "epo_missing_credentials": "reported as skipped",
+    "source_all_without_epo_credentials": "covered by unit test; routes full requested limit to OpenAlex",
     "whole_src_mypy": "blocked by missing optional torch/transformers/tokenizers dependencies and pre-existing unused ignore comments"
   },
   "missing_acceptance_evidence": [
-    "EPO source mode and source=all",
+    "runtime EPO source smoke with authorized credentials",
+    "source=all live smoke",
+    "runtime preflight against confirmed project stores and inference service",
+    "10-document production runner smoke",
+    "successful second idempotency run",
+    "interrupted-run resume smoke",
+    "ACK failure/replay integration against runtime stores",
     "100-document real pilot",
-    "checkpoint crash/restart integration against production stores",
     "Qdrant and Neo4j corpus statistics",
     "PostgreSQL run-scoped statistics",
     "30-edge provenance audit",
     "rejected graph candidate reason counts",
-    "successful second idempotency run",
     "measured write-run retries, failures, latency, throughput",
     "commit and push verification"
   ],
