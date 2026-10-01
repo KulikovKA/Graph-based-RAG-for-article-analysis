@@ -42,21 +42,21 @@ class EvidencePack:
     token_budget: int
 
 
-class GemmaTokenCounter:
-    """Count prompt tokens with the pinned Gemma tokenizer JSON."""
+class TokenizerJsonCounter:
+    """Count prompt tokens with the pinned model tokenizer JSON."""
 
     def __init__(self, tokenizer: object) -> None:
         self._tokenizer = tokenizer
 
     @classmethod
-    def from_file(cls, path: Path, *, expected_sha256: str) -> GemmaTokenCounter:
+    def from_file(cls, path: Path, *, expected_sha256: str) -> TokenizerJsonCounter:
         actual_sha256 = hashlib.sha256(path.read_bytes()).hexdigest()
         if actual_sha256 != expected_sha256:
             raise ValueError("Analyst tokenizer SHA-256 does not match model inventory")
         try:
             from tokenizers import Tokenizer  # type: ignore[import-untyped]
         except ImportError as exc:
-            raise RuntimeError("tokenizers is required for Gemma evidence budgeting") from exc
+            raise RuntimeError("tokenizers is required for evidence budgeting") from exc
         return cls(Tokenizer.from_file(str(path)))
 
     def __call__(self, text: str) -> int:

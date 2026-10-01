@@ -130,7 +130,7 @@ flowchart LR
 | LR-001 | 4 LightRAG | P1 | Sol / High | GRAPH-001,LLM-002,ARCH-001 | выполнена |
 | LLM-001 | 5 Inference | P0 | Sol / High | INFRA-001 | выполнена |
 | LLM-002 | Выбор локальных весов и CPU smoke | P0 | Sol / High | LLM-001 | выполнена |
-| LLM-003 | Сравнение inference-конфигураций и выбор production-моделей | P0 | Sol / High | PLAN-001,ANALYST-001,GRAPH-001 | ожидает |
+| LLM-003 | Сравнение inference-конфигураций и выбор production-моделей | P0 | Sol / High | PLAN-001,ANALYST-001,GRAPH-001 | выполнена |
 | CORPUS-001 | Initial corpus backfill EPO/OpenAlex | P0 | Sol / High | ING-001,IDX-001,GRAPH-001,LLM-003 | ожидает |
 | PLAN-001 | 5 Planner | P0 | Sol / High | LLM-001,DB-002 | выполнена |
 | STATE-001 | 8 Memory/cache | P0 | Sol / Medium | DB-002 | выполнена |

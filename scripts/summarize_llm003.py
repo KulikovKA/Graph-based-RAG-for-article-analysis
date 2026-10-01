@@ -169,6 +169,7 @@ def main() -> None:
             ("analyst_lfm25_v3_low.jsonl", "analyst", "lfm25_semantic_dto_v3"),
             ("analyst_lfm25_v4_low.jsonl", "analyst", "lfm25_decision_order_v4"),
             ("analyst_lfm2_24b-a2b_v3_default.jsonl", "analyst", "lfm24_semantic_dto_v3"),
+            ("analyst_gpt-oss_20b_v4_low.jsonl", "analyst", "gpt_oss20b_decision_order_v4"),
         ],
         "graph_extractor": [
             ("graph_candidate_warm.jsonl", "graph", "candidate_warm_historical"),
@@ -179,7 +180,7 @@ def main() -> None:
     results = {
         "schema_version": 2,
         "task": "LLM-003",
-        "status": "open_no_safe_production_selection",
+        "status": "production_selections_recorded",
         "protocol": {
             "sequential": True,
             "gold_labels_model_generated": False,
@@ -222,9 +223,11 @@ def main() -> None:
         item for item in results["roles"]["planner"] if item["run"] == "qwen_semantic_dto_v3"
     )
     analyst = next(
-        item for item in results["roles"]["analyst"] if item["run"] == "lfm25_decision_order_v4"
+        item
+        for item in results["roles"]["analyst"]
+        if item["run"] == "gpt_oss20b_decision_order_v4"
     )
-    results["status"] = "open_analyst_selection_pending"
+    results["status"] = "selected_all_production_roles"
     results["production_decision"].update(
         {
             "planner": {
@@ -248,15 +251,32 @@ def main() -> None:
                 "invented_facts": graph["invented_facts"],
                 "hard_gates_pass": graph["hard_gates_pass"],
             },
-            "analyst": None,
+            "analyst": {
+                "tag": analyst["tag"],
+                "digest": analyst["digest"],
+                "prompt_version": "analyst_v4",
+                "profile": "low",
+                "max_output_tokens": 2048,
+                "tokenizer": {
+                    "repository": "openai/gpt-oss-20b",
+                    "revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+                    "file": "tokenizer.json",
+                    "sha256": "0614fe83cadab421296e664e1f48f4261fa8fef6e03e63bb75c20f38e37d07d3",
+                },
+                "exact_cases": analyst["passed"],
+                "case_count": analyst["cases"],
+                "hard_gates_pass": analyst["hard_gates_pass"],
+            },
             "config_changed": True,
             "mass_backfill_allowed": False,
         }
     )
     results["production_decision"]["reason"] = (
         f"Planner Qwen v3 scored {planner['passed']}/30 exact and passes structural gates; "
-        f"Analyst LFM2.5 v4 scored {analyst['passed']}/18 exact with "
-        f"{analyst['safe_fallbacks']} safe fallbacks, so no Analyst is selected; "
+        f"Analyst GPT-OSS 20B v4 scored {analyst['passed']}/18 exact, "
+        f"with {analyst['schema_passed']}/18 schema-valid and "
+        f"{analyst['citation_passed']}/18 citation-valid outputs, and "
+        f"{analyst['safe_fallbacks']} safe fallbacks; "
         f"Graph Qwen on adjudicated gold matched "
         f"{graph['matched_gold_facts']}/{graph['gold_facts']} facts, "
         f"with {graph['invented_facts']} extra facts and "

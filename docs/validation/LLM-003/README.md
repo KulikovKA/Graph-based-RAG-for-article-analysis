@@ -1,9 +1,8 @@
 # LLM-003 — comparative local model evaluation
 
-Status: **benchmark runs complete; production selection remains open for the
-Analyst role**. Planner and Graph candidates pass structural hard gates and are
-selected below. `CORPUS-001` remains blocked until a defensible Analyst winner is
-available. No model weights or user/corpus data are included.
+Status: **all three production roles selected and pinned**. `CORPUS-001` was
+not run; model selection is complete and its separate task may proceed. No model
+weights or user/corpus data are included.
 
 ## Gold data and scoring
 
@@ -33,7 +32,7 @@ and fixture hashes are in `eval/llm003/`; immutable per-case raw results are in
 |---|---|---|---|
 | Planner final | `qwen3.5:4b-q4_K_M` | `2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd` | `planner_v3`, non-thinking |
 | Graph final | `qwen3.5:4b-q4_K_M` | `2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd` | `graph-extraction-v2`, non-thinking |
-| Analyst final | `lfm2.5:8b-a1b-q4_K_M` | `9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2` | `analyst_v4`, `low` |
+| Analyst selected | `gpt-oss:20b` | `17052f91a42e97930aa6e28a6c6c06a983e6a58dbb00434885a0cf5313e376f7` | `analyst_v4`, `low` |
 
 Other candidates inspected with `ollama list` and `/api/tags`:
 
@@ -42,6 +41,7 @@ Other candidates inspected with `ollama list` and `/api/tags`:
 | `granite4.2:3b` | `40577dc168a3a9ad34e9a1234e0c2570be86097fa75a236d4574ae985705d3c4` | 2,244,023,965 B |
 | `lfm2:24b-a2b` | `d6c816d74887ed480a3afd5baa2dd2a5987ef6b359b8661e80e1e9fb3501650c` | 14,415,742,358 B |
 | `gemma4:26b-a4b-it-mtp-q4_K_M` | `001e5dafc3c77684c2307ebc6ab8e336e10c9b18eca52acf547d72fc83c3ca8c` | 18,731,025,629 B |
+| `gpt-oss:20b` | `17052f91a42e97930aa6e28a6c6c06a983e6a58dbb00434885a0cf5313e376f7` | 13,793,441,244 B |
 
 ## Results and hard gates
 
@@ -65,19 +65,17 @@ the original baseline files were not rewritten.
   stronger than historical candidates (0/25 Granite, 1/25 Qwen, 0/25 LFM2.5).
   Qwen is selected as the Graph candidate under the measured no-invented-fact
   gate; the 8 missed gold facts remain a documented recall limitation.
-- **Analyst:** final LFM2.5 v4 scored 5/18 exact; 17/18 outputs were
-  schema- and citation-valid, and one case used safe fallback. It predicted
-  `full` 11 times and `none` 7 times, never correctly distinguishing any of
-  the partial, conflicting, or uncertain labels. LFM2-24B v3 scored 5/18 but
-  had 5 fallbacks and only 13/18 schema/citation-valid outputs. LFM2.5 v3
-  scored 4/18 with 2 fallbacks. The earlier LFM2.5 v2 run had 18/18
-  schema/citation validity and no fallback but only 2/18 exact; the historical
-  LFM2.5 baseline reached 5/18 with 18/18 schema/citation validity. Historical
-  Gemma 4 scored 3/18 with 15 fallbacks; it was not selected. On a later
-  semantic-DTO run, Gemma was user-stopped after six cases and that partial run
-  was excluded from results and selection. No Analyst candidate is selected:
-  relation taxonomy quality and, for the latest runs, hard gates remain
-  insufficient for production.
+- **Analyst:** GPT-OSS 20B v4 scored 13/18 exact (72.2%), with 18/18
+  schema-valid and citation-valid results, zero fallbacks, zero unsupported
+  claims on the gold `none` case, and no raw reasoning in output artifacts. It
+  matched all full (5/5), conflicting (4/4), and none (1/1) labels, plus 2/4
+  partial and 1/4 uncertain. It is selected as the strongest candidate that
+  passed structural and citation gates. The remaining partial/uncertain misses
+  are documented for follow-up evaluation. LFM2.5 v4 scored 5/18, 17/18
+  schema/citation-valid and one fallback; LFM2-24B v3 scored 5/18 with 5
+  fallbacks and 13/18 valid. Historical Gemma 4 scored 3/18 with 15 fallbacks;
+  it was not selected. A later Gemma semantic-DTO run was stopped at the user's
+  direction after six cases and excluded from comparison and selection.
 
 Historical Graph Qwen/LFM2.5 protocol failures were recorded only by exception
 class (`InferenceProtocolError`), so the old artifacts do not preserve enough
@@ -101,11 +99,19 @@ identity/version is pinned in `config/models.yaml` and registered with the
 inference provider for the injected extractor. Planner config and inventory are
 also updated to the selected identity.
 
-There is no Analyst winner. Analyst production configuration remains unchanged
-pending a quality-valid candidate. The latest tested prompt is `analyst_v4`;
-the next iteration should focus on discriminating partial/conflicting/uncertain
-cases, which remain missed, and preserve the frozen labels. LLM-003 therefore
-remains open, and
-`mass_backfill_allowed` remains false. Do not start `CORPUS-001` until that
-selection is resolved. The active unresolved issue is semantic quality, not
-RAM, swap, or a runtime blocker.
+Analyst winner: `gpt-oss:20b` at digest
+`17052f91a42e97930aa6e28a6c6c06a983e6a58dbb00434885a0cf5313e376f7`,
+`analyst_v4`, reasoning `low`, 2,048 output tokens. Its exact upstream
+tokenizer is `openai/gpt-oss-20b` revision
+`6cee5e81ee83917806bbde320786a8fb61efebee`, SHA-256
+`0614fe83cadab421296e664e1f48f4261fa8fef6e03e63bb75c20f38e37d07d3`.
+The shared JSON tokenizer loader was generalized and verifies that checksum at
+startup. All three selected identities and profiles are recorded in
+`config/models.yaml`, `docs/model_inventory.json`, and `results.json`.
+For local deployment, place the tokenizer from the pinned revision at
+`data/models/gpt-oss-tokenizer.json`; tokenizer assets stay outside Git.
+
+`mass_backfill_allowed` remains false; this benchmark did not run or authorize
+`CORPUS-001`. The corpus task remains separately gated and must follow its own
+dry-run/small-run checks. The benchmark itself is complete; semantic misses are
+reported as model limitations, not runtime blockers.

@@ -47,7 +47,7 @@ from app.services.analyst import (
 from app.services.evidence_pack import (
     EvidencePack,
     EvidencePackItem,
-    GemmaTokenCounter,
+    TokenizerJsonCounter,
     build_evidence_pack,
 )
 from app.services.idea_state import (
@@ -163,7 +163,7 @@ class AnalysisRunService:
         analyst: Analyst,
         *,
         rerank: RerankFunction,
-        token_counter: TokenCounter | GemmaTokenCounter,
+        token_counter: TokenCounter | TokenizerJsonCounter,
         retrieval_config_hash: str,
         analyst_tokenizer_version: str,
         config: AnalysisRunConfig | None = None,

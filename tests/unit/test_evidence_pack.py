@@ -3,7 +3,7 @@ from uuid import uuid4
 
 from app.domain.evidence import CandidateEvidence
 from app.services.evidence_pack import (
-    GemmaTokenCounter,
+    TokenizerJsonCounter,
     build_evidence_pack,
     render_evidence_items,
 )
@@ -100,6 +100,6 @@ def test_gemma_token_counter_uses_special_tokens_and_reports_exact_id_count():
             return Encoding()
 
     tokenizer = TokenizerStub()
-    counter = GemmaTokenCounter(tokenizer)
+    counter = TokenizerJsonCounter(tokenizer)
     assert counter("prompt + serialized evidence") == 4
     assert tokenizer.add_special_tokens is True

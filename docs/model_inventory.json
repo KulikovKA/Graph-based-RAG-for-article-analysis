@@ -29,22 +29,21 @@
     },
     "analyst": {
       "provider": "ollama",
-      "id": "gemma4:26b-a4b-it-mtp-q4_K_M",
-      "digest": "001e5dafc3c77684c2307ebc6ab8e336e10c9b18eca52acf547d72fc83c3ca8c",
-      "bytes": 18731025629,
-      "quantization": "Q4_K_M",
-      "architecture": "gemma4",
-      "parameter_size": "25.2B",
-      "context_length": 262144,
-      "capabilities": ["completion", "vision", "tools", "thinking"],
+      "id": "gpt-oss:20b",
+      "digest": "17052f91a42e97930aa6e28a6c6c06a983e6a58dbb00434885a0cf5313e376f7",
+      "bytes": 13793441244,
+      "quantization": "MXFP4",
+      "architecture": "gptoss",
+      "parameter_size": "20.9B",
+      "context_length": 131072,
+      "capabilities": ["completion", "tools", "thinking"],
       "license": "Apache-2.0",
       "tokenizer": {
-        "repository": "google/gemma-4-26B-A4B-it",
-        "revision": "f1e9a71d98d434acbad5fed4a27ea2ae83b8ff68",
+        "repository": "openai/gpt-oss-20b",
+        "revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
         "file": "tokenizer.json",
-        "sha256": "cc8d3a0ce36466ccc1278bf987df5f71db1719b9ca6b4118264f45cb627bfe0f",
-        "vocabulary_size": 262144,
-        "gguf_vocabulary_match": true
+        "sha256": "0614fe83cadab421296e664e1f48f4261fa8fef6e03e63bb75c20f38e37d07d3",
+        "vocabulary_size": 200019
       }
     },
     "embedding": {

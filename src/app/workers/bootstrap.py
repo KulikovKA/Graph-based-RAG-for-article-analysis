@@ -22,7 +22,7 @@ from app.integrations.qdrant import EmbeddingSpec, QdrantIndex
 from app.integrations.reranker_local import LocalQwenReranker
 from app.services.analysis_run import AnalysisRunConfig, AnalysisRunService
 from app.services.analyst import Analyst
-from app.services.evidence_pack import GemmaTokenCounter
+from app.services.evidence_pack import TokenizerJsonCounter
 from app.services.retrieval import CandidateRetrievalService
 from app.storage.repositories import make_engine, make_session_factory
 from app.workers.analysis import AnalysisWorker, AnalysisWorkerConfig
@@ -60,7 +60,7 @@ def build_worker() -> tuple[AnalysisWorker, list[object]]:
     session_factory = make_session_factory(engine)
     if not Path(_required("ANALYST_TOKENIZER_PATH")).is_file():
         raise RuntimeError("pinned Analyst tokenizer file is unavailable")
-    tokenizer = GemmaTokenCounter.from_file(
+    tokenizer = TokenizerJsonCounter.from_file(
         Path(os.environ["ANALYST_TOKENIZER_PATH"]),
         expected_sha256=analyst_config["tokenizer"]["file_sha256"],
     )

@@ -1,7 +1,7 @@
 {
   "schema_version": 2,
   "task": "LLM-003",
-  "status": "open_analyst_selection_pending",
+  "status": "selected_all_production_roles",
   "protocol": {
     "sequential": true,
     "gold_labels_model_generated": false,
@@ -363,6 +363,49 @@
           }
         },
         "hard_gates_pass": false
+      },
+      {
+        "run": "gpt_oss20b_decision_order_v4",
+        "tag": "gpt-oss:20b",
+        "digest": "17052f91a42e97930aa6e28a6c6c06a983e6a58dbb00434885a0cf5313e376f7",
+        "cases": 18,
+        "latency_ms": {
+          "median": 26600.515,
+          "p95": 31158.56
+        },
+        "passed": 13,
+        "schema_passed": 18,
+        "citation_passed": 18,
+        "safe_fallbacks": 0,
+        "unsupported_claims": 0,
+        "relation_confusion": {
+          "full": {
+            "expected": 5,
+            "exact": 5,
+            "predicted": 5
+          },
+          "partial": {
+            "expected": 4,
+            "exact": 2,
+            "predicted": 2
+          },
+          "conflicting": {
+            "expected": 4,
+            "exact": 4,
+            "predicted": 5
+          },
+          "uncertain": {
+            "expected": 4,
+            "exact": 1,
+            "predicted": 1
+          },
+          "none": {
+            "expected": 1,
+            "exact": 1,
+            "predicted": 5
+          }
+        },
+        "hard_gates_pass": true
       }
     ],
     "graph_extractor": [
@@ -489,7 +532,22 @@
       "case_count": 30,
       "hard_gates_pass": true
     },
-    "analyst": null,
+    "analyst": {
+      "tag": "gpt-oss:20b",
+      "digest": "17052f91a42e97930aa6e28a6c6c06a983e6a58dbb00434885a0cf5313e376f7",
+      "prompt_version": "analyst_v4",
+      "profile": "low",
+      "max_output_tokens": 2048,
+      "tokenizer": {
+        "repository": "openai/gpt-oss-20b",
+        "revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+        "file": "tokenizer.json",
+        "sha256": "0614fe83cadab421296e664e1f48f4261fa8fef6e03e63bb75c20f38e37d07d3"
+      },
+      "exact_cases": 13,
+      "case_count": 18,
+      "hard_gates_pass": true
+    },
     "graph_extractor": {
       "tag": "qwen3.5:4b-q4_K_M",
       "digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
@@ -503,6 +561,6 @@
     },
     "config_changed": true,
     "mass_backfill_allowed": false,
-    "reason": "Planner Qwen v3 scored 26/30 exact and passes structural gates; Analyst LFM2.5 v4 scored 5/18 exact with 1 safe fallbacks, so no Analyst is selected; Graph Qwen on adjudicated gold matched 18/26 facts, with 0 extra facts and 23/23 negative cases correct."
+    "reason": "Planner Qwen v3 scored 26/30 exact and passes structural gates; Analyst GPT-OSS 20B v4 scored 13/18 exact, with 18/18 schema-valid and 18/18 citation-valid outputs, and 0 safe fallbacks; Graph Qwen on adjudicated gold matched 18/26 facts, with 0 extra facts and 23/23 negative cases correct."
   }
 }

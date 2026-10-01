@@ -52,7 +52,7 @@ services:
       NEO4J_USER: neo4j
       NEO4J_PASSWORD: ${NEO4J_PASSWORD:-local-dev-only-change-me}
       MODEL_CONFIG_PATH: /opt/app/config/models.yaml
-      ANALYST_TOKENIZER_PATH: ${ANALYST_TOKENIZER_PATH:-/models/gemma4-tokenizer.json}
+      ANALYST_TOKENIZER_PATH: ${ANALYST_TOKENIZER_PATH:-/models/gpt-oss-tokenizer.json}
       RERANKER_MODEL_PATH: ${RERANKER_MODEL_PATH:-/models/qwen3-reranker}
       ANALYSIS_RUN_DEADLINE_SECONDS: ${ANALYSIS_RUN_DEADLINE_SECONDS:-1800}
       ANALYSIS_JOB_LEASE_SECONDS: ${ANALYSIS_JOB_LEASE_SECONDS:-30}
