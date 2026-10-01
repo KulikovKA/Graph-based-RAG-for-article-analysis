@@ -15,8 +15,10 @@ from pydantic import ValidationError
 
 from app.domain.contracts import (
     AnalysisDraftV1,
+    AnalysisRelationDraftV1,
     AnalysisRelationV1,
     AnalysisV1,
+    AnalystNarrativeDraft,
     AnswerPresentationV1,
     AnswerV1,
     ClaimV1,
@@ -38,6 +40,7 @@ from app.domain.inference import (
 )
 from app.domain.planner import IdeaV1
 from app.services.evidence_pack import EvidencePack, EvidencePackItem, render_evidence_items
+from app.services.relation_classifier import RelationClassifier
 
 PROMPT_VERSION = "analyst_v4"
 RENDERER_VERSION = "answer_v1.1"
@@ -333,14 +336,24 @@ def _jsonable(value: Any) -> str:
 
 class Analyst:
     def __init__(
-        self, provider: InferenceProvider, *, model_id: str, prompt: str | None = None
+        self,
+        provider: InferenceProvider,
+        *,
+        model_id: str,
+        prompt: str | None = None,
+        relation_classifier: RelationClassifier | None = None,
     ) -> None:
         self.provider = provider
         self.model_id = model_id
+        self.relation_classifier = relation_classifier
         self.prompt = (
             prompt
             if prompt is not None
-            else Path("prompts/analyst_v1.txt").read_text(encoding="utf-8")
+            else Path(
+                "prompts/analyst_narrative_v1.txt"
+                if relation_classifier is not None
+                else "prompts/analyst_v1.txt"
+            ).read_text(encoding="utf-8")
         )
 
     async def analyze(
@@ -374,6 +387,20 @@ class Analyst:
         codes: list[str] = []
         metadata = None
         rejected: Any = None
+        decisions = None
+        if self.relation_classifier is not None:
+            try:
+                decisions = await self.relation_classifier.classify(
+                    idea=idea,
+                    pack=pack,
+                    request_id=request_id,
+                    timeout=max(0.001, deadline - time.monotonic()),
+                    cancel=cancel,
+                )
+            except InferenceCancelled:
+                raise
+            except InferenceError:
+                return self._fallback(idea, pack, coverage, 0, ("RELATION_CLASSIFIER_FAILURE",))
         for attempt in (1, 2):
             if cancel is not None and cancel.is_set():
                 raise InferenceCancelled("analyst cancelled")
@@ -387,7 +414,9 @@ class Analyst:
                     request_id=request_id,
                     prompt=prompt,
                     timeout=remaining,
-                    schema=AnalysisDraftV1.model_json_schema(),
+                    schema=(
+                        AnalystNarrativeDraft if decisions is not None else AnalysisDraftV1
+                    ).model_json_schema(),
                     max_output_tokens=max_output_tokens,
                     reasoning_effort=reasoning_effort,
                     cancel=cancel,
@@ -398,7 +427,41 @@ class Analyst:
                 if len(encoded) > MAX_JSON_BYTES:
                     rejected = {"omitted": "DRAFT_TOO_LARGE"}
                     raise AnalystViolation("DRAFT_TOO_LARGE")
-                draft = AnalysisDraftV1.model_validate_json(encoded)
+                if decisions is None:
+                    draft = AnalysisDraftV1.model_validate_json(encoded)
+                else:
+                    narrative = AnalystNarrativeDraft.model_validate_json(encoded)
+                    narrative_by_pair = {
+                        (item.feature_id, item.document_id): item for item in narrative.relations
+                    }
+                    assembled_relations = []
+                    for pair, relation_decision in decisions.items():
+                        if relation_decision.relation == "none":
+                            continue
+                        selected = narrative_by_pair.get(pair)
+                        if selected is None:
+                            raise AnalystViolation("MISSING_NARRATIVE_FOR_CLASSIFIED_RELATION")
+                        assembled_relations.append(
+                            AnalysisRelationDraftV1(
+                                feature_id=selected.feature_id,
+                                document_id=selected.document_id,
+                                relation=relation_decision.relation,
+                                evidence_ids=selected.evidence_ids,
+                                quotes=selected.quotes,
+                            )
+                        )
+                    draft = AnalysisDraftV1(
+                        schema_version=narrative.schema_version,
+                        relations=assembled_relations,
+                        unresolved_feature_ids=list(
+                            {feature.id for feature in idea.features}
+                            - {
+                                item.feature_id
+                                for item in assembled_relations
+                                if item.relation in ("full", "partial")
+                            }
+                        ),
+                    )
                 analysis = enrich_analysis_draft(draft, pack)
                 validate_analysis(analysis, idea=idea, pack=pack)
                 answer, public, presentation = _render_analysis(analysis, idea, coverage)

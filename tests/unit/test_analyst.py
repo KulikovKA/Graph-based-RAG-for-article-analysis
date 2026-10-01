@@ -70,9 +70,7 @@ def draft(**changes):  # type: ignore[no-untyped-def]
 
 def model_draft():
     value = draft()
-    value["relations"][0]["quotes"] = [
-        {"evidence_id": str(EVIDENCE), "text": QUOTE}
-    ]
+    value["relations"][0]["quotes"] = [{"evidence_id": str(EVIDENCE), "text": QUOTE}]
     return value
 
 
@@ -358,6 +356,83 @@ def test_timeout_falls_back_without_repair_and_cancel_propagates() -> None:
     cancel.set()
     with pytest.raises(InferenceCancelled):
         run(FakeProvider([model_draft()]), cancel=cancel)
+
+
+def test_production_classifier_owns_relation_and_narrative_schema_has_no_relation() -> None:
+    from app.services.relation_classifier import RelationDecision
+
+    class FixedClassifier:
+        async def classify(self, **kwargs):  # type: ignore[no-untyped-def]
+            return {
+                (FEATURE, DOCUMENT): RelationDecision(
+                    FEATURE,
+                    DOCUMENT,
+                    "partial",
+                    {
+                        "full": 0.1,
+                        "partial": 0.8,
+                        "conflicting": 0.02,
+                        "uncertain": 0.07,
+                        "none": 0.01,
+                    },
+                    0.7,
+                )
+            }
+
+    narrative = {
+        "schema_version": 1,
+        "relations": [
+            {
+                "feature_id": str(FEATURE),
+                "document_id": str(DOCUMENT),
+                "evidence_ids": [str(EVIDENCE)],
+                "quotes": [{"evidence_id": str(EVIDENCE), "text": QUOTE}],
+            }
+        ],
+    }
+    provider = FakeProvider([narrative])
+    result = asyncio.run(
+        Analyst(
+            provider,
+            model_id="gemma",
+            prompt="schema={schema_json}\ninput={input_json}",
+            relation_classifier=FixedClassifier(),  # type: ignore[arg-type]
+        ).analyze(
+            idea=IDEA,
+            pack=PACK,
+            coverage=COVERAGE,
+            request_id="test",
+            timeout=2,
+        )
+    )
+    assert result.outcome == "analysis"
+    assert result.analysis is not None
+    assert result.analysis.relations[0].relation == "partial"
+    schema = provider.schemas[0]
+    property_sets = [
+        schema["properties"],
+        *(item["properties"] for item in schema["$defs"].values()),
+    ]
+    assert all("relation" not in properties for properties in property_sets)
+
+
+def test_relation_classifier_failure_uses_whole_pipeline_safe_fallback() -> None:
+    class FailedClassifier:
+        async def classify(self, **kwargs):  # type: ignore[no-untyped-def]
+            raise InferenceTimeout("timeout")
+
+    provider = FakeProvider([])
+    result = asyncio.run(
+        Analyst(
+            provider,
+            model_id="gemma",
+            prompt="",
+            relation_classifier=FailedClassifier(),  # type: ignore[arg-type]
+        ).analyze(idea=IDEA, pack=PACK, coverage=COVERAGE, request_id="test", timeout=2)
+    )
+    assert result.outcome == "safe_fallback"
+    assert result.diagnostic_codes == ("RELATION_CLASSIFIER_FAILURE",)
+    assert not provider.prompts
 
 
 def test_empty_pack_returns_no_evidence_without_inference() -> None:

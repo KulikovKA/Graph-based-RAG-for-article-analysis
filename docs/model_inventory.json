@@ -46,6 +46,19 @@
         "vocabulary_size": 200019
       }
     },
+    "relation_classifier": {
+      "provider": "ollama",
+      "id": "tev1:4b",
+      "digest": "cef45ef93cf6df8bf32bdd689b0a8fd01f88ae9034d33ce890c54f77e4cd981e",
+      "bytes": 4482415847,
+      "quantization": "Q8_0",
+      "architecture": "qwen35",
+      "parameter_size": "4.2B",
+      "context_length": 262144,
+      "endpoint_type": "systemone",
+      "thinking": false,
+      "contract_version": "relation-classifier-v1"
+    },
     "embedding": {
       "provider": "ollama",
       "id": "qwen3-embedding:0.6b",

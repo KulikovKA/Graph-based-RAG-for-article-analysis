@@ -23,6 +23,7 @@ from app.integrations.reranker_local import LocalQwenReranker
 from app.services.analysis_run import AnalysisRunConfig, AnalysisRunService
 from app.services.analyst import Analyst
 from app.services.evidence_pack import TokenizerJsonCounter
+from app.services.relation_classifier import RelationClassifier
 from app.services.retrieval import CandidateRetrievalService
 from app.storage.repositories import make_engine, make_session_factory
 from app.workers.analysis import AnalysisWorker, AnalysisWorkerConfig
@@ -53,6 +54,7 @@ def build_worker() -> tuple[AnalysisWorker, list[object]]:
     planner_config = model_config["generation"]["planner"]
     graph_extractor_config = model_config["generation"]["graph_extractor"]
     analyst_config = model_config["generation"]["analyst"]
+    relation_config = model_config["generation"]["relation_classifier"]
     embedding_config = model_config["embedding"]
     reranker_config = model_config["reranker"]
 
@@ -82,13 +84,13 @@ def build_worker() -> tuple[AnalysisWorker, list[object]]:
             planner_config["model_id"]: planner_config["digest"],
             graph_extractor_config["model_id"]: graph_extractor_config["digest"],
             analyst_config["model_id"]: analyst_config["digest"],
+            relation_config["model_id"]: relation_config["digest"],
         },
         supported_efforts={
             planner_config["model_id"]: set(planner_config["reasoning_efforts"]),
-            graph_extractor_config["model_id"]: set(
-                graph_extractor_config["reasoning_efforts"]
-            ),
+            graph_extractor_config["model_id"]: set(graph_extractor_config["reasoning_efforts"]),
             analyst_config["model_id"]: set(analyst_config["reasoning_efforts"]),
+            relation_config["model_id"]: set(),
         },
         reranker=reranker,
         embedding_batch_size=embedding_config["batch_size"],
@@ -122,7 +124,16 @@ def build_worker() -> tuple[AnalysisWorker, list[object]]:
         model_id=planner_config["model_id"],
         prompt=Path("prompts/planner_v1.txt").read_text(encoding="utf-8"),
     )
-    analyst = Analyst(provider, model_id=analyst_config["model_id"])
+    relation_classifier = RelationClassifier(
+        inference_client,
+        model_id=relation_config["model_id"],
+        digest=relation_config["digest"],
+    )
+    analyst = Analyst(
+        provider,
+        model_id=analyst_config["model_id"],
+        relation_classifier=relation_classifier,
+    )
 
     async def score_documents(
         query: str,

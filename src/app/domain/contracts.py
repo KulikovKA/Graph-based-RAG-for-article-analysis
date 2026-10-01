@@ -138,6 +138,44 @@ class AnalysisDraftV1(StrictModel):
         return self
 
 
+class AnalystNarrativeRelationDraftV1(StrictModel):
+    """Evidence selected by the narrative model; relation is owned elsewhere."""
+
+    feature_id: UUID
+    document_id: UUID
+    evidence_ids: list[UUID] = Field(min_length=1, max_length=64)
+    quotes: list[QuoteDraftV1] = Field(min_length=1, max_length=64)
+
+    @model_validator(mode="after")
+    def evidence_matches_quotes(self) -> AnalystNarrativeRelationDraftV1:
+        cited = set(self.evidence_ids)
+        quoted = {quote.evidence_id for quote in self.quotes}
+        if len(cited) != len(self.evidence_ids) or not quoted <= cited:
+            raise ValueError("INVALID_RELATION_EVIDENCE_IDS")
+        return self
+
+
+class AnalystNarrativeDraft(StrictModel):
+    """Narrative and citation choices, with no model-controlled relation field."""
+
+    schema_version: Literal[1]
+    relations: list[AnalystNarrativeRelationDraftV1] = Field(max_length=960)
+
+    @field_validator("schema_version", mode="before")
+    @classmethod
+    def integer_schema_version(cls, value: object) -> object:
+        if type(value) is not int:
+            raise ValueError("INVALID_SCHEMA_VERSION")
+        return value
+
+    @model_validator(mode="after")
+    def unique_pairs(self) -> AnalystNarrativeDraft:
+        pairs = [(item.feature_id, item.document_id) for item in self.relations]
+        if len(set(pairs)) != len(pairs):
+            raise ValueError("DUPLICATE_FEATURE_DOCUMENT_RELATION")
+        return self
+
+
 class LimitationV1(StrictModel):
     code: str
     message: str

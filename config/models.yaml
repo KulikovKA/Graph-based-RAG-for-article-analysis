@@ -25,6 +25,14 @@ generation:
       repo_id: openai/gpt-oss-20b
       revision: 6cee5e81ee83917806bbde320786a8fb61efebee
       file_sha256: 0614fe83cadab421296e664e1f48f4261fa8fef6e03e63bb75c20f38e37d07d3
+  relation_classifier:
+    provider: ollama
+    endpoint_type: systemone
+    model_id: tev1:4b
+    digest: cef45ef93cf6df8bf32bdd689b0a8fd01f88ae9034d33ce890c54f77e4cd981e
+    thinking: false
+    contract_version: relation-classifier-v1
+    max_state_bytes: 6000
 embedding:
   provider: ollama
   model_id: qwen3-embedding:0.6b

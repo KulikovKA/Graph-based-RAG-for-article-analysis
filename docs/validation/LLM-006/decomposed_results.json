@@ -1,0 +1,68 @@
+{
+  "cases": 18,
+  "correct": 6,
+  "per_class": {
+    "full": {
+      "cases": 5,
+      "correct": 0
+    },
+    "partial": {
+      "cases": 4,
+      "correct": 3
+    },
+    "conflicting": {
+      "cases": 4,
+      "correct": 1
+    },
+    "uncertain": {
+      "cases": 4,
+      "correct": 1
+    },
+    "none": {
+      "cases": 1,
+      "correct": 1
+    }
+  },
+  "confusion_gold_to_predicted": {
+    "full": {
+      "full": 0,
+      "partial": 5,
+      "conflicting": 0,
+      "uncertain": 0,
+      "none": 0
+    },
+    "partial": {
+      "full": 0,
+      "partial": 3,
+      "conflicting": 0,
+      "uncertain": 0,
+      "none": 0
+    },
+    "conflicting": {
+      "full": 0,
+      "partial": 0,
+      "conflicting": 1,
+      "uncertain": 0,
+      "none": 0
+    },
+    "uncertain": {
+      "full": 0,
+      "partial": 1,
+      "conflicting": 1,
+      "uncertain": 1,
+      "none": 1
+    },
+    "none": {
+      "full": 0,
+      "partial": 0,
+      "conflicting": 0,
+      "uncertain": 0,
+      "none": 1
+    }
+  },
+  "median_latency_ms": 6479.254999999999,
+  "p95_nearest_rank_latency_ms": 7377.51,
+  "inference_calls_total": 18,
+  "malformed_or_inconsistent": 4,
+  "raw": "docs\\validation\\LLM-006\\raw\\decomposed_classifier.jsonl"
+}

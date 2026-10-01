@@ -1,0 +1,56 @@
+{
+  "cases": 18,
+  "semantic_exact": 14,
+  "schema": 18,
+  "citations": 18,
+  "fallback": 0,
+  "unsupported": 0,
+  "reasoning_leak": 0,
+  "unresolved_match": 15,
+  "median_latency_ms": 36957.755000000005,
+  "p95_nearest_rank_latency_ms": 43119.36,
+  "confusion_gold_to_predicted": {
+    "full": {
+      "full": 5,
+      "partial": 0,
+      "conflicting": 0,
+      "uncertain": 0,
+      "none": 0
+    },
+    "partial": {
+      "full": 0,
+      "partial": 1,
+      "conflicting": 1,
+      "uncertain": 2,
+      "none": 0
+    },
+    "conflicting": {
+      "full": 0,
+      "partial": 0,
+      "conflicting": 4,
+      "uncertain": 0,
+      "none": 0
+    },
+    "uncertain": {
+      "full": 0,
+      "partial": 0,
+      "conflicting": 1,
+      "uncertain": 3,
+      "none": 0
+    },
+    "none": {
+      "full": 0,
+      "partial": 0,
+      "conflicting": 0,
+      "uncertain": 0,
+      "none": 1
+    }
+  },
+  "hard_gates": {
+    "schema_18_of_18": true,
+    "citations_18_of_18": true,
+    "fallback_zero": true,
+    "unsupported_zero": true,
+    "reasoning_leak_zero": true
+  }
+}
