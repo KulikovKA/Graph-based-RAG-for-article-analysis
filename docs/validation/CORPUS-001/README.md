@@ -1,6 +1,6 @@
 # CORPUS-001 validation
 
-Status: **in progress; runner extended, real pilot blocked by runtime credentials and database access**.
+Status: **in progress; runner runtime wired, 10-document write smoke partially completed**.
 
 The prior `micro10/` artifacts remain unchanged and describe an exploratory
 2026-10-01 OpenAlex run against the production ingestion, Qdrant indexing,
@@ -40,9 +40,15 @@ python scripts/corpus_backfill.py --source all --query "graphene gas sensor" --m
 
 Checkpoints and run statistics belong under ignored `data/`; do not commit them.
 EPO credentials are read only from `EPO_CONSUMER_KEY` and
-`EPO_CONSUMER_SECRET`. The current OpenAlex dry-run still ends with
-`network_error`. In this session `.env` and runtime credentials were absent;
-Docker was inaccessible, PostgreSQL rejected the repository's local development
-credentials, and Neo4j rejected them. The reachable Qdrant and inference HTTP
-services could not be tied to the project's intended deployment. No write run
-was attempted. The successful micro10 record remains historical evidence only.
+`EPO_CONSUMER_SECRET`. The `corpus-runner` tools-profile service now joins the
+backend and egress networks and uses the project PostgreSQL, Qdrant, Neo4j,
+migrations, production model config, and host Ollama endpoint. The earlier
+host-side OpenAlex `network_error` was an environment connectivity limitation:
+OpenAlex returned candidates from the container runner's egress network.
+
+Runtime smoke on 2026-10-01: migrations completed and OpenAlex dry-run previewed
+10 eligible documents without errors. The subsequent `--max-documents 10`
+write run activated 7 documents with Qdrant and Neo4j ACKs, then failed on the
+next document during graph extraction with `InferenceProtocolError: provider
+output did not finish` (run `corpus-20261001T203122Z-81c4e038`). No 100-document
+pilot has been run; investigate the remaining extractor failure before resuming.

@@ -78,6 +78,42 @@ services:
     mem_limit: 4g
     mem_reservation: 1g
 
+  corpus-runner:
+    build: { context: ., dockerfile: docker/Dockerfile.api }
+    image: article-analysis-api:local
+    profiles: [tools]
+    entrypoint: ["python", "/opt/app/scripts/corpus_backfill.py"]
+    init: true
+    restart: "no"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-article_app}:${POSTGRES_PASSWORD:-local-dev-only-change-me}@postgres:5432/${POSTGRES_DB:-article_analysis}
+      QDRANT_URL: http://qdrant:6333
+      NEO4J_URI: bolt://neo4j:7687
+      NEO4J_USER: neo4j
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD:?NEO4J_PASSWORD must be set in the environment}
+      INFERENCE_BASE_URL: http://host.docker.internal:11434
+      MODEL_CONFIG_PATH: /opt/app/config/models.yaml
+      EPO_CONSUMER_KEY: ${EPO_CONSUMER_KEY:-}
+      EPO_CONSUMER_SECRET: ${EPO_CONSUMER_SECRET:-}
+      OPENALEX_API_KEY: ${OPENALEX_API_KEY:-}
+      PYTHONPATH: /opt/app/src
+      PYTHONDONTWRITEBYTECODE: "1"
+    volumes:
+      - ./scripts:/opt/app/scripts:ro
+      - ./src:/opt/app/src:ro
+      - ./config:/opt/app/config:ro
+      - ./data/checkpoints:/opt/app/data/checkpoints
+    working_dir: /opt/app
+    read_only: true
+    tmpfs: [/tmp]
+    extra_hosts: ["host.docker.internal:host-gateway"]
+    depends_on:
+      postgres: { condition: service_healthy }
+      qdrant: { condition: service_healthy }
+      neo4j: { condition: service_healthy }
+      migrate: { condition: service_completed_successfully }
+    networks: [backend, egress]
+
   migrate:
     image: article-analysis-api:local
     command: ["alembic", "upgrade", "head"]
