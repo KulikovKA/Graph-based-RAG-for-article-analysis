@@ -3,8 +3,15 @@ schema_version: 1
 generation:
   planner:
     provider: ollama
-    model_id: lfm2.5:8b-a1b-q4_K_M
-    digest: 9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2
+    model_id: qwen3.5:4b-q4_K_M
+    digest: 2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd
+    max_output_tokens: 384
+    reasoning_efforts: []
+  graph_extractor:
+    provider: ollama
+    model_id: qwen3.5:4b-q4_K_M
+    digest: 2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd
+    extractor_version: graph-extraction-v2
     max_output_tokens: 384
     reasoning_efforts: []
   analyst:

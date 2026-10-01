@@ -1,6 +1,7 @@
 """Типизированная онтология публичного графа и DTO для извлечения."""
 
 from enum import StrEnum
+from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -119,6 +120,31 @@ GRAPH_EXTRACTION_SCHEMA_V1: dict[str, object] = {
                 ],
             },
         },
+    },
+    "required": ["facts"],
+}
+
+
+class GraphExtractionCandidateV2(BaseModel):
+    """Semantic-only extractor draft; offsets and chunk provenance are enriched locally."""
+
+    model_config = ConfigDict(extra="forbid", strict=True)
+
+    edge_type: Literal["DISCLOSES_FEATURE"]
+    target_text: str = Field(min_length=1, max_length=160)
+    quote: str = Field(min_length=1, max_length=512)
+    confidence: float = Field(ge=0, le=1)
+
+
+GRAPH_EXTRACTION_SCHEMA_V2: dict[str, object] = {
+    "type": "object",
+    "additionalProperties": False,
+    "properties": {
+        "facts": {
+            "type": "array",
+            "maxItems": 32,
+            "items": GraphExtractionCandidateV2.model_json_schema(),
+        }
     },
     "required": ["facts"],
 }

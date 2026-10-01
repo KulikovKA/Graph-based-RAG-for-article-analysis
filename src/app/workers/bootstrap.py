@@ -51,6 +51,7 @@ def build_worker() -> tuple[AnalysisWorker, list[object]]:
     config_path = Path(os.environ.get("MODEL_CONFIG_PATH", "config/models.yaml"))
     model_config = yaml.safe_load(config_path.read_text(encoding="utf-8"))
     planner_config = model_config["generation"]["planner"]
+    graph_extractor_config = model_config["generation"]["graph_extractor"]
     analyst_config = model_config["generation"]["analyst"]
     embedding_config = model_config["embedding"]
     reranker_config = model_config["reranker"]
@@ -79,10 +80,14 @@ def build_worker() -> tuple[AnalysisWorker, list[object]]:
         gate=gate,
         model_revisions={
             planner_config["model_id"]: planner_config["digest"],
+            graph_extractor_config["model_id"]: graph_extractor_config["digest"],
             analyst_config["model_id"]: analyst_config["digest"],
         },
         supported_efforts={
             planner_config["model_id"]: set(planner_config["reasoning_efforts"]),
+            graph_extractor_config["model_id"]: set(
+                graph_extractor_config["reasoning_efforts"]
+            ),
             analyst_config["model_id"]: set(analyst_config["reasoning_efforts"]),
         },
         reranker=reranker,

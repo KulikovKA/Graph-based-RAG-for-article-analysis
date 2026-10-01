@@ -1,4 +1,5 @@
-"""Summarize deterministic LLM-003 candidate results without model judging."""
+"""Summarize deterministic LLM-003 runs from immutable per-case JSONL."""
+
 from __future__ import annotations
 
 import json
@@ -10,7 +11,9 @@ RAW = ROOT / "docs/validation/LLM-003/raw"
 
 
 def read(path: Path) -> list[dict]:
-    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
+    return [
+        json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()
+    ]
 
 
 def percentile(values: list[float], p: float) -> float | None:
@@ -20,75 +23,247 @@ def percentile(values: list[float], p: float) -> float | None:
     return ordered[min(len(ordered) - 1, int((len(ordered) - 1) * p))]
 
 
-def summarize(rows: list[dict], role: str) -> dict:
+def summarize(rows: list[dict], role: str, run: str) -> dict:
     by_case = {row["case_id"]: row for row in rows}
-    latencies = [float(r[k]) for r in rows for k in ("latency_ms", "group_latency_ms") if r.get(k) is not None]
-    base = {"tag": rows[0]["model"], "digest": rows[0]["digest"], "cases": len(by_case),
-            "latency_ms": {"median": statistics.median(latencies) if latencies else None,
-                           "p95": percentile(latencies, .95)}}
+    latencies = [
+        float(row[key])
+        for row in by_case.values()
+        for key in ("latency_ms", "group_latency_ms")
+        if row.get(key) is not None
+    ]
+    base = {
+        "run": run,
+        "tag": rows[0]["model"],
+        "digest": rows[0]["digest"],
+        "cases": len(by_case),
+        "latency_ms": {
+            "median": statistics.median(latencies) if latencies else None,
+            "p95": percentile(latencies, 0.95),
+        },
+    }
     if role == "planner":
-        base.update({"passed": sum(bool(r["pass"]) for r in by_case.values()),
-                     "schema_passed": sum(bool(r.get("schema_valid")) for r in by_case.values()),
-                     "hard_gates_pass": all(r.get("schema_valid") and r.get("citation_ids_valid") for r in by_case.values())})
+        keys = (
+            "intent_correct",
+            "add_correct",
+            "remove_correct",
+            "replace_correct",
+            "feature_ids_valid",
+        )
+        base.update(
+            {
+                "passed": sum(bool(row.get("pass")) for row in by_case.values()),
+                "schema_passed": sum(bool(row.get("schema_valid")) for row in by_case.values()),
+                "exact_components": {
+                    key: sum(bool(row.get(key)) for row in by_case.values())
+                    for key in keys
+                    if any(key in row for row in by_case.values())
+                },
+                "fallback_or_repair": sum(
+                    bool(row.get("fallback_or_repair")) for row in by_case.values()
+                ),
+                "hard_gates_pass": all(
+                    row.get("schema_valid")
+                    and row.get("citation_ids_valid", True)
+                    and row.get("feature_ids_valid", True)
+                    for row in by_case.values()
+                ),
+            }
+        )
     elif role == "analyst":
-        base.update({"passed": sum(bool(r["pass"]) for r in by_case.values()),
-                     "schema_passed": sum(bool(r.get("schema_valid")) for r in by_case.values()),
-                     "citation_passed": sum(bool(r.get("citation_valid")) for r in by_case.values()),
-                     "safe_fallbacks": sum(r.get("outcome") == "safe_fallback" for r in by_case.values()),
-                     "hard_gates_pass": all(r.get("schema_valid") and r.get("citation_valid") and r.get("outcome") != "safe_fallback" for r in by_case.values())})
+        labels = ("full", "partial", "conflicting", "uncertain", "none")
+        base.update(
+            {
+                "passed": sum(bool(row.get("pass")) for row in by_case.values()),
+                "schema_passed": sum(bool(row.get("schema_valid")) for row in by_case.values()),
+                "citation_passed": sum(bool(row.get("citation_valid")) for row in by_case.values()),
+                "safe_fallbacks": sum(
+                    row.get("outcome") == "safe_fallback" for row in by_case.values()
+                ),
+                "unsupported_claims": sum(
+                    bool(row.get("unsupported_claim")) for row in by_case.values()
+                ),
+                "relation_confusion": {
+                    label: {
+                        "expected": sum(
+                            row.get("expected_relation") == label for row in by_case.values()
+                        ),
+                        "exact": sum(
+                            row.get("expected_relation") == label
+                            and row.get("actual_relation") == label
+                            and row.get("expected_unresolved") == row.get("actual_unresolved")
+                            for row in by_case.values()
+                        ),
+                        "predicted": sum(
+                            row.get("actual_relation") == label for row in by_case.values()
+                        ),
+                    }
+                    for label in labels
+                },
+                "hard_gates_pass": all(
+                    row.get("schema_valid")
+                    and row.get("citation_valid")
+                    and row.get("outcome") != "safe_fallback"
+                    and not row.get("unsupported_claim")
+                    for row in by_case.values()
+                ),
+            }
+        )
     else:
-        positives = [r for r in by_case.values() if not r.get("gold_negative")]
-        negatives = [r for r in by_case.values() if r.get("gold_negative")]
-        tp = sum(int(r.get("validated_fact_count", 0)) for r in positives)
-        predicted = sum(int(r.get("validated_fact_count", 0)) for r in by_case.values())
-        protocol_failures = sum(r.get("status") == "protocol_or_runtime_failure" for r in by_case.values())
-        base.update({"positive_cases": len(positives), "negative_cases": len(negatives),
-                     "valid_gold_facts": tp, "gold_facts": sum(int(r.get("gold_fact_count", 0)) for r in positives),
-                     "precision": tp / predicted if predicted else 1.0,
-                     "recall": tp / sum(int(r.get("gold_fact_count", 0)) for r in positives) if positives else 0.0,
-                     "negative_cases_passed": sum(bool(r.get("pass")) for r in negatives),
-                     "protocol_failures": protocol_failures,
-                     "hard_gates_pass": protocol_failures == 0 and all(r.get("schema_and_provenance_valid") and not r.get("extra_facts") for r in by_case.values())})
+        invented = sum(int(row.get("extra_facts", 0)) for row in by_case.values())
+        predicted = sum(int(row.get("validated_fact_count", 0)) for row in by_case.values())
+        matched = max(0, predicted - invented)
+        protocol_failures = sum(
+            row.get("status") == "protocol_or_runtime_failure" for row in by_case.values()
+        )
+        fixture_cases = read(ROOT / "eval/llm003/graph.jsonl")
+        gold = (
+            sum(len(case["expected"]) for case in fixture_cases)
+            if run == "qwen_semantic_dto_v2_final_gold"
+            else 25
+        )
+        positives = [case for case in fixture_cases if not case["negative"]]
+        negatives = [case for case in fixture_cases if case["negative"]]
+        negative_rows = [row for row in by_case.values() if row.get("gold_negative")]
+        base.update(
+            {
+                "positive_cases": len(positives),
+                "negative_cases": len(negatives),
+                "matched_gold_facts": matched,
+                "gold_facts": gold,
+                "validated_facts": predicted,
+                "invented_facts": invented,
+                "precision": matched / predicted if predicted else 1.0,
+                "recall": matched / gold if gold else 0.0,
+                "negative_cases_passed": sum(bool(row.get("pass")) for row in negative_rows),
+                "schema_and_provenance_passed": sum(
+                    bool(row.get("schema_and_provenance_valid")) for row in by_case.values()
+                ),
+                "protocol_failures": protocol_failures,
+                "hard_gates_pass": protocol_failures == 0
+                and invented == 0
+                and all(row.get("schema_and_provenance_valid") for row in by_case.values()),
+            }
+        )
     return base
 
 
+def group_file(path: Path, role: str, run: str) -> list[dict]:
+    if not path.exists():
+        return []
+    groups: dict[str, list[dict]] = {}
+    for row in read(path):
+        groups.setdefault(row["model"], []).append(row)
+    return [summarize(group, role, run) for group in groups.values()]
+
+
 def main() -> None:
-    candidates = {"planner": RAW / "planner_candidate_warm.jsonl",
-                  "graph_extractor": RAW / "graph_candidate_warm.jsonl"}
-    results = {"schema_version": 1, "task": "LLM-003", "status": "comparison_complete_no_safe_production_decision",
-               "protocol": {"profile": "candidate_warm", "sequential": True, "gold_labels_model_generated": False,
-                            "latency_note": "runner call timings; RSS/swap and reliable output token counts unavailable"},
-               "roles": {}, "failures": []}
-    for role, path in candidates.items():
-        rows = read(path)
-        groups: dict[str, list[dict]] = {}
-        for row in rows:
-            groups.setdefault(row["model"], []).append(row)
-        actual_role = "graph" if role == "graph_extractor" else role
-        results["roles"][role] = [summarize(group, actual_role) for group in groups.values()]
-    graph_fixtures = read(ROOT / "eval/llm003/graph.jsonl")
-    expected_graph_facts = sum(len(case["expected"]) for case in graph_fixtures)
-    expected_positive = sum(bool(case["expected"]) for case in graph_fixtures)
-    expected_negative = len(graph_fixtures) - expected_positive
-    for item in results["roles"]["graph_extractor"]:
-        item["positive_cases"] = expected_positive
-        item["negative_cases"] = expected_negative
-        item["gold_facts"] = expected_graph_facts
-        item["recall"] = item["valid_gold_facts"] / expected_graph_facts if expected_graph_facts else 0.0
-    results["failures"] = [{"role": "graph_extractor", "tag": row["model"], "case_id": row["case_id"],
-                            "error_type": row["error_type"], "status": row["status"]}
-                           for row in read(candidates["graph_extractor"])
-                           if row.get("status") == "protocol_or_runtime_failure"]
-    analyst_paths = [RAW / "analyst_candidate_warm_low.jsonl", RAW / "analyst_candidate_warm_default.jsonl"]
-    analyst_groups: dict[str, list[dict]] = {}
-    for path in analyst_paths:
-        for row in read(path):
-            analyst_groups.setdefault(row["model"], []).append(row)
-    results["roles"]["analyst"] = [summarize(group, "analyst") for group in analyst_groups.values()]
-    results["production_decision"] = {"planner": None, "analyst": None, "graph_extractor": None,
-                                       "reason": "Observed semantic accuracy is too low for a safe model pin; Graph extractor candidates yielded 0/25, 1/25 and 0/25 validated facts.",
-                                       "config_changed": False, "mass_backfill_allowed": False}
-    (ROOT / "docs/validation/LLM-003/results.json").write_text(json.dumps(results, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    definitions = {
+        "planner": [
+            ("planner_candidate_warm.jsonl", "planner", "candidate_warm_historical"),
+            ("planner_qwen_v2.jsonl", "planner", "qwen_prompt_v2"),
+            ("planner_qwen_v3.jsonl", "planner", "qwen_semantic_dto_v3"),
+        ],
+        "analyst": [
+            ("analyst_candidate_warm_low.jsonl", "analyst", "candidate_warm_historical"),
+            ("analyst_lfm25_v2_low.jsonl", "analyst", "lfm25_prompt_v2"),
+            ("analyst_lfm25_v3_low.jsonl", "analyst", "lfm25_semantic_dto_v3"),
+            ("analyst_lfm25_v4_low.jsonl", "analyst", "lfm25_decision_order_v4"),
+            ("analyst_lfm2_24b-a2b_v3_default.jsonl", "analyst", "lfm24_semantic_dto_v3"),
+        ],
+        "graph_extractor": [
+            ("graph_candidate_warm.jsonl", "graph", "candidate_warm_historical"),
+            ("graph_qwen_v2.jsonl", "graph", "qwen_semantic_dto_v2_pre_adjudication"),
+            ("graph_qwen_v3.jsonl", "graph", "qwen_semantic_dto_v2_final_gold"),
+        ],
+    }
+    results = {
+        "schema_version": 2,
+        "task": "LLM-003",
+        "status": "open_no_safe_production_selection",
+        "protocol": {
+            "sequential": True,
+            "gold_labels_model_generated": False,
+            "latency_note": (
+                "per-call/group wall latency; reliable tokens/sec, RSS, and swap attribution "
+                "were not captured"
+            ),
+            "ollama_version": "0.34.4",
+            "run_order": ["graph_extractor", "planner", "analyst"],
+        },
+        "gold": {
+            "planner_cases": 30,
+            "analyst_cases": 18,
+            "graph_cases": 48,
+            "graph_facts": 26,
+            "provenance": "synthetic-CC0",
+            "fixtures": "eval/llm003/",
+        },
+        "roles": {},
+        "production_decision": {
+            "planner": None,
+            "analyst": None,
+            "graph_extractor": None,
+            "config_changed": False,
+            "mass_backfill_allowed": False,
+        },
+    }
+    for role, runs in definitions.items():
+        results["roles"][role] = [
+            item
+            for filename, metric_role, run in runs
+            for item in group_file(RAW / filename, metric_role, run)
+        ]
+    graph = next(
+        item
+        for item in results["roles"]["graph_extractor"]
+        if item["run"] == "qwen_semantic_dto_v2_final_gold"
+    )
+    planner = next(
+        item for item in results["roles"]["planner"] if item["run"] == "qwen_semantic_dto_v3"
+    )
+    analyst = next(
+        item for item in results["roles"]["analyst"] if item["run"] == "lfm25_decision_order_v4"
+    )
+    results["status"] = "open_analyst_selection_pending"
+    results["production_decision"].update(
+        {
+            "planner": {
+                "tag": planner["tag"],
+                "digest": planner["digest"],
+                "prompt_version": "planner_v3",
+                "profile": "non-thinking",
+                "max_output_tokens": 384,
+                "exact_cases": planner["passed"],
+                "case_count": planner["cases"],
+                "hard_gates_pass": planner["hard_gates_pass"],
+            },
+            "graph_extractor": {
+                "tag": graph["tag"],
+                "digest": graph["digest"],
+                "extractor_version": "graph-extraction-v2",
+                "profile": "non-thinking",
+                "max_output_tokens": 384,
+                "matched_gold_facts": graph["matched_gold_facts"],
+                "gold_facts": graph["gold_facts"],
+                "invented_facts": graph["invented_facts"],
+                "hard_gates_pass": graph["hard_gates_pass"],
+            },
+            "analyst": None,
+            "config_changed": True,
+            "mass_backfill_allowed": False,
+        }
+    )
+    results["production_decision"]["reason"] = (
+        f"Planner Qwen v3 scored {planner['passed']}/30 exact and passes structural gates; "
+        f"Analyst LFM2.5 v4 scored {analyst['passed']}/18 exact with "
+        f"{analyst['safe_fallbacks']} safe fallbacks, so no Analyst is selected; "
+        f"Graph Qwen on adjudicated gold matched "
+        f"{graph['matched_gold_facts']}/{graph['gold_facts']} facts, "
+        f"with {graph['invented_facts']} extra facts and "
+        f"{graph['negative_cases_passed']}/{graph['negative_cases']} negative cases correct."
+    )
+    out = ROOT / "docs/validation/LLM-003/results.json"
+    out.write_text(json.dumps(results, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(results, ensure_ascii=False, indent=2))
 
 

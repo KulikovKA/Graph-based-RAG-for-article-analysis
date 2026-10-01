@@ -2,13 +2,13 @@
 import json
 from pathlib import Path
 
-
 ROOT = Path(__file__).resolve().parents[2]
 FIXTURES = ROOT / "eval/llm003"
 
 
-def load(name: str) -> list[dict]:
-    return [json.loads(line) for line in (FIXTURES / f"{name}.jsonl").read_text(encoding="utf-8").splitlines()]
+def load(name: str) -> list[dict[str, object]]:
+    path = FIXTURES / f"{name}.jsonl"
+    return [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
 
 
 def test_llm003_fixtures_have_expected_sizes_languages_and_gold_provenance() -> None:
@@ -29,6 +29,13 @@ def test_graph_fixture_contains_positive_and_negative_gold_cases() -> None:
     assert len(negatives) >= 20
     assert all(case["expected"] for case in positives)
     assert all(not case["expected"] for case in negatives)
+
+
+def test_mixed_graph_gold_captures_both_explicit_features() -> None:
+    case = next(case for case in load("graph") if case["case_id"] == "GR-03")
+    assert {fact["target_text"] for fact in case["expected"]} == {
+        "hard-carbon anode", "thermal management"
+    }
 
 
 def test_russian_fixture_text_is_valid_utf8_content() -> None:

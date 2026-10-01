@@ -30,7 +30,19 @@ OLLAMA = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
 CASE_NAMESPACE = NAMESPACE_URL
 MODEL_CAPABILITIES: dict[str, list[str]] = {}
 ACTIVE_ANALYST_PROFILE = ""
-ACTIVE_RUN_PROFILE = "candidate_warm"
+ACTIVE_RUN_PROFILE = "v4"
+
+
+def output_path(role: str, model: str) -> Path:
+    slug = {
+        "qwen3.5:4b-q4_K_M": "qwen",
+        "lfm2.5:8b-a1b-q4_K_M": "lfm25",
+        "granite4.2:3b": "granite",
+    }.get(model, model.replace(":", "_").replace("/", "_"))
+    suffix = f"_{slug}_{ACTIVE_RUN_PROFILE}"
+    if role == "analyst" and ACTIVE_ANALYST_PROFILE:
+        suffix += f"_{ACTIVE_ANALYST_PROFILE}"
+    return OUT / f"{role}{suffix}.jsonl"
 
 
 def uid(value: str) -> str:
@@ -305,10 +317,7 @@ async def make_provider(model: str, *, non_thinking: bool) -> tuple[OllamaProvid
 
 def append_result(role: str, model: str, digest: str, item: dict[str, object]) -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    suffix = f"_{ACTIVE_RUN_PROFILE}"
-    if role == "analyst" and ACTIVE_ANALYST_PROFILE:
-        suffix += f"_{ACTIVE_ANALYST_PROFILE}"
-    path = OUT / f"{role}{suffix}.jsonl"
+    path = output_path(role, model)
     with path.open("a", encoding="utf-8") as stream:
         stream.write(json.dumps({"model": model, "digest": digest, **item}, ensure_ascii=False) + "\n")
 
@@ -318,7 +327,7 @@ async def run_planner(model: str, digest: str, provider: object) -> None:
     from app.domain.planner import EvidenceSource
 
     cases = load_jsonl(DATA / "planner.jsonl")
-    prior_path = OUT / f"planner_{ACTIVE_RUN_PROFILE}.jsonl"
+    prior_path = output_path("planner", model)
     prior = load_jsonl(prior_path) if prior_path.exists() else []
     completed = {str(row["case_id"]) for row in prior
                  if row.get("model") == model and "INFERENCE_UNAVAILABLE" not in row.get("diagnostics", [])
@@ -358,13 +367,27 @@ async def run_planner(model: str, digest: str, provider: object) -> None:
         norm = lambda values: sorted(" ".join(v.casefold().split()) for v in values)
         expected_remove = expected["remove"]
         expected_replace = expected["replace"]
-        ok = (plan.intent == expected["intent"] and norm(actual_add) == norm(expected["add"])
-              and sorted(actual_remove) == sorted(expected_remove)
-              and [{"id": x["id"], "text": " ".join(x["text"].casefold().split())}
-                   for x in actual_replace] == [{"id": x["id"], "text": " ".join(x["text"].casefold().split())}
-                                                for x in expected_replace])
+        intent_correct = plan.intent == expected["intent"]
+        add_correct = norm(actual_add) == norm(expected["add"])
+        remove_correct = sorted(actual_remove) == sorted(expected_remove)
+        replace_correct = [
+            {"id": x["id"], "text": " ".join(x["text"].casefold().split())}
+            for x in actual_replace
+        ] == [
+            {"id": x["id"], "text": " ".join(x["text"].casefold().split())}
+            for x in expected_replace
+        ]
+        ok = intent_correct and add_correct and remove_correct and replace_correct
+        known_feature_ids = {str(item.id) for item in idea.features} if idea else set()
+        feature_ids_valid = (
+            set(actual_remove) | {item["id"] for item in actual_replace}
+        ) <= known_feature_ids
         append_result("planner", model, digest, {"case_id": case["case_id"], "pass": ok,
                       "schema_valid": True, "intent": plan.intent, "attempts": result.attempts,
+                      "intent_correct": intent_correct, "add_correct": add_correct,
+                      "remove_correct": remove_correct, "replace_correct": replace_correct,
+                      "feature_ids_valid": feature_ids_valid,
+                      "fallback_or_repair": result.attempts > 1 or bool(result.diagnostic_codes),
                       "diagnostics": list(result.diagnostic_codes),
                       "latency_ms": round((time.perf_counter()-start)*1000, 2),
                       "citation_ids_valid": set(plan.focus_evidence_ids) <= set(evidence),
@@ -402,6 +425,7 @@ async def run_analyst(model: str, digest: str, provider: object) -> None:
                                        request_id="llm003:"+case_id, timeout=600,
                                        max_output_tokens=2048, reasoning_effort=effort)
         actual = result.analysis.relations[0].relation if result.analysis and result.analysis.relations else "none"
+        actual_relations = [relation.relation for relation in result.analysis.relations] if result.analysis else []
         unresolved = result.analysis is None or str(feature_id) in {str(x) for x in result.analysis.unresolved_feature_ids}
         valid = result.outcome == "analysis" and result.analysis is not None
         ok = valid and actual == case["expected_relation"] and unresolved == case["expect_unresolved"]
@@ -410,6 +434,8 @@ async def run_analyst(model: str, digest: str, provider: object) -> None:
         append_result("analyst", model, digest, {"case_id": case_id, "pass": bool(ok),
                       "schema_valid": valid, "citation_valid": citation_valid,
                       "actual_relation": actual, "expected_relation": case["expected_relation"],
+                      "actual_relations": actual_relations,
+                      "unsupported_claim": case["expected_relation"] == "none" and bool(actual_relations),
                       "outcome": result.outcome, "attempts": result.attempts,
                       "reasoning_effort": effort,
                       "diagnostics": list(result.diagnostic_codes),
@@ -468,13 +494,16 @@ async def run_graph(model: str, digest: str, provider: object) -> None:
             expected = case["expected"]
             expected_terms = [" ".join(str(item["target_text"]).casefold().split()) for item in expected]
             actual_terms = [" ".join(text.casefold().split()) for text in facts_by_chunk.get(str(chunk.id), [])]
-            matched = sum(any(term in actual for actual in actual_terms) for term in expected_terms)
+            matched_terms = [term for term in expected_terms if any(term in actual for actual in actual_terms)]
+            matched = len(matched_terms)
             extras = max(0, len(actual_terms)-matched)
             precision = 1.0 if not actual_terms else matched / len(actual_terms)
             recall = 1.0 if not expected_terms else matched / len(expected_terms)
             ok = precision == 1.0 and recall == 1.0
             append_result("graph", model, digest, {"case_id": case["case_id"], "pass": ok,
                           "validated_fact_count": len(actual_terms), "gold_fact_count": len(expected_terms),
+                          "matched_gold_facts": matched, "actual_terms": actual_terms,
+                          "matched_gold_terms": matched_terms,
                           "raw_candidate_count": len(raw),
                           "precision": precision, "recall": recall, "extra_facts": extras,
                           "schema_and_provenance_valid": True,

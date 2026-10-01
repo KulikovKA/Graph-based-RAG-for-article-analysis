@@ -68,6 +68,14 @@ def draft(**changes):  # type: ignore[no-untyped-def]
     return {**value, **changes}
 
 
+def model_draft():
+    value = draft()
+    value["relations"][0]["quotes"] = [
+        {"evidence_id": str(EVIDENCE), "text": QUOTE}
+    ]
+    return value
+
+
 def test_exact_unicode_quote_and_deterministic_claim_projections() -> None:
     from app.services.analyst import _render_analysis
 
@@ -79,6 +87,35 @@ def test_exact_unicode_quote_and_deterministic_claim_projections() -> None:
     assert answer.summary[0].text.startswith("В выбранном фрагменте")
     assert presentation.text_sha256
     assert "https://" not in presentation.text
+
+
+def test_quote_offsets_are_enriched_from_exact_evidence_text() -> None:
+    from app.domain.contracts import AnalysisDraftV1
+    from app.services.analyst import enrich_analysis_draft
+
+    semantic_draft = AnalysisDraftV1.model_validate(model_draft())
+    result = enrich_analysis_draft(semantic_draft, PACK)
+    quote = result.relations[0].quotes[0]
+    assert (quote.start, quote.end) == (QUOTE_START, QUOTE_START + len(QUOTE))
+    assert TEXT[quote.start - START : quote.end - START] == QUOTE
+
+
+def test_analyst_model_schema_excludes_mechanical_quote_offsets() -> None:
+    provider = FakeProvider([model_draft()])
+    result = run(provider)
+    assert result.outcome == "analysis"
+    assert '"start"' not in str(provider.schemas[0])
+    assert '"end"' not in str(provider.schemas[0])
+
+
+def test_missing_exact_quote_is_rejected_before_analysis_validation() -> None:
+    from app.domain.contracts import AnalysisDraftV1
+    from app.services.analyst import enrich_analysis_draft
+
+    value = model_draft()
+    value["relations"][0]["quotes"][0]["text"] = "invented quote"
+    with pytest.raises(AnalystViolation, match="QUOTE_TEXT_MISMATCH"):
+        enrich_analysis_draft(AnalysisDraftV1.model_validate(value), PACK)
 
 
 @pytest.mark.parametrize(
@@ -246,9 +283,11 @@ class FakeProvider:
     def __init__(self, outputs):  # type: ignore[no-untyped-def]
         self.outputs = outputs
         self.prompts = []
+        self.schemas = []
 
     async def complete_json(self, **kwargs):  # type: ignore[no-untyped-def]
         self.prompts.append(kwargs["prompt"])
+        self.schemas.append(kwargs["schema"])
         value = self.outputs.pop(0)
         if isinstance(value, Exception):
             raise value
@@ -292,7 +331,7 @@ def run(provider, *, cancel=None):  # type: ignore[no-untyped-def]
 
 
 def test_invalid_draft_gets_one_repair_without_raw_thinking() -> None:
-    provider = FakeProvider([{"schema_version": 1, "private": "DRAFT"}, draft()])
+    provider = FakeProvider([{"schema_version": 1, "private": "DRAFT"}, model_draft()])
     result = run(provider)
     assert result.outcome == "analysis" and result.attempts == 2
     assert len(provider.prompts) == 2
@@ -302,7 +341,8 @@ def test_invalid_draft_gets_one_repair_without_raw_thinking() -> None:
 
 
 def test_failed_repair_fallback_ignores_model_relations() -> None:
-    result = run(FakeProvider([draft(relations=[]), {"schema_version": 1, "bad": True}]))
+    provider = FakeProvider([model_draft() | {"relations": []}, {"schema_version": 1, "bad": True}])
+    result = run(provider)
     assert result.outcome == "safe_fallback" and result.analysis is None
     assert result.answer.matches == result.answer.differences == []
     assert result.public_analysis.items == result.answer.summary
@@ -317,7 +357,7 @@ def test_timeout_falls_back_without_repair_and_cancel_propagates() -> None:
     cancel = asyncio.Event()
     cancel.set()
     with pytest.raises(InferenceCancelled):
-        run(FakeProvider([draft()]), cancel=cancel)
+        run(FakeProvider([model_draft()]), cancel=cancel)
 
 
 def test_empty_pack_returns_no_evidence_without_inference() -> None:

@@ -91,6 +91,53 @@ class AnalysisV1(StrictModel):
         return self
 
 
+class QuoteDraftV1(StrictModel):
+    """LLM-selected citation content; source offsets are computed by the service."""
+
+    evidence_id: UUID
+    text: str = Field(min_length=1, max_length=2048)
+
+
+class AnalysisRelationDraftV1(StrictModel):
+    feature_id: UUID
+    document_id: UUID
+    relation: Literal["full", "partial", "conflicting", "uncertain"]
+    evidence_ids: list[UUID] = Field(min_length=1, max_length=64)
+    quotes: list[QuoteDraftV1] = Field(min_length=1, max_length=64)
+
+    @model_validator(mode="after")
+    def evidence_matches_quotes(self) -> AnalysisRelationDraftV1:
+        cited = set(self.evidence_ids)
+        quoted = {quote.evidence_id for quote in self.quotes}
+        if len(cited) != len(self.evidence_ids) or not quoted <= cited:
+            raise ValueError("INVALID_RELATION_EVIDENCE_IDS")
+        return self
+
+
+class AnalysisDraftV1(StrictModel):
+    """Semantic Analyst output before deterministic citation span enrichment."""
+
+    schema_version: Literal[1]
+    relations: list[AnalysisRelationDraftV1] = Field(max_length=960)
+    unresolved_feature_ids: list[UUID] = Field(max_length=64)
+
+    @field_validator("schema_version", mode="before")
+    @classmethod
+    def integer_schema_version(cls, value: object) -> object:
+        if type(value) is not int:
+            raise ValueError("INVALID_SCHEMA_VERSION")
+        return value
+
+    @model_validator(mode="after")
+    def unique_features(self) -> AnalysisDraftV1:
+        if len(set(self.unresolved_feature_ids)) != len(self.unresolved_feature_ids):
+            raise ValueError("DUPLICATE_UNRESOLVED_FEATURE_ID")
+        pairs = [(item.feature_id, item.document_id) for item in self.relations]
+        if len(set(pairs)) != len(pairs):
+            raise ValueError("DUPLICATE_FEATURE_DOCUMENT_RELATION")
+        return self
+
+
 class LimitationV1(StrictModel):
     code: str
     message: str

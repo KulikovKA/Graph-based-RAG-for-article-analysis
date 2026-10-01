@@ -21,7 +21,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session, sessionmaker
 
 from app.domain.contracts import (
-    AnalysisV1,
+    AnalysisDraftV1,
     AnswerPresentationV1,
     AnswerV1,
     CoverageV1,
@@ -751,7 +751,7 @@ class AnalysisRunService:
             prompt = self.analyst.prompt.replace(
                 "{schema_json}",
                 json.dumps(
-                    AnalysisV1.model_json_schema(), ensure_ascii=False, separators=(",", ":")
+                    AnalysisDraftV1.model_json_schema(), ensure_ascii=False, separators=(",", ":")
                 ),
             ).replace("{input_json}", input_json)
             return self.token_counter(prompt)
@@ -1023,7 +1023,11 @@ class AnalysisRunService:
         )
         prompt = self.analyst.prompt.replace(
             "{schema_json}",
-            json.dumps(AnalysisV1.model_json_schema(), ensure_ascii=False, separators=(",", ":")),
+            json.dumps(
+                AnalysisDraftV1.model_json_schema(),
+                ensure_ascii=False,
+                separators=(",", ":"),
+            ),
         ).replace("{input_json}", input_json)
         return self.token_counter(prompt)
 

@@ -1,75 +1,111 @@
 # LLM-003 — comparative local model evaluation
 
-Status: **comparative runs recorded; production selection remains open**. No model
-configuration was changed and `CORPUS-001` must not start.
+Status: **benchmark runs complete; production selection remains open for the
+Analyst role**. Planner and Graph candidates pass structural hard gates and are
+selected below. `CORPUS-001` remains blocked until a defensible Analyst winner is
+available. No model weights or user/corpus data are included.
 
-## Gold fixtures and scoring
+## Gold data and scoring
 
-Fixtures are deterministic JSONL with stable case IDs, explicit labels, and
-`synthetic-CC0` provenance. The Planner set has 30 cases, Analyst 18, and Graph
-extractor 48. They cover English, Russian, and mixed language, plus planner
-intent/patch/UUID/follow-up behavior, AnalysisV1 relation and citation cases,
-and positive, negative, adversarial, and Unicode-offset graph cases. Labels are
-fixture-authored and never produced by the evaluated model. `EVAL-000/dev_smoke`
-informed applicable patterns; it is not scored as gold.
+Fixtures are deterministic JSONL with stable IDs and explicit human-authored
+labels. Planner has 30 cases, Analyst 18, and Graph extractor 48 (25 positive
+cases, 23 negative). Cases cover RU, EN, mixed-language text, patch operations,
+relation taxonomy, exact citations, adversarial inputs, Unicode offsets, and
+empty Graph output. All labels are fixture-authored; evaluated models never
+generate gold. `EVAL-000/dev_smoke` informed applicable patterns but is not
+scored as gold. Results use exact contracts and labels, not an LLM judge.
 
-The runner exercises the repository's real Planner, Analyst, graph extractor,
-and graph validator. Scores are deterministic exact-label/contract checks, not
-LLM-as-judge. See [fixtures](../../../eval/llm003/) and the per-case
-[raw results](raw/).
+One proven label omission was corrected before the final Graph run: GR-03 says
+“The sodium-ion cell uses a hard-carbon anode; устройство includes thermal
+management.” The second clause explicitly discloses thermal management as a
+technical feature, but the previous expected list contained only the anode.
+The deterministic gold now includes both features. No other labels changed.
 
-## Protocol
+## Runtime and exact identities
 
-All model runs were sequential against local Ollama 0.34.4 on the Windows host.
-Planner and Graph use the same non-thinking profile; Analyst uses `low` when
-the installed model advertises thinking and `default` otherwise. A candidate is
-kept warm for its role run and explicitly unloaded before the next candidate.
-The mixed-language Graph positive was added to the fixture before finalizing
-this report; all three Graph candidates were rerun on the affected six-case
-batch. Granite completed the batch; Qwen and LFM2.5 returned
-`InferenceProtocolError` for that batch. Their failures remain in the raw log.
+Runs used Ollama 0.34.4 and were sequential, with each model unloaded before a
+different candidate. Planner used non-thinking; Analyst used `low` on the
+thinking-capable candidate; Graph used the non-thinking profile. Gold artifacts
+and fixture hashes are in `eval/llm003/`; immutable per-case raw results are in
+[`raw/`](raw/).
 
-Exact local Ollama identities at `ollama list`/`/api/tags` inspection:
+| Role/run | Exact tag | Ollama digest | Prompt / profile |
+|---|---|---|---|
+| Planner final | `qwen3.5:4b-q4_K_M` | `2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd` | `planner_v3`, non-thinking |
+| Graph final | `qwen3.5:4b-q4_K_M` | `2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd` | `graph-extraction-v2`, non-thinking |
+| Analyst final | `lfm2.5:8b-a1b-q4_K_M` | `9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2` | `analyst_v4`, `low` |
 
-| Tag | Digest | Size | Quantization |
-|---|---|---:|---|
-| `granite4.2:3b` | `40577dc168a3a9ad34e9a1234e0c2570be86097fa75a236d4574ae985705d3c4` | 2,244,023,965 B | Q4_K_M |
-| `qwen3.5:4b-q4_K_M` | `2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd` | 3,389,983,735 B | Q4_K_M |
-| `lfm2.5:8b-a1b-q4_K_M` | `9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2` | 5,156,075,525 B | Q4_K_M |
-| `lfm2:24b-a2b` | `d6c816d74887ed480a3afd5baa2dd2a5987ef6b359b8661e80e1e9fb3501650c` | 14,415,742,358 B | Q4_K_M |
-| `gemma4:26b-a4b-it-mtp-q4_K_M` | `001e5dafc3c77684c2307ebc6ab8e336e10c9b18eca52acf547d72fc83c3ca8c` | 18,731,025,629 B | Q4_K_M |
+Other candidates inspected with `ollama list` and `/api/tags`:
 
-## Results and gates
+| Exact tag | Digest | Size |
+|---|---|---:|
+| `granite4.2:3b` | `40577dc168a3a9ad34e9a1234e0c2570be86097fa75a236d4574ae985705d3c4` | 2,244,023,965 B |
+| `lfm2:24b-a2b` | `d6c816d74887ed480a3afd5baa2dd2a5987ef6b359b8661e80e1e9fb3501650c` | 14,415,742,358 B |
+| `gemma4:26b-a4b-it-mtp-q4_K_M` | `001e5dafc3c77684c2307ebc6ab8e336e10c9b18eca52acf547d72fc83c3ca8c` | 18,731,025,629 B |
 
-The machine-readable per-candidate results, case counts, hard-gate outcomes,
-and latency summaries are in [results.json](results.json). Highlights:
+## Results and hard gates
 
-- **Planner:** Qwen led with 14/30 exact gold cases; Granite scored 11/30 and
-  LFM2.5 5/30. All three produced schema-valid results, but exact intent/patch
-  accuracy is too low to justify pinning a production Planner.
-- **Analyst:** LFM2.5 had 18/18 schema- and citation-valid outputs with 5/18
-  exact gold matches and no safe fallbacks. Gemma 4 matched 3/18 and fell back
-  on 15/18; LFM2-24B matched 0/18 and fell back on 16/18. The best candidate's
-  semantic match rate is insufficient for a production decision.
-- **Graph extractor:** Granite and LFM2.5 validated 0/25 gold facts; Qwen
-  validated 1/25 (4% recall). Qwen had zero invented validated facts in the
-  complete cases, but its mixed-language six-case batch had a protocol failure.
-  Precision alone does not make a near-empty extractor safe or useful for
-  corpus backfill.
+[`results.json`](results.json) contains historical and final per-candidate
+counts, latency summaries, exact component/relation breakdowns, and gate
+outcomes. Raw files with `_v2`/`_v3` suffixes preserve each rerun separately;
+the original baseline files were not rewritten.
 
-Latency is recorded by the runner and summarized in `results.json`. Reliable
-tokens/sec, RSS, peak host/container memory, and swap attribution were not
-collected by this harness, so those figures are `null`/unavailable rather than
-inferred. The benchmark did not stop for predicted memory pressure; no model
-candidate was excluded as a resource failure. Runtime/protocol failures are
-reported per case/batch in raw results.
+- **Planner:** final Qwen v3 scored 26/30 exact (86.7%), with 30/30 schema,
+  feature-ID and citation-ID validity; intent 29/30, add 27/30, remove 30/30,
+  replace 29/30; zero fallback/repair. It improved from 20/30 on the prompt-only
+  v2 run and 14/30 in the historical warm baseline. Qwen is selected for
+  Planner; it has the best quality among the compared candidates and passes
+  structural gates.
+- **Graph extractor:** final Qwen run on adjudicated gold matched 18/26 facts
+  (69.2% recall), with 19 validated facts, 100% precision, zero invented
+  facts, 48/48 schema/provenance-valid cases, 0 protocol failures, and 23/23
+  negative cases correct. The Graph v2 semantic DTO no longer asks the model
+  for offsets or IDs: Python deterministically resolves exact quote spans and
+  known chunk IDs; strict fact validation is unchanged. This is materially
+  stronger than historical candidates (0/25 Granite, 1/25 Qwen, 0/25 LFM2.5).
+  Qwen is selected as the Graph candidate under the measured no-invented-fact
+  gate; the 8 missed gold facts remain a documented recall limitation.
+- **Analyst:** final LFM2.5 v4 scored 5/18 exact; 17/18 outputs were
+  schema- and citation-valid, and one case used safe fallback. It predicted
+  `full` 11 times and `none` 7 times, never correctly distinguishing any of
+  the partial, conflicting, or uncertain labels. LFM2-24B v3 scored 5/18 but
+  had 5 fallbacks and only 13/18 schema/citation-valid outputs. LFM2.5 v3
+  scored 4/18 with 2 fallbacks. The earlier LFM2.5 v2 run had 18/18
+  schema/citation validity and no fallback but only 2/18 exact; the historical
+  LFM2.5 baseline reached 5/18 with 18/18 schema/citation validity. Historical
+  Gemma 4 scored 3/18 with 15 fallbacks; it was not selected. On a later
+  semantic-DTO run, Gemma was user-stopped after six cases and that partial run
+  was excluded from results and selection. No Analyst candidate is selected:
+  relation taxonomy quality and, for the latest runs, hard gates remain
+  insufficient for production.
 
-## Decision
+Historical Graph Qwen/LFM2.5 protocol failures were recorded only by exception
+class (`InferenceProtocolError`), so the old artifacts do not preserve enough
+information to identify their precise internal cause. The semantic DTO rerun
+completed all 48 cases with no protocol/runtime failures, so those historical
+failures did not recur. No evidence linked them to model-authored offsets.
 
-No production winners are selected. The configured production identities remain
-unchanged because the observed semantic accuracy—especially Graph recall—does
-not support a safe pin. `mass_backfill_allowed` remains false. The next useful
-step is to improve the role prompts/fixture alignment or add candidates, then
-repeat this same frozen evaluation. This is an evaluation outcome, not a RAM
-blocker. LLM-003 remains open until production choices can be supported by the
-quality gates; do not start `CORPUS-001` before that decision.
+Latency medians and p95 values are in `results.json`. The harness did not
+collect reliable tokens/sec, host RSS/peak memory, or swap attribution; these
+remain unavailable rather than inferred. No candidate stopped for predicted
+memory pressure, and no candidate was excluded as a resource failure.
+
+## Production decision
+
+Planner winner: `qwen3.5:4b-q4_K_M` at digest
+`2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd`,
+non-thinking, 384 output tokens. Graph winner: the same exact tag/digest,
+`graph-extraction-v2`, non-thinking, 384 output tokens. The worker pipeline does
+not currently instantiate `GraphIndexingService`, but the selected Graph model
+identity/version is pinned in `config/models.yaml` and registered with the
+inference provider for the injected extractor. Planner config and inventory are
+also updated to the selected identity.
+
+There is no Analyst winner. Analyst production configuration remains unchanged
+pending a quality-valid candidate. The latest tested prompt is `analyst_v4`;
+the next iteration should focus on discriminating partial/conflicting/uncertain
+cases, which remain missed, and preserve the frozen labels. LLM-003 therefore
+remains open, and
+`mass_backfill_allowed` remains false. Do not start `CORPUS-001` until that
+selection is resolved. The active unresolved issue is semantic quality, not
+RAM, swap, or a runtime blocker.

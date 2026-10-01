@@ -1,5 +1,5 @@
 {
-  "recorded_on": "2026-09-30",
+  "recorded_on": "2026-10-01",
   "runtime": {
     "ollama_version": "0.34.4",
     "transformers_version": "5.1.0",
@@ -10,11 +10,22 @@
   "models": {
     "planner": {
       "provider": "ollama",
-      "id": "lfm2.5:8b-a1b-q4_K_M",
-      "digest": "9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2",
-      "bytes": 5156075525,
+      "id": "qwen3.5:4b-q4_K_M",
+      "digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+      "bytes": 3389983735,
       "quantization": "Q4_K_M",
-      "license": "LFM Open License v1.0"
+      "license": "Apache-2.0"
+    },
+    "graph_extractor": {
+      "provider": "ollama",
+      "id": "qwen3.5:4b-q4_K_M",
+      "digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+      "bytes": 3389983735,
+      "quantization": "Q4_K_M",
+      "license": "Apache-2.0",
+      "extractor_version": "graph-extraction-v2",
+      "max_output_tokens": 384,
+      "reasoning_effort": "non-thinking"
     },
     "analyst": {
       "provider": "ollama",

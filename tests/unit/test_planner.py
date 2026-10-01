@@ -54,6 +54,21 @@ def payload(**changes):  # type: ignore[no-untyped-def]
     }
 
 
+def model_payload(**changes):  # type: ignore[no-untyped-def]
+    return {
+        "intent": "modify_idea",
+        "add_features": [],
+        "remove_features": [],
+        "replace_features": [
+            {"feature_text": "OCR", "text": "barcode", "rationale": "explicit replacement"}
+        ],
+        "focus_source_ordinals": [],
+        "suggested_retrieval": False,
+        "confidence": 0.9,
+        **changes,
+    }
+
+
 def parsed(**changes):  # type: ignore[no-untyped-def]
     return PlannerV1.model_validate_json(json.dumps(payload(**changes)))
 
@@ -218,7 +233,7 @@ def run_planner(outputs, *, context=CONTEXT, cancel=None, status=200):  # type: 
     "invalid", ["{bad JSON PRIVATE_DRAFT", json.dumps({"secret": "PRIVATE_DRAFT"})]
 )
 def test_one_repair_from_malformed_json_or_schema(invalid: str) -> None:
-    result, calls = run_planner([invalid, json.dumps(payload())])
+    result, calls = run_planner([invalid, json.dumps(model_payload())])
     assert result.plan.intent == "modify_idea" and result.attempts == 2
     assert len(calls) == 2
     assert "PRIVATE_DRAFT" not in json.dumps(calls[1])
@@ -241,7 +256,7 @@ def test_provider_unavailable_no_repair() -> None:
 
 def test_cancel_propagates_without_fallback() -> None:
     with pytest.raises(InferenceCancelled):
-        run_planner([json.dumps(payload())], cancel=asyncio.Event())
+        run_planner([json.dumps(model_payload())], cancel=asyncio.Event())
 
 
 def test_second_patent_mapping_is_in_prompt_and_focus_is_preserved() -> None:
@@ -259,10 +274,10 @@ def test_second_patent_mapping_is_in_prompt_and_focus_is_preserved() -> None:
     result, calls = run_planner(
         [
             json.dumps(
-                payload(
+                model_payload(
                     intent="explain_evidence",
                     replace_features=[],
-                    focus_evidence_ids=[str(EVIDENCE)],
+                    focus_source_ordinals=[2],
                 )
             )
         ],

@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[2]
 def test_pinned_models_match_inventory() -> None:
     config = yaml.safe_load((ROOT / "config/models.yaml").read_text(encoding="utf-8"))
     inventory = json.loads((ROOT / "docs/model_inventory.json").read_text(encoding="utf-8"))
-    for role in ("planner", "analyst"):
+    for role in ("planner", "graph_extractor", "analyst"):
         actual = inventory["models"][role]
         selected = config["generation"][role]
         assert actual["id"] == selected["model_id"]

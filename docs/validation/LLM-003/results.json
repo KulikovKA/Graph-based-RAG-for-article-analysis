@@ -1,16 +1,30 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "task": "LLM-003",
-  "status": "comparison_complete_no_safe_production_decision",
+  "status": "open_analyst_selection_pending",
   "protocol": {
-    "profile": "candidate_warm",
     "sequential": true,
     "gold_labels_model_generated": false,
-    "latency_note": "runner call timings; RSS/swap and reliable output token counts unavailable"
+    "latency_note": "per-call/group wall latency; reliable tokens/sec, RSS, and swap attribution were not captured",
+    "ollama_version": "0.34.4",
+    "run_order": [
+      "graph_extractor",
+      "planner",
+      "analyst"
+    ]
+  },
+  "gold": {
+    "planner_cases": 30,
+    "analyst_cases": 18,
+    "graph_cases": 48,
+    "graph_facts": 26,
+    "provenance": "synthetic-CC0",
+    "fixtures": "eval/llm003/"
   },
   "roles": {
     "planner": [
       {
+        "run": "candidate_warm_historical",
         "tag": "qwen3.5:4b-q4_K_M",
         "digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
         "cases": 30,
@@ -20,9 +34,12 @@
         },
         "passed": 14,
         "schema_passed": 30,
+        "exact_components": {},
+        "fallback_or_repair": 0,
         "hard_gates_pass": true
       },
       {
+        "run": "candidate_warm_historical",
         "tag": "lfm2.5:8b-a1b-q4_K_M",
         "digest": "9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2",
         "cases": 30,
@@ -32,9 +49,12 @@
         },
         "passed": 5,
         "schema_passed": 30,
+        "exact_components": {},
+        "fallback_or_repair": 0,
         "hard_gates_pass": true
       },
       {
+        "run": "candidate_warm_historical",
         "tag": "granite4.2:3b",
         "digest": "40577dc168a3a9ad34e9a1234e0c2570be86097fa75a236d4574ae985705d3c4",
         "cases": 30,
@@ -44,67 +64,50 @@
         },
         "passed": 11,
         "schema_passed": 30,
-        "hard_gates_pass": true
-      }
-    ],
-    "graph_extractor": [
-      {
-        "tag": "granite4.2:3b",
-        "digest": "40577dc168a3a9ad34e9a1234e0c2570be86097fa75a236d4574ae985705d3c4",
-        "cases": 48,
-        "latency_ms": {
-          "median": 3407.48,
-          "p95": 8703.21
-        },
-        "positive_cases": 25,
-        "negative_cases": 23,
-        "valid_gold_facts": 0,
-        "gold_facts": 25,
-        "precision": 1.0,
-        "recall": 0.0,
-        "negative_cases_passed": 23,
-        "protocol_failures": 0,
+        "exact_components": {},
+        "fallback_or_repair": 0,
         "hard_gates_pass": true
       },
       {
+        "run": "qwen_prompt_v2",
         "tag": "qwen3.5:4b-q4_K_M",
         "digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
-        "cases": 48,
+        "cases": 30,
         "latency_ms": {
-          "median": 26879.335,
-          "p95": 39862.97
+          "median": 14621.075,
+          "p95": 43337.49
         },
-        "positive_cases": 25,
-        "negative_cases": 23,
-        "valid_gold_facts": 1,
-        "gold_facts": 25,
-        "precision": 1.0,
-        "recall": 0.04,
-        "negative_cases_passed": 20,
-        "protocol_failures": 6,
-        "hard_gates_pass": false
+        "passed": 20,
+        "schema_passed": 30,
+        "exact_components": {},
+        "fallback_or_repair": 0,
+        "hard_gates_pass": true
       },
       {
-        "tag": "lfm2.5:8b-a1b-q4_K_M",
-        "digest": "9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2",
-        "cases": 48,
+        "run": "qwen_semantic_dto_v3",
+        "tag": "qwen3.5:4b-q4_K_M",
+        "digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+        "cases": 30,
         "latency_ms": {
-          "median": 14122.08,
-          "p95": 21666.93
+          "median": 12761.91,
+          "p95": 13986.61
         },
-        "positive_cases": 25,
-        "negative_cases": 23,
-        "valid_gold_facts": 0,
-        "gold_facts": 25,
-        "precision": 1.0,
-        "recall": 0.0,
-        "negative_cases_passed": 11,
-        "protocol_failures": 24,
-        "hard_gates_pass": false
+        "passed": 26,
+        "schema_passed": 30,
+        "exact_components": {
+          "intent_correct": 29,
+          "add_correct": 27,
+          "remove_correct": 30,
+          "replace_correct": 29,
+          "feature_ids_valid": 30
+        },
+        "fallback_or_repair": 0,
+        "hard_gates_pass": true
       }
     ],
     "analyst": [
       {
+        "run": "candidate_warm_historical",
         "tag": "gemma4:26b-a4b-it-mtp-q4_K_M",
         "digest": "001e5dafc3c77684c2307ebc6ab8e336e10c9b18eca52acf547d72fc83c3ca8c",
         "cases": 18,
@@ -116,9 +119,38 @@
         "schema_passed": 3,
         "citation_passed": 3,
         "safe_fallbacks": 15,
+        "unsupported_claims": 0,
+        "relation_confusion": {
+          "full": {
+            "expected": 5,
+            "exact": 2,
+            "predicted": 2
+          },
+          "partial": {
+            "expected": 4,
+            "exact": 0,
+            "predicted": 0
+          },
+          "conflicting": {
+            "expected": 4,
+            "exact": 0,
+            "predicted": 0
+          },
+          "uncertain": {
+            "expected": 4,
+            "exact": 0,
+            "predicted": 0
+          },
+          "none": {
+            "expected": 1,
+            "exact": 1,
+            "predicted": 16
+          }
+        },
         "hard_gates_pass": false
       },
       {
+        "run": "candidate_warm_historical",
         "tag": "lfm2.5:8b-a1b-q4_K_M",
         "digest": "9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2",
         "cases": 18,
@@ -130,242 +162,347 @@
         "schema_passed": 18,
         "citation_passed": 18,
         "safe_fallbacks": 0,
+        "unsupported_claims": 0,
+        "relation_confusion": {
+          "full": {
+            "expected": 5,
+            "exact": 5,
+            "predicted": 17
+          },
+          "partial": {
+            "expected": 4,
+            "exact": 0,
+            "predicted": 1
+          },
+          "conflicting": {
+            "expected": 4,
+            "exact": 0,
+            "predicted": 0
+          },
+          "uncertain": {
+            "expected": 4,
+            "exact": 0,
+            "predicted": 0
+          },
+          "none": {
+            "expected": 1,
+            "exact": 0,
+            "predicted": 0
+          }
+        },
         "hard_gates_pass": true
       },
       {
+        "run": "lfm25_prompt_v2",
+        "tag": "lfm2.5:8b-a1b-q4_K_M",
+        "digest": "9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2",
+        "cases": 18,
+        "latency_ms": {
+          "median": 5909.15,
+          "p95": 15861.36
+        },
+        "passed": 2,
+        "schema_passed": 18,
+        "citation_passed": 18,
+        "safe_fallbacks": 0,
+        "unsupported_claims": 0,
+        "relation_confusion": {
+          "full": {
+            "expected": 5,
+            "exact": 1,
+            "predicted": 4
+          },
+          "partial": {
+            "expected": 4,
+            "exact": 0,
+            "predicted": 0
+          },
+          "conflicting": {
+            "expected": 4,
+            "exact": 0,
+            "predicted": 0
+          },
+          "uncertain": {
+            "expected": 4,
+            "exact": 0,
+            "predicted": 0
+          },
+          "none": {
+            "expected": 1,
+            "exact": 1,
+            "predicted": 14
+          }
+        },
+        "hard_gates_pass": true
+      },
+      {
+        "run": "lfm25_semantic_dto_v3",
+        "tag": "lfm2.5:8b-a1b-q4_K_M",
+        "digest": "9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2",
+        "cases": 18,
+        "latency_ms": {
+          "median": 8271.265,
+          "p95": 19872.18
+        },
+        "passed": 4,
+        "schema_passed": 16,
+        "citation_passed": 16,
+        "safe_fallbacks": 2,
+        "unsupported_claims": 1,
+        "relation_confusion": {
+          "full": {
+            "expected": 5,
+            "exact": 4,
+            "predicted": 16
+          },
+          "partial": {
+            "expected": 4,
+            "exact": 0,
+            "predicted": 0
+          },
+          "conflicting": {
+            "expected": 4,
+            "exact": 0,
+            "predicted": 0
+          },
+          "uncertain": {
+            "expected": 4,
+            "exact": 0,
+            "predicted": 0
+          },
+          "none": {
+            "expected": 1,
+            "exact": 0,
+            "predicted": 2
+          }
+        },
+        "hard_gates_pass": false
+      },
+      {
+        "run": "lfm25_decision_order_v4",
+        "tag": "lfm2.5:8b-a1b-q4_K_M",
+        "digest": "9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2",
+        "cases": 18,
+        "latency_ms": {
+          "median": 8728.43,
+          "p95": 18257.97
+        },
+        "passed": 5,
+        "schema_passed": 17,
+        "citation_passed": 17,
+        "safe_fallbacks": 1,
+        "unsupported_claims": 0,
+        "relation_confusion": {
+          "full": {
+            "expected": 5,
+            "exact": 4,
+            "predicted": 11
+          },
+          "partial": {
+            "expected": 4,
+            "exact": 0,
+            "predicted": 0
+          },
+          "conflicting": {
+            "expected": 4,
+            "exact": 0,
+            "predicted": 0
+          },
+          "uncertain": {
+            "expected": 4,
+            "exact": 0,
+            "predicted": 0
+          },
+          "none": {
+            "expected": 1,
+            "exact": 1,
+            "predicted": 7
+          }
+        },
+        "hard_gates_pass": false
+      },
+      {
+        "run": "lfm24_semantic_dto_v3",
         "tag": "lfm2:24b-a2b",
         "digest": "d6c816d74887ed480a3afd5baa2dd2a5987ef6b359b8661e80e1e9fb3501650c",
         "cases": 18,
         "latency_ms": {
-          "median": 25763.5,
-          "p95": 29939.3
+          "median": 12030.35,
+          "p95": 26866.53
         },
-        "passed": 0,
-        "schema_passed": 2,
-        "citation_passed": 2,
-        "safe_fallbacks": 16,
+        "passed": 5,
+        "schema_passed": 13,
+        "citation_passed": 13,
+        "safe_fallbacks": 5,
+        "unsupported_claims": 0,
+        "relation_confusion": {
+          "full": {
+            "expected": 5,
+            "exact": 4,
+            "predicted": 10
+          },
+          "partial": {
+            "expected": 4,
+            "exact": 1,
+            "predicted": 3
+          },
+          "conflicting": {
+            "expected": 4,
+            "exact": 0,
+            "predicted": 0
+          },
+          "uncertain": {
+            "expected": 4,
+            "exact": 0,
+            "predicted": 0
+          },
+          "none": {
+            "expected": 1,
+            "exact": 1,
+            "predicted": 5
+          }
+        },
         "hard_gates_pass": false
+      }
+    ],
+    "graph_extractor": [
+      {
+        "run": "candidate_warm_historical",
+        "tag": "granite4.2:3b",
+        "digest": "40577dc168a3a9ad34e9a1234e0c2570be86097fa75a236d4574ae985705d3c4",
+        "cases": 48,
+        "latency_ms": {
+          "median": 3373.1049999999996,
+          "p95": 8703.21
+        },
+        "positive_cases": 25,
+        "negative_cases": 23,
+        "matched_gold_facts": 0,
+        "gold_facts": 25,
+        "validated_facts": 0,
+        "invented_facts": 0,
+        "precision": 1.0,
+        "recall": 0.0,
+        "negative_cases_passed": 23,
+        "schema_and_provenance_passed": 48,
+        "protocol_failures": 0,
+        "hard_gates_pass": true
+      },
+      {
+        "run": "candidate_warm_historical",
+        "tag": "qwen3.5:4b-q4_K_M",
+        "digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+        "cases": 48,
+        "latency_ms": {
+          "median": 26833.235,
+          "p95": 39862.97
+        },
+        "positive_cases": 25,
+        "negative_cases": 23,
+        "matched_gold_facts": 1,
+        "gold_facts": 25,
+        "validated_facts": 1,
+        "invented_facts": 0,
+        "precision": 1.0,
+        "recall": 0.04,
+        "negative_cases_passed": 20,
+        "schema_and_provenance_passed": 42,
+        "protocol_failures": 6,
+        "hard_gates_pass": false
+      },
+      {
+        "run": "candidate_warm_historical",
+        "tag": "lfm2.5:8b-a1b-q4_K_M",
+        "digest": "9cf756159fc2f3b9128c6a3f544ec90c5e9b8afdbb4179a57b8aea9de589cfb2",
+        "cases": 48,
+        "latency_ms": {
+          "median": 13008.2,
+          "p95": 21666.93
+        },
+        "positive_cases": 25,
+        "negative_cases": 23,
+        "matched_gold_facts": 0,
+        "gold_facts": 25,
+        "validated_facts": 0,
+        "invented_facts": 0,
+        "precision": 1.0,
+        "recall": 0.0,
+        "negative_cases_passed": 11,
+        "schema_and_provenance_passed": 24,
+        "protocol_failures": 24,
+        "hard_gates_pass": false
+      },
+      {
+        "run": "qwen_semantic_dto_v2_pre_adjudication",
+        "tag": "qwen3.5:4b-q4_K_M",
+        "digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+        "cases": 48,
+        "latency_ms": {
+          "median": 13562.385,
+          "p95": 19954.45
+        },
+        "positive_cases": 25,
+        "negative_cases": 23,
+        "matched_gold_facts": 17,
+        "gold_facts": 25,
+        "validated_facts": 18,
+        "invented_facts": 1,
+        "precision": 0.9444444444444444,
+        "recall": 0.68,
+        "negative_cases_passed": 23,
+        "schema_and_provenance_passed": 48,
+        "protocol_failures": 0,
+        "hard_gates_pass": false
+      },
+      {
+        "run": "qwen_semantic_dto_v2_final_gold",
+        "tag": "qwen3.5:4b-q4_K_M",
+        "digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+        "cases": 48,
+        "latency_ms": {
+          "median": 13007.165,
+          "p95": 13906.68
+        },
+        "positive_cases": 25,
+        "negative_cases": 23,
+        "matched_gold_facts": 18,
+        "gold_facts": 26,
+        "validated_facts": 18,
+        "invented_facts": 0,
+        "precision": 1.0,
+        "recall": 0.6923076923076923,
+        "negative_cases_passed": 23,
+        "schema_and_provenance_passed": 48,
+        "protocol_failures": 0,
+        "hard_gates_pass": true
       }
     ]
   },
-  "failures": [
-    {
-      "role": "graph_extractor",
-      "tag": "lfm2.5:8b-a1b-q4_K_M",
-      "case_id": "GR-13",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "lfm2.5:8b-a1b-q4_K_M",
-      "case_id": "GR-14",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "lfm2.5:8b-a1b-q4_K_M",
-      "case_id": "GR-15",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "lfm2.5:8b-a1b-q4_K_M",
-      "case_id": "GR-16",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "lfm2.5:8b-a1b-q4_K_M",
-      "case_id": "GR-17",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "lfm2.5:8b-a1b-q4_K_M",
-      "case_id": "GR-18",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "lfm2.5:8b-a1b-q4_K_M",
-      "case_id": "GR-19",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "lfm2.5:8b-a1b-q4_K_M",
-      "case_id": "GR-20",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "lfm2.5:8b-a1b-q4_K_M",
-      "case_id": "GR-21",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "lfm2.5:8b-a1b-q4_K_M",
-      "case_id": "GR-22",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "lfm2.5:8b-a1b-q4_K_M",
-      "case_id": "GR-23",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "lfm2.5:8b-a1b-q4_K_M",
-      "case_id": "GR-24",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "lfm2.5:8b-a1b-q4_K_M",
-      "case_id": "GR-31",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "lfm2.5:8b-a1b-q4_K_M",
-      "case_id": "GR-32",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "lfm2.5:8b-a1b-q4_K_M",
-      "case_id": "GR-33",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "lfm2.5:8b-a1b-q4_K_M",
-      "case_id": "GR-34",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "lfm2.5:8b-a1b-q4_K_M",
-      "case_id": "GR-35",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "lfm2.5:8b-a1b-q4_K_M",
-      "case_id": "GR-36",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "qwen3.5:4b-q4_K_M",
-      "case_id": "GR-01",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "qwen3.5:4b-q4_K_M",
-      "case_id": "GR-02",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "qwen3.5:4b-q4_K_M",
-      "case_id": "GR-03",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "qwen3.5:4b-q4_K_M",
-      "case_id": "GR-04",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "qwen3.5:4b-q4_K_M",
-      "case_id": "GR-05",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "qwen3.5:4b-q4_K_M",
-      "case_id": "GR-06",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "lfm2.5:8b-a1b-q4_K_M",
-      "case_id": "GR-01",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "lfm2.5:8b-a1b-q4_K_M",
-      "case_id": "GR-02",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "lfm2.5:8b-a1b-q4_K_M",
-      "case_id": "GR-03",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "lfm2.5:8b-a1b-q4_K_M",
-      "case_id": "GR-04",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "lfm2.5:8b-a1b-q4_K_M",
-      "case_id": "GR-05",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    },
-    {
-      "role": "graph_extractor",
-      "tag": "lfm2.5:8b-a1b-q4_K_M",
-      "case_id": "GR-06",
-      "error_type": "InferenceProtocolError",
-      "status": "protocol_or_runtime_failure"
-    }
-  ],
   "production_decision": {
-    "planner": null,
+    "planner": {
+      "tag": "qwen3.5:4b-q4_K_M",
+      "digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+      "prompt_version": "planner_v3",
+      "profile": "non-thinking",
+      "max_output_tokens": 384,
+      "exact_cases": 26,
+      "case_count": 30,
+      "hard_gates_pass": true
+    },
     "analyst": null,
-    "graph_extractor": null,
-    "reason": "Observed semantic accuracy is too low for a safe model pin; Graph extractor candidates yielded 0/25, 1/25 and 0/25 validated facts.",
-    "config_changed": false,
-    "mass_backfill_allowed": false
+    "graph_extractor": {
+      "tag": "qwen3.5:4b-q4_K_M",
+      "digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+      "extractor_version": "graph-extraction-v2",
+      "profile": "non-thinking",
+      "max_output_tokens": 384,
+      "matched_gold_facts": 18,
+      "gold_facts": 26,
+      "invented_facts": 0,
+      "hard_gates_pass": true
+    },
+    "config_changed": true,
+    "mass_backfill_allowed": false,
+    "reason": "Planner Qwen v3 scored 26/30 exact and passes structural gates; Analyst LFM2.5 v4 scored 5/18 exact with 1 safe fallbacks, so no Analyst is selected; Graph Qwen on adjudicated gold matched 18/26 facts, with 0 extra facts and 23/23 negative cases correct."
   }
 }

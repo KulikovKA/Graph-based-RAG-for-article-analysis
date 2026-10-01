@@ -14,6 +14,8 @@ from uuid import UUID
 from pydantic import ValidationError
 
 from app.domain.contracts import (
+    AnalysisDraftV1,
+    AnalysisRelationV1,
     AnalysisV1,
     AnswerPresentationV1,
     AnswerV1,
@@ -37,7 +39,7 @@ from app.domain.inference import (
 from app.domain.planner import IdeaV1
 from app.services.evidence_pack import EvidencePack, EvidencePackItem, render_evidence_items
 
-PROMPT_VERSION = "analyst_v1"
+PROMPT_VERSION = "analyst_v4"
 RENDERER_VERSION = "answer_v1.1"
 MAX_JSON_BYTES = 256 * 1024
 MAX_PRESENTATION_CHUNK = 1024
@@ -105,6 +107,42 @@ def validate_analysis(analysis: AnalysisV1, *, idea: IdeaV1, pack: EvidencePack)
     expected_unresolved = features - supported
     if set(analysis.unresolved_feature_ids) != expected_unresolved:
         raise AnalystViolation("UNRESOLVED_FEATURE_SET_MISMATCH")
+
+
+def enrich_analysis_draft(draft: AnalysisDraftV1, pack: EvidencePack) -> AnalysisV1:
+    """Compute citation offsets from exact quote text inside selected evidence items."""
+    items = {item.evidence_id: item for item in pack.items}
+    relations: list[AnalysisRelationV1] = []
+    for relation in draft.relations:
+        quotes: list[QuoteV1] = []
+        for quote in relation.quotes:
+            item = items.get(quote.evidence_id)
+            if item is None or item.document_id != relation.document_id:
+                raise AnalystViolation("UNKNOWN_EVIDENCE_ID")
+            local_start = item.quoted_span.find(quote.text)
+            if local_start < 0:
+                raise AnalystViolation("QUOTE_TEXT_MISMATCH")
+            start = item.span_start + local_start
+            end = start + len(quote.text)
+            if item.quoted_span[local_start : local_start + len(quote.text)] != quote.text:
+                raise AnalystViolation("QUOTE_TEXT_MISMATCH")
+            quotes.append(
+                QuoteV1(evidence_id=quote.evidence_id, start=start, end=end, text=quote.text)
+            )
+        relations.append(
+            AnalysisRelationV1(
+                feature_id=relation.feature_id,
+                document_id=relation.document_id,
+                relation=relation.relation,
+                evidence_ids=relation.evidence_ids,
+                quotes=quotes,
+            )
+        )
+    return AnalysisV1(
+        schema_version=draft.schema_version,
+        relations=relations,
+        unresolved_feature_ids=draft.unresolved_feature_ids,
+    )
 
 
 def _notice(code: str, message: str) -> LimitationV1:
@@ -329,7 +367,7 @@ class Analyst:
             "evidence_pack": json.loads(render_evidence_items(pack.items)),
         }
         original = self.prompt.replace(
-            "{schema_json}", _jsonable(AnalysisV1.model_json_schema())
+            "{schema_json}", _jsonable(AnalysisDraftV1.model_json_schema())
         ).replace("{input_json}", _jsonable(input_value))
         prompt = original
         deadline = time.monotonic() + timeout
@@ -349,7 +387,7 @@ class Analyst:
                     request_id=request_id,
                     prompt=prompt,
                     timeout=remaining,
-                    schema=AnalysisV1.model_json_schema(),
+                    schema=AnalysisDraftV1.model_json_schema(),
                     max_output_tokens=max_output_tokens,
                     reasoning_effort=reasoning_effort,
                     cancel=cancel,
@@ -360,7 +398,8 @@ class Analyst:
                 if len(encoded) > MAX_JSON_BYTES:
                     rejected = {"omitted": "DRAFT_TOO_LARGE"}
                     raise AnalystViolation("DRAFT_TOO_LARGE")
-                analysis = AnalysisV1.model_validate_json(encoded)
+                draft = AnalysisDraftV1.model_validate_json(encoded)
+                analysis = enrich_analysis_draft(draft, pack)
                 validate_analysis(analysis, idea=idea, pack=pack)
                 answer, public, presentation = _render_analysis(analysis, idea, coverage)
                 return AnalystResult(
