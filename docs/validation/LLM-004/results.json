@@ -1,0 +1,553 @@
+{
+  "schema_version": 1,
+  "task": "LLM-004",
+  "status": "complete_low_medium_matrix",
+  "gold_cases": 18,
+  "runs": {
+    "gpt_oss/low": {
+      "config": {
+        "model_id": "gpt-oss:20b",
+        "digest": "17052f91a42e97930aa6e28a6c6c06a983e6a58dbb00434885a0cf5313e376f7",
+        "size_bytes": 13793441244,
+        "quantization": "MXFP4",
+        "architecture": "gptoss",
+        "parameter_size": "20.9B",
+        "context_length": 131072,
+        "template_parameters": "temperature                    1",
+        "ollama_version": "0.34.4",
+        "template_sha256": "fa6710a93d78da62641e192361344be7a8c0a1c3737f139cf89f20ce1626b99c",
+        "reasoning_profiles_supported": [
+          "high",
+          "low",
+          "medium"
+        ],
+        "reasoning_effort": "low",
+        "temperature": 0.0,
+        "top_p": 0.9,
+        "max_output_tokens": 2048,
+        "context_budget": 131072,
+        "timeout_seconds": 600,
+        "keep_alive_seconds": 3600,
+        "prompt_sha256": "17699cc6eb0e1af9cf31fe8e6be0555b259d434729715980d19e4f04de391c36",
+        "fixture_sha256": "7b7223f5786a44825ef8c715896bb7cb3e8acd57108215ebae493e388b65dcd8",
+        "fixture_path": "eval/llm003/analyst.jsonl",
+        "prompt_path": "prompts/analyst_v1.txt"
+      },
+      "cases": 18,
+      "exact_passes": 11,
+      "exact_accuracy": 0.6111111111111112,
+      "schema_valid": 18,
+      "citation_valid": 18,
+      "fallbacks": 0,
+      "unsupported_claim_violations": 0,
+      "reasoning_privacy_violations": 0,
+      "inference_errors": 0,
+      "timeouts": 0,
+      "median_latency_ms": 26999.465,
+      "p95_latency_ms": 88411.89,
+      "median_generation_duration_ms": 15867.500000000291,
+      "median_ttft_ms": 5070.50000000163,
+      "median_output_tokens": null,
+      "schema_gate_pass": true,
+      "citation_gate_pass": true,
+      "fallback_gate_pass": true,
+      "unsupported_claim_gate_pass": true,
+      "reasoning_privacy_gate_pass": true,
+      "hard_gates_pass": true,
+      "per_label": {
+        "full": {
+          "expected": 5,
+          "exact": 4,
+          "accuracy": 0.8
+        },
+        "partial": {
+          "expected": 4,
+          "exact": 2,
+          "accuracy": 0.5
+        },
+        "conflicting": {
+          "expected": 4,
+          "exact": 4,
+          "accuracy": 1.0
+        },
+        "uncertain": {
+          "expected": 4,
+          "exact": 0,
+          "accuracy": 0.0
+        },
+        "none": {
+          "expected": 1,
+          "exact": 1,
+          "accuracy": 1.0
+        }
+      },
+      "confusion_gold_to_predicted": {
+        "full": {
+          "full": 4,
+          "partial": 1,
+          "conflicting": 0,
+          "uncertain": 0,
+          "none": 0
+        },
+        "partial": {
+          "full": 0,
+          "partial": 2,
+          "conflicting": 1,
+          "uncertain": 0,
+          "none": 1
+        },
+        "conflicting": {
+          "full": 0,
+          "partial": 0,
+          "conflicting": 4,
+          "uncertain": 0,
+          "none": 0
+        },
+        "uncertain": {
+          "full": 0,
+          "partial": 0,
+          "conflicting": 0,
+          "uncertain": 0,
+          "none": 4
+        },
+        "none": {
+          "full": 0,
+          "partial": 0,
+          "conflicting": 0,
+          "uncertain": 0,
+          "none": 1
+        }
+      }
+    },
+    "gpt_oss/medium": {
+      "config": {
+        "model_id": "gpt-oss:20b",
+        "digest": "17052f91a42e97930aa6e28a6c6c06a983e6a58dbb00434885a0cf5313e376f7",
+        "size_bytes": 13793441244,
+        "quantization": "MXFP4",
+        "architecture": "gptoss",
+        "parameter_size": "20.9B",
+        "context_length": 131072,
+        "template_parameters": "temperature                    1",
+        "ollama_version": "0.34.4",
+        "template_sha256": "fa6710a93d78da62641e192361344be7a8c0a1c3737f139cf89f20ce1626b99c",
+        "reasoning_profiles_supported": [
+          "high",
+          "low",
+          "medium"
+        ],
+        "reasoning_effort": "medium",
+        "temperature": 0.0,
+        "top_p": 0.9,
+        "max_output_tokens": 2048,
+        "context_budget": 131072,
+        "timeout_seconds": 600,
+        "keep_alive_seconds": 3600,
+        "prompt_sha256": "17699cc6eb0e1af9cf31fe8e6be0555b259d434729715980d19e4f04de391c36",
+        "fixture_sha256": "7b7223f5786a44825ef8c715896bb7cb3e8acd57108215ebae493e388b65dcd8",
+        "fixture_path": "eval/llm003/analyst.jsonl",
+        "prompt_path": "prompts/analyst_v1.txt"
+      },
+      "cases": 18,
+      "exact_passes": 13,
+      "exact_accuracy": 0.7222222222222222,
+      "schema_valid": 18,
+      "citation_valid": 18,
+      "fallbacks": 0,
+      "unsupported_claim_violations": 0,
+      "reasoning_privacy_violations": 0,
+      "inference_errors": 0,
+      "timeouts": 0,
+      "median_latency_ms": 62731.96,
+      "p95_latency_ms": 176691.85,
+      "median_generation_duration_ms": 18320.50000000163,
+      "median_ttft_ms": 5406.50000000096,
+      "median_output_tokens": null,
+      "schema_gate_pass": true,
+      "citation_gate_pass": true,
+      "fallback_gate_pass": true,
+      "unsupported_claim_gate_pass": true,
+      "reasoning_privacy_gate_pass": true,
+      "hard_gates_pass": true,
+      "per_label": {
+        "full": {
+          "expected": 5,
+          "exact": 5,
+          "accuracy": 1.0
+        },
+        "partial": {
+          "expected": 4,
+          "exact": 1,
+          "accuracy": 0.25
+        },
+        "conflicting": {
+          "expected": 4,
+          "exact": 4,
+          "accuracy": 1.0
+        },
+        "uncertain": {
+          "expected": 4,
+          "exact": 2,
+          "accuracy": 0.5
+        },
+        "none": {
+          "expected": 1,
+          "exact": 1,
+          "accuracy": 1.0
+        }
+      },
+      "confusion_gold_to_predicted": {
+        "full": {
+          "full": 5,
+          "partial": 0,
+          "conflicting": 0,
+          "uncertain": 0,
+          "none": 0
+        },
+        "partial": {
+          "full": 0,
+          "partial": 1,
+          "conflicting": 1,
+          "uncertain": 1,
+          "none": 1
+        },
+        "conflicting": {
+          "full": 0,
+          "partial": 0,
+          "conflicting": 4,
+          "uncertain": 0,
+          "none": 0
+        },
+        "uncertain": {
+          "full": 0,
+          "partial": 0,
+          "conflicting": 0,
+          "uncertain": 2,
+          "none": 2
+        },
+        "none": {
+          "full": 0,
+          "partial": 0,
+          "conflicting": 0,
+          "uncertain": 0,
+          "none": 1
+        }
+      }
+    },
+    "gpt_oss_sonnet/low": {
+      "config": {
+        "model_id": "ducquoc/gpt-oss-sonnet:latest",
+        "digest": "800cc044c04f0c2ea3cf50ea70846b944d08b9f7e92c81c538379a7285f446f5",
+        "size_bytes": 13793460370,
+        "quantization": "MXFP4",
+        "architecture": "gptoss",
+        "parameter_size": "20.9B",
+        "context_length": 131072,
+        "template_parameters": "temperature                    0.4\ntop_p                          0.9",
+        "ollama_version": "0.34.4",
+        "template_sha256": "fa6710a93d78da62641e192361344be7a8c0a1c3737f139cf89f20ce1626b99c",
+        "reasoning_profiles_supported": [
+          "high",
+          "low",
+          "medium"
+        ],
+        "reasoning_effort": "low",
+        "temperature": 0.0,
+        "top_p": 0.9,
+        "max_output_tokens": 2048,
+        "context_budget": 131072,
+        "timeout_seconds": 600,
+        "keep_alive_seconds": 3600,
+        "prompt_sha256": "17699cc6eb0e1af9cf31fe8e6be0555b259d434729715980d19e4f04de391c36",
+        "fixture_sha256": "7b7223f5786a44825ef8c715896bb7cb3e8acd57108215ebae493e388b65dcd8",
+        "fixture_path": "eval/llm003/analyst.jsonl",
+        "prompt_path": "prompts/analyst_v1.txt"
+      },
+      "cases": 18,
+      "exact_passes": 12,
+      "exact_accuracy": 0.6666666666666666,
+      "schema_valid": 18,
+      "citation_valid": 18,
+      "fallbacks": 0,
+      "unsupported_claim_violations": 0,
+      "reasoning_privacy_violations": 0,
+      "inference_errors": 0,
+      "timeouts": 0,
+      "median_latency_ms": 32191.705,
+      "p95_latency_ms": 149696.46,
+      "median_generation_duration_ms": 18047.0000000023,
+      "median_ttft_ms": 6046.999999998661,
+      "median_output_tokens": null,
+      "schema_gate_pass": true,
+      "citation_gate_pass": true,
+      "fallback_gate_pass": true,
+      "unsupported_claim_gate_pass": true,
+      "reasoning_privacy_gate_pass": true,
+      "hard_gates_pass": true,
+      "per_label": {
+        "full": {
+          "expected": 5,
+          "exact": 5,
+          "accuracy": 1.0
+        },
+        "partial": {
+          "expected": 4,
+          "exact": 2,
+          "accuracy": 0.5
+        },
+        "conflicting": {
+          "expected": 4,
+          "exact": 4,
+          "accuracy": 1.0
+        },
+        "uncertain": {
+          "expected": 4,
+          "exact": 0,
+          "accuracy": 0.0
+        },
+        "none": {
+          "expected": 1,
+          "exact": 1,
+          "accuracy": 1.0
+        }
+      },
+      "confusion_gold_to_predicted": {
+        "full": {
+          "full": 5,
+          "partial": 0,
+          "conflicting": 0,
+          "uncertain": 0,
+          "none": 0
+        },
+        "partial": {
+          "full": 0,
+          "partial": 2,
+          "conflicting": 2,
+          "uncertain": 0,
+          "none": 0
+        },
+        "conflicting": {
+          "full": 0,
+          "partial": 0,
+          "conflicting": 4,
+          "uncertain": 0,
+          "none": 0
+        },
+        "uncertain": {
+          "full": 0,
+          "partial": 0,
+          "conflicting": 0,
+          "uncertain": 0,
+          "none": 4
+        },
+        "none": {
+          "full": 0,
+          "partial": 0,
+          "conflicting": 0,
+          "uncertain": 0,
+          "none": 1
+        }
+      }
+    },
+    "gpt_oss_sonnet/medium": {
+      "config": {
+        "model_id": "ducquoc/gpt-oss-sonnet:latest",
+        "digest": "800cc044c04f0c2ea3cf50ea70846b944d08b9f7e92c81c538379a7285f446f5",
+        "size_bytes": 13793460370,
+        "quantization": "MXFP4",
+        "architecture": "gptoss",
+        "parameter_size": "20.9B",
+        "context_length": 131072,
+        "template_parameters": "temperature                    0.4\ntop_p                          0.9",
+        "ollama_version": "0.34.4",
+        "template_sha256": "fa6710a93d78da62641e192361344be7a8c0a1c3737f139cf89f20ce1626b99c",
+        "reasoning_profiles_supported": [
+          "high",
+          "low",
+          "medium"
+        ],
+        "reasoning_effort": "medium",
+        "temperature": 0.0,
+        "top_p": 0.9,
+        "max_output_tokens": 2048,
+        "context_budget": 131072,
+        "timeout_seconds": 600,
+        "keep_alive_seconds": 3600,
+        "prompt_sha256": "17699cc6eb0e1af9cf31fe8e6be0555b259d434729715980d19e4f04de391c36",
+        "fixture_sha256": "7b7223f5786a44825ef8c715896bb7cb3e8acd57108215ebae493e388b65dcd8",
+        "fixture_path": "eval/llm003/analyst.jsonl",
+        "prompt_path": "prompts/analyst_v1.txt"
+      },
+      "cases": 18,
+      "exact_passes": 13,
+      "exact_accuracy": 0.7222222222222222,
+      "schema_valid": 18,
+      "citation_valid": 18,
+      "fallbacks": 0,
+      "unsupported_claim_violations": 0,
+      "reasoning_privacy_violations": 0,
+      "inference_errors": 0,
+      "timeouts": 0,
+      "median_latency_ms": 86764.375,
+      "p95_latency_ms": 191409.14,
+      "median_generation_duration_ms": 20640.50000000134,
+      "median_ttft_ms": 6523.499999999331,
+      "median_output_tokens": null,
+      "schema_gate_pass": true,
+      "citation_gate_pass": true,
+      "fallback_gate_pass": true,
+      "unsupported_claim_gate_pass": true,
+      "reasoning_privacy_gate_pass": true,
+      "hard_gates_pass": true,
+      "per_label": {
+        "full": {
+          "expected": 5,
+          "exact": 5,
+          "accuracy": 1.0
+        },
+        "partial": {
+          "expected": 4,
+          "exact": 1,
+          "accuracy": 0.25
+        },
+        "conflicting": {
+          "expected": 4,
+          "exact": 4,
+          "accuracy": 1.0
+        },
+        "uncertain": {
+          "expected": 4,
+          "exact": 2,
+          "accuracy": 0.5
+        },
+        "none": {
+          "expected": 1,
+          "exact": 1,
+          "accuracy": 1.0
+        }
+      },
+      "confusion_gold_to_predicted": {
+        "full": {
+          "full": 5,
+          "partial": 0,
+          "conflicting": 0,
+          "uncertain": 0,
+          "none": 0
+        },
+        "partial": {
+          "full": 0,
+          "partial": 1,
+          "conflicting": 1,
+          "uncertain": 1,
+          "none": 1
+        },
+        "conflicting": {
+          "full": 0,
+          "partial": 0,
+          "conflicting": 4,
+          "uncertain": 0,
+          "none": 0
+        },
+        "uncertain": {
+          "full": 0,
+          "partial": 0,
+          "conflicting": 1,
+          "uncertain": 2,
+          "none": 1
+        },
+        "none": {
+          "full": 0,
+          "partial": 0,
+          "conflicting": 0,
+          "uncertain": 0,
+          "none": 1
+        }
+      }
+    }
+  },
+  "baseline_failed_case_comparison": [
+    {
+      "case_id": "AN-04",
+      "gold_label": "uncertain",
+      "llm003_low_prediction": "none",
+      "predictions": {
+        "gpt_oss": {
+          "low": "none",
+          "medium": "none"
+        },
+        "gpt_oss_sonnet": {
+          "low": "none",
+          "medium": "conflicting"
+        }
+      }
+    },
+    {
+      "case_id": "AN-06",
+      "gold_label": "partial",
+      "llm003_low_prediction": "none",
+      "predictions": {
+        "gpt_oss": {
+          "low": "none",
+          "medium": "uncertain"
+        },
+        "gpt_oss_sonnet": {
+          "low": "conflicting",
+          "medium": "none"
+        }
+      }
+    },
+    {
+      "case_id": "AN-08",
+      "gold_label": "uncertain",
+      "llm003_low_prediction": "none",
+      "predictions": {
+        "gpt_oss": {
+          "low": "none",
+          "medium": "uncertain"
+        },
+        "gpt_oss_sonnet": {
+          "low": "none",
+          "medium": "uncertain"
+        }
+      }
+    },
+    {
+      "case_id": "AN-10",
+      "gold_label": "partial",
+      "llm003_low_prediction": "conflicting",
+      "predictions": {
+        "gpt_oss": {
+          "low": "conflicting",
+          "medium": "conflicting"
+        },
+        "gpt_oss_sonnet": {
+          "low": "conflicting",
+          "medium": "conflicting"
+        }
+      }
+    },
+    {
+      "case_id": "AN-16",
+      "gold_label": "uncertain",
+      "llm003_low_prediction": "none",
+      "predictions": {
+        "gpt_oss": {
+          "low": "none",
+          "medium": "none"
+        },
+        "gpt_oss_sonnet": {
+          "low": "none",
+          "medium": "none"
+        }
+      }
+    }
+  ],
+  "matrix_status": {
+    "gpt_oss/low": "complete",
+    "gpt_oss/medium": "complete",
+    "gpt_oss/high": "partial_user_stopped_6_of_18",
+    "gpt_oss_sonnet/low": "complete",
+    "gpt_oss_sonnet/medium": "complete",
+    "gpt_oss_sonnet/high": "not_run_by_user_direction"
+  }
+}

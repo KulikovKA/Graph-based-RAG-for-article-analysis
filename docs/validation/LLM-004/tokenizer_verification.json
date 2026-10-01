@@ -1,0 +1,43 @@
+{
+  "tokenizer_source": "https://huggingface.co/openai/gpt-oss-20b",
+  "tokenizer_revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+  "tokenizer_file": "tokenizer.json",
+  "tokenizer_sha256": "0614fe83cadab421296e664e1f48f4261fa8fef6e03e63bb75c20f38e37d07d3",
+  "tokenizer_bytes": 27868174,
+  "models": {
+    "gpt-oss:20b": {
+      "architecture": "gptoss",
+      "context_length": 131072,
+      "ollama_vocab_entries": 201088,
+      "upstream_vocab_entries": 200019,
+      "ollama_padding_tokens": 1069,
+      "shared_vocab_ids_match": true,
+      "bpe_merge_count": 446189,
+      "bpe_merges_match": true,
+      "template_sha256": "fa6710a93d78da62641e192361344be7a8c0a1c3737f139cf89f20ce1626b99c",
+      "thinking_profiles": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "ducquoc/gpt-oss-sonnet:latest": {
+      "architecture": "gptoss",
+      "context_length": 131072,
+      "ollama_vocab_entries": 201088,
+      "upstream_vocab_entries": 200019,
+      "ollama_padding_tokens": 1069,
+      "shared_vocab_ids_match": true,
+      "bpe_merge_count": 446189,
+      "bpe_merges_match": true,
+      "template_sha256": "fa6710a93d78da62641e192361344be7a8c0a1c3737f139cf89f20ce1626b99c",
+      "thinking_profiles": [
+        "low",
+        "medium",
+        "high"
+      ]
+    }
+  },
+  "templates_identical": true,
+  "compatible": true
+}
