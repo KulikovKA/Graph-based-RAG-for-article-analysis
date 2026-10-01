@@ -1,6 +1,6 @@
 # CORPUS-001 validation
 
-Status: **in progress; runner runtime wired, 10-document write smoke partially completed**.
+Status: **in progress; 10-document write smoke, idempotency, and resume checks completed**.
 
 The prior `micro10/` artifacts remain unchanged and describe an exploratory
 2026-10-01 OpenAlex run against the production ingestion, Qdrant indexing,
@@ -23,10 +23,12 @@ track completed external IDs only after both index ACKs and activation, and
 resume rejects drift in source/query/filter/limits, model digests, extractor,
 vocabulary, and projection versions. `--max-documents` is capped at 100.
 
-The Graph extractor uses a 536-token output limit. The 384-token limit had
-caused three document extraction failures from insufficient output budget;
-536 is the practical corpus-extraction workaround. This changes no model,
-prompt, digest, or extractor version and is not a new model-selection benchmark.
+The Graph extractor runtime profile is output limit 2048, context window 16384,
+timeout 300 seconds, temperature 0, and thinking disabled. Extraction batches
+remain six chunks, with the bounded `done_reason=length` split fallback retained.
+This profile responds to the single-chunk truncation at `num_predict=536`; it
+does not change the model, digest, prompt, extractor version, vocabulary
+version, or confidence threshold.
 
 Example commands (run from the repository root):
 
@@ -46,9 +48,16 @@ migrations, production model config, and host Ollama endpoint. The earlier
 host-side OpenAlex `network_error` was an environment connectivity limitation:
 OpenAlex returned candidates from the container runner's egress network.
 
-Runtime smoke on 2026-10-01: migrations completed and OpenAlex dry-run previewed
-10 eligible documents without errors. The subsequent `--max-documents 10`
-write run activated 7 documents with Qdrant and Neo4j ACKs, then failed on the
-next document during graph extraction with `InferenceProtocolError: provider
-output did not finish` (run `corpus-20261001T203122Z-81c4e038`). No 100-document
-pilot has been run; investigate the remaining extractor failure before resuming.
+Runtime smoke on 2026-10-01/02: migrations completed and OpenAlex dry-run
+previewed 10 eligible documents without errors. The original profile failed on
+`W2922177019` with `done_reason=length` at `num_predict=536`; the revision had
+one chunk and no graph facts or ACKs. After rebasing only the checkpoint's
+runtime-profile identity (preserving its run ID, cursor, completed IDs, and
+counts), a target-only resume with the profile above completed that same
+revision and produced 14 graph facts in 68.5 seconds. Resuming the same run
+activated 10/10 documents with 10 Qdrant ACKs and 10 Neo4j ACKs. A second run
+with the same query and limit reprocessed 10 existing revisions (`new_revision`
+false for all), again with 10/10 activation and both ACKs; resuming that
+completed checkpoint was a no-op with counts unchanged. The real graph
+integration test passed. CORPUS-001 remains in progress; no 100-document pilot
+has run.

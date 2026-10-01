@@ -18,7 +18,7 @@ from app.integrations.qdrant import EmbeddingSpec, QdrantIndex
 from app.services.graph_index import GraphChunk, GraphIndexingService
 from app.services.indexing import IndexingService
 from app.services.ingestion import IngestionService
-from app.storage.models import EvidenceChunk, IndexCatalog, IndexGeneration, IndexMember
+from app.storage.models import EvidenceChunk, GraphFact, IndexCatalog, IndexGeneration, IndexMember
 
 pytestmark = pytest.mark.skipif(
     not all(
@@ -122,6 +122,12 @@ def test_durable_graph_projection_recovery_revision_removal_and_ack_gate() -> No
                         first_id, request_id="graph-first-qdrant"
                     )
                 assert first_qdrant_count == 1
+                with session_factory() as session:
+                    qdrant_index = IndexingService(session, qdrant, FakeEmbedder())
+                    assert await qdrant_index.index_revision(
+                        first_id, request_id="graph-first-qdrant-retry"
+                    ) == first_qdrant_count
+                assert await qdrant.count(revision_id=first_id) == 1
                 graph_index = GraphIndexingService(session_factory, graph, extractor)
                 first_graph = await graph_index.index_revision(first_id, request_id="graph-first")
                 assert first_graph.fact_count == 1
@@ -131,6 +137,10 @@ def test_durable_graph_projection_recovery_revision_removal_and_ack_gate() -> No
                     == first_graph
                 )
                 assert extractor.calls == ["graph-first"]
+                with session_factory() as session:
+                    assert len(list(session.scalars(
+                        select(GraphFact).where(GraphFact.revision_id == first_id)
+                    ))) == first_graph.fact_count
 
                 expected = {
                     "qdrant": ("qdrant-test-v1", spec.projection_version),

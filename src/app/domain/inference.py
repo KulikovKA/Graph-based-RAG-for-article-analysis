@@ -20,6 +20,18 @@ class InferenceProtocolError(InferenceError):
     pass
 
 
+class InferenceOutputLimit(InferenceProtocolError):
+    """Ollama stopped generation at its configured output token limit."""
+
+    def __init__(self, *, max_output_tokens: int) -> None:
+        self.done_reason = "length"
+        self.max_output_tokens = max_output_tokens
+        super().__init__(
+            "Ollama generation stopped at output limit "
+            f"(done_reason=length, num_predict={max_output_tokens})"
+        )
+
+
 class InferenceTimeout(InferenceError):
     pass
 
@@ -63,6 +75,7 @@ class InferenceProvider(Protocol):
     async def complete_json(
         self, *, model_id: str, prompt_version: str, request_id: str, prompt: str,
         timeout: float, schema: dict[str, Any], max_output_tokens: int,
+        context_window: int | None = None,
         reasoning_effort: ReasoningEffort = "default",
         cancel: asyncio.Event | None = None,
     ) -> JsonResult: ...

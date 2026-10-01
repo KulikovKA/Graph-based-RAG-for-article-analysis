@@ -24,7 +24,10 @@
       "quantization": "Q4_K_M",
       "license": "Apache-2.0",
       "extractor_version": "graph-extraction-v2",
-      "max_output_tokens": 536,
+      "max_output_tokens": 2048,
+      "context_window": 16384,
+      "timeout_seconds": 300,
+      "temperature": 0,
       "reasoning_effort": "non-thinking"
     },
     "analyst": {

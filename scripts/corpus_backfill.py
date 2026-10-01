@@ -20,7 +20,9 @@ from uuid import uuid4
 import httpx
 import yaml
 from neo4j import AsyncGraphDatabase
+from sqlalchemy.exc import SQLAlchemyError
 
+from app.domain.inference import InferenceProtocolError
 from app.domain.source import SourceStatus
 from app.integrations.epo import EpoOpsClient
 from app.integrations.inference_http import OllamaProvider
@@ -29,6 +31,7 @@ from app.integrations.openalex import OpenAlexClient
 from app.integrations.qdrant import EmbeddingSpec, QdrantIndex
 from app.services.graph_index import (
     EXTRACTOR_VERSION,
+    GraphExtractionError,
     VOCABULARY_VERSION,
     GraphIndexingService,
     InferenceGraphExtractor,
@@ -43,21 +46,29 @@ from app.workers.ingest import from_epo, from_openalex
 @dataclass
 class RunCounts:
     fetched: int = 0
+    eligible: int = 0
     skipped: int = 0
     skipped_no_text: int = 0
     skipped_invalid: int = 0
     previewed: int = 0
     normalized: int = 0
     ingested: int = 0
+    new_revisions: int = 0
+    reused_revisions: int = 0
     indexed: int = 0
     qdrant_indexed: int = 0
+    qdrant_points: int = 0
     graph_processed: int = 0
     graph_projected: int = 0
+    graph_facts: int = 0
+    graph_extraction_seconds: float = 0.0
+    graph_extraction_splits: int = 0
     qdrant_acked: int = 0
     neo4j_acked: int = 0
     activated: int = 0
     errors: int = 0
     failed: int = 0
+    fatal_errors: int = 0
     retries: int = 0
     wall_seconds: float = 0.0
 
@@ -138,6 +149,10 @@ def _run_identity(
         "graph_digest": graph["digest"],
         "extractor_version": graph["extractor_version"],
         "graph_output_tokens": graph["max_output_tokens"],
+        "graph_context_window": graph["context_window"],
+        "graph_timeout_seconds": graph["timeout_seconds"],
+        "graph_temperature": graph["temperature"],
+        "graph_reasoning_efforts": graph["reasoning_efforts"],
         "graph_projection_version": PROJECTION_VERSION,
         "graph_indexer_version": EXTRACTOR_VERSION,
         "graph_vocabulary_version": VOCABULARY_VERSION,
@@ -250,9 +265,11 @@ class CorpusPilot:
         checkpoint: Checkpoint | None = None,
         batch_size: int = 25,
         filters: str | None = None,
+        only_work_id: str | None = None,
     ) -> RunCounts:
         run_started = time.monotonic()
         counts = RunCounts(**(checkpoint.state.get("counts", {}) if checkpoint else {}))
+        errors_at_start = counts.errors
         initial_cursor = "*" if self.source == "openalex" else "0"
         cursor: str | None = (
             checkpoint.state.get("cursor", initial_cursor) if checkpoint else initial_cursor
@@ -260,7 +277,14 @@ class CorpusPilot:
         seen: set[str] = set()
         completed = set(checkpoint.state.get("completed", [])) if checkpoint else set()
         halted = False
-        completed_work = counts.ingested + counts.previewed
+        pending_failure_ids = {
+            item.get("work_id")
+            for item in (checkpoint.state.get("failures", []) if checkpoint else [])
+            if isinstance(item, dict) and item.get("work_id") not in completed
+        }
+        completed_work = (counts.eligible or (counts.ingested + counts.previewed)) - len(
+            pending_failure_ids
+        )
         while cursor is not None and completed_work < max_documents:
             page_cursor = cursor
             if self.source == "openalex":
@@ -286,15 +310,22 @@ class CorpusPilot:
             if page.status != SourceStatus.OK:
                 counts.errors += 1
                 counts.failed += 1
+                counts.fatal_errors += 1
                 self._event("search_failed", status=page.status.value, error=page.error_code)
                 break
+            target_work_done = False
             for candidate in candidates:
                 if completed_work >= max_documents:
                     break
+                if only_work_id is not None and candidate.external_id != only_work_id:
+                    continue
                 if candidate.external_id in seen:
                     continue
                 seen.add(candidate.external_id)
                 if candidate.external_id in completed:
+                    target_work_done = candidate.external_id == only_work_id
+                    if target_work_done:
+                        break
                     continue
                 if self.source == "openalex":
                     fetched = await self.client.fetch(candidate.external_id)
@@ -305,6 +336,7 @@ class CorpusPilot:
                 if fetched.status != SourceStatus.OK or not source_documents:
                     counts.errors += 1
                     counts.failed += 1
+                    counts.fatal_errors += 1
                     self._event(
                         "fetch_failed", work_id=candidate.external_id, error=fetched.error_code
                     )
@@ -343,7 +375,12 @@ class CorpusPilot:
                             cursor=page_cursor, completed=sorted(completed), counts=asdict(counts)
                         )
                         checkpoint.save()
+                    if only_work_id is not None:
+                        target_work_done = True
+                        break
                     continue
+                counts.eligible += 1
+                completed_work += 1
                 normalized = (
                     from_openalex(source_document)
                     if self.source == "openalex"
@@ -352,7 +389,6 @@ class CorpusPilot:
                 counts.normalized += 1
                 if dry_run:
                     counts.previewed += 1
-                    completed_work += 1
                     if checkpoint:
                         checkpoint.state.update(
                             cursor=page_cursor, completed=sorted(completed), counts=asdict(counts)
@@ -364,6 +400,9 @@ class CorpusPilot:
                         title=title,
                         counts=asdict(counts),
                     )
+                    if only_work_id is not None:
+                        target_work_done = True
+                        break
                     continue
                 started = time.monotonic()
                 failed_at = "postgres_ingestion"
@@ -384,13 +423,20 @@ class CorpusPilot:
                             request_id=f"{self.run_id}:{source_document.external_id}:qdrant",
                         )
                     counts.qdrant_indexed += 1
+                    counts.qdrant_points += point_count
                     qdrant_version = ("qdrant-indexer-v1", self.qdrant.spec.projection_version)
                     failed_at = "graph_extraction_neo4j_projection"
+                    graph_started = time.monotonic()
                     graph_result = await self.graph_index.index_revision(
                         revision_id,
                         request_id=f"{self.run_id}:{source_document.external_id}:graph",
                     )
+                    graph_seconds = time.monotonic() - graph_started
                     counts.graph_processed += 1
+                    extraction_seconds = float(getattr(graph_result, "extraction_seconds", 0.0))
+                    extraction_splits = int(getattr(graph_result, "extraction_splits", 0))
+                    counts.graph_extraction_seconds += extraction_seconds
+                    counts.graph_extraction_splits += extraction_splits
                     expected = {
                         "qdrant": qdrant_version,
                         "domain_graph": (
@@ -422,10 +468,14 @@ class CorpusPilot:
                             "required index acknowledgements did not activate revision"
                         )
                     counts.ingested += 1
-                    completed_work += 1
+                    if created:
+                        counts.new_revisions += 1
+                    else:
+                        counts.reused_revisions += 1
                     counts.indexed += 1
                     counts.activated += 1
                     counts.graph_projected += 1
+                    counts.graph_facts += graph_result.fact_count
                     completed.add(source_document.external_id)
                     if checkpoint:
                         checkpoint.state.update(
@@ -442,13 +492,39 @@ class CorpusPilot:
                         new_revision=created,
                         chunks=point_count,
                         graph_facts=graph_result.fact_count,
+                        graph_seconds=round(graph_seconds, 3),
+                        graph_extraction_seconds=extraction_seconds,
+                        extraction_splits=extraction_splits,
                         activated=activated,
                         seconds=round(time.monotonic() - started, 3),
                         counts=asdict(counts),
                     )
+                    if only_work_id is not None:
+                        target_work_done = True
+                        break
                 except Exception as exc:  # record safe exception type; source text is never logged
                     counts.errors += 1
                     counts.failed += 1
+                    localized = (
+                        failed_at == "graph_extraction_neo4j_projection"
+                        and isinstance(exc, InferenceProtocolError | GraphExtractionError)
+                    )
+                    fatal = (
+                        not localized
+                        or isinstance(exc, SQLAlchemyError | httpx.HTTPError)
+                        or type(exc).__module__.startswith("neo4j")
+                    )
+                    if fatal:
+                        counts.fatal_errors += 1
+                    failure = {
+                        "work_id": source_document.external_id,
+                        "stage": failed_at,
+                        "error_type": type(exc).__name__,
+                        "classification": "document_error" if localized and not fatal else "fatal",
+                    }
+                    failures = checkpoint.state.setdefault("failures", []) if checkpoint else None
+                    if failures is not None:
+                        failures.append(failure)
                     if checkpoint:
                         checkpoint.state.update(
                             cursor=page_cursor,
@@ -464,10 +540,28 @@ class CorpusPilot:
                             str(exc) if type(exc).__module__ == "app.domain.inference" else None
                         ),
                         failed_at=failed_at,
+                        classification=failure["classification"],
                         counts=asdict(counts),
                     )
+                    if fatal:
+                        halted = True
+                        break
+            if only_work_id is not None:
+                if target_work_done or halted:
+                    break
+                if next_cursor is None:
+                    counts.errors += 1
+                    counts.failed += 1
+                    self._event("target_not_found", work_id=only_work_id)
                     halted = True
                     break
+                cursor = next_cursor
+                if checkpoint:
+                    checkpoint.state.update(
+                        cursor=cursor, completed=sorted(completed), counts=asdict(counts)
+                    )
+                    checkpoint.save()
+                continue
             if halted:
                 break
             cursor = next_cursor
@@ -491,7 +585,15 @@ class CorpusPilot:
                 (counts.activated + counts.previewed) * 60 / max(counts.wall_seconds, 0.001), 2
             ),
             dry_run=dry_run,
-            status="failed" if halted or counts.errors else "completed",
+            status=(
+                "failed"
+                if halted
+                else (
+                    "completed_with_document_errors"
+                    if counts.errors > errors_at_start
+                    else "completed"
+                )
+            ),
         )
         return counts
 
@@ -533,7 +635,9 @@ def _build_runner(run_id: str, source: str) -> tuple[CorpusPilot, list[Any]]:
         provider,
         model_id=graph_config["model_id"],
         model_revision=graph_config["digest"],
+        timeout=graph_config["timeout_seconds"],
         max_output_tokens=graph_config["max_output_tokens"],
+        context_window=graph_config["context_window"],
     )
     graph_index = GraphIndexingService(sessions, graph, extractor)
     openalex = OpenAlexClient.from_environment(openalex_http)
@@ -696,6 +800,7 @@ async def _run_source(
                 checkpoint=checkpoint,
                 batch_size=args.batch_size,
                 filters=args.filter,
+                only_work_id=getattr(args, "only_work_id", None),
             )
     else:
         pilot, resources = _build_runner(run_id, source)
@@ -707,6 +812,7 @@ async def _run_source(
                 checkpoint=checkpoint,
                 batch_size=args.batch_size,
                 filters=args.filter,
+                only_work_id=getattr(args, "only_work_id", None),
             )
         finally:
             for resource in resources:
@@ -758,6 +864,8 @@ async def _run(args: argparse.Namespace) -> int:
         allocations = {sources[0]: args.max_documents}
 
     totals = RunCounts()
+    new_errors = 0
+    new_fatal_errors = 0
     identities: dict[str, Any] = {}
     for source in sources:
         checkpoint_path = Path(args.checkpoint)
@@ -765,6 +873,12 @@ async def _run(args: argparse.Namespace) -> int:
             checkpoint_path = checkpoint_path.with_name(
                 f"{checkpoint_path.stem}.{source}{checkpoint_path.suffix}"
             )
+        previous_errors = 0
+        previous_fatal_errors = 0
+        if args.resume and checkpoint_path.exists():
+            previous_state = json.loads(checkpoint_path.read_text(encoding="utf-8"))
+            previous_errors = int(previous_state.get("counts", {}).get("errors", 0))
+            previous_fatal_errors = int(previous_state.get("counts", {}).get("fatal_errors", 0))
         counts, identity, run_id = await _run_source(
             args,
             source=source,
@@ -772,16 +886,24 @@ async def _run(args: argparse.Namespace) -> int:
             checkpoint_path=checkpoint_path,
             run_id=run_id,
         )
+        new_errors += max(0, counts.errors - previous_errors)
+        new_fatal_errors += max(0, counts.fatal_errors - previous_fatal_errors)
         identities[source] = identity
         for name, value in asdict(counts).items():
             setattr(totals, name, getattr(totals, name) + value)
-    status = "failed" if totals.errors else "completed"
+    status = (
+        "failed"
+        if new_fatal_errors
+        else ("completed_with_document_errors" if new_errors else "completed")
+    )
     stats = {
         "run_id": run_id,
         "source": args.source,
         "identities": identities,
         "requested_documents": args.max_documents,
         "counts": asdict(totals),
+        "errors_this_run": new_errors,
+        "fatal_errors_this_run": new_fatal_errors,
         "docs_per_minute": round(
             (totals.activated + totals.previewed) * 60 / max(totals.wall_seconds, 0.001), 2
         ),
@@ -801,7 +923,7 @@ async def _run(args: argparse.Namespace) -> int:
                 {"stage": "stats_not_written", "reason": "dry_run_has_no_persistent_writes"}
             )
         )
-    return 1 if totals.errors else 0
+    return 1 if new_fatal_errors else 0
 
 
 def main() -> None:
@@ -816,11 +938,14 @@ def main() -> None:
     parser.add_argument("--resume", action="store_true")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--run-id")
+    parser.add_argument("--only-work-id", help="Resume only this OpenAlex work, then stop")
     args = parser.parse_args()
     if not 1 <= args.max_documents <= 100:
         parser.error("--max-documents must be between 1 and 100")
     if not 1 <= args.batch_size <= 100:
         parser.error("--batch-size must be between 1 and 100")
+    if args.only_work_id and (args.source != "openalex" or not args.resume):
+        parser.error("--only-work-id requires --source openalex and --resume")
     try:
         sys.exit(asyncio.run(_run(args)))
     except KeyboardInterrupt:
@@ -834,6 +959,8 @@ def main() -> None:
             resume_args += f" --filter {shlex.quote(args.filter)}"
         if args.run_id:
             resume_args += f" --run-id {shlex.quote(args.run_id)}"
+        if args.only_work_id:
+            resume_args += f" --only-work-id {shlex.quote(args.only_work_id)}"
         print(
             json.dumps(
                 {

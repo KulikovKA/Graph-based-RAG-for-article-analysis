@@ -10,6 +10,7 @@ import pytest
 from app.domain.inference import (
     InferenceCancelled,
     InferenceConfigurationError,
+    InferenceOutputLimit,
     InferenceProtocolError,
     InferenceTimeout,
     InferenceUnavailable,
@@ -107,6 +108,88 @@ def test_invalid_channels_and_truncation_never_expose_raw_data(
             assert "PRIVATE" not in str(error.value)
         finally:
             await client.aclose()
+
+    asyncio.run(exercise())
+
+
+def test_ollama_length_done_reason_is_a_typed_output_limit() -> None:
+    async def exercise() -> None:
+        provider, client, _ = _provider([
+            _frame(content='{"partial":'), _frame(done=True, reason="length")
+        ])
+        try:
+            with pytest.raises(InferenceOutputLimit) as error:
+                await provider.complete_json(
+                    model_id="m", prompt_version="v1", request_id="length-run",
+                    prompt="check", timeout=2, schema={"type": "object"},
+                    max_output_tokens=536,
+                )
+            assert error.value.done_reason == "length"
+            assert error.value.max_output_tokens == 536
+            assert "done_reason=length" in str(error.value)
+            assert "num_predict=536" in str(error.value)
+        finally:
+            await client.aclose()
+
+    asyncio.run(exercise())
+
+
+def test_non_length_done_reason_is_preserved_in_protocol_error() -> None:
+    async def exercise() -> None:
+        provider, client, _ = _provider([_frame(content="{}"), _frame(done=True, reason="other")])
+        try:
+            with pytest.raises(InferenceProtocolError, match="done_reason='other'"):
+                await provider.complete_json(
+                    model_id="m", prompt_version="v1", request_id="other-run",
+                    prompt="check", timeout=2, schema={"type": "object"},
+                    max_output_tokens=536,
+                )
+        finally:
+            await client.aclose()
+
+    asyncio.run(exercise())
+
+
+def test_graph_options_are_request_scoped_and_other_requests_omit_context_window() -> None:
+    async def exercise() -> None:
+        bodies: list[dict[str, Any]] = []
+        timeouts: list[float] = []
+
+        def handler(request: httpx.Request) -> httpx.Response:
+            bodies.append(json.loads(request.content))
+            frames = [_frame(content='{"ok":true}'), _frame(done=True)]
+            return httpx.Response(
+                200, text="\n".join(json.dumps(frame) for frame in frames) + "\n"
+            )
+
+        class CapturingGate:
+            async def run(self, operation, *, timeout, cancel=None):  # type: ignore[no-untyped-def]
+                timeouts.append(timeout)
+                return await operation()
+
+        async with httpx.AsyncClient(
+            base_url="http://graph-profile", transport=httpx.MockTransport(handler)
+        ) as client:
+            provider = OllamaProvider(
+                client, gate=CapturingGate(), model_revisions={"m": "digest"},
+                supported_efforts={},
+            )
+            await provider.complete_json(
+                model_id="m", prompt_version="graph-v2", request_id="graph-profile",
+                prompt="graph", timeout=300, schema={"type": "object"},
+                max_output_tokens=2048, context_window=16384,
+            )
+            await provider.complete_json(
+                model_id="m", prompt_version="planner-v1", request_id="planner-profile",
+                prompt="plan", timeout=30, schema={"type": "object"},
+                max_output_tokens=384,
+            )
+
+        assert bodies[0]["options"] == {
+            "num_predict": 2048, "temperature": 0, "num_ctx": 16384,
+        }
+        assert bodies[1]["options"] == {"num_predict": 384, "temperature": 0}
+        assert timeouts == [300, 30]
 
     asyncio.run(exercise())
 

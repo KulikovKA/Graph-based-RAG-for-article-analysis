@@ -6,11 +6,12 @@ import base64
 import hashlib
 import json
 import math
+import time
 import unicodedata
 from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import UTC, datetime
-from typing import Any, Protocol
+from typing import Any, Protocol, cast
 from uuid import UUID, uuid4
 
 from pydantic import ValidationError
@@ -24,7 +25,7 @@ from app.domain.graph import (
     GraphExtractionCandidateV2,
     GraphNodeLabel,
 )
-from app.domain.inference import InferenceProvider
+from app.domain.inference import InferenceOutputLimit, InferenceProvider
 from app.integrations.neo4j import (
     PROJECTION_VERSION,
     GraphNode,
@@ -44,6 +45,7 @@ VOCABULARY_VERSION = "technical-feature-v1"
 MIN_CONFIDENCE = 0.75
 EXTRACTION_BATCH_SIZE = 6
 MAX_TARGET_TEXT = 160
+MAX_OUTPUT_LIMIT_SPLITS = 3
 
 
 def _canonical_graph_quote(value: str) -> str:
@@ -124,6 +126,8 @@ class GraphIndexResult:
     fact_count: int
     indexer_version: str
     projection_version: str
+    extraction_seconds: float = 0.0
+    extraction_splits: int = 0
 
 
 class GraphExtractor(Protocol):
@@ -145,8 +149,15 @@ class InferenceGraphExtractor:
         model_revision: str,
         timeout: float = 90,
         max_output_tokens: int = 384,
+        context_window: int | None = None,
     ) -> None:
-        if not model_id or not model_revision or timeout <= 0 or max_output_tokens < 1:
+        if (
+            not model_id
+            or not model_revision
+            or timeout <= 0
+            or max_output_tokens < 1
+            or (context_window is not None and context_window < 1)
+        ):
             raise ValueError("invalid graph extractor configuration")
         self.provider = provider
         self.model_id = model_id
@@ -155,11 +166,16 @@ class InferenceGraphExtractor:
             raise ValueError("graph extractor version is too long")
         self.timeout = timeout
         self.max_output_tokens = max_output_tokens
+        self.context_window = context_window
+        self.last_split_count = 0
 
     async def extract(self, chunks: Sequence[GraphChunk], *, request_id: str) -> list[object]:
         facts: list[object] = []
-        for start in range(0, len(chunks), EXTRACTION_BATCH_SIZE):
-            batch = chunks[start : start + EXTRACTION_BATCH_SIZE]
+        self.last_split_count = 0
+
+        async def extract_batch(
+            batch: Sequence[GraphChunk], *, batch_request_id: str, split_depth: int
+        ) -> list[object]:
             payload = [
                 {
                     "evidence_chunk_id": str(chunk.id),
@@ -179,19 +195,48 @@ class InferenceGraphExtractor:
                 "directly supported.\n"
                 f"Chunks JSON: {json.dumps(payload, ensure_ascii=False, separators=(',', ':'))}"
             )
-            result = await self.provider.complete_json(
-                model_id=self.model_id,
-                prompt_version="graph-extraction-v2",
-                request_id=f"{request_id}:graph:{start // EXTRACTION_BATCH_SIZE}",
-                prompt=prompt,
-                timeout=self.timeout,
-                schema=GRAPH_EXTRACTION_SCHEMA_V2,
-                max_output_tokens=self.max_output_tokens,
-            )
+            try:
+                result = await self.provider.complete_json(
+                    model_id=self.model_id,
+                    prompt_version="graph-extraction-v2",
+                    request_id=batch_request_id,
+                    prompt=prompt,
+                    timeout=self.timeout,
+                    schema=GRAPH_EXTRACTION_SCHEMA_V2,
+                    max_output_tokens=self.max_output_tokens,
+                    context_window=self.context_window,
+                )
+            except InferenceOutputLimit:
+                if len(batch) <= 1 or split_depth >= MAX_OUTPUT_LIMIT_SPLITS:
+                    raise
+                self.last_split_count += 1
+                midpoint = len(batch) // 2
+                left = await extract_batch(
+                    batch[:midpoint],
+                    batch_request_id=f"{batch_request_id}:split-{split_depth + 1}-a",
+                    split_depth=split_depth + 1,
+                )
+                right = await extract_batch(
+                    batch[midpoint:],
+                    batch_request_id=f"{batch_request_id}:split-{split_depth + 1}-b",
+                    split_depth=split_depth + 1,
+                )
+                return [*left, *right]
+
             batch_facts = result.value.get("facts")
             if not isinstance(batch_facts, list) or len(batch_facts) > 32:
                 raise GraphExtractionError("invalid graph extraction envelope")
-            facts.extend(enrich_graph_candidates(batch, batch_facts))
+            return cast(list[object], enrich_graph_candidates(batch, batch_facts))
+
+        for start in range(0, len(chunks), EXTRACTION_BATCH_SIZE):
+            batch = chunks[start : start + EXTRACTION_BATCH_SIZE]
+            facts.extend(
+                await extract_batch(
+                    batch,
+                    batch_request_id=f"{request_id}:graph:{start // EXTRACTION_BATCH_SIZE}",
+                    split_depth=0,
+                )
+            )
         return facts
 
 
@@ -556,8 +601,13 @@ class GraphIndexingService:
                 GraphExtractionState,
                 (revision_id, self.extractor_version, self.vocabulary_version),
             )
+        extraction_seconds = 0.0
+        extraction_splits = 0
         if state is None:
+            extraction_started = time.monotonic()
             raw_facts = await self.extractor.extract(revision.chunks, request_id=request_id)
+            extraction_seconds = time.monotonic() - extraction_started
+            extraction_splits = int(getattr(self.extractor, "last_split_count", 0))
             if not isinstance(raw_facts, list):
                 raise GraphExtractionError("invalid graph extraction result")
             validated = self._validated_facts(revision, raw_facts)
@@ -574,6 +624,8 @@ class GraphIndexingService:
             fact_count=count,
             indexer_version=self.extractor_version,
             projection_version=PROJECTION_VERSION,
+            extraction_seconds=round(extraction_seconds, 3),
+            extraction_splits=extraction_splits,
         )
 
     async def remove_revision(self, revision_id: UUID) -> None:

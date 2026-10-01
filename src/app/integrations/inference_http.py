@@ -13,6 +13,7 @@ from app.domain.inference import (
     InferenceCancelled,
     InferenceConfigurationError,
     InferenceMetadata,
+    InferenceOutputLimit,
     InferenceProtocolError,
     InferenceTimeout,
     InferenceUnavailable,
@@ -116,10 +117,13 @@ class OllamaProvider:
     async def _generate(
         self, *, model_id: str, prompt: str, schema: dict[str, Any] | None,
         max_output_tokens: int, effort: ReasoningEffort,
+        context_window: int | None = None,
         on_content: Callable[[str], Awaitable[None]] | None = None,
     ) -> tuple[list[str], InferenceMetadata]:
         think = self._effort(model_id, effort)
-        if max_output_tokens < 1 or not prompt:
+        if max_output_tokens < 1 or not prompt or (
+            context_window is not None and context_window < 1
+        ):
             raise InferenceConfigurationError("invalid generation request")
         body: dict[str, Any] = {
             "model": model_id, "messages": [{"role": "user", "content": prompt}],
@@ -127,6 +131,8 @@ class OllamaProvider:
             "options": {"num_predict": max_output_tokens,
                         "temperature": 0 if schema is not None else 0.2},
         }
+        if context_window is not None:
+            body["options"]["num_ctx"] = context_window
         if schema is not None:
             body["format"] = schema
         if think is not None:
@@ -161,7 +167,12 @@ class OllamaProvider:
             raise InferenceProtocolError("provider output was truncated")
         reason = terminal.get("done_reason")
         if reason != "stop":
-            raise InferenceProtocolError("provider output did not finish")
+            if reason == "length":
+                raise InferenceOutputLimit(max_output_tokens=max_output_tokens)
+            visible_reason = repr(reason)[:64]
+            raise InferenceProtocolError(
+                f"Ollama generation did not finish (done_reason={visible_reason})"
+            )
         total_ms = (time.monotonic() - started) * 1000
         load_ms = terminal.get("load_duration")
         eval_count = terminal.get("eval_count")
@@ -188,6 +199,7 @@ class OllamaProvider:
     async def complete_json(
         self, *, model_id: str, prompt_version: str, request_id: str, prompt: str,
         timeout: float, schema: dict[str, Any], max_output_tokens: int,
+        context_window: int | None = None,
         reasoning_effort: ReasoningEffort = "default",
         cancel: asyncio.Event | None = None,
     ) -> JsonResult:
@@ -196,7 +208,8 @@ class OllamaProvider:
         async def operation() -> tuple[list[str], InferenceMetadata]:
             return await self._generate(model_id=model_id, prompt=prompt, schema=schema,
                                         max_output_tokens=max_output_tokens,
-                                        effort=reasoning_effort)
+                                        effort=reasoning_effort,
+                                        context_window=context_window)
 
         pieces, metadata = await self.gate.run(operation, timeout=timeout, cancel=cancel)
         try:

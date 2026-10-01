@@ -9,6 +9,7 @@ from uuid import uuid4
 import scripts.corpus_backfill as backfill
 from scripts.corpus_backfill import Checkpoint, CorpusPilot, RunCounts
 
+from app.domain.inference import InferenceProtocolError
 from app.domain.source import SourceStatus
 
 
@@ -211,7 +212,7 @@ def test_source_all_without_epo_credentials_falls_back_to_openalex(
     assert '"source": "epo"' in capsys.readouterr().out
 
 
-def test_runner_passes_configured_graph_output_limit_to_extractor(monkeypatch) -> None:  # type: ignore[no-untyped-def]
+def test_runner_passes_configured_graph_profile_to_extractor(monkeypatch) -> None:  # type: ignore[no-untyped-def]
     monkeypatch.setenv("DATABASE_URL", "postgresql://local:local@127.0.0.1/article_analysis")
     monkeypatch.setenv("QDRANT_URL", "http://127.0.0.1:6333")
     monkeypatch.setenv("NEO4J_PASSWORD", "local-test-only")
@@ -219,7 +220,10 @@ def test_runner_passes_configured_graph_output_limit_to_extractor(monkeypatch) -
     monkeypatch.setenv("MODEL_CONFIG_PATH", "config/models.yaml")
     pilot, resources = backfill._build_runner("token-limit-test", "openalex")
     try:
-        assert pilot.graph_index.extractor.max_output_tokens == 536
+        extractor = pilot.graph_index.extractor
+        assert extractor.max_output_tokens == 2048
+        assert extractor.context_window == 16384
+        assert extractor.timeout == 300
     finally:
         async def close_resources() -> None:
             for resource in resources:
@@ -306,3 +310,177 @@ def test_repeated_run_reuses_revision_and_index_projections(monkeypatch) -> None
     assert len(revisions) == len(qdrant_points) == len(graph_projections) == 1
     completions = [event for event in events if event["stage"] == "document_complete"]
     assert [event["new_revision"] for event in completions] == [True, False]
+
+
+def test_checkpoint_resume_retries_only_incomplete_document_and_is_idempotent(
+    monkeypatch, tmp_path
+) -> None:  # type: ignore[no-untyped-def]
+    client = FakeOpenAlex([_work("W1"), _work("W2")])
+    revision_ids = {work.external_id: uuid4() for work in client.works}
+    points: set[object] = set()
+    graph_edges: set[object] = set()
+    ack_calls: list[tuple[object, str]] = []
+    events: list[dict[str, object]] = []
+    fail_second_graph_projection = True
+
+    class Sessions:
+        def begin(self) -> object:
+            return nullcontext(object())
+
+        def __call__(self) -> object:
+            return nullcontext(object())
+
+    class Ingestion:
+        def __init__(self, _session: object) -> None:
+            pass
+
+        def ingest(self, document: object) -> tuple[SimpleNamespace, bool]:
+            work_id = document.external_id  # type: ignore[attr-defined]
+            return SimpleNamespace(id=revision_ids[work_id]), False
+
+        def acknowledge(
+            self, revision: object, *, backend: str, **_kwargs: object
+        ) -> bool:
+            ack_calls.append((revision, backend))
+            return backend == "domain_graph"
+
+    class Indexing:
+        def __init__(self, _session: object, _qdrant: object, _embedder: object) -> None:
+            pass
+
+        async def index_revision(self, revision: object, *, request_id: str) -> int:
+            points.add(revision)
+            return 1
+
+    class Graph:
+        async def index_revision(self, revision: object, *, request_id: str) -> SimpleNamespace:
+            nonlocal fail_second_graph_projection
+            if revision == revision_ids["W2"] and fail_second_graph_projection:
+                fail_second_graph_projection = False
+                raise RuntimeError("simulated interrupted graph projection")
+            graph_edges.add(revision)
+            return SimpleNamespace(
+                fact_count=1,
+                indexer_version="graph-v1",
+                projection_version="graph-projection-v1",
+            )
+
+    monkeypatch.setattr(backfill, "IngestionService", Ingestion)
+    monkeypatch.setattr(backfill, "IndexingService", Indexing)
+    monkeypatch.setattr(backfill, "from_openalex", lambda value: value)
+    identity = {"query": "graphene gas sensor", "graph_output_tokens": 2048}
+    checkpoint_path = tmp_path / "resume.json"
+    checkpoint = Checkpoint(checkpoint_path, identity)
+    checkpoint.load(resume=False, run_id="resume-run")
+
+    def make_pilot() -> CorpusPilot:
+        return CorpusPilot(
+            client=client,
+            session_factory=Sessions(),
+            qdrant=SimpleNamespace(spec=SimpleNamespace(projection_version="embedding-v1")),
+            embedder=object(),
+            graph_index=Graph(),
+            run_id="resume-run",
+            emit=events.append,
+        )
+
+    first = asyncio.run(
+        make_pilot().run(query="graphene gas sensor", max_documents=2, dry_run=False,
+                         checkpoint=checkpoint)
+    )
+    assert first.ingested == 1
+    assert first.failed == 1
+    assert events[-1]["status"] == "failed"
+
+    resumed_checkpoint = Checkpoint(checkpoint_path, identity)
+    resumed_checkpoint.load(resume=True, run_id=None)
+    resumed = asyncio.run(
+        make_pilot().run(query="graphene gas sensor", max_documents=2, dry_run=False,
+                         checkpoint=resumed_checkpoint, only_work_id="W2")
+    )
+
+    assert client.fetch_calls == ["W1", "W2", "W2"]
+    assert resumed.ingested == 2
+    assert len(points) == len(graph_edges) == 2
+    assert [backend for _revision, backend in ack_calls] == [
+        "qdrant", "domain_graph", "qdrant", "domain_graph"
+    ]
+    assert events[-1]["status"] == "completed"
+
+
+def test_local_graph_protocol_failure_is_checkpointed_and_pilot_continues(
+    monkeypatch, tmp_path
+) -> None:  # type: ignore[no-untyped-def]
+    client = FakeOpenAlex([_work("W1"), _work("W2")])
+    revisions = {work.external_id: uuid4() for work in client.works}
+    events: list[dict[str, object]] = []
+
+    class Sessions:
+        def begin(self) -> object:
+            return nullcontext(object())
+
+        def __call__(self) -> object:
+            return nullcontext(object())
+
+    class Ingestion:
+        def __init__(self, _session: object) -> None:
+            pass
+
+        def ingest(self, document: object) -> tuple[SimpleNamespace, bool]:
+            work_id = document.external_id  # type: ignore[attr-defined]
+            return SimpleNamespace(id=revisions[work_id]), True
+
+        def acknowledge(self, _revision: object, *, backend: str, **_kwargs: object) -> bool:
+            return backend == "domain_graph"
+
+    class Indexing:
+        def __init__(self, _session: object, _qdrant: object, _embedder: object) -> None:
+            pass
+
+        async def index_revision(self, _revision: object, *, request_id: str) -> int:
+            return 1
+
+    class Graph:
+        async def index_revision(self, revision: object, *, request_id: str) -> SimpleNamespace:
+            if revision == revisions["W1"]:
+                raise InferenceProtocolError("malformed model response")
+            return SimpleNamespace(
+                fact_count=1,
+                indexer_version="graph-v1",
+                projection_version="graph-projection-v1",
+            )
+
+    monkeypatch.setattr(backfill, "IngestionService", Ingestion)
+    monkeypatch.setattr(backfill, "IndexingService", Indexing)
+    monkeypatch.setattr(backfill, "from_openalex", lambda value: value)
+    checkpoint_path = tmp_path / "localized.json"
+    checkpoint = Checkpoint(checkpoint_path, {"query": "q"})
+    checkpoint.load(resume=False, run_id="localized-run")
+    pilot = CorpusPilot(
+        client=client,
+        session_factory=Sessions(),
+        qdrant=SimpleNamespace(spec=SimpleNamespace(projection_version="embedding-v1")),
+        embedder=object(),
+        graph_index=Graph(),
+        run_id="localized-run",
+        emit=events.append,
+    )
+
+    result = asyncio.run(
+        pilot.run(query="q", max_documents=2, dry_run=False, checkpoint=checkpoint)
+    )
+
+    assert client.fetch_calls == ["W1", "W2"]
+    assert result.eligible == 2
+    assert result.activated == 1
+    assert result.failed == 1
+    assert result.fatal_errors == 0
+    assert checkpoint.state["failures"] == [
+        {
+            "work_id": "W1",
+            "stage": "graph_extraction_neo4j_projection",
+            "error_type": "InferenceProtocolError",
+            "classification": "document_error",
+        }
+    ]
+    assert events[-1]["status"] == "completed_with_document_errors"

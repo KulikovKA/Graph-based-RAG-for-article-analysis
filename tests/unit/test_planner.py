@@ -248,6 +248,12 @@ def test_two_invalid_responses_fall_back_without_patch() -> None:
     assert apply_patch(result.plan, CONTEXT) == IDEA
 
 
+def test_planner_does_not_receive_graph_context_window() -> None:
+    _result, calls = run_planner([json.dumps(model_payload())])
+    assert len(calls) == 1
+    assert "num_ctx" not in calls[0]["options"]
+
+
 def test_provider_unavailable_no_repair() -> None:
     result, calls = run_planner(["private provider error"], status=503)
     assert result.plan.intent == "clarify" and len(calls) == 1

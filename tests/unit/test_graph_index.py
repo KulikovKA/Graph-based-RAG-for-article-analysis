@@ -140,6 +140,112 @@ def test_extractor_v2_accepts_semantic_draft_without_model_offsets() -> None:
     assert "span_start/span_end" not in provider.kwargs["prompt"]
 
 
+def test_graph_extractor_splits_a_truncated_six_chunk_batch_and_recovers() -> None:
+    import asyncio
+    import json
+
+    from app.domain.inference import InferenceOutputLimit
+    from app.services.graph_index import InferenceGraphExtractor
+
+    class Provider:
+        def __init__(self) -> None:
+            self.calls: list[tuple[int, str, int, int | None, float]] = []
+
+        async def complete_json(self, **kwargs):  # type: ignore[no-untyped-def]
+            chunks_json = kwargs["prompt"].split("Chunks JSON: ", 1)[1]
+            chunk_count = len(json.loads(chunks_json))
+            self.calls.append((
+                chunk_count, kwargs["request_id"], kwargs["max_output_tokens"],
+                kwargs["context_window"], kwargs["timeout"],
+            ))
+            if chunk_count == 6:
+                raise InferenceOutputLimit(max_output_tokens=kwargs["max_output_tokens"])
+            return SimpleNamespace(value={"facts": []})
+
+    provider = Provider()
+    chunks = tuple(
+        GraphChunk(uuid4(), "abstract", f"Evidence text for chunk {index}.")
+        for index in range(6)
+    )
+    extractor = InferenceGraphExtractor(
+        provider, model_id="fixture", model_revision="digest", max_output_tokens=2048,
+        context_window=16384, timeout=300,
+    )
+
+    result = asyncio.run(extractor.extract(chunks, request_id="split-run"))
+
+    assert result == []
+    assert [call[0] for call in provider.calls] == [6, 3, 3]
+    assert len({call[1] for call in provider.calls}) == 3
+    assert {call[2] for call in provider.calls} == {2048}
+    assert {call[3] for call in provider.calls} == {16384}
+    assert {call[4] for call in provider.calls} == {300}
+
+
+def test_graph_extractor_single_chunk_truncation_is_a_controlled_failure() -> None:
+    import asyncio
+    import json
+
+    import pytest
+
+    from app.domain.inference import InferenceOutputLimit
+    from app.services.graph_index import InferenceGraphExtractor
+
+    class Provider:
+        def __init__(self) -> None:
+            self.batch_sizes: list[int] = []
+
+        async def complete_json(self, **kwargs):  # type: ignore[no-untyped-def]
+            chunks_json = kwargs["prompt"].split("Chunks JSON: ", 1)[1]
+            self.batch_sizes.append(len(json.loads(chunks_json)))
+            raise InferenceOutputLimit(max_output_tokens=kwargs["max_output_tokens"])
+
+    provider = Provider()
+    chunks = tuple(
+        GraphChunk(uuid4(), "abstract", f"Evidence text for chunk {index}.")
+        for index in range(6)
+    )
+    extractor = InferenceGraphExtractor(
+        provider, model_id="fixture", model_revision="digest", max_output_tokens=2048,
+        context_window=16384, timeout=300,
+    )
+
+    with pytest.raises(InferenceOutputLimit) as error:
+        asyncio.run(extractor.extract(chunks, request_id="single-fail"))
+
+    assert error.value.done_reason == "length"
+    assert provider.batch_sizes == [6, 3, 1]
+
+
+def test_graph_extractor_does_not_retry_other_protocol_errors() -> None:
+    import asyncio
+
+    import pytest
+
+    from app.domain.inference import InferenceProtocolError
+    from app.services.graph_index import InferenceGraphExtractor
+
+    class Provider:
+        calls = 0
+
+        async def complete_json(self, **_kwargs):  # type: ignore[no-untyped-def]
+            self.calls += 1
+            raise InferenceProtocolError("invalid provider channel")
+
+    provider = Provider()
+    extractor = InferenceGraphExtractor(provider, model_id="fixture", model_revision="digest")
+
+    with pytest.raises(InferenceProtocolError, match="invalid provider channel"):
+        asyncio.run(
+            extractor.extract(
+                (GraphChunk(uuid4(), "abstract", "One evidence chunk."),),
+                request_id="protocol-fail",
+            )
+        )
+
+    assert provider.calls == 1
+
+
 def test_same_text_in_different_revisions_gets_distinct_provenance_keys() -> None:
     first = _revision()
     second = GraphRevision(
