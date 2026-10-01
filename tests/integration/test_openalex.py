@@ -88,6 +88,7 @@ def test_search_cursor_and_repeat_fetch_are_idempotent() -> None:
             assert request.url.params["per_page"] == "1"
             cursor = request.url.params["cursor"]
             if cursor == "*":
+                assert request.url.params["filter"] == "from_publication_date:2024-01-01"
                 return httpx.Response(
                     200,
                     json={
@@ -112,7 +113,11 @@ def test_search_cursor_and_repeat_fetch_are_idempotent() -> None:
             adapter = OpenAlexClient(
                 http, api_key="example-key", clock=clock.clock, sleep=clock.sleep
             )
-            first = await adapter.search("graph retrieval", per_page=1)
+            first = await adapter.search(
+                "graph retrieval",
+                per_page=1,
+                filters="from_publication_date:2024-01-01",
+            )
             assert first.status == SourceStatus.OK
             assert first.total_count == 2
             assert first.next_cursor == "cursor-two"

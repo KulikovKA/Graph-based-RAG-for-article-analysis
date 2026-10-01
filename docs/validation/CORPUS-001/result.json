@@ -1,0 +1,71 @@
+{
+  "status": "in_progress_blocked_before_pilot",
+  "baseline_sha": "a2000abec910f08529fe367ea798ffd4507792a2",
+  "requested_pilot": {
+    "sources": ["openalex"],
+    "query": "graphene gas sensor",
+    "max_documents": 100
+  },
+  "current_dry_run": {
+    "run_id": "corpus-20261001T195613Z-dc5dd65d",
+    "source": "openalex",
+    "query": "graphene gas sensor",
+    "requested_documents": 100,
+    "fetched": 0,
+    "skipped": 0,
+    "ingested": 0,
+    "indexed": 0,
+    "graph_projected": 0,
+    "errors": 1,
+    "error_category": "network_error",
+    "writes_performed": false,
+    "checkpoint_identity_sha256": "2a213158ec554fc1de6657a6bf4a290a920faa21cb9752e045b7def6bc930528"
+  },
+  "runtime_preflight": {
+    "required_environment_variables_present": false,
+    "dotenv_file_present": false,
+    "docker_daemon_accessible": false,
+    "epo_credentials_present": false
+  },
+  "prior_micro10": {
+    "artifact": "micro10/result.json",
+    "classification": "exploratory_smoke_not_acceptance",
+    "fetched": 16,
+    "skipped": 8,
+    "ingested": 8,
+    "qdrant_indexed": 7,
+    "graph_projected": 7,
+    "failures": 1,
+    "failure_reason": "graph extractor response truncated at prior 384-token output limit",
+    "idempotency": "no duplicates observed for seven fully projected revisions"
+  },
+  "production_configuration": {
+    "graph_extractor_model": "qwen3.5:4b-q4_K_M",
+    "graph_extractor_digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+    "graph_extractor_version": "graph-extraction-v2",
+    "max_output_tokens": 536,
+    "embedding_model": "qwen3-embedding:0.6b",
+    "embedding_digest": "ac6da0dfba84a81fdbfbaf330198c33cd77c4cdfc53e8bc50eb581914a15621d",
+    "embedding_dimension": 1024
+  },
+  "checks": {
+    "targeted_tests": "passed",
+    "full_pytest": "passed",
+    "ruff": "passed",
+    "mypy_runner_and_openalex_adapter": "passed",
+    "whole_src_mypy": "blocked by missing optional torch/transformers/tokenizers dependencies and pre-existing unused ignore comments"
+  },
+  "missing_acceptance_evidence": [
+    "EPO source mode and source=all",
+    "100-document real pilot",
+    "checkpoint crash/restart integration against production stores",
+    "Qdrant and Neo4j corpus statistics",
+    "PostgreSQL run-scoped statistics",
+    "30-edge provenance audit",
+    "rejected graph candidate reason counts",
+    "successful second idempotency run",
+    "measured write-run retries, failures, latency, throughput",
+    "commit and push verification"
+  ],
+  "corpus_001": "open"
+}

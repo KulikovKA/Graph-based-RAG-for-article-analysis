@@ -1,0 +1,27 @@
+# Optional host-launched helper. The runner joins the private data network and
+# the outbound network only to reach the local inference server and OpenAlex.
+services:
+  corpus-runner:
+    build: { context: ., dockerfile: docker/Dockerfile.api }
+    image: article-analysis-api:local
+    profiles: [tools]
+    entrypoint: ["python", "/workspace/scripts/corpus_backfill.py"]
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-article_app}:${POSTGRES_PASSWORD:-local-dev-only-change-me}@postgres:5432/${POSTGRES_DB:-article_analysis}
+      QDRANT_URL: http://qdrant:6333
+      NEO4J_URI: bolt://neo4j:7687
+      NEO4J_USER: neo4j
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD:-local-dev-only-change-me}
+      INFERENCE_BASE_URL: http://host.docker.internal:11434
+      MODEL_CONFIG_PATH: /workspace/config/models.yaml
+      OPENALEX_API_KEY: ${OPENALEX_API_KEY:-}
+      PYTHONPATH: /workspace/src
+      PYTHONDONTWRITEBYTECODE: "1"
+    volumes:
+      - ./scripts:/workspace/scripts:ro
+      - ./src:/workspace/src:ro
+      - ./config:/workspace/config:ro
+      - ./migrations:/workspace/migrations:ro
+    working_dir: /workspace
+    networks: [backend, egress]
+    restart: "no"

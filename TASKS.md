@@ -132,7 +132,7 @@ flowchart LR
 | LLM-002 | Выбор локальных весов и CPU smoke | P0 | Sol / High | LLM-001 | выполнена |
 | LLM-003 | Сравнение inference-конфигураций и выбор production-моделей | P0 | Sol / High | PLAN-001,ANALYST-001,GRAPH-001 | выполнена |
 | LLM-005 | Relation classifier для Analyst и условный redesign pipeline | P0 | Sol / High | LLM-004,ANALYST-001 | выполнена |
-| CORPUS-001 | Initial corpus backfill EPO/OpenAlex | P0 | Sol / High | ING-001,IDX-001,GRAPH-001,LLM-003 | ожидает |
+| CORPUS-001 | Initial corpus backfill EPO/OpenAlex | P0 | Sol / High | ING-001,IDX-001,GRAPH-001,LLM-003 | в работе |
 | PLAN-001 | 5 Planner | P0 | Sol / High | LLM-001,DB-002 | выполнена |
 | STATE-001 | 8 Memory/cache | P0 | Sol / Medium | DB-002 | выполнена |
 | RET-001 | 6 Retrieval | P0 | Sol / High | IDX-001,GRAPH-001 | выполнена |
@@ -358,6 +358,8 @@ flowchart LR
 - **Результат (2026-10-01):** Phase A завершена на `tev1:4b` (15/18, 0 ошибок, ниже gate 17/18); Phase B не запускалась, production pipeline/config/inventory не менялись. Артефакты и полный разбор: [LLM-005](docs/validation/LLM-005/README.md). Целевая unit-тест-группа, полный `pytest -q`, интеграционные тесты и Ruff прошли; service-gated интеграции пропущены при незаданном TEST URL.
 
 ### CORPUS-001 — Initial corpus backfill EPO/OpenAlex
+
+- **Current result (2026-10-01):** production-path OpenAlex runner, atomic checkpoint/resume identity validation, passthrough filters, dry-run, stats output, progress, and 536-token graph output limit are in progress. Full `pytest -q` and Ruff pass; mypy passes for the runner/OpenAlex adapter. The 100-document pilot was not run: OpenAlex dry-run returned `network_error`; runtime credentials and Docker daemon are unavailable. EPO and `all` runner modes, store-backed restart tests, graph/DB audits, and pilot remain open. See [validation report](docs/validation/CORPUS-001/README.md) and [result](docs/validation/CORPUS-001/result.json).
 
 - **Цель/зачем:** воспроизводимо и возобновляемо наполнить `EPO/OpenAlex → PostgreSQL → Qdrant + Neo4j` после фиксации production-моделей в LLM-003.
 - **Depends / priority:** ING-001,IDX-001,GRAPH-001,LLM-003; P0. ING/IDX оставлены явными как входы loader и обязательного двухиндексного gate, хотя GRAPH-001 достигает их транзитивно. JOB/API/UI, LR-001 и EVAL-001/002 не блокируют построение корпуса. **Files (будущая реализация):** scripts/ или src/app/workers/ для bulk loader, config/ для профиля запуска, tests/integration/ для restart/index gates, docs/validation/CORPUS-001/ для runbook/статистики. **References:** docs/ARCHITECTURE.md, docs/DATA_MODEL.md, source adapters SRC-001/002, ingestion/indexing/graph services, решение docs/validation/LLM-003/.

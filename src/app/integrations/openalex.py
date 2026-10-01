@@ -316,7 +316,7 @@ class OpenAlexClient:
             raise ValueError("invalid JSON") from exc
 
     async def search(
-        self, query: str, *, per_page: int = 25, cursor: str = "*"
+        self, query: str, *, per_page: int = 25, cursor: str = "*", filters: str | None = None
     ) -> WorkResult:
         if not query.strip() or len(query) > 2000:
             raise ValueError("query must contain 1-2000 characters")
@@ -324,9 +324,14 @@ class OpenAlexClient:
             raise ValueError("per_page must be between 1 and 100")
         if not cursor or len(cursor) > 4096:
             raise ValueError("invalid cursor")
+        if filters is not None and (not filters.strip() or len(filters) > 2000):
+            raise ValueError("filter must contain 1-2000 characters")
+        params = {"search": query.strip(), "per_page": str(per_page), "cursor": cursor}
+        if filters:
+            params["filter"] = filters.strip()
         response = await self._get(
             "/works",
-            params={"search": query.strip(), "per_page": str(per_page), "cursor": cursor},
+            params=params,
         )
         if isinstance(response, _Failure):
             return WorkResult(

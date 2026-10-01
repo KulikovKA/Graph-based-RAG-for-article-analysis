@@ -1,0 +1,258 @@
+{
+  "classification": "exploratory_smoke_not_CORPUS-001_acceptance",
+  "status": "partial_run_stopped_on_graph_output_truncation",
+  "baseline_sha": "79e14b6b6e13b293c9a2dd60b9b19d362a0df152",
+  "local_head_sha": "79e14b6b6e13b293c9a2dd60b9b19d362a0df152",
+  "origin_main_sha": "79e14b6b6e13b293c9a2dd60b9b19d362a0df152",
+  "query": "graphene gas sensor",
+  "requested_documents": 10,
+  "dry_run": {
+    "run_id": "micro10-20261001T131151Z-8fe86f36",
+    "fetched": 20,
+    "skipped": 10,
+    "eligible": 10,
+    "ingested": 0,
+    "indexed": 0,
+    "graph_projected": 0,
+    "errors": 0,
+    "note": "Search results changed before the write run; the authoritative write-run IDs are listed below."
+  },
+  "write_run": {
+    "run_id": "micro10-final-20261001",
+    "rerun_id": "micro10-rerun-20261001",
+    "fetched": 16,
+    "skipped": 8,
+    "ingested": 8,
+    "indexed": 7,
+    "graph_projected": 7,
+    "errors": 1,
+    "failure": {
+      "work_id": "W2922177019",
+      "stage": "graph_extraction_neo4j_projection",
+      "error": "InferenceProtocolError",
+      "detail": "provider output did not finish",
+      "reason": "The Qwen Graph response ended at the configured 384-token output limit before a complete JSON result. No facts or graph ACK were written for this work."
+    }
+  },
+  "documents": [
+    {
+      "id": "W2076475450",
+      "title": "Graphene-based gas sensors",
+      "url": "https://openalex.org/W2076475450",
+      "revision_id": "c3cd4135-33ed-473f-a24d-9c3bf736b0e9",
+      "chunks": 1,
+      "graph_facts": 0,
+      "write_status": "indexed_and_graph_projected",
+      "rerun_new_revision": false
+    },
+    {
+      "id": "W1276751773",
+      "title": "Self-Activated Transparent All-Graphene Gas Sensor with Endurance to Humidity and Mechanical Bending",
+      "url": "https://openalex.org/W1276751773",
+      "revision_id": "978dce12-735d-431e-be83-362972cddcd6",
+      "chunks": 1,
+      "graph_facts": 6,
+      "write_status": "indexed_and_graph_projected",
+      "rerun_new_revision": false
+    },
+    {
+      "id": "W2752122312",
+      "title": "Flexible Graphene-Based Wearable Gas and Chemical Sensors",
+      "url": "https://openalex.org/W2752122312",
+      "revision_id": "5d78f622-9582-4379-86bc-349d581c6c09",
+      "chunks": 2,
+      "graph_facts": 7,
+      "write_status": "indexed_and_graph_projected",
+      "rerun_new_revision": false
+    },
+    {
+      "id": "W2127824358",
+      "title": "Reduced graphene oxide for room-temperature gas sensors",
+      "url": "https://openalex.org/W2127824358",
+      "revision_id": "608b8803-0460-4606-a870-e3251f1c2146",
+      "chunks": 1,
+      "graph_facts": 3,
+      "write_status": "indexed_and_graph_projected",
+      "rerun_new_revision": false
+    },
+    {
+      "id": "W4210343955",
+      "title": "Ultrasensitive N-Channel Graphene Gas Sensors by Nondestructive Molecular Doping",
+      "url": "https://openalex.org/W4210343955",
+      "revision_id": "85c8c16f-76e7-45fb-a9b2-6124974a51e9",
+      "chunks": 2,
+      "graph_facts": 3,
+      "write_status": "indexed_and_graph_projected",
+      "rerun_new_revision": false
+    },
+    {
+      "id": "W2178763567",
+      "title": "A Review on Graphene-Based Gas/Vapor Sensors with Unique Properties and Potential Applications",
+      "url": "https://openalex.org/W2178763567",
+      "revision_id": "6157efd9-fab8-401a-8da8-229bdcd8932f",
+      "chunks": 1,
+      "graph_facts": 0,
+      "write_status": "indexed_and_graph_projected",
+      "rerun_new_revision": false
+    },
+    {
+      "id": "W2060512241",
+      "title": "Adsorption of Gas Molecules on Graphene Nanoribbons and Its Implication for Nanoscale Molecule Sensor",
+      "url": "https://openalex.org/W2060512241",
+      "revision_id": "a3e894f8-6038-4f34-afcd-abd0dac7afa5",
+      "chunks": 1,
+      "graph_facts": 2,
+      "write_status": "indexed_and_graph_projected",
+      "rerun_new_revision": false
+    },
+    {
+      "id": "W2922177019",
+      "title": "Laser-Induced Graphene for Flexible and Embeddable Gas Sensors",
+      "url": "https://openalex.org/W2922177019",
+      "revision_id": "f7ec54a9-2c0c-49b4-9795-24258524c956",
+      "chunks": 1,
+      "graph_facts": 0,
+      "write_status": "normalized_with_qdrant_points_but_not_graph_projected_or_acked",
+      "rerun_new_revision": false
+    }
+  ],
+  "postgres": {
+    "pilot_documents": 8,
+    "pilot_revisions": 8,
+    "pilot_chunks": 10,
+    "validated_graph_facts": 21,
+    "completed_graph_extractions": 7,
+    "active_generation_count": 7,
+    "active_documents": 7,
+    "documents_without_graph_facts": 3,
+    "of_which_valid_empty_extractions": 2,
+    "of_which_incomplete_extractions": 1
+  },
+  "qdrant": {
+    "collection": "article_analysis_v1_chunks_5ee7692323ffab32c32bfa2b",
+    "pilot_revision_points": 10,
+    "collection_points": 10,
+    "embedding_model": "qwen3-embedding:0.6b",
+    "embedding_digest": "ac6da0dfba84a81fdbfbaf330198c33cd77c4cdfc53e8bc50eb581914a15621d",
+    "dimension": 1024,
+    "all_revision_points_reused_chunk_ids_on_rerun": true
+  },
+  "neo4j": {
+    "namespace": "article-analysis-domain-v1",
+    "ScientificWork": 7,
+    "TechnicalFeature": 20,
+    "DISCLOSES_FEATURE": 21,
+    "mean_features_per_document": 2.625,
+    "min_features_per_document": 0,
+    "max_features_per_document": 7,
+    "shared_features": [
+      {
+        "feature": "flexibility",
+        "documents": ["W1276751773", "W2752122312"]
+      }
+    ]
+  },
+  "validated_fact_examples": [
+    {
+      "work_id": "W1276751773",
+      "title": "Self-Activated Transparent All-Graphene Gas Sensor with Endurance to Humidity and Mechanical Bending",
+      "feature": "high sensitivity to gas adsorption",
+      "quote": "Graphene is considered as one of leading candidates for gas sensor applications in the Internet of Things owing to its unique properties such as high sensitivity to gas adsorption, transparency, and flexibility.",
+      "span_start": 0,
+      "span_end": 211,
+      "exact_match": true,
+      "confidence": 0.9,
+      "extractor_version": "graph-extraction-v2:qwen3.5:4b-q4_K_M@2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd"
+    },
+    {
+      "work_id": "W2752122312",
+      "title": "Flexible Graphene-Based Wearable Gas and Chemical Sensors",
+      "feature": "high carrier mobility",
+      "quote": "nanomaterials possessing high carrier mobility, optical transparency, mechanical robustness and flexibility, lightweight, and environmental stability will be in immense demand.",
+      "span_start": 108,
+      "span_end": 284,
+      "exact_match": true,
+      "confidence": 0.9,
+      "extractor_version": "graph-extraction-v2:qwen3.5:4b-q4_K_M@2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+      "manual_review": "suspicious_context: exact provenance passes, but the sentence is broad background wording and may not describe the paper's own demonstrated sensor."
+    },
+    {
+      "work_id": "W2127824358",
+      "title": "Reduced graphene oxide for room-temperature gas sensors",
+      "feature": "p-type semiconducting behavior",
+      "quote": "The thermally-reduced GO showed p-type semiconducting behavior in ambient conditions and was responsive to low-concentration NO2 and NH3 gases diluted in air at room temperature.",
+      "span_start": 590,
+      "span_end": 768,
+      "exact_match": true,
+      "confidence": 0.9,
+      "extractor_version": "graph-extraction-v2:qwen3.5:4b-q4_K_M@2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd"
+    },
+    {
+      "work_id": "W4210343955",
+      "title": "Ultrasensitive N-Channel Graphene Gas Sensors by Nondestructive Molecular Doping",
+      "feature": "preferential adsorption of no 2 on n-doped graphene",
+      "quote": "Our first-principles calculation supported a preferential adsorption of NO 2 on n-doped graphene.",
+      "span_start": 745,
+      "span_end": 842,
+      "exact_match": true,
+      "confidence": 0.95,
+      "extractor_version": "graph-extraction-v2:qwen3.5:4b-q4_K_M@2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd"
+    },
+    {
+      "work_id": "W2060512241",
+      "title": "Adsorption of Gas Molecules on Graphene Nanoribbons and Its Implication for Nanoscale Molecule Sensor",
+      "feature": "n-type semiconducting behavior",
+      "quote": "the system exhibits n-type semiconducting behavior after NH 3 adsorption",
+      "span_start": 399,
+      "span_end": 471,
+      "exact_match": true,
+      "confidence": 0.9,
+      "extractor_version": "graph-extraction-v2:qwen3.5:4b-q4_K_M@2a654d98e6fba55d452a7aac05ee4eefd"
+    }
+  ],
+  "rejected_candidates": [
+    {
+      "work_id": "W2922177019",
+      "reason": "incomplete_model_response_at_384_token_limit",
+      "persisted_as_fact": false
+    }
+  ],
+  "idempotency_rerun": {
+    "status": "passed_for_seven_fully_projected_revisions; eighth failed identically",
+    "same_source_query_and_limit": true,
+    "duplicate_documents_or_revisions": 0,
+    "new_revision_flags_for_revisited_completed_works": 0,
+    "pilot_qdrant_point_count_after_rerun": 10,
+    "neo4j_counts_after_rerun": {
+      "ScientificWork": 7,
+      "TechnicalFeature": 20,
+      "DISCLOSES_FEATURE": 21
+    }
+  },
+  "neo4j_browser": {
+    "url": "http://127.0.0.1:17474/browser/",
+    "bolt_url": "bolt://127.0.0.1:17687",
+    "browser_proxy_bind": "127.0.0.1",
+    "other_instance_on_default_ports": "127.0.0.1:7474 / 7687 (Neo4j 5.12); left untouched"
+  },
+  "model": {
+    "role": "graph_extractor",
+    "model_id": "qwen3.5:4b-q4_K_M",
+    "digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+    "extractor_version": "graph-extraction-v2",
+    "runtime_profile": "non-thinking (think=false), as measured in LLM-003",
+    "max_output_tokens": 384
+  },
+  "checks": {
+    "ruff": "passed",
+    "targeted_tests": "12 passed, 6 skipped because they require external PostgreSQL/Qdrant/Neo4j test variables",
+    "live_openalex_dry_run": "passed; 20 fetched, 10 skipped, 10 eligible",
+    "model_digest": "matches config/models.yaml and local Ollama /api/tags",
+    "compose_runner_preflight": "PostgreSQL, Qdrant, Neo4j, Neo4j migrations and Ollama reachable",
+    "neo4j_browser": "HTTP 200 at loopback URL; Browser and Bolt reach the pilot Neo4j container",
+    "git_diff_check": "passed",
+    "commit_sha": null,
+    "push_sha": null
+  },
+  "corpus_001": "open"
+}

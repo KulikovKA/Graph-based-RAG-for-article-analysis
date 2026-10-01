@@ -1,0 +1,33 @@
+# Dev-only loopback proxies. The Neo4j service itself stays on the private backend network.
+services:
+  neo4j-browser-proxy:
+    image: alpine/socat@sha256:5ffbd6ae916cbad86a58fabe0d6d5a6fd5c2b47ddf031e82996baac9300e732f
+    profiles: [browser]
+    entrypoint: ["socat"]
+    command: ["TCP-LISTEN:17474,fork,reuseaddr", "TCP:neo4j:7474"]
+    ports:
+      - target: 17474
+        published: "17474"
+        host_ip: 127.0.0.1
+        protocol: tcp
+        mode: host
+    depends_on:
+      neo4j: { condition: service_healthy }
+    networks: [egress, backend]
+    restart: unless-stopped
+
+  neo4j-bolt-proxy:
+    image: alpine/socat@sha256:5ffbd6ae916cbad86a58fabe0d6d5a6fd5c2b47ddf031e82996baac9300e732f
+    profiles: [browser]
+    entrypoint: ["socat"]
+    command: ["TCP-LISTEN:17687,fork,reuseaddr", "TCP:neo4j:7687"]
+    ports:
+      - target: 17687
+        published: "17687"
+        host_ip: 127.0.0.1
+        protocol: tcp
+        mode: host
+    depends_on:
+      neo4j: { condition: service_healthy }
+    networks: [egress, backend]
+    restart: unless-stopped
