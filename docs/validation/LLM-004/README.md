@@ -58,8 +58,10 @@ neither reaches 17/18. GPT-OSS medium has lower median and P95 latency of those
 two ties, so it is the winner among the completed matrix. Production remains
 on `gpt-oss:20b / low`: the selected model identity did not change, and the
 target score was not achieved. The fresh GPT-OSS low run scored 11/18 versus
-the historical LLM-003 low score of 13/18, so that run-to-run discrepancy is
-recorded and should be resolved before promoting a reasoning-profile change.
+the historical LLM-003 low score of 13/18. The LLM-003 runner did not pin
+`num_ctx`; LLM-004 explicitly set it to 131,072 for both models. That runtime
+difference may explain some of the score change, but the evidence does not
+establish causality. Resolve it before promoting a reasoning-profile change.
 
 The five failed cases in the LLM-003 `gpt-oss:20b low` baseline are AN-04,
 AN-06, AN-08, AN-10, and AN-16. Per-model low/medium predictions are
