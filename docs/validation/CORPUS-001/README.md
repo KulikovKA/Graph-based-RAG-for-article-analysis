@@ -23,8 +23,10 @@ track completed external IDs only after both index ACKs and activation, and
 resume rejects drift in source/query/filter/limits, model digests, extractor,
 vocabulary, and projection versions. `--max-documents` is capped at 100.
 
-The Graph extractor stays at the LLM-003 validated 384-token output profile.
-The 536-token change had no separate frozen benchmark and was reverted.
+The Graph extractor uses a 536-token output limit. The 384-token limit had
+caused three document extraction failures from insufficient output budget;
+536 is the practical corpus-extraction workaround. This changes no model,
+prompt, digest, or extractor version and is not a new model-selection benchmark.
 
 Example commands (run from the repository root):
 

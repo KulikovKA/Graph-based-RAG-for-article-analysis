@@ -12,7 +12,7 @@ generation:
     model_id: qwen3.5:4b-q4_K_M
     digest: 2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd
     extractor_version: graph-extraction-v2
-    max_output_tokens: 384
+    max_output_tokens: 536
     reasoning_efforts: []
   analyst:
     provider: ollama

@@ -8,8 +8,8 @@
     "source_all": "implemented; equal split when EPO credentials exist, OpenAlex fallback otherwise",
     "dry_run": "source discovery/fetch only; does not persist checkpoint or stats output",
     "resume_identity": "source/query/filter/limits plus embedding, graph model, extractor, vocabulary and projection versions",
-    "graph_output_tokens": 384,
-    "graph_output_tokens_reason": "restored frozen LLM-003 profile; no 536-token benchmark exists"
+    "graph_output_tokens": 536,
+    "graph_output_tokens_reason": "practical corpus workaround after three 384-token output-budget failures reported by the user; no model-selection benchmark run"
   },
   "requested_pilot": {
     "sources": ["openalex"],
@@ -63,7 +63,7 @@
     "graph_extractor_model": "qwen3.5:4b-q4_K_M",
     "graph_extractor_digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
     "graph_extractor_version": "graph-extraction-v2",
-    "max_output_tokens": 384,
+    "max_output_tokens": 536,
     "embedding_model": "qwen3-embedding:0.6b",
     "embedding_digest": "ac6da0dfba84a81fdbfbaf330198c33cd77c4cdfc53e8bc50eb581914a15621d",
     "embedding_dimension": 1024

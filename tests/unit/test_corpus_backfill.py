@@ -211,6 +211,27 @@ def test_source_all_without_epo_credentials_falls_back_to_openalex(
     assert '"source": "epo"' in capsys.readouterr().out
 
 
+def test_runner_passes_configured_graph_output_limit_to_extractor(monkeypatch) -> None:  # type: ignore[no-untyped-def]
+    monkeypatch.setenv("DATABASE_URL", "postgresql://local:local@127.0.0.1/article_analysis")
+    monkeypatch.setenv("QDRANT_URL", "http://127.0.0.1:6333")
+    monkeypatch.setenv("NEO4J_PASSWORD", "local-test-only")
+    monkeypatch.setenv("INFERENCE_BASE_URL", "http://127.0.0.1:11434")
+    monkeypatch.setenv("MODEL_CONFIG_PATH", "config/models.yaml")
+    pilot, resources = backfill._build_runner("token-limit-test", "openalex")
+    try:
+        assert pilot.graph_index.extractor.max_output_tokens == 536
+    finally:
+        async def close_resources() -> None:
+            for resource in resources:
+                close = getattr(resource, "aclose", None) or getattr(resource, "close", None)
+                if close:
+                    result = close()
+                    if asyncio.iscoroutine(result):
+                        await result
+
+        asyncio.run(close_resources())
+
+
 def test_fetch_failure_is_reported_without_aborting_run() -> None:
     client = FakeOpenAlex([_work("W1"), _work("W2")], fail_fetch=True)
     events: list[dict[str, object]] = []
