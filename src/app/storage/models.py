@@ -74,6 +74,16 @@ class AuthSession(Base):
     revoked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
 
+class AuthRateLimit(Base):
+    """Общие для процессов счётчики; ключи не содержат email или IP."""
+
+    __tablename__ = "auth_rate_limits"
+
+    key_hash: Mapped[str] = mapped_column(String(64), primary_key=True)
+    window_no: Mapped[int] = mapped_column(BigInteger, nullable=False)
+    attempts: Mapped[int] = mapped_column(Integer, nullable=False)
+
+
 class Conversation(Base):
     __tablename__ = "conversations"
     __table_args__ = (

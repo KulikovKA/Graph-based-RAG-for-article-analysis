@@ -23,6 +23,46 @@
 
 До AUTH-001 Caddy слушает только loopback; после auth/isolation gate допускается доверенный LAN. Перед внешним demo: TLS, login, CSRF/CORS, rate limits и восстановление backup. Один worker обслуживает analysis и ingestion очереди; отдельный общий semaphore ограничивает **все** генеративные роли (planner, extractor, analyst), а embedding/rerank имеют собственные RAM/batch лимиты. Ingestion не запускает вторую тяжёлую генерацию в обход очереди. Budget 6k input не гарантирует размещение двух моделей; загрузку/выгрузку и RSS измерить в LLM-002.
 
+## Локальные аккаунты и AUTH-001
+
+Перед запуском новой версии применить `alembic upgrade head` (в Compose это сервис
+`migrate`). AUTH-001 добавляет таблицу общих лимитов, существующие users/auth_sessions
+сохраняются. Оператор создаёт аккаунты внутри API-контейнера:
+
+```sh
+docker compose exec api python -m app.auth_cli create user@example.org
+docker compose exec api python -m app.auth_cli disable user@example.org
+```
+
+Пароль вводится дважды через скрытый prompt, не через argv; длина 12–1024 символа.
+Disable отзывает все сессии аккаунта. Регистрация через API отсутствует.
+
+В `.env` указать `AUTH_ALLOWED_ORIGINS` как точные browser origins без завершающего
+слеша, например `https://demo.example.org`; несколько origins разделяются запятой.
+Пустой список запрещает login и mutations. Cookie `article_session` имеет HttpOnly,
+SameSite=Lax, Path=/ и по умолчанию Secure; серверная сессия живёт 24 часа. Новый login
+отзывает предъявленную старую сессию. GET `/api/v1/auth/session` восстанавливает CSRF
+после reload, mutations требуют `Origin` и `X-CSRF-Token`. Ответы auth запрещают cache.
+
+Для разработки на loopback HTTP требуется одновременно `APP_ENV=development`,
+`APP_HTTP_DEV_ENABLED=true`, `AUTH_COOKIE_SECURE=false` и origin вида
+`http://localhost:8080`, соответствующий адресу в браузере. Без явного opt-in API
+отклоняет HTTP. Эти настройки не включают внешний HTTPS demo.
+
+Лимиты в общих DB-счётчиках за минуту: login 20/IP и 10/email, защищённые запросы
+300/IP и 120/user. Ошибка 429 содержит Retry-After. Устаревшие ключи счётчиков удаляются
+при обращениях после 24 часов. Счётчики используют хешированные ключи, не raw email/IP.
+Caddy перезаписывает X-Forwarded-For и X-Forwarded-Proto. Uvicorn доверяет proxy headers
+только в выбранной топологии, где API не опубликован и доступен через закрытую Compose
+network; при публикации API напрямую эту настройку необходимо заменить allowlist IP.
+
+Будущие маршруты подключают `Depends(require_owner)` из `app.api.auth`: зависимость
+проверяет session/expiry/disable, user/IP limits и CSRF/Origin для mutations. Затем
+маршрут передаёт `principal.user_id` в OwnedRepository до обращения к cache/index;
+`owned_conversation` возвращает одинаковый 404 для чужого и неизвестного объекта.
+Для длительных SSE AUTH service нужно повторно вызывать при продолжении потока
+(реализация API-001).
+
 ## CPU baseline LLM-002 на локальном Ollama
 
 Проверенный путь на Windows использует уже установленный Ollama 0.34.4 на host. Контейнеры приложения получают фиксированный `INFERENCE_BASE_URL=http://host.docker.internal:11434`; доступ из Compose API-контейнера к `/api/version` проверен (HTTP 200). Ollama не публикуется через Caddy. Отдельный `inference` profile с собственным volume не содержит скачанных пользователем весов и **не является проверенным runtime** этих измерений. Его лимит 16 GiB основан на наблюдаемом RSS 14.17 ГБ плюс запас; перед выбором этого пути требуется отдельный запуск с закреплёнными весами и достаточной памятью Docker Desktop. На текущем Docker Desktop доступно 15.28 GiB, поэтому этот профиль с Analyst не проверялся.
