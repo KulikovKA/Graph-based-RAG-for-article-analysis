@@ -144,7 +144,7 @@ flowchart LR
 | AUTH-001 | 12 Multi-user/security | P0 | Sol / High | STATE-001 | выполнена |
 | API-001 | 9 API | P0 | Sol / Medium | JOB-002,AUTH-001 | выполнена |
 | AUTH-002 | Внешний доступ и проверка периметра | P1 | Sol / High | API-001,AUTH-001 | ожидает |
-| UI-001 | 10 Frontend | P0 | Sol / Medium | API-001 | ожидает |
+| UI-001 | 10 Frontend | P0 | Sol / Medium | API-001 | ожидает публикации |
 | GRAPHUI-001 | 11 Graph UI | P1 | Sol / Medium | UI-001,GRAPH-001 | ожидает |
 | EVAL-001 | 13 Evaluation | P1 | Sol / High | API-001,EVAL-000 | ожидает |
 | EVAL-002 | 100 случаев и baseline evaluation | P1 | Sol / Medium | EVAL-001 | ожидает |
@@ -426,6 +426,7 @@ flowchart LR
 
 ### UI-001 — Адаптивный чат и источники
 
+- **Результат (2026-10-02):** реализация и приёмка проверены; ожидает публикации. [Отчёт и screenshots](docs/validation/UI-001/README.md): 7 unit, 18 browser fixture и 2 сквозных browser проверки с реальными Caddy/API/PostgreSQL. Login/conversations/chat, idea version, source cards и historical follow-up, bounded SSE dedupe/hash/reset, truthful progress/elapsed/cancel, reduced-motion/show-all, safe text rendering. TypeScript/ESLint/build проходят.
 - **Дополнение ADR-011 / приёмка:** desktop/mobile показывают фактические стадии/счётчики, elapsed и cancel во время reasoning; без фиктивных процентов и spinner-only экрана. Проверенный сворачиваемый «Ход анализа» и status проверки появляются после commit, затем gradual answer. Test viewports 375 и 1280 px, reduced-motion/show-all, partial/no-evidence/fallback, historical follow-up. Dedupe run+seq, chunk_index/hash, reset заменяет частичный текст/summary, completed заменяет ответ authoritative DTO; повторная доставка не дублирует claims. Cancel во время presentation не удаляет completed результат. Не показывать raw reasoning или непроверенный factual draft. Browser hooks измеряют first progress/summary/delta display отдельно от серверных timings.
 
 - **Цель/зачем:** дать работающий desktop/mobile интерфейс для идеи, ответа и первоисточников.
