@@ -74,6 +74,8 @@ ING-001 проверяет барьер на fake index ports. IDX-001/GRAPH-001
 
 Ограниченный первый пул: до 50 кандидатов из каждого доступного канала, затем дедуп по canonical source ID, гибридная нормализация и CPU-friendly rerank до 10–15 документов. Числа конфигурируются и уточняются оценкой. В Smart LLM идут только релевантные claims/abstract/snippets с лимитом токенов и стабильными evidence IDs. LightRAG запускается с `only_need_context`, не формирует пользовательский ответ; его внутренние сущности не считаются типизированным доменным графом. Для MVP адаптер может быть отключён при недоступности локальной модели извлечения, сохраняя базовый retrieval.
 
+GRAPH-002 — отдельный offline shadow experiment на immutable snapshot активных ревизий с завершённым extraction state. Его PostgreSQL таблицы, Qdrant feature collection и Neo4j `CanonicalTechnicalFeature`/`DISCLOSES_CANONICAL_FEATURE` не меняют production feature projection или retrieval.
+
 Граф интерфейса — производный подграф анализа, а не прямой доступ к Neo4j: идея, выбранные признаки, top документы и подтверждённые связи. Первый ответ ограничен примерно 30 узлами / 50 рёбрами. Раскрытие соседей постраничное, с проверкой ownership и лимитами.
 
 ## Исполнение и сбои

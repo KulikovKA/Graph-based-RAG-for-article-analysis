@@ -529,6 +529,135 @@ class GraphExtractionState(Base):
     )
 
 
+class CanonicalizationRun(Base):
+    """Isolated GRAPH-002 run metadata and its immutable corpus snapshot."""
+
+    __tablename__ = "canonicalization_runs"
+    __table_args__ = (
+        CheckConstraint(
+            "status IN ('running','completed','failed')", name="ck_canonicalization_runs_status"
+        ),
+        Index("ix_canonicalization_runs_snapshot", "snapshot_hash"),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
+    resolver_version: Mapped[str] = mapped_column(String(128), nullable=False)
+    snapshot_hash: Mapped[str] = mapped_column(String(64), nullable=False)
+    embedding_model_id: Mapped[str] = mapped_column(String(256), nullable=False)
+    embedding_model_digest: Mapped[str] = mapped_column(String(128), nullable=False)
+    classifier_model_id: Mapped[str] = mapped_column(String(256), nullable=False)
+    classifier_model_digest: Mapped[str] = mapped_column(String(128), nullable=False)
+    config_json: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
+    snapshot_json: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
+    status: Mapped[str] = mapped_column(String(16), nullable=False, default="running")
+    started_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+    completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+
+
+class CanonicalFeature(Base):
+    __tablename__ = "canonical_features"
+    __table_args__ = (
+        ForeignKeyConstraint(["run_id"], ["canonicalization_runs.id"], ondelete="CASCADE"),
+        CheckConstraint("member_count >= 1", name="ck_canonical_features_member_count"),
+        CheckConstraint("document_count >= 1", name="ck_canonical_features_document_count"),
+        UniqueConstraint("run_id", "canonical_key", name="uq_canonical_features_run_key"),
+        UniqueConstraint("run_id", "id", name="uq_canonical_features_run_id"),
+        Index("ix_canonical_features_run", "run_id"),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
+    run_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    canonical_text: Mapped[str] = mapped_column(Text, nullable=False)
+    canonical_key: Mapped[str] = mapped_column(String(64), nullable=False)
+    member_count: Mapped[int] = mapped_column(Integer, nullable=False)
+    document_count: Mapped[int] = mapped_column(Integer, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+
+
+class FeaturePairDecision(Base):
+    __tablename__ = "feature_pair_decisions"
+    __table_args__ = (
+        ForeignKeyConstraint(["run_id"], ["canonicalization_runs.id"], ondelete="CASCADE"),
+        CheckConstraint(
+            "classifier_decision IN ('SAME','DIFFERENT','UNCERTAIN')",
+            name="ck_feature_pair_decisions_label",
+        ),
+        CheckConstraint(
+            "candidate_similarity >= -1 AND candidate_similarity <= 1",
+            name="ck_feature_pair_decisions_similarity",
+        ),
+        CheckConstraint(
+            "classifier_confidence >= 0 AND classifier_confidence <= 1",
+            name="ck_feature_pair_decisions_confidence",
+        ),
+        UniqueConstraint(
+            "run_id", "feature_a_key", "feature_b_key", name="uq_feature_pair_decisions_pair"
+        ),
+        Index("ix_feature_pair_decisions_run", "run_id"),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
+    run_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    feature_a_key: Mapped[str] = mapped_column(String(768), nullable=False)
+    feature_b_key: Mapped[str] = mapped_column(String(768), nullable=False)
+    candidate_similarity: Mapped[float] = mapped_column(nullable=False)
+    classifier_decision: Mapped[str] = mapped_column(String(16), nullable=False)
+    probabilities_json: Mapped[dict[str, float]] = mapped_column(JSONB, nullable=False)
+    classifier_confidence: Mapped[float] = mapped_column(nullable=False)
+    latency_ms: Mapped[float | None]
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+
+
+class FeatureResolution(Base):
+    __tablename__ = "feature_resolutions"
+    __table_args__ = (
+        ForeignKeyConstraint(["run_id"], ["canonicalization_runs.id"], ondelete="CASCADE"),
+        ForeignKeyConstraint(["graph_fact_id"], ["graph_facts.id"], ondelete="RESTRICT"),
+        ForeignKeyConstraint(
+            ["run_id", "canonical_feature_id"],
+            ["canonical_features.run_id", "canonical_features.id"],
+            ondelete="CASCADE",
+            name="fk_feature_resolutions_run_canonical_feature",
+        ),
+        CheckConstraint(
+            "resolution_method IN ('exact','normalized_exact','tev1_same','new_singleton')",
+            name="ck_feature_resolutions_method",
+        ),
+        CheckConstraint(
+            "classifier_decision IS NULL OR classifier_decision IN "
+            "('SAME','DIFFERENT','UNCERTAIN')",
+            name="ck_feature_resolutions_classifier_label",
+        ),
+        UniqueConstraint("run_id", "graph_fact_id", name="uq_feature_resolutions_run_fact"),
+        Index("ix_feature_resolutions_run_feature", "run_id", "canonical_feature_id"),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True, default=uuid4)
+    run_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    graph_fact_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    canonical_feature_id: Mapped[UUID] = mapped_column(Uuid, nullable=False)
+    raw_feature_text: Mapped[str] = mapped_column(Text, nullable=False)
+    normalized_feature_text: Mapped[str] = mapped_column(Text, nullable=False)
+    resolution_method: Mapped[str] = mapped_column(String(24), nullable=False)
+    candidate_similarity: Mapped[float | None]
+    classifier_decision: Mapped[str | None] = mapped_column(String(16))
+    probabilities_json: Mapped[dict[str, float] | None] = mapped_column(JSONB)
+    classifier_confidence: Mapped[float | None]
+    resolver_version: Mapped[str] = mapped_column(String(128), nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+
+
 class RevisionIndexAck(Base):
     __tablename__ = "revision_index_acks"
     __table_args__ = (

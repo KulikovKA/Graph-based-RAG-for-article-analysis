@@ -48,6 +48,26 @@ MAX_TARGET_TEXT = 160
 MAX_OUTPUT_LIMIT_SPLITS = 3
 
 
+def decode_feature_key(feature_key: str, *, namespace: str, vocabulary_version: str) -> str:
+    """Decode the exact URL-safe base64 feature-key payload used by graph indexing."""
+    prefix = f"{namespace}:feature:{vocabulary_version}:"
+    if not feature_key.startswith(prefix):
+        raise ValueError("feature key is outside the expected namespace or vocabulary")
+    encoded = feature_key[len(prefix) :]
+    if not encoded:
+        raise ValueError("feature key has an empty payload")
+    try:
+        decoded = base64.b64decode(
+            encoded + "=" * (-len(encoded) % 4), altchars=b"-_", validate=True
+        ).decode("utf-8")
+    except (ValueError, UnicodeDecodeError):
+        raise ValueError("feature key payload is invalid") from None
+    canonical = base64.urlsafe_b64encode(decoded.encode("utf-8")).decode("ascii").rstrip("=")
+    if canonical != encoded:
+        raise ValueError("feature key payload is not canonically encoded")
+    return decoded
+
+
 def _canonical_graph_quote(value: str) -> str:
     return " ".join(unicodedata.normalize("NFKC", value).casefold().split())
 
@@ -534,15 +554,11 @@ class GraphIndexingService:
             expected_provenance = f"chunk:{fact.chunk_id}:{fact.span_start}:{fact.span_end}"
             if fact.provenance_key != expected_provenance:
                 raise ValueError("durable graph provenance key is inconsistent")
-            feature_prefix = f"{self.graph.namespace}:feature:{self.vocabulary_version}:"
-            if not fact.to_key.startswith(feature_prefix):
-                raise ValueError("durable graph feature key is outside this vocabulary")
-            encoded = fact.to_key[len(feature_prefix) :]
-            padding = "=" * (-len(encoded) % 4)
-            try:
-                canonical_text = base64.urlsafe_b64decode(encoded + padding).decode("utf-8")
-            except (ValueError, UnicodeDecodeError):
-                raise ValueError("durable graph feature key is invalid") from None
+            canonical_text = decode_feature_key(
+                fact.to_key,
+                namespace=self.graph.namespace,
+                vocabulary_version=self.vocabulary_version,
+            )
             quote = chunk.text[fact.span_start : fact.span_end]
             if (
                 not canonical_text

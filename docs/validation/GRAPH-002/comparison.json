@@ -1,0 +1,73 @@
+{
+  "snapshot_hash": "5b80378fa2d8312951446fcbb3ada7994d775f13d452ff08fd415377a5fcade0",
+  "baseline": {
+    "processed_documents": 100,
+    "graph_documents": 89,
+    "raw_features": 409,
+    "raw_edges": 417,
+    "documents_without_facts": 11,
+    "zero_fact_percent": 11.0,
+    "shared_features": 6,
+    "singleton_features": 403,
+    "shared_feature_percent": 1.466992665036675,
+    "features_per_document": 4.17,
+    "edges_per_graph_document": 4.685393258426966,
+    "connected_components": 92,
+    "largest_component_documents": 4,
+    "largest_component_nodes": 30,
+    "connected_document_pairs": 11
+  },
+  "canonical": {
+    "processed_documents": 100,
+    "graph_documents": 89,
+    "canonical_features": 409,
+    "canonical_edges": 417,
+    "documents_without_canonical_facts": 11,
+    "zero_fact_percent": 11.0,
+    "shared_canonical_features": 6,
+    "singleton_canonical_features": 403,
+    "shared_canonical_feature_percent": 1.466992665036675,
+    "canonical_features_per_document": 4.17,
+    "canonical_edges_per_document": 4.685393258426966,
+    "connected_components": 92,
+    "largest_component_documents": 4,
+    "largest_component_nodes": 30,
+    "connected_document_pairs": 11
+  },
+  "sensitivity": {
+    "0.90": {
+      "processed_documents": 100,
+      "graph_documents": 89,
+      "canonical_features": 406,
+      "canonical_edges": 417,
+      "documents_without_canonical_facts": 11,
+      "zero_fact_percent": 11.0,
+      "shared_canonical_features": 7,
+      "singleton_canonical_features": 399,
+      "shared_canonical_feature_percent": 1.7241379310344827,
+      "canonical_features_per_document": 4.17,
+      "canonical_edges_per_document": 4.685393258426966,
+      "connected_components": 89,
+      "largest_component_documents": 8,
+      "largest_component_nodes": 57,
+      "connected_document_pairs": 17
+    },
+    "0.95": {
+      "processed_documents": 100,
+      "graph_documents": 89,
+      "canonical_features": 409,
+      "canonical_edges": 417,
+      "documents_without_canonical_facts": 11,
+      "zero_fact_percent": 11.0,
+      "shared_canonical_features": 6,
+      "singleton_canonical_features": 403,
+      "shared_canonical_feature_percent": 1.466992665036675,
+      "canonical_features_per_document": 4.17,
+      "canonical_edges_per_document": 4.685393258426966,
+      "connected_components": 92,
+      "largest_component_documents": 4,
+      "largest_component_nodes": 30,
+      "connected_document_pairs": 11
+    }
+  }
+}

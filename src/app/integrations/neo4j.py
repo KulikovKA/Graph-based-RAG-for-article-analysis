@@ -258,3 +258,122 @@ class Neo4jGraph:
 
     async def close(self) -> None:
         await self.driver.close()
+
+
+class CanonicalNeo4jProjection:
+    """Additive GRAPH-002 shadow projection; never mutates baseline feature edges."""
+
+    def __init__(
+        self,
+        driver: AsyncDriver,
+        *,
+        namespace: str = "article-analysis-domain-v1",
+        database: str = "neo4j",
+    ) -> None:
+        if not _NAMESPACE.fullmatch(namespace):
+            raise ValueError("invalid graph namespace")
+        if not database or len(database) > 63:
+            raise ValueError("invalid Neo4j database")
+        self.driver = driver
+        self.namespace = namespace
+        self.database = database
+        self._schema_ready = False
+        self._schema_lock = asyncio.Lock()
+
+    async def ensure_schema(self) -> None:
+        if self._schema_ready:
+            return
+        async with self._schema_lock:
+            if self._schema_ready:
+                return
+            async with self.driver.session(database=self.database) as session:
+                result = await session.run(
+                    "CREATE CONSTRAINT uq_graph002_canonical_feature_id IF NOT EXISTS "
+                    "FOR (feature:CanonicalTechnicalFeature) "
+                    "REQUIRE feature.canonical_feature_id IS UNIQUE"
+                )
+                await result.consume()
+            self._schema_ready = True
+
+    async def project(
+        self,
+        *,
+        run_id: UUID,
+        resolver_version: str,
+        rows: list[dict[str, Any]],
+    ) -> int:
+        if not resolver_version or len(resolver_version) > 128:
+            raise ValueError("invalid resolver version")
+        if any(item.get("document_label") not in {"Patent", "ScientificWork"} for item in rows):
+            raise ValueError("canonical projection contains an unsupported document label")
+        for item in rows:
+            document_key = item.get("document_key")
+            if not isinstance(document_key, str) or not document_key.startswith(
+                f"{self.namespace}:"
+            ):
+                raise ValueError("canonical projection document is outside this namespace")
+            feature_id = item.get("canonical_feature_id")
+            if not isinstance(feature_id, str) or not item.get("canonical_text"):
+                raise ValueError("canonical projection feature identity is incomplete")
+            if int(item.get("evidence_count", 0)) < 1:
+                raise ValueError("canonical projection evidence_count must be positive")
+        await self.ensure_schema()
+
+        async def write(
+            tx: AsyncManagedTransaction, label: str, grouped: list[dict[str, Any]]
+        ) -> int:
+            query = f"""
+            UNWIND $rows AS row
+            MERGE (document:{label} {{key: row.document_key}})
+            MERGE (feature:CanonicalTechnicalFeature {{
+              canonical_feature_id: row.canonical_feature_id
+            }})
+            SET feature += row.feature_properties
+            MERGE (document)-[edge:DISCLOSES_CANONICAL_FEATURE {{run_id: row.run_id}}]->(feature)
+            SET edge.resolver_version = row.resolver_version,
+                edge.evidence_count = row.evidence_count,
+                edge.namespace = $namespace
+            RETURN count(edge) AS projected
+            """
+            result = await tx.run(
+                query,
+                rows=grouped,
+                namespace=self.namespace,
+            )
+            record = await result.single()
+            await result.consume()
+            projected = int(record["projected"]) if record else 0
+            if projected != len(grouped):
+                raise RuntimeError("Neo4j canonical shadow projection is incomplete")
+            return projected
+
+        groups: dict[str, list[dict[str, Any]]] = defaultdict(list)
+        for item in rows:
+            groups[str(item["document_label"])].append(
+                {
+                    "document_key": item["document_key"],
+                    "canonical_feature_id": item["canonical_feature_id"],
+                    "run_id": str(run_id),
+                    "resolver_version": resolver_version,
+                    "evidence_count": int(item["evidence_count"]),
+                    "feature_properties": {
+                        "canonical_feature_id": item["canonical_feature_id"],
+                        "canonical_text": item["canonical_text"],
+                        "resolver_version": resolver_version,
+                        "member_count": int(item["member_count"]),
+                        "document_count": int(item["document_count"]),
+                        "run_id": str(run_id),
+                        "namespace": self.namespace,
+                    },
+                }
+            )
+        async with self.driver.session(database=self.database) as session:
+
+            async def write_all(tx: AsyncManagedTransaction) -> int:
+                total = 0
+                for label in ("Patent", "ScientificWork"):
+                    if groups.get(label):
+                        total += await write(tx, label, groups[label])
+                return total
+
+            return await session.execute_write(write_all)

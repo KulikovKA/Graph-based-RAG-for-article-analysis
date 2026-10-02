@@ -1,0 +1,651 @@
+{
+  "run_id": "95f0e6c8-83b8-4788-9641-4c08b249e717",
+  "resolver_version": "graph002-technical-feature-v1",
+  "snapshot_hash": "5b80378fa2d8312951446fcbb3ada7994d775f13d452ff08fd415377a5fcade0",
+  "status": "completed",
+  "canonical_features": 409,
+  "graph_fact_resolutions": 417,
+  "candidate_pairs": 2255,
+  "report_after_summary": {
+    "experiment": "GRAPH-002",
+    "run_id": "95f0e6c8-83b8-4788-9641-4c08b249e717",
+    "resolver_version": "graph002-technical-feature-v1",
+    "same_threshold": 0.95,
+    "snapshot_hash": "5b80378fa2d8312951446fcbb3ada7994d775f13d452ff08fd415377a5fcade0",
+    "snapshot_document_count": 100,
+    "snapshot_graph_fact_count": 417,
+    "active_documents_total": 100,
+    "documents_excluded_missing_completed_graph_state": 0,
+    "metrics": {
+      "processed_documents": 100,
+      "graph_documents": 89,
+      "canonical_features": 409,
+      "canonical_edges": 417,
+      "documents_without_canonical_facts": 11,
+      "zero_fact_percent": 11.0,
+      "shared_canonical_features": 6,
+      "singleton_canonical_features": 403,
+      "shared_canonical_feature_percent": 1.466992665036675,
+      "canonical_features_per_document": 4.17,
+      "canonical_edges_per_document": 4.685393258426966,
+      "connected_components": 92,
+      "largest_component_documents": 4,
+      "largest_component_nodes": 30,
+      "connected_document_pairs": 11
+    },
+    "candidate_pairs": 2255,
+    "same_count": 656,
+    "different_count": 1559,
+    "uncertain_count": 40,
+    "merged_raw_features": 0,
+    "average_aliases_per_canonical_feature": 1.0,
+    "max_aliases_per_canonical_feature": 1,
+    "cannot_link_conflicts_prevented": 0,
+    "latency_ms": {
+      "total": 14296341.717453005,
+      "embedding": 21122.562558004574,
+      "classifier": 14240754.513973951,
+      "candidate_retrieval": 18086.25962899532
+    },
+    "qdrant_shadow_collection": "graph_feature_mentions_graph002_technical_featu_3dcc0a1ee166b09a5b67",
+    "postgres_shadow_tables": [
+      "canonicalization_runs",
+      "canonical_features",
+      "feature_pair_decisions",
+      "feature_resolutions"
+    ],
+    "neo4j_shadow_label": "CanonicalTechnicalFeature",
+    "neo4j_shadow_relationship": "DISCLOSES_CANONICAL_FEATURE",
+    "neo4j_shadow_edges": 417,
+    "sensitivity": {
+      "0.90": {
+        "processed_documents": 100,
+        "graph_documents": 89,
+        "canonical_features": 406,
+        "canonical_edges": 417,
+        "documents_without_canonical_facts": 11,
+        "zero_fact_percent": 11.0,
+        "shared_canonical_features": 7,
+        "singleton_canonical_features": 399,
+        "shared_canonical_feature_percent": 1.7241379310344827,
+        "canonical_features_per_document": 4.17,
+        "canonical_edges_per_document": 4.685393258426966,
+        "connected_components": 89,
+        "largest_component_documents": 8,
+        "largest_component_nodes": 57,
+        "connected_document_pairs": 17
+      },
+      "0.95": {
+        "processed_documents": 100,
+        "graph_documents": 89,
+        "canonical_features": 409,
+        "canonical_edges": 417,
+        "documents_without_canonical_facts": 11,
+        "zero_fact_percent": 11.0,
+        "shared_canonical_features": 6,
+        "singleton_canonical_features": 403,
+        "shared_canonical_feature_percent": 1.466992665036675,
+        "canonical_features_per_document": 4.17,
+        "canonical_edges_per_document": 4.685393258426966,
+        "connected_components": 92,
+        "largest_component_documents": 4,
+        "largest_component_nodes": 30,
+        "connected_document_pairs": 11
+      }
+    },
+    "quality_samples": {
+      "successful_merge_samples": [],
+      "different_samples": [
+        {
+          "feature_a": "0.71 ppm in nh 3",
+          "feature_b": "25 ppm",
+          "candidate_similarity": 0.78706115,
+          "probabilities": {
+            "SAME": 0.10518822692497709,
+            "DIFFERENT": 0.7525987678446426,
+            "UNCERTAIN": 0.1422130052303804
+          },
+          "confidence": 0.33719418028755865
+        },
+        {
+          "feature_a": "0.71 ppm in nh 3",
+          "feature_b": "5 40 ppm",
+          "candidate_similarity": 0.7698842,
+          "probabilities": {
+            "SAME": 0.12748962704450711,
+            "DIFFERENT": 0.6701827759059567,
+            "UNCERTAIN": 0.20232759704953618
+          },
+          "confidence": 0.222568360864978
+        },
+        {
+          "feature_a": "0.71 ppm in nh 3",
+          "feature_b": "50 ppm of h 2 s",
+          "candidate_similarity": 0.7542095,
+          "probabilities": {
+            "SAME": 0.030207637687301465,
+            "DIFFERENT": 0.9273818247429939,
+            "UNCERTAIN": 0.042410537569704664
+          },
+          "confidence": 0.7181314950329385
+        },
+        {
+          "feature_a": "0.71 ppm in nh 3",
+          "feature_b": "97.0 ppm nox",
+          "candidate_similarity": 0.7336944,
+          "probabilities": {
+            "SAME": 0.04362259614826641,
+            "DIFFERENT": 0.9331975953802732,
+            "UNCERTAIN": 0.02317980847146022
+          },
+          "confidence": 0.7374748893734444
+        },
+        {
+          "feature_a": "0.71 ppm in nh 3",
+          "feature_b": "cu ch3coo 2",
+          "candidate_similarity": 0.632377,
+          "probabilities": {
+            "SAME": 0.04029843280257276,
+            "DIFFERENT": 0.9230004674475655,
+            "UNCERTAIN": 0.03670109974986166
+          },
+          "confidence": 0.704475121087859
+        },
+        {
+          "feature_a": "0.71 ppm in nh 3",
+          "feature_b": "high response of 96 at 200 ppm of nh 3",
+          "candidate_similarity": 0.8519006,
+          "probabilities": {
+            "SAME": 0.22367195486433503,
+            "DIFFERENT": 0.6856546000649353,
+            "UNCERTAIN": 0.09067344507072987
+          },
+          "confidence": 0.2614505932796072
+        },
+        {
+          "feature_a": "10 μm",
+          "feature_b": "10.6 μm co 2 laser",
+          "candidate_similarity": 0.74306786,
+          "probabilities": {
+            "SAME": 0.17671152783857583,
+            "DIFFERENT": 0.6189381444572316,
+            "UNCERTAIN": 0.20435032770419262
+          },
+          "confidence": 0.15556169478948523
+        },
+        {
+          "feature_a": "10 μm",
+          "feature_b": "25 ppm",
+          "candidate_similarity": 0.6569586,
+          "probabilities": {
+            "SAME": 0.06680254031136147,
+            "DIFFERENT": 0.7835944767281414,
+            "UNCERTAIN": 0.14960298296049707
+          },
+          "confidence": 0.40281923842467093
+        },
+        {
+          "feature_a": "10 μm",
+          "feature_b": "450 nm wavelength bench top laser",
+          "candidate_similarity": 0.6060369,
+          "probabilities": {
+            "SAME": 0.09641385748171175,
+            "DIFFERENT": 0.7598827620015094,
+            "UNCERTAIN": 0.14370338051677872
+          },
+          "confidence": 0.3510318783429479
+        },
+        {
+          "feature_a": "10 μm",
+          "feature_b": "5 9 nm cuxo nanoparticles",
+          "candidate_similarity": 0.60176986,
+          "probabilities": {
+            "SAME": 0.04318203959251259,
+            "DIFFERENT": 0.927027787850455,
+            "UNCERTAIN": 0.029790172557032465
+          },
+          "confidence": 0.7172753193485273
+        },
+        {
+          "feature_a": "10 μm",
+          "feature_b": "60 in the visible region",
+          "candidate_similarity": 0.64618766,
+          "probabilities": {
+            "SAME": 0.15023039412144767,
+            "DIFFERENT": 0.6332322853332382,
+            "UNCERTAIN": 0.2165373205453141
+          },
+          "confidence": 0.17586015049179105
+        },
+        {
+          "feature_a": "10 μm",
+          "feature_b": "atomic thickness",
+          "candidate_similarity": 0.6929738,
+          "probabilities": {
+            "SAME": 0.13464506654882916,
+            "DIFFERENT": 0.7282510074017448,
+            "UNCERTAIN": 0.137103926049426
+          },
+          "confidence": 0.2960741383863199
+        },
+        {
+          "feature_a": "10 μm",
+          "feature_b": "cnts 20 μm in length",
+          "candidate_similarity": 0.82059056,
+          "probabilities": {
+            "SAME": 0.15380175741811536,
+            "DIFFERENT": 0.6303808837519972,
+            "UNCERTAIN": 0.21581735882988756
+          },
+          "confidence": 0.17193184438782427
+        },
+        {
+          "feature_a": "10 μm",
+          "feature_b": "mature 0.18 μm cmos technology",
+          "candidate_similarity": 0.7103611,
+          "probabilities": {
+            "SAME": 0.06377846984057227,
+            "DIFFERENT": 0.8686913174176693,
+            "UNCERTAIN": 0.06753021274175848
+          },
+          "confidence": 0.5632403246289017
+        },
+        {
+          "feature_a": "10 μm",
+          "feature_b": "nanomesh",
+          "candidate_similarity": 0.6616781,
+          "probabilities": {
+            "SAME": 0.11957545784945682,
+            "DIFFERENT": 0.7025808737842972,
+            "UNCERTAIN": 0.1778436683662459
+          },
+          "confidence": 0.2635508846507276
+        },
+        {
+          "feature_a": "10 μm",
+          "feature_b": "one atom thin",
+          "candidate_similarity": 0.6771009,
+          "probabilities": {
+            "SAME": 0.07130211171729302,
+            "DIFFERENT": 0.9037983948587053,
+            "UNCERTAIN": 0.02489949342400177
+          },
+          "confidence": 0.661694565096069
+        },
+        {
+          "feature_a": "10 μm",
+          "feature_b": "sheets between a few hundred nanometers and a few micrometers large",
+          "candidate_similarity": 0.68778324,
+          "probabilities": {
+            "SAME": 0.10211001924425557,
+            "DIFFERENT": 0.8167207879405722,
+            "UNCERTAIN": 0.08116919281517225
+          },
+          "confidence": 0.4518810660848571
+        },
+        {
+          "feature_a": "10.6 μm co 2 laser",
+          "feature_b": "450 nm wavelength bench top laser",
+          "candidate_similarity": 0.7286592,
+          "probabilities": {
+            "SAME": 0.05790851941315395,
+            "DIFFERENT": 0.9278891231016775,
+            "UNCERTAIN": 0.014202357485168715
+          },
+          "confidence": 0.7316224781184444
+        },
+        {
+          "feature_a": "10.6 μm co 2 laser",
+          "feature_b": "60 in the visible region",
+          "candidate_similarity": 0.61680746,
+          "probabilities": {
+            "SAME": 0.06995510378858187,
+            "DIFFERENT": 0.8682277250437157,
+            "UNCERTAIN": 0.06181717116770254
+          },
+          "confidence": 0.562331468623039
+        },
+        {
+          "feature_a": "10.6 μm co 2 laser",
+          "feature_b": "cnts 20 μm in length",
+          "candidate_similarity": 0.6691351,
+          "probabilities": {
+            "SAME": 0.04260416791575963,
+            "DIFFERENT": 0.9202216382425894,
+            "UNCERTAIN": 0.03717419384165095
+          },
+          "confidence": 0.6965800069265999
+        }
+      ],
+      "uncertain_samples": [
+        {
+          "feature_a": "22 °c",
+          "feature_b": "room temperature",
+          "candidate_similarity": 0.77217615,
+          "probabilities": {
+            "SAME": 0.43995923376546386,
+            "DIFFERENT": 0.07591753692357582,
+            "UNCERTAIN": 0.4841232293109603
+          },
+          "confidence": 0.17336355702203832
+        },
+        {
+          "feature_a": "2d materials",
+          "feature_b": "large 1 2 orders of magnitude anisotropy along different armchair or zigzag directions",
+          "candidate_similarity": 0.6847969,
+          "probabilities": {
+            "SAME": 0.2815273177837874,
+            "DIFFERENT": 0.28038054239384236,
+            "UNCERTAIN": 0.43809213982237016
+          },
+          "confidence": 0.021541996081947956
+        },
+        {
+          "feature_a": "3d sulfonated rgo hydrogel",
+          "feature_b": "superb transport capability of rgo",
+          "candidate_similarity": 0.66059935,
+          "probabilities": {
+            "SAME": 0.34963029623722486,
+            "DIFFERENT": 0.2983572831254983,
+            "UNCERTAIN": 0.3520124206372768
+          },
+          "confidence": 0.002556554016146073
+        },
+        {
+          "feature_a": "5000 bending cycles with a bending radius of 0.95 cm",
+          "feature_b": "robust flexibility without an obvious performance decrease after 1000 bending extending cycles",
+          "candidate_similarity": 0.8471438,
+          "probabilities": {
+            "SAME": 0.41881972369449355,
+            "DIFFERENT": 0.14020678506378198,
+            "UNCERTAIN": 0.4409734912417244
+          },
+          "confidence": 0.08883553130034105
+        },
+        {
+          "feature_a": "6 fold increase in no2 sensitivity compared to epitaxial graphene",
+          "feature_b": "sno 2 graphene heterojunctions",
+          "candidate_similarity": 0.7632507,
+          "probabilities": {
+            "SAME": 0.324691014150491,
+            "DIFFERENT": 0.22035328464671153,
+            "UNCERTAIN": 0.4549557012027975
+          },
+          "confidence": 0.03803093833549953
+        },
+        {
+          "feature_a": "about an order of magnitude",
+          "feature_b": "almost 13 times",
+          "candidate_similarity": 0.6625567,
+          "probabilities": {
+            "SAME": 0.2966331868564845,
+            "DIFFERENT": 0.2148271950247503,
+            "UNCERTAIN": 0.4885396181187651
+          },
+          "confidence": 0.052594478982457726
+        },
+        {
+          "feature_a": "about an order of magnitude",
+          "feature_b": "up to 80",
+          "candidate_similarity": 0.6840582,
+          "probabilities": {
+            "SAME": 0.2379994809029202,
+            "DIFFERENT": 0.29837477803130136,
+            "UNCERTAIN": 0.46362574106577853
+          },
+          "confidence": 0.036166085508181345
+        },
+        {
+          "feature_a": "almost 13 times",
+          "feature_b": "stretched by 30",
+          "candidate_similarity": 0.6161339,
+          "probabilities": {
+            "SAME": 0.1740726720702503,
+            "DIFFERENT": 0.39420492144532354,
+            "UNCERTAIN": 0.4317224064844261
+          },
+          "confidence": 0.058883328145273306
+        },
+        {
+          "feature_a": "chemical vapor deposition cvd grown graphene nitrogen dioxide no 2 gas sensors modified by zinc oxide zno thin films via atomic layer deposition ald",
+          "feature_b": "highly sensitive and uniform graphene gas sensor",
+          "candidate_similarity": 0.6873395,
+          "probabilities": {
+            "SAME": 0.2619129104283925,
+            "DIFFERENT": 0.23275122343556126,
+            "UNCERTAIN": 0.5053358661360462
+          },
+          "confidence": 0.05780663371551087
+        },
+        {
+          "feature_a": "chemical vapor deposition cvd grown graphene nitrogen dioxide no 2 gas sensors modified by zinc oxide zno thin films via atomic layer deposition ald",
+          "feature_b": "sensitive and uniform graphene gas sensors",
+          "candidate_similarity": 0.6882297,
+          "probabilities": {
+            "SAME": 0.19950382441662773,
+            "DIFFERENT": 0.2993376251687248,
+            "UNCERTAIN": 0.5011585504146475
+          },
+          "confidence": 0.06349370329214521
+        },
+        {
+          "feature_a": "distinct octahedral morphology",
+          "feature_b": "large surface area",
+          "candidate_similarity": 0.63789904,
+          "probabilities": {
+            "SAME": 0.122036278968337,
+            "DIFFERENT": 0.4242878764444853,
+            "UNCERTAIN": 0.45367584458717775
+          },
+          "confidence": 0.10884964287889509
+        },
+        {
+          "feature_a": "distinguish between tetrahydrofuran thf and dichloromethane mc",
+          "feature_b": "volatile organic compounds",
+          "candidate_similarity": 0.60886383,
+          "probabilities": {
+            "SAME": 0.29692461106428986,
+            "DIFFERENT": 0.3157299527634442,
+            "UNCERTAIN": 0.38734543617226597
+          },
+          "confidence": 0.006094341490148869
+        },
+        {
+          "feature_a": "doped graphene",
+          "feature_b": "fermi energy close to the dirac point",
+          "candidate_similarity": 0.6392175,
+          "probabilities": {
+            "SAME": 0.18735945999816253,
+            "DIFFERENT": 0.38979411121310353,
+            "UNCERTAIN": 0.42284642878873396
+          },
+          "confidence": 0.04881951384960603
+        },
+        {
+          "feature_a": "doped graphene",
+          "feature_b": "heteroatom doping",
+          "candidate_similarity": 0.73285675,
+          "probabilities": {
+            "SAME": 0.43008271444458307,
+            "DIFFERENT": 0.12070843447400575,
+            "UNCERTAIN": 0.44920885108141123
+          },
+          "confidence": 0.11014597700775008
+        },
+        {
+          "feature_a": "enhanced sensitivity 2 orders of magnitude",
+          "feature_b": "high sensitivity",
+          "candidate_similarity": 0.8116032,
+          "probabilities": {
+            "SAME": 0.31634644368758175,
+            "DIFFERENT": 0.2348126652460053,
+            "UNCERTAIN": 0.44884089106641284
+          },
+          "confidence": 0.03161015330945294
+        },
+        {
+          "feature_a": "excellent chemical sensor properties",
+          "feature_b": "high chemical electrochemical stability",
+          "candidate_similarity": 0.7230345,
+          "probabilities": {
+            "SAME": 0.38044031828938135,
+            "DIFFERENT": 0.23793910953731515,
+            "UNCERTAIN": 0.38162057217330353
+          },
+          "confidence": 0.019752308427583576
+        },
+        {
+          "feature_a": "excellent selectivity and repeatability without the aid of uv light or thermal treatment",
+          "feature_b": "ultrahigh selectivity to nh3",
+          "candidate_similarity": 0.6920908,
+          "probabilities": {
+            "SAME": 0.3222770287966369,
+            "DIFFERENT": 0.3229760789786514,
+            "UNCERTAIN": 0.3547468922247117
+          },
+          "confidence": 0.0009298679346765315
+        },
+        {
+          "feature_a": "excellent sensitivity to no2 gas",
+          "feature_b": "high sensitivity",
+          "candidate_similarity": 0.7564795,
+          "probabilities": {
+            "SAME": 0.3102732124387341,
+            "DIFFERENT": 0.18600764524486824,
+            "UNCERTAIN": 0.5037191423163976
+          },
+          "confidence": 0.07029007282169697
+        },
+        {
+          "feature_a": "extremely high surface hydrophobicity",
+          "feature_b": "large surface",
+          "candidate_similarity": 0.7579155,
+          "probabilities": {
+            "SAME": 0.3193483613397505,
+            "DIFFERENT": 0.29488516598093534,
+            "UNCERTAIN": 0.38576647267931413
+          },
+          "confidence": 0.0059426516017864195
+        },
+        {
+          "feature_a": "fast detection",
+          "feature_b": "high sensitivity",
+          "candidate_similarity": 0.7267787,
+          "probabilities": {
+            "SAME": 0.06002137237918771,
+            "DIFFERENT": 0.4489175277486742,
+            "UNCERTAIN": 0.4910610998721379
+          },
+          "confidence": 0.2011514818524205
+        }
+      ],
+      "manual_cases": [
+        {
+          "requested_pair": [
+            "transparency",
+            "optical transparency"
+          ],
+          "present_in_snapshot": true,
+          "normalized_features": [
+            "transparency",
+            "optical transparency"
+          ],
+          "candidate_decision": "SAME",
+          "probabilities": {
+            "SAME": 0.8550072794639583,
+            "DIFFERENT": 0.04075927635199353,
+            "UNCERTAIN": 0.10423344418404815
+          },
+          "merged_at_selected_threshold": false
+        },
+        {
+          "requested_pair": [
+            "room temperature",
+            "room-temperature"
+          ],
+          "present_in_snapshot": true,
+          "normalized_features": [
+            "room temperature",
+            "room temperature"
+          ],
+          "candidate_decision": "normalized_exact",
+          "probabilities": null,
+          "merged_at_selected_threshold": true
+        },
+        {
+          "requested_pair": [
+            "flexibility",
+            "mechanical flexibility"
+          ],
+          "present_in_snapshot": false,
+          "normalized_features": [
+            "flexibility",
+            null
+          ],
+          "candidate_decision": null,
+          "probabilities": null,
+          "merged_at_selected_threshold": false
+        },
+        {
+          "requested_pair": [
+            "NO2 sensing",
+            "gas sensing"
+          ],
+          "present_in_snapshot": false,
+          "normalized_features": [
+            null,
+            "gas sensing"
+          ],
+          "candidate_decision": null,
+          "probabilities": null,
+          "merged_at_selected_threshold": false
+        },
+        {
+          "requested_pair": [
+            "NO2 sensitivity",
+            "NH3 sensitivity"
+          ],
+          "present_in_snapshot": false,
+          "normalized_features": [
+            null,
+            null
+          ],
+          "candidate_decision": null,
+          "probabilities": null,
+          "merged_at_selected_threshold": false
+        },
+        {
+          "requested_pair": [
+            "n-type",
+            "p-type"
+          ],
+          "present_in_snapshot": false,
+          "normalized_features": [
+            null,
+            null
+          ],
+          "candidate_decision": null,
+          "probabilities": null,
+          "merged_at_selected_threshold": false
+        },
+        {
+          "requested_pair": [
+            "room-temperature operation",
+            "room-temperature synthesis"
+          ],
+          "present_in_snapshot": false,
+          "normalized_features": [
+            null,
+            null
+          ],
+          "candidate_decision": null,
+          "probabilities": null,
+          "merged_at_selected_threshold": false
+        }
+      ],
+      "selected_threshold": 0.95,
+      "conflicts_prevented": []
+    },
+    "errors": []
+  }
+}

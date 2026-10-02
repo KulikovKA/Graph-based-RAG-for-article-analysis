@@ -1,0 +1,657 @@
+﻿feature_a,feature_b,candidate_similarity,same_probability,confidence
+0.71 ppm in nh 3,4.32 ppm in no 2,0.75113595,0.5279093314045619,0.14734260308412483
+0.71 ppm in nh 3,nh3,0.7801515,0.8757488592680258,0.5822272549614732
+0.71 ppm in nh 3,parts per million level detection of nh 3 and no 2 in air at room temperature,0.76519215,0.7622423074422646,0.3549809685399268
+10.6 μm co 2 laser,laser induced graphene,0.61704224,0.7857320299583059,0.39195256888297014
+160 ppb,4.32 ppm in no 2,0.71788216,0.6179764696398132,0.17682130315593514
+160 ppb,detection limit could reach 180 parts per billion ppb,0.752805,0.48311423164127865,0.044527014333611836
+22 °c,33 in 2 s,0.62807894,0.5849754179080942,0.12475332754378055
+22 °c,operated at room temperature,0.65109885,0.7814544235247344,0.38418249454246034
+2d materials,boron nitride,0.7417165,0.6248205410734035,0.2367274160493622
+2d materials,graphene,0.8096336,0.8103460625138788,0.45650946967780326
+2d materials,graphene s unique electronic structures and properties,0.7599975,0.6007951519521034,0.15705353393500154
+2d materials,metal oxide nanosheets,0.77592057,0.5108752843491436,0.24237699925189438
+2d materials,transition metal chalcogenides,0.7423714,0.6922067621932677,0.3423295457493811
+3d nanoflower like cuxo multilayer graphene composites cumgcs,5 9 nm cuxo nanoparticles,0.6230076,0.6859873433897571,0.2388795480378898
+3d nanoflower like cuxo multilayer graphene composites cumgcs,agglomerated structures of graphene and sno 2 particles,0.7033089,0.54748284285918,0.09411412626928839
+3d nanoflower like cuxo multilayer graphene composites cumgcs,three dimensional graphene networks,0.7185384,0.3711936595276355,0.011319234214014484
+3d sulfonated rgo hydrogel,reduced graphene oxide rgo,0.6520674,0.4368962759189507,0.03941125374880561
+4 vol hydrogen in air,repeated cycles of hydrogenation and dehydrogenation,0.6639122,0.389922815396262,0.008033122550110572
+5 40 ppm,50 ppm of h 2 s,0.7957816,0.37273434258966615,0.00508577205465599
+6 fold increase in no2 sensitivity compared to epitaxial graphene,charge transfer between graphene and no2 and its dimer n2o4,0.8032246,0.4493458092566729,0.03919541909712898
+6 fold increase in no2 sensitivity compared to epitaxial graphene,graphene,0.7895261,0.3683306588920899,0.0025559807765737075
+6 fold increase in no2 sensitivity compared to epitaxial graphene,highly reactive top mounted zno thin films,0.6666988,0.4250576197200441,0.018913764947746214
+6 fold increase in no2 sensitivity compared to epitaxial graphene,superior gas sensitivity of monolayer graphene,0.8550594,0.4351505116368698,0.05700517007281891
+97.0 ppm nox,low detection limit of 97 ppb,0.75168204,0.8245576877819488,0.46658265467813764
+97.0 ppm nox,∼1400 ppb,0.7436489,0.4971901666215534,0.08142709601692655
+about an order of magnitude,almost 9 times,0.6825965,0.5965546845140004,0.23257705675798945
+about an order of magnitude,large 1 2 orders of magnitude anisotropy along different armchair or zigzag directions,0.62938684,0.5568607632455624,0.10546218450224898
+agglomerated structures of graphene and sno 2 particles,al and s atoms protrude out of the graphene layer,0.6969836,0.553668745809951,0.1477111717984143
+agglomerated structures of graphene and sno 2 particles,small secondary sno x x ≤ 2 nanoparticles deposited on the surfaces,0.6592803,0.9526410494908965,0.7988499398436514
+agglomerated structures of graphene and sno 2 particles,sno 2 graphene heterojunctions,0.786464,0.8408888245738505,0.5123201824745522
+agglomerated structures of graphene and sno 2 particles,sno 2 sno x x 2 heterojunctions,0.65324914,0.34681190762107245,0.0003977661661248577
+al and s atoms protrude out of the graphene layer,graphene,0.6967721,0.8228291923312494,0.4722776414750831
+al doped graphene is much more reactive and binds many more gases including o2,charge transfer between gases and graphene,0.7605113,0.45586622356249146,0.07961617328130666
+al doped graphene is much more reactive and binds many more gases including o2,doped graphene,0.787199,0.8581368791246661,0.5576181223057417
+anti corrosion coatings,high chemical electrochemical stability,0.6537916,0.6877667278536727,0.252785536694465
+anti corrosion coatings,moisture resistant property against a relative humidity of 90,0.6194036,0.44297712419914825,0.08091310324133061
+atomic force microscopy afm,one atom thin,0.645069,0.4093680719347993,0.026759963887797333
+atomic thickness,graphene,0.7080159,0.9682232135978652,0.8522552051673374
+atomic thickness,hexagonal honeycomb crystalline structure,0.63810897,0.6751129998756698,0.23990272599616502
+atomic thickness,one atom thick carbon allotrope,0.7870093,0.9689223381196376,0.855336197406212
+atomic thickness,one atom thin,0.8118204,0.9651655475313798,0.8406227662730162
+b n codoping on graphene,b- and n doped graphene retain a planar form,0.7963618,0.8535801728553769,0.5301474391231015
+b n codoping on graphene,doped graphene,0.8394959,0.6527293466362303,0.1932826826211047
+b n codoping on graphene,graphene,0.7992624,0.6014548096297173,0.16513120716226692
+b n codoping on graphene,heteroatom doping can endow graphene with various new or improved electromagnetic physicochemical optical and structural properties,0.74469435,0.41900518636461687,0.039290120309627086
+b n codoping on graphene,only no and no2 bind to b doped graphene,0.77885795,0.5974828828206015,0.16821573201905726
+b- and n doped graphene retain a planar form,doped graphene,0.84750414,0.5820224293723977,0.12470325221588308
+b- and n doped graphene retain a planar form,graphene,0.787502,0.4983232042269506,0.05268121992380692
+b- and n doped graphene retain a planar form,only no and no2 bind to b doped graphene,0.78681225,0.5612905509111857,0.1467947065460643
+bandgap,tunable band gap,0.8208318,0.6797301741872006,0.2279451569296943
+bending strain,great mechanical deformation tolerance 3000 bending cycles 1000 twisting cycles and 65 strain strength,0.7326553,0.7505033447243644,0.3312311539460451
+bending strain,high flexibility and elasticity,0.7471513,0.4494097972719611,0.02757807998464301
+bending strain,highly stretchable,0.7388457,0.6525729191187696,0.2785790186710203
+bending strain,reliable sensing performance with a bending strain of less than 1.4,0.7315348,0.5089669439413341,0.05959692715892595
+bending strain,robust flexibility without an obvious performance decrease after 1000 bending extending cycles,0.73339826,0.7289761690840646,0.3149016021287141
+bluetooth system,wireless operation,0.6916429,0.6411423820788456,0.18172022764038165
+boron nitride,one atom thin,0.7051309,0.6138539105939874,0.20735835577447603
+carbon nanotubes,one atom thick carbon allotrope,0.73547494,0.8324738242562782,0.5061188986390546
+carbon nanotubes,single walled carbon nanotubes,0.84706557,0.6610147216104245,0.2318907315625478
+carbon nanotubes,vertical carbon nanotubes cnts reduced graphene hybrid film,0.76283854,0.4565539308819293,0.03617926934404225
+charge transfer between gases and graphene,favorable charge transfer occurring at the s rgo wo 3 interfaces,0.6453419,0.439346044752523,0.0427575964263055
+charge transfer between gases and graphene,gas molecules on the n channel graphene provide charged impurities,0.80775166,0.4817113644885333,0.161782517303115
+charge transfer between gases and graphene,graphene,0.7735792,0.826316504376561,0.4763558954885615
+charge transfer between graphene and no2 and its dimer n2o4,directly integrated graphene chemiresistive junctions,0.73426396,0.45920538918404624,0.13692398251194582
+charge transfer between graphene and no2 and its dimer n2o4,favorable charge transfer of sno 2 rgo interfaces,0.6603439,0.5158067918519775,0.1341965752497538
+chemical doping,doped graphene,0.6948606,0.7882462270915869,0.3968016261489037
+chemical doping,heteroatom doping,0.75148696,0.33972099912008286,9.068033402825915e-05
+chemical doping,p doping,0.7902678,0.48862840369242627,0.05195543922398338
+chemical durability,excellent long term stability 84 days,0.703557,0.5907587765039114,0.17354458468203926
+chemical durability,high chemical electrochemical stability,0.7534235,0.526267826058606,0.18564417744391393
+chemical durability,highly stable,0.7432641,0.6781685634498329,0.22753093086262333
+chemical durability,stability,0.71962184,0.7126257892068376,0.2754494982676522
+chemical durability,washing durability,0.87779295,0.6926441242940437,0.3137870942800043
+chemical vapor deposition cvd grown graphene nitrogen dioxide no 2 gas sensors modified by zinc oxide zno thin films via atomic layer deposition ald,highly reactive top mounted zno thin films,0.6347606,0.7628899357863306,0.3714112913352051
+chemical vapor deposition cvd grown graphene nitrogen dioxide no 2 gas sensors modified by zinc oxide zno thin films via atomic layer deposition ald,preferential adsorption of no 2 on n doped graphene,0.62999666,0.3731626558363189,0.004145391607183746
+chemiresistor type sensor,excellent chemical sensor properties,0.69687873,0.5703440894518644,0.10901508183022546
+chemiresistor type sensor,highly sensitive and rapidly responding room temperature no 2 gas sensor,0.6878482,0.7981280014587282,0.41954149309990085
+chemiresistor type sensor,resistive based gas sensors,0.7422708,0.7761476563451686,0.3880749181000376
+chemiresistor type sensor,room temperature gas sensor,0.7265257,0.6657540368807167,0.2196344624393809
+chemiresistor type sensor,ultra sensitive gas sensor,0.68479,0.6485297651258003,0.19509683099923447
+cnts 20 μm in length,vertically aligned cnt array,0.60851383,0.9494502451748751,0.7861492129578568
+commercially available cotton elastic threads,high flexibility and elasticity,0.701068,0.45491036668389156,0.03649528157739512
+commercially available cotton elastic threads,highly stretchable,0.713971,0.5352805585119564,0.07825332741354984
+conducting polymers,high electronic conductivity,0.71173793,0.8153483226012243,0.4481448007631108
+conducting polymers,improved conductivity,0.70097864,0.7371626607810875,0.3106404941110713
+conductive,continuous conductive networks,0.75800526,0.49125213015429314,0.04886496567111531
+conductive,easy handing,0.67494017,0.8107089316429745,0.4395396542110409
+conductive,high electronic conductivity,0.723769,0.9095554897375343,0.6711153611970799
+conductive,high proton conductivity 58 ms cm 1 at 55 °c,0.6312421,0.8184026536103829,0.4737079018331589
+conductive,improved conductivity,0.7916707,0.7041853596086243,0.27155759713244976
+conductive,improved conductivity of the cumgcs,0.69596267,0.7174291629442255,0.2866626212175002
+conductive,needlelike lig,0.6213285,0.7951467179745155,0.4136278425745382
+continuous conductive networks,high electronic conductivity,0.7061777,0.8425035228660921,0.5048693544095926
+continuous conductive networks,improved conductivity,0.73544276,0.6770157235693834,0.22362228584220278
+continuous conductive networks,improved conductivity of the cumgcs,0.71039987,0.5907442736296716,0.12603578971137874
+continuous conductive networks,three dimensional graphene networks,0.70332444,0.7564764028026987,0.34558153246376433
+cost advantages of a silicon cmos platform,mature 0.18 μm cmos technology,0.7397935,0.484990764409777,0.0836332418761716
+cost advantages of a silicon cmos platform,minimal number of post cmos processing steps,0.71361643,0.6246609118055294,0.249604065987461
+defective graphene,graphene,0.84422684,0.7162444880286621,0.33024091741692196
+defective graphene,graphene s unique electronic structures and properties,0.8181641,0.7777388110032191,0.37776893479540274
+detection limit could reach 180 parts per billion ppb,low limit of detection,0.7997339,0.8682577001454536,0.607897844847429
+detection limit could reach 180 parts per billion ppb,sensitivity better than the experimentally limited 1 ppb,0.8307927,0.5932964624957285,0.15919871683930475
+detection limit of 1 ppb,low limit of detection,0.86085683,0.8861112825217022,0.6216973111049156
+detection limit of 1 ppb,low limit of detection of 4.1 ppm,0.9091674,0.5371813715353932,0.2045083801391463
+detection limit of 1 ppb,sensitivity better than the experimentally limited 1 ppb,0.8719921,0.6592125251773463,0.20114193404550107
+direct write lig based gas sensor,gas sensing,0.7576182,0.6654728747368304,0.20882299678606775
+direct write lig based gas sensor,high sensitivity low cost and low energy consumption miniaturised gas sensors,0.7611277,0.4534368240478959,0.030640080811690895
+directly integrated graphene chemiresistive junctions,graphene,0.7719748,0.7262132570783706,0.2941370659252507
+directly integrated graphene chemiresistive junctions,graphene s unique electronic structures and properties,0.7477191,0.45884522239816555,0.12715336000391353
+distinct octahedral morphology,eight 111 equivalent crystal faces,0.6777415,0.9372110171312842,0.7477034366322199
+distinct responses with a marked change of the i v relation along either the armchair or the zigzag directions depending on the type of molecules,large 1 2 orders of magnitude anisotropy along different armchair or zigzag directions,0.7167865,0.6353826601387202,0.2415065506703914
+doped graphene,graphene,0.8494691,0.5656296993633221,0.2574183707137484
+doped graphene,graphene decorated with transition metals,0.7845452,0.6817493445053162,0.35790201990998327
+doped graphene,graphene s unique electronic structures and properties,0.80959064,0.8569407512678737,0.5369525007526703
+doped graphene,heteroatom doping can endow graphene with various new or improved electromagnetic physicochemical optical and structural properties,0.80823463,0.8766793668690046,0.5825311440072832
+doped graphene,only no and no2 bind to b doped graphene,0.79513633,0.8679270168025424,0.5628943809453046
+doped graphene,only no2 binds to s doped graphene,0.8119658,0.7212430041645335,0.28546680782336764
+doped graphene,pd nps were deposited on slg via the galvanic displacement reaction between graphene buffered copper cu and pd ion,0.62340546,0.8000942450479887,0.4187308772639674
+doped graphene,preferential adsorption of no 2 on n doped graphene,0.7933716,0.665737991218659,0.20923613958540987
+easy handing,highly flexible,0.6672399,0.7194692790895153,0.2879612264660122
+elemental doping,p doping,0.8442309,0.6200164600244225,0.28301276280918386
+elemental doping,up shifting of the fermi level,0.6615311,0.516679280563035,0.08263349850538826
+energy storage,high chemical electrochemical stability,0.659606,0.48482131613092155,0.045617039357848665
+enhanced electron transport,high electronic conductivity,0.75327015,0.7901731146698195,0.4000304490585481
+enhanced electron transport,improved conductivity,0.72327733,0.5118890952749128,0.11871224633112343
+enhanced electron transport,improved conductivity of the cumgcs,0.6863406,0.42791032146727953,0.029480582208079253
+enhanced electron transport,up shifting of the fermi level,0.6686867,0.38691920429996246,0.01017808665653741
+environmental stability,excellent long term stability 84 days,0.7139131,0.524401114329493,0.07581855161640849
+enhanced sensitivity 2 orders of magnitude,enhancement in gas sensitivity and selectivity,0.7967573,0.4799903784792516,0.04384381806087345
+enhanced sensitivity 2 orders of magnitude,increase the gas sensitivity,0.7563069,0.8653836272640871,0.558562947727029
+enhanced sensitivity 2 orders of magnitude,sensitive sensing response,0.7768792,0.766895961481654,0.3601656944167958
+enhanced sensitivity 2 orders of magnitude,sensitivity better than the experimentally limited 1 ppb,0.74701333,0.694153126911608,0.2495973174437588
+enhancement in gas sensitivity and selectivity,excellent selectivity and repeatability without the aid of uv light or thermal treatment,0.6803586,0.5276438799683573,0.07615222094799512
+enhancement in gas sensitivity and selectivity,high sensitivity to gas adsorption,0.81309986,0.5009346613507081,0.07771417260375979
+enhancement in gas sensitivity and selectivity,highly sensitive gas sensors,0.7755798,0.5415814940727319,0.0841599419114114
+enhancement in gas sensitivity and selectivity,increase the gas sensitivity,0.83805627,0.5776586029195447,0.1207877136738581
+enhancement in gas sensitivity and selectivity,selective sensing of volatile organic gases,0.7673702,0.4822714110682565,0.06466337185311632
+enhancement in gas sensitivity and selectivity,selective sensitivity to no 2 gas,0.7787422,0.8080352219523774,0.4401488395159029
+enhancement in gas sensitivity and selectivity,selectivity to other gases such as acetone ethanol ethylene and co2,0.7127155,0.6165717770188831,0.1966140982398633
+enhancement in gas sensitivity and selectivity,ultra sensitive gas sensor,0.775426,0.7753202626032488,0.3783121922621443
+enhancement in gas sensitivity and selectivity,ultrahigh selectivity to nh3,0.7427837,0.49372056782897095,0.05482862962646107
+enhancement in gas sensitivity and selectivity,ultrasensitive chemical or gas sensor,0.7832043,0.6178314141566268,0.15657009400113453
+environmental stability,highly stable,0.74544847,0.8329197637492152,0.4919857273183682
+environmental stability,long term stability,0.80938923,0.579961542089428,0.14260809867994617
+environmental stability,stability,0.8380099,0.8157673520639906,0.44930016457414124
+evaporation and redeposition of sno x nanoparticles,small secondary sno x x ≤ 2 nanoparticles deposited on the surfaces,0.8220746,0.6782971210415947,0.22547167712353677
+excellent chemical sensor properties,ultra sensitive gas sensor,0.79273784,0.5000783153542777,0.06779801130979912
+excellent chemical sensor properties,ultrasensitive chemical or gas sensor,0.8446512,0.4313082006662843,0.04502477063866561
+excellent long term stability 84 days,highly stable,0.78982824,0.708757634140464,0.2782397652328422
+excellent long term stability 84 days,long term stability,0.82797986,0.87231801343211,0.5948108035900419
+excellent long term stability 84 days,stability,0.7649255,0.7583110578009085,0.3953545744466114
+excellent long term stability 84 days,washing durability,0.71299654,0.8334255985456016,0.5003982700583796
+excellent mechanical strength,great mechanical deformation tolerance 3000 bending cycles 1000 twisting cycles and 65 strain strength,0.66572136,0.4618332573075877,0.08417697188616413
+excellent mechanical strength,mechanical robustness,0.7218308,0.9330742169902182,0.7344062224858061
+excellent mechanical strength,mechanical stability,0.6742449,0.5470239994669283,0.15520692251430301
+excellent mechanical strength,superb mechanical and optical characteristics,0.75467634,0.6092449377746719,0.16106248081709507
+excellent reproducibility,excellent selectivity,0.73789084,0.5101122776259706,0.3051442488965881
+excellent reproducibility,exhibits excellent response characteristics and repeatability,0.789404,0.722964302929159,0.2889294040059691
+excellent reproducibility,reliability,0.75051415,0.5908495101316026,0.23011855138500614
+excellent reproducibility,repeatable,0.75086755,0.9049660608997078,0.6563502677294968
+excellent reproducibility,sensor to sensor reproducible,0.69012904,0.8755613617732676,0.5803080495527103
+excellent selectivity,excellent selectivity and repeatability without the aid of uv light or thermal treatment,0.75006795,0.495300517662776,0.07034306952042635
+excellent selectivity,good selectivity,0.8590269,0.868711366208821,0.5670579541571151
+excellent selectivity,great selectivity,0.881673,0.9161098825881238,0.7029387035780614
+excellent selectivity,high selectivity,0.90642107,0.7907849433897871,0.4100056424927172
+excellent selectivity,highly selective,0.8464615,0.9079237625788541,0.6637074108215866
+excellent selectivity,poor selectivity,0.8548289,0.8502270438257378,0.5594155063261154
+excellent selectivity,selective,0.78530055,0.9039365121620025,0.651451200645591
+excellent selectivity,selectivity,0.8614391,0.9586156225901126,0.8184616045863891
+excellent selectivity and repeatability without the aid of uv light or thermal treatment,exhibits excellent response characteristics and repeatability,0.67859304,0.49041364176555485,0.05915875016413241
+excellent selectivity and repeatability without the aid of uv light or thermal treatment,high selectivity,0.6941037,0.44037013400909764,0.08627768595684993
+excellent sensitivity to no2 gas,high response to no2 gas,0.8597381,0.91419865104753,0.6795960455167349
+excellent sensitivity to no2 gas,high sensitivity to no2,0.92212737,0.7703448868914767,0.3916950794377947
+excellent sensitivity to no2 gas,highly sensitive selective and reversible responses to no2 without external heating,0.8274616,0.6993842220863241,0.2620935415701816
+excellent sensitivity to no2 gas,increase the gas sensitivity,0.75635725,0.5604252819578862,0.09933592599967855
+excellent sensitivity to no2 gas,responsive to low concentrations of no gases 1000 ppb at room temperature,0.7807668,0.5460882451910801,0.126641163997942
+excellent sensitivity to no2 gas,selective sensitivity to no 2 gas,0.87543565,0.7305879592942112,0.3100621112634234
+excellent sensitivity to no2 gas,sensitive sensing response,0.7664125,0.7662975665814806,0.36252991967037707
+excellent sensitivity to no2 gas,ultra sensitive gas sensor,0.7760946,0.6913565174837313,0.28291404537646603
+exhibits excellent response characteristics and repeatability,stimuli response characteristics,0.71234155,0.5041391294610277,0.07935295670261311
+extremely fast recovery kinetics,fast response of 36 s,0.7713743,0.46345165789362835,0.03736110242134416
+extremely fast recovery kinetics,fast response recovery,0.8129888,0.9072682106353783,0.6704510571861211
+extremely fast recovery kinetics,fast response recovery time 36 s 18 s,0.7480942,0.9342794946871011,0.7440256904407173
+extremely fast recovery kinetics,full recovery steps without significant signal degradation,0.6504988,0.7194600301982279,0.2834055752722089
+extremely fast recovery kinetics,rapid recovery ≈11 s,0.80400836,0.6508349662301322,0.2613548760154325
+extremely fast recovery kinetics,rapid response times,0.78196836,0.46299481415478166,0.06538465833674223
+extremely high surface hydrophobicity,moisture resistant property against a relative humidity of 90,0.7006013,0.646742404028382,0.259726034852761
+fast detection,fast response recovery,0.7278924,0.4304034787627828,0.022041529362660683
+fast detection,rapid response times,0.76175845,0.4669670153331324,0.04762011538207178
+fast response of 36 s,fast response recovery,0.79774404,0.4514214984192171,0.059012636762992066
+fast response of 36 s,fast response recovery time 36 s 18 s,0.8468008,0.6563365230026613,0.24055682294986158
+fast response of 36 s,rapid response times,0.849836,0.8549907049039133,0.5370537405275304
+fast response recovery,fast response recovery time 36 s 18 s,0.8590272,0.9128655215702304,0.6848810305626676
+fast response recovery,full recovery steps without significant signal degradation,0.73081535,0.8754191824903467,0.5823606708655794
+fast response recovery,rapid recovery ≈11 s,0.8068169,0.8642688287353768,0.5732994768001698
+fast response recovery,rapid response times,0.8310484,0.9146776304561902,0.6809824935225665
+fast response recovery,short response time of 9.6 s,0.7229215,0.7619613435481692,0.3686790559538211
+fast response recovery time 36 s 18 s,full recovery steps without significant signal degradation,0.6564098,0.5258702134526289,0.07613472152243295
+fast response recovery time 36 s 18 s,rapid response times,0.79137635,0.8856920616305599,0.6130442059713712
+fast ≈14 s and slow ≈95 s response due to sp 2 -carbon bonding and disorders on graphene,graphene,0.65770006,0.9041454973422528,0.6522785146075082
+favorable charge transfer occurring at the s rgo wo 3 interfaces,reduced graphene oxide rgo,0.6642658,0.7879893515546086,0.41984653401500693
+favorable charge transfer occurring at the s rgo wo 3 interfaces,superb transport capability of rgo,0.6384733,0.459796993015232,0.1298225737927966
+favorable charge transfer occurring at the s rgo wo 3 interfaces,wo 3 nanorods sulfonated reduced graphene oxide s rgo,0.6521701,0.8968409369270948,0.6337437282600624
+favorable charge transfer of sno 2 rgo interfaces,reduced graphene oxide rgo,0.6420729,0.6143355492084869,0.20105950957140173
+favorable charge transfer of sno 2 rgo interfaces,sno 2 graphene heterojunctions,0.66637486,0.514869964720865,0.10769842591790857
+favorable charge transfer of sno 2 rgo interfaces,superb transport capability of rgo,0.6517835,0.7734602521392425,0.394268126519176
+favorable linearity,good linear relationship r 2 0.998,0.7469921,0.8924462962947374,0.6455588573617165
+fermi energy close to the dirac point,graphene s unique electronic structures and properties,0.6437341,0.595420421479192,0.16051742813847458
+first principles approach based on density functional theory dft,first principles calculations,0.8580793,0.8929520731552149,0.661159502424999
+first principles calculations,one atom thick carbon allotrope,0.64237225,0.9235508977117168,0.709023418267646
+first principles calculations,one atom thin,0.6679528,0.48577770994039793,0.1556270820714546
+flexibility,full flexibility,0.8901244,0.7267724181575328,0.3085862736675601
+flexibility,high flexibility and elasticity,0.8608651,0.6881917181213427,0.24334912570606604
+flexibility,high mobility,0.7355436,0.8171426028298953,0.4549960585884728
+flexibility,highly flexible,0.8678258,0.8841966396491855,0.600807460148788
+flexibility,outstanding flexibility,0.9118198,0.7647073203814845,0.35779243225400037
+flexibility,superior flexibility,0.8883399,0.6421291185366985,0.1826220162162252
+flexible gas sensors,gas sensing,0.8597384,0.6178361353526095,0.15374026923583928
+flexible gas sensors,high sensitivity low cost and low energy consumption miniaturised gas sensors,0.84541374,0.5261130798020041,0.08835228385458616
+flexible gas sensors,highly sensitive and rapidly responding room temperature no 2 gas sensor,0.84426033,0.4516117735555637,0.08055271558125232
+flexible gas sensors,increase the gas sensitivity,0.7696917,0.6899007434588453,0.26527094080837643
+flexible gas sensors,low cost flexible sensors,0.78662384,0.5925201669283078,0.1337100853072961
+flexible gas sensors,next generation sensing electronics,0.6809,0.7371097176819257,0.3317505366652349
+flexible gas sensors,reliable sensing performance with a bending strain of less than 1.4,0.65870726,0.7296173709521621,0.35759368539938585
+flexible gas sensors,the sensor had no responses to methane carbon monoxide or nitrogen dioxide gas,0.71510434,0.8129871423168669,0.4434180740736293
+flexible gas sensors,ti3c2tx mxene gas sensors exhibited a very low limit of detection of 50 100 ppb for voc gases at room temperature,0.70001966,0.4443967807702171,0.05643712334473572
+flexible gas sensors,ultrasensitive chemical or gas sensor,0.8515508,0.4453978330992041,0.04184910557329413
+flue gas,gas sensing,0.740167,0.4536203036408771,0.055953784215392766
+full exfoliation of the graphite oxide material into individual single layer graphene oxide sheets,graphene,0.70234644,0.6807336343443819,0.23035340140745653
+full exfoliation of the graphite oxide material into individual single layer graphene oxide sheets,hydrophilic 2d graphene oxide go nanosheets,0.74769634,0.8122967961481588,0.44358581778590644
+full flexibility,high flexibility and elasticity,0.8238028,0.4428270729587439,0.043266362886019816
+full flexibility,highly flexible,0.8820387,0.5102972314472966,0.07528683170710238
+full flexibility,outstanding flexibility,0.8656161,0.6024611627488021,0.14145558762510568
+full flexibility,superior flexibility,0.87023413,0.7157188662735157,0.32288144944777597
+full recovery steps without significant signal degradation,fully reversible and low power operation,0.6437527,0.6712713259082889,0.21888370733883922
+full recovery steps without significant signal degradation,minimal number of post cmos processing steps,0.65553635,0.6459861449688014,0.31563746791072345
+full recovery steps without significant signal degradation,rapid recovery ≈11 s,0.6527716,0.9419927829361096,0.7631630669516788
+fully reversible and low power operation,low power consumption,0.7918667,0.7635279299838191,0.3589918524700737
+fully reversible and low power operation,reversible,0.74712896,0.4286351471286578,0.07940567563821377
+gas molecules on the n channel graphene provide charged impurities,gate free graphene gas sensors enabled by nondestructive molecular n doping,0.73084354,0.7805728190370819,0.3942605480451945
+gas molecules on the n channel graphene provide charged impurities,pd nps were deposited on slg via the galvanic displacement reaction between graphene buffered copper cu and pd ion,0.6156141,0.5468677114895587,0.27277833404444085
+gas sensing,high sensitivity to gas adsorption,0.7671802,0.901904458715913,0.6481872840206455
+gas sensing,highly sensitive and rapidly responding room temperature no 2 gas sensor,0.8116035,0.5523082592798323,0.11065127139704578
+gas sensing,highly sensitive gas sensors,0.86774045,0.7751816765985882,0.379732127436464
+gas sensing,increase the gas sensitivity,0.7577106,0.8059693720198989,0.43215866240735146
+gas sensing,reliable and repeatable sensing behaviors were revealed when the array was exposed to various gas concentrations even at 30 ppm,0.7092575,0.5159289227955992,0.06487335255946058
+gas sensing,resistive based gas sensors,0.8229211,0.6088272463477683,0.25417302629796135
+gas sensing,room temperature acetone gas sensor,0.7761005,0.41676378560353416,0.01900170020439984
+gas sensing,room temperature gas sensor,0.82296574,0.8268081809075618,0.47208551857471603
+gas sensing,sensitive sensing response,0.7655006,0.7817026234482644,0.38625680531512885
+gas sensing,the sensor had no responses to methane carbon monoxide or nitrogen dioxide gas,0.71205217,0.5092018790563062,0.10116906869331033
+gas sensing,ultra sensitive gas sensor,0.86763114,0.8731531389097388,0.5774402512801176
+gas sensing,ultrasensitive chemical or gas sensor,0.8453386,0.8827057785134947,0.6002552209327436
+gate free graphene gas sensors enabled by nondestructive molecular n doping,highly sensitive and uniform graphene gas sensor,0.87553716,0.5845451416344242,0.19187682343039514
+gate free graphene gas sensors enabled by nondestructive molecular n doping,nitrogen doped to improving the gas sensing properties of reduced graphene oxide,0.79015934,0.7408350597225769,0.3245940294606767
+gate free graphene gas sensors enabled by nondestructive molecular n doping,sensitive and uniform graphene gas sensors,0.87849367,0.46214153499373045,0.03242858945854343
+gate free graphene gas sensors enabled by nondestructive molecular n doping,superior gas sensitivity of monolayer graphene,0.79017127,0.5832172560837275,0.13037673756875223
+good linear relationship r 2 0.998,great selectivity,0.60140795,0.6295409273471074,0.18792334355924423
+good selectivity,great selectivity,0.95296097,0.9377554544334885,0.7535967572621852
+good selectivity,high selectivity,0.8809247,0.8291882947395146,0.4761637531934658
+good selectivity,highly selective,0.80463576,0.8835067845778745,0.598936729215754
+good selectivity,low selectivity,0.8644651,0.5158198233606753,0.3000768500353901
+good selectivity,poor selectivity,0.80746984,0.841438670705811,0.5266380240386579
+good selectivity,selective,0.81201804,0.9663296850605141,0.8454060381747044
+good selectivity,selectivity,0.8822745,0.9413947644702543,0.7689548709764253
+good thermal stability,highly stable,0.8177566,0.832590956126684,0.48335410020773206
+good thermal stability,long term stability,0.76597846,0.5792985085922446,0.11746719301925568
+good thermal stability,stability,0.7773185,0.7499652633634607,0.339675369212155
+graphene,graphene s unique electronic structures and properties,0.87074786,0.9008750078776522,0.6435508270845776
+graphene,graphite,0.7801934,0.5360091403346345,0.2595685605101573
+graphene,increase in graphene resistance,0.8078438,0.446887936850215,0.025456545073586856
+graphene,laser induced graphene,0.76201236,0.5569515068364034,0.09894766969225888
+graphene,laser induced graphene lig,0.64403254,0.5219557273237228,0.11823821586682137
+graphene,metal organic frameworks,0.6579286,0.6926836475838217,0.34316689793709443
+graphene,metal oxide nanosheets,0.78249633,0.6643100438780138,0.2688911209341859
+graphene,monolayer of graphene is coated onto the ag film surface,0.6908056,0.6659659757629147,0.22037125960900916
+graphene,nanomesh,0.72073925,0.5508118331317308,0.18475502224666873
+graphene,one atom thick carbon allotrope,0.7410318,0.9860358472484553,0.9244316312105472
+graphene,one atom thin,0.68364215,0.7471199087136671,0.33233702750895755
+graphene,p type semiconducting large area monolayer graphene film,0.76698065,0.6988811476585335,0.2787115789825728
+graphene,preferential adsorption of no 2 on n doped graphene,0.76432705,0.6836509000171009,0.23237076765502762
+graphene,pristine form graphene,0.83657295,0.8937569605640746,0.6250173485795492
+graphene,reduced graphene oxide mesoporous zinc oxide nanosheets,0.7554304,0.5960352989877248,0.24138988042959075
+graphene,silver nanowire graphene hybrid nanostructures,0.7686674,0.400005800113098,0.033229385456815974
+graphene,sno 2 graphene heterojunctions,0.7809001,0.4729040069613253,0.0425068657693064
+graphene,superior gas sensitivity of monolayer graphene,0.8120454,0.8093398091712929,0.438258643955889
+graphene,volumetric structuring of graphene sheets single layered and stacked forms,0.78145874,0.6211724186885564,0.16679222778878844
+graphene decorated with transition metals,graphene s unique electronic structures and properties,0.7920256,0.8317970394287011,0.482102248847301
+graphene decorated with transition metals,pd nps were deposited on slg via the galvanic displacement reaction between graphene buffered copper cu and pd ion,0.6373142,0.8339142336406747,0.4935742722852525
+graphene decorated with transition metals,preferential adsorption of no 2 on n doped graphene,0.7477149,0.3713878604109211,0.0035802793920284293
+graphene decorated with transition metals,pristine form graphene,0.7385149,0.59666209822093,0.32601071156593964
+graphene oxide wrapping,hydrophilic 2d graphene oxide go nanosheets,0.7667505,0.6593349878306487,0.22055841319542058
+graphene oxide wrapping,hydrothermal method using graphene oxide and nh4oh as precursors,0.7154126,0.4647628354836585,0.03908959260943223
+graphene oxide wrapping,monolayer of graphene is coated onto the ag film surface,0.68046474,0.5694270657328174,0.14550948725235613
+graphene oxide wrapping,reduced graphene oxide nanofiber mat,0.78879666,0.7904324053432739,0.40163603272448256
+graphene oxide wrapping,reduced graphene oxide rgo,0.7630728,0.6817107768726232,0.291830366274642
+graphene oxide wrapping,rgo loaded metal oxide nanofiber nf,0.6648668,0.5932303542169469,0.13572564757131467
+graphene s unique electronic structures and properties,p type semiconducting large area monolayer graphene film,0.7505306,0.4750549771849804,0.15551658813432345
+graphene s unique electronic structures and properties,porous graphene,0.7809075,0.6376726092125367,0.2399749685924305
+graphene s unique electronic structures and properties,pristine form graphene,0.7884618,0.8780768807186445,0.5895608529134273
+graphene s unique electronic structures and properties,quadratic low energy band structure,0.6975757,0.6059301532579076,0.145044276343825
+graphene was used as a buffer layer which transports electrons from cu for pd to nucleate on the slg surface,pd nps were deposited on slg via the galvanic displacement reaction between graphene buffered copper cu and pd ion,0.7996676,0.9524841506206031,0.7967963102128583
+great mechanical deformation tolerance 3000 bending cycles 1000 twisting cycles and 65 strain strength,mechanical robustness,0.6576947,0.7852314228371189,0.44111850833313504
+great mechanical deformation tolerance 3000 bending cycles 1000 twisting cycles and 65 strain strength,mechanically stretchable twisted,0.6528746,0.6000267934875285,0.13592975826928055
+great mechanical deformation tolerance 3000 bending cycles 1000 twisting cycles and 65 strain strength,robust flexibility without an obvious performance decrease after 1000 bending extending cycles,0.77393305,0.5933542925844334,0.15025492132118212
+great selectivity,high selectivity,0.9117019,0.8704898660587848,0.6051742047877351
+great selectivity,highly selective,0.85272086,0.9295474134289033,0.735622656388305
+great selectivity,selective,0.83543,0.9252836922684696,0.7250934765039262
+great selectivity,selectivity,0.88737965,0.7652393132438935,0.4400650765138997
+great wearability,high flexibility and elasticity,0.72894216,0.746509911674098,0.3280874200948424
+great wearability,highly flexible,0.72275174,0.7948018737767555,0.4110309509691915
+great wearability,knittability,0.70842314,0.7474986282356934,0.33074183961438663
+great wearability,scalable wearable characteristics,0.71061397,0.5592545259744821,0.09975048199015024
+heteroatom doping,heteroatom doping can endow graphene with various new or improved electromagnetic physicochemical optical and structural properties,0.79164433,0.9521197135642375,0.7963174538633928
+hexagonal honeycomb crystalline structure,one atom thick carbon allotrope,0.6601558,0.9911071959977974,0.948548845353595
+high carrier mobility,high mobility,0.80937576,0.7142522505529555,0.32264546087230883
+high chemical electrochemical stability,highly stable,0.7777742,0.7893764984855497,0.45829872415564477
+high electro thermo conductivities,improved conductivity,0.7744888,0.8421021906849852,0.5191355690598424
+high electro thermo conductivities,improved conductivity of the cumgcs,0.69606435,0.6584880245176292,0.2130806739842016
+high electro thermo conductivities,thermal conductivity,0.77091837,0.646584921501973,0.22304522418235861
+high electron mobility,high mobility,0.7807696,0.5106496807760461,0.10124290006771552
+high electron mobility,up shifting of the fermi level,0.69094634,0.5439900146233423,0.10723187889506025
+high electronic conductivity,improved conductivity,0.7988795,0.8772361169446481,0.5844217668087812
+high electronic conductivity,improved conductivity of the cumgcs,0.724236,0.6273723686373327,0.1638377220086512
+high flexibility and elasticity,highly flexible,0.86060095,0.7890003438895855,0.4578064054833634
+high flexibility and elasticity,highly stretchable,0.8464235,0.795761900774159,0.4480986949830096
+high flexibility and elasticity,mechanically stretchable twisted,0.6931304,0.7093663875634008,0.26804959397585426
+high flexibility and elasticity,outstanding flexibility,0.83135927,0.8157115588266004,0.49544588284693025
+high flexibility and elasticity,robust flexibility without an obvious performance decrease after 1000 bending extending cycles,0.7093747,0.5704004199609733,0.21368233545820836
+high flexibility and elasticity,stretched by 30,0.672946,0.41026040079587767,0.011779257298158874
+high flexibility and elasticity,superior flexibility,0.87202334,0.8212684270948541,0.47607260679192487
+high gas response of 95.1,high response,0.78944874,0.6240435809737861,0.1653366095511033
+high gas response of 95.1,high response to no2 gas,0.75935936,0.6942323908721699,0.3416657968658472
+high gas response of 95.1,increase the gas sensitivity,0.7490214,0.6402541697796706,0.20448999175465932
+high intrinsic surface area,high specific surface area,0.90001637,0.8452945297685277,0.5267322293088825
+high intrinsic surface area,high surface area,0.885869,0.5901575212593045,0.19226159343360005
+high intrinsic surface area,high surface area and thermal conductivity of the lig,0.701053,0.49155129156672,0.05300936505980136
+high intrinsic surface area,intrinsic high surface to volume ratio,0.89401627,0.8300426269258017,0.48844118621290367
+high intrinsic surface area,large specific surface areas,0.8153791,0.9361574815291159,0.7467608965285815
+high intrinsic surface area,large surface,0.7435167,0.8885683859305136,0.6176162866689436
+high intrinsic surface area,large surface area,0.88067365,0.6660287660400893,0.2776751064005788
+high intrinsic surface area,relatively high surface area 47.896 m 2 g -1,0.7953753,0.6729144272803025,0.2938094246411004
+high mobility,outstanding flexibility,0.7296933,0.5128642327216045,0.09713207120092571
+high mobility,superb transport capability of rgo,0.6331618,0.41611993172797074,0.050020866485542825
+high performance nh 3 gas sensor at room temperature,high response of 96 at 200 ppm of nh 3,0.7560162,0.8219821968782027,0.4744333661879454
+high surface area and thermal conductivity of the lig,large surface area,0.6826372,0.5718575726674465,0.13758425537112207
+high performance nh 3 gas sensor at room temperature,room temperature gas sensor,0.8238373,0.5686132352796172,0.11512599791520195
+high performance nh 3 gas sensor at room temperature,ultrahigh selectivity to nh3,0.7470821,0.46296978353629287,0.15648446799486126
+high proton conductivity 58 ms cm 1 at 55 °c,improved conductivity,0.68972933,0.6357759776757075,0.23187559274572078
+high proton conductivity 58 ms cm 1 at 55 °c,improved conductivity of the cumgcs,0.6594445,0.5793664410380336,0.14325861765063008
+high response,high sensitivity,0.7993177,0.48176774135664835,0.054022597199057
+high response,rapid response times,0.7224864,0.8042160831742575,0.4315210153503114
+high response,response of 105.1,0.7020214,0.5257941950530389,0.09429280268520523
+high response of 96 at 200 ppm of nh 3,high selectivity to nh 3 over several gases vocs including formaldehyde ethanol methanol isopropanol toluene and acetone,0.73361796,0.9259439506197894,0.7130433375602473
+high response of 96 at 200 ppm of nh 3,nh3,0.7636025,0.7593329004393532,0.34682111124382375
+high response of 96 at 200 ppm of nh 3,ultrahigh selectivity to nh3,0.81800216,0.66698079682525,0.2135351986515308
+high response to no2 gas,high sensitivity to no2,0.90461695,0.8763480921875861,0.5818103679595551
+high response to no2 gas,higher selectivity to no2,0.8415307,0.5098573147302042,0.2051162345823614
+high response to no2 gas,highly sensitive selective and reversible responses to no2 without external heating,0.77322775,0.8023021122746561,0.4227072886964415
+high response to no2 gas,no2,0.7831278,0.7752218394264334,0.3734367236034484
+high response to no2 gas,responsive to low concentrations of no gases 1000 ppb at room temperature,0.76273763,0.5213538911452369,0.19774975139623419
+high response to no2 gas,selective sensitivity to no 2 gas,0.79709584,0.895719092480212,0.6299905085636552
+high selectivity,highly selective,0.9005208,0.9377466669695577,0.7554440458258767
+high selectivity,selective,0.83246344,0.8798922197549804,0.5957442085345823
+high selectivity,selectivity,0.90420026,0.8942696152601762,0.6491854119391993
+high selectivity to nh 3 over several gases vocs including formaldehyde ethanol methanol isopropanol toluene and acetone,selective sensing of volatile organic gases,0.706387,0.612157176680559,0.18345269726757696
+highly flexible,superior flexibility,0.857134,0.8557717726587543,0.5367974235527709
+high selectivity to nh 3 over several gases vocs including formaldehyde ethanol methanol isopropanol toluene and acetone,ultrahigh selective nh3 gas sensor,0.72301555,0.9134923723397391,0.6789434526018612
+high selectivity to nh 3 over several gases vocs including formaldehyde ethanol methanol isopropanol toluene and acetone,ultrahigh selectivity to nh3,0.79500604,0.8872104082954,0.6084950165436098
+high sensitivity,high sensitivity to no2,0.80222344,0.5618471310434147,0.1484254900955626
+high sensitivity,sensitive sensing response,0.8101382,0.8829414330549452,0.6228765453975971
+high sensitivity low cost and low energy consumption miniaturised gas sensors,highly sensitive gas sensors,0.87820256,0.40161517160083055,0.021241798419593505
+high sensitivity low cost and low energy consumption miniaturised gas sensors,monolithically integrated cmos monolayer graphene gas sensor,0.7498482,0.7388791170629577,0.3378759415610013
+high sensitivity low cost and low energy consumption miniaturised gas sensors,next generation sensing electronics,0.67687994,0.638581150622547,0.20943306965092723
+high sensitivity low cost and low energy consumption miniaturised gas sensors,ultra sensitive gas sensor,0.86792636,0.45447841590980625,0.09815123875759557
+high sensitivity low cost and low energy consumption miniaturised gas sensors,ultrasensitive chemical or gas sensor,0.8299242,0.4536342285347468,0.04318824987169134
+high sensitivity to gas adsorption,highly sensitive gas sensors,0.7977866,0.9294403080710077,0.7263465114532673
+high sensitivity to gas adsorption,increase the gas sensitivity,0.78347445,0.9083062481778496,0.6633051443392186
+high sensitivity to gas adsorption,ultra sensitive gas sensor,0.7877681,0.920059056457731,0.7004469281660163
+high sensitivity to gas adsorption,ultrasensitive chemical or gas sensor,0.7567667,0.9504838912646532,0.7909089957690105
+high sensitivity to no2,highly sensitive selective and reversible responses to no2 without external heating,0.839416,0.7025593403017546,0.26916750955393
+high sensitivity to no2,no 2,0.7141709,0.8636259182586965,0.551417645272485
+high sensitivity to no2,no2,0.78249586,0.6198013379467735,0.1593442176935852
+high sensitivity to no2,no2 single molecule detection,0.7099657,0.6959713542043154,0.2609829444265791
+high sensitivity to no2,selective sensitivity to no 2 gas,0.85980487,0.7603937391084263,0.35601480234677063
+high sensor response of 24.7,sensitive sensing response,0.80814755,0.8562462679722548,0.5605732645972927
+high sensor response of 24.7,sensitivities 4 to 16 times higher than that of a sensor based on rgo,0.7284099,0.6990550368887143,0.2786291505527958
+high surface area and thermal conductivity of the lig,relatively high surface area 47.896 m 2 g -1,0.6885481,0.44631341122499435,0.12511686329025618
+high signal to noise ratio at room temperature,room temperature,0.6788455,0.4141617196265459,0.013106402670123307
+high specific surface area,high surface area,0.94112676,0.5078043293919504,0.10845720504276601
+high specific surface area,high surface area and thermal conductivity of the lig,0.6982478,0.5375638546145727,0.0986746658990687
+high specific surface area,intrinsic high surface to volume ratio,0.8433457,0.7467743210424598,0.40007096237835904
+high specific surface area,large specific surface areas,0.8779511,0.8904328482002782,0.6190158701994793
+high specific surface area,large surface,0.7746985,0.8043690204556793,0.4580057831928137
+high specific surface area,large surface area,0.9128483,0.4588620854624305,0.08255859069996618
+high specific surface area,relatively high surface area 47.896 m 2 g -1,0.76309943,0.6508095924601857,0.26821198894170817
+high surface area,intrinsic high surface to volume ratio,0.8329836,0.5991440025679676,0.24878332552687332
+high surface area,large specific surface areas,0.8928188,0.8438019883307957,0.5562150192429942
+high surface area,large surface,0.877615,0.9311063990742618,0.7366964685584998
+high surface area,large surface area,0.972455,0.7412910304685081,0.411850663113557
+high surface area,relatively high surface area 47.896 m 2 g -1,0.7798792,0.5266118133389504,0.2600701894004718
+high surface area and thermal conductivity of the lig,intrinsic high surface to volume ratio,0.65080863,0.443038740046142,0.08654770530105327
+high surface area and thermal conductivity of the lig,large specific surface areas,0.64390075,0.720644843023948,0.3070404421750955
+higher selectivity to no2,highly sensitive selective and reversible responses to no2 without external heating,0.82673275,0.49724909095602277,0.08439975762027063
+higher selectivity to no2,no2,0.7819319,0.6319123657026195,0.17959094351033544
+higher selectivity to no2,selective sensitivity to no 2 gas,0.8557478,0.8576186921059358,0.5376415789146495
+highly anisotropic nanowires as building blocks,large 1 2 orders of magnitude anisotropy along different armchair or zigzag directions,0.7299229,0.7067944352866868,0.30983030504230624
+highly efficient,highly selective,0.74238217,0.7307534120490907,0.30134453494403524
+highly efficient,intrinsic high surface to volume ratio,0.7294487,0.5067099579233073,0.1666218077509698
+highly flexible,highly stretchable,0.8137525,0.8186044602786349,0.46407432213928246
+highly flexible,outstanding flexibility,0.847648,0.8912592311245444,0.6257233535858016
+highly ordered nanoscale texturing such as semiconductor metal oxide nanorod arrays on the flexible substrates,insertion of metal metal oxide nanosized domains,0.6427665,0.3623325004697167,0.0017382260449658737
+highly reactive top mounted zno thin films,reduced graphene oxide mesoporous zinc oxide nanosheets,0.6906445,0.6608599984599899,0.2539111974141657
+highly reactive top mounted zno thin films,small secondary sno x x ≤ 2 nanoparticles deposited on the surfaces,0.6391095,0.5147852150370138,0.15310977733888798
+highly reactive top mounted zno thin films,superior gas sensitivity of monolayer graphene,0.6634784,0.47856832261579535,0.11217994479911908
+highly selective,selective,0.90563273,0.48534430502992626,0.05018212340520334
+highly selective,selectivity,0.8541034,0.9239515030452575,0.7118289154705109
+highly sensitive and rapidly responding room temperature no 2 gas sensor,optimal sensor response of the wo 3 s rgo sensor toward 20 ppm no 2 is 149 in 6 s,0.7168081,0.8579396641986126,0.5384579952542873
+highly sensitive and rapidly responding room temperature no 2 gas sensor,reliable and repeatable sensing behaviors were obtained when the sensor was exposed to different h2 concentrations ranging from 0.025 to 2,0.61421716,0.4764929708643573,0.15282511321743086
+highly sensitive and rapidly responding room temperature no 2 gas sensor,ultrasensitive chemical or gas sensor,0.8291888,0.41132995601248795,0.0148780425283902
+highly sensitive and uniform graphene gas sensor,monolithically integrated cmos monolayer graphene gas sensor,0.88127285,0.5206598698040737,0.12274356153270494
+highly sensitive and uniform graphene gas sensor,sensitive and uniform graphene gas sensors,0.98423594,0.8316672861567153,0.5062291929818413
+highly sensitive and uniform graphene gas sensor,sensitivity of the graphene based lpfg spr sensor can reach 0.344 nm -1 for methane,0.7672017,0.3936690342866467,0.0075275463484718586
+highly sensitive and uniform graphene gas sensor,superior gas sensitivity of monolayer graphene,0.8393147,0.6713889668581251,0.224398354492641
+highly sensitive and uniform graphene gas sensor,ultra sensitive gas sensor,0.82849216,0.7324937612542783,0.35483691884774127
+highly sensitive and uniform graphene gas sensor,ultrasensitive chemical or gas sensor,0.8116149,0.7907502526887787,0.4120913795520017
+highly sensitive gas sensors,increase the gas sensitivity,0.7616721,0.6956387907335163,0.24889039790881828
+highly sensitive gas sensors,monolithically integrated cmos monolayer graphene gas sensor,0.7508352,0.5286470655911187,0.07345429061994646
+highly sensitive gas sensors,next generation sensing electronics,0.68237805,0.4365629345602897,0.07767830179268198
+highly sensitive gas sensors,reliable and repeatable sensing behaviors were obtained when the sensor was exposed to different h2 concentrations ranging from 0.025 to 2,0.617751,0.7140884053619573,0.2757554601438007
+highly sensitive gas sensors,reliable and repeatable sensing behaviors were revealed when the array was exposed to various gas concentrations even at 30 ppm,0.7184156,0.4956905390607552,0.06073005161129197
+highly sensitive gas sensors,sensitive and uniform graphene gas sensors,0.8619723,0.5452669902648426,0.09675375934521446
+highly sensitive gas sensors,sensitive sensing response,0.7605574,0.7442576205261912,0.3436891467688521
+highly sensitive gas sensors,sensitivity of the graphene based lpfg spr sensor can reach 0.344 nm -1 for methane,0.66738033,0.4507536254852639,0.037228297858195925
+highly sensitive gas sensors,ti3c2tx mxene gas sensors exhibited a very low limit of detection of 50 100 ppb for voc gases at room temperature,0.7342032,0.42102280588911195,0.01525634240928353
+highly sensitive gas sensors,ultra sensitive gas sensor,0.93728626,0.89983657154712,0.6469201172229583
+highly sensitive gas sensors,ultrasensitive chemical or gas sensor,0.90143985,0.8741704730554409,0.5835354311300167
+highly sensitive selective and reversible responses to no2 without external heating,no2 single molecule detection,0.7465389,0.4880353799761075,0.046750330113380256
+highly sensitive selective and reversible responses to no2 without external heating,optimal sensor response of the wo 3 s rgo sensor toward 20 ppm no 2 is 149 in 6 s,0.70201015,0.3664868807078489,0.004484503998238187
+highly sensitive selective and reversible responses to no2 without external heating,selective sensitivity to no 2 gas,0.8499801,0.6659917188642043,0.22085018003688073
+highly sensitive selective and reversible responses to no2 without external heating,sensitivity selectivity response recovery time and detection limit,0.7098373,0.5210633576983272,0.08184551823101427
+highly stable,long term stability,0.7963475,0.9282454191534686,0.7238572903792757
+highly stable,mechanical stability,0.70381725,0.7926069564638768,0.41471974078541096
+highly stable,stability,0.838302,0.9340288142922545,0.7386267822628377
+highly stretchable,mechanically stretchable twisted,0.82743716,0.6188501138365821,0.16641523020163973
+highly stretchable,robust flexibility without an obvious performance decrease after 1000 bending extending cycles,0.7116431,0.6709159092578357,0.2353707815759999
+highly stretchable,stretchable serpentine structure in the lig electrode,0.7045766,0.6613148103026844,0.20650940143850682
+highly stretchable,stretched by 30,0.7201767,0.563606197780405,0.10114493104402289
+highly stretchable,superior flexibility,0.7576686,0.8604132258277403,0.5578752874869422
+humidity independence in the range of 30 70 rh,parts per million level detection of nh 3 and no 2 in air at room temperature,0.6451011,0.48947584435032376,0.18237629971099745
+humidity independence in the range of 30 70 rh,reliable operation under high humidity conditions,0.69766045,0.4077772860283749,0.02687230129483842
+hydrophobic reduced graphene oxide rgo,hydrothermal method using graphene oxide and nh4oh as precursors,0.7204999,0.3920246340375898,0.022175636158983325
+hydrophobic reduced graphene oxide rgo,reduced graphene oxide rgo,0.91775453,0.9302844490652372,0.7263601004396227
+hydrophobic reduced graphene oxide rgo,rgo loaded metal oxide nanofiber nf,0.69368535,0.4508724974926771,0.06786919622712395
+hydrophobic reduced graphene oxide rgo,superb transport capability of rgo,0.66523135,0.621576715859357,0.16967327930505494
+hydrothermal method,hydrothermal method using graphene oxide and nh4oh as precursors,0.8196448,0.5194809357355848,0.06817880749726746
+hydrothermal method,simple and cost effective hydrothermal method,0.93303275,0.7990601198662098,0.4176690760532237
+hydrothermal method using graphene oxide and nh4oh as precursors,simple and cost effective hydrothermal method,0.822756,0.41596096129513205,0.027669956423019282
+improved conductivity,improved conductivity of the cumgcs,0.8580616,0.7011154799850176,0.2634096357264445
+improved conductivity,semiconductive nature,0.73751026,0.4539111097288147,0.044326769585084524
+increase in graphene resistance,resistance change up to 52,0.7654723,0.5058246798355776,0.1106823232494446
+increase the gas sensitivity,sensitivities 4 to 16 times higher than that of a sensor based on rgo,0.68409485,0.547825818012485,0.1395203172976296
+increase the gas sensitivity,ultra sensitive gas sensor,0.7888596,0.5820307227569108,0.11800566235471466
+insertion of metal metal oxide nanosized domains,metal oxides,0.71534336,0.4357970299622428,0.04182032204453334
+internet of things,next generation sensing electronics,0.6515712,0.7362181433028372,0.3136877673592946
+intrinsic high surface to volume ratio,large specific surface areas,0.794835,0.9562280880662928,0.8130763827480056
+intrinsic high surface to volume ratio,large surface,0.73607576,0.7792212797438495,0.39778495915221834
+intrinsic high surface to volume ratio,relatively high surface area 47.896 m 2 g -1,0.7269498,0.6625438452878073,0.2782816157584167
+katharometer sensor,sensitive sensing response,0.65809184,0.4310233832272386,0.04126850932372439
+knittability,superior flexibility,0.6753615,0.606635043967354,0.16855631794826842
+large response of 4.18‰ ppm -1 to no and 6.66‰ ppm -1 to no 2,sensitivity better than the experimentally limited 1 ppb,0.75659764,0.4456898684735921,0.039213530041071976
+large specific surface areas,large surface,0.8341741,0.739173459753135,0.331701105454823
+large specific surface areas,large surface area,0.9139168,0.7050796994836871,0.29694317068944875
+large specific surface areas,relatively high surface area 47.896 m 2 g -1,0.7178892,0.7337838590486784,0.3658701227669787
+large surface,large surface area,0.9015093,0.9379722056874628,0.7599599951698484
+large surface,relatively high surface area 47.896 m 2 g -1,0.71030843,0.8709505537855565,0.5856858595250125
+large surface area,relatively high surface area 47.896 m 2 g -1,0.7824569,0.6474755944317073,0.3398395518044436
+laser induced graphene,laser induced graphene lig,0.9291121,0.8617995943290451,0.558760472671362
+laser induced graphene lig,sensitivity of the graphene based lpfg spr sensor can reach 0.344 nm -1 for methane,0.6636434,0.4839274174691885,0.04437696223730425
+light weight,lightweight,0.93438494,0.9398823535655002,0.7553908831571843
+light weight,low cost,0.75374556,0.670681259234621,0.34871932895363433
+lightweight,low cost,0.740514,0.6303097089281361,0.32129357608012665
+long recovery time,rapid recovery ≈11 s,0.8400868,0.48606812209224826,0.2366163221045331
+long term stability,reliability,0.69442487,0.8104080369700045,0.4696730862098861
+long term stability,stability,0.86154497,0.8805071480899016,0.5969026142526996
+low concentration no2 and nh3 gases diluted in air,parts per million level detection of nh 3 and no 2 in air at room temperature,0.81771517,0.8519813015234096,0.5273169755106341
+low cost flexible sensors,next generation sensing electronics,0.73256993,0.5897951237675371,0.15093898732434208
+low cost flexible sensors,reliable sensing performance with a bending strain of less than 1.4,0.6864786,0.4836305614274531,0.1150993168674469
+low detection limit of 97 ppb,low limit of detection,0.879542,0.6862628542492164,0.25395172704839786
+low detection limit of 97 ppb,low limit of detection of 4.1 ppm,0.9113897,0.5582002428073948,0.1813328049924221
+low detection limit of 97 ppb,responsive to low concentrations of no gases 1000 ppb at room temperature,0.7837996,0.5369554086020559,0.1061192312700413
+low detection limit of 97 ppb,sensitivity better than the experimentally limited 1 ppb,0.85238445,0.4573093906783739,0.04610648994031741
+low limit of detection,low theoretical detection limit 43.5 ppb no 2,0.7976713,0.45933176719601426,0.08115796477387982
+low limit of detection,the detection limit was 0.3 μg ml 1 s n 3,0.73893166,0.6241231512537251,0.28490412459304115
+low limit of detection,ultralow detection limit of 8.3 ppb to no and 4.0 ppb to no 2,0.83033633,0.7820394207481761,0.4009152198108926
+low power consumption,minimal number of post cmos processing steps,0.6672665,0.546221382205054,0.2572174022580874
+low selectivity,poor selectivity,0.8485845,0.9526374474260957,0.7967603497641069
+low selectivity,selectivity,0.86444294,0.7213523408709388,0.3631175082394297
+low theoretical detection limit 43.5 ppb no 2,sensitivity better than the experimentally limited 1 ppb,0.77374864,0.40928031126157915,0.01758898576851431
+low theoretical detection limit 43.5 ppb no 2,the detection limit was 0.3 μg ml 1 s n 3,0.70563513,0.369311507120423,0.006521485841598618
+mechanical robustness,mechanical stability,0.84439176,0.49299914269042455,0.21037364023722693
+mechanical robustness,superb mechanical and optical characteristics,0.7260684,0.5309841751415689,0.12809538241423035
+mechanical stability,stability,0.8432386,0.857438317354773,0.546025414850664
+mechanical stability,superb mechanical and optical characteristics,0.68260765,0.5401118328782598,0.08207638744901091
+mechanically stretchable twisted,robust flexibility without an obvious performance decrease after 1000 bending extending cycles,0.706877,0.5287564896984724,0.07373722903126345
+mechanically stretchable twisted,stretchable serpentine structure in the lig electrode,0.71251416,0.5148366259689947,0.06379082566794747
+mechanically stretchable twisted,stretched by 30,0.6898964,0.46808782486672396,0.03777350476882724
+membrane separation,separation applications,0.7275287,0.6233810654346897,0.16092615760974938
+membrane separation,the pd np slg hybrid was then coated with polymer membrane layer for the selective filtration of h2,0.6177551,0.5787630067608186,0.1172899365843274
+metal organic frameworks,transition metal chalcogenides,0.6680833,0.5518218869884526,0.31482578842727516
+metal oxide nanosheets,metal oxides,0.80598205,0.5396352311921108,0.0963692094804317
+metal oxide nanosheets,sheets between a few hundred nanometers and a few micrometers large,0.63812494,0.5585149561318192,0.2029065511546999
+modulation of complex p n heterojunctions via the electron accumulation layer in the n type of go cuo zno and the electron depletion layer in the p type ti 3 c,p n heterojunctions of p type rgo cnt and n type sn tio2 nanoparticles,0.7025168,0.48988817153408043,0.10258575364553368
+moisture resistant property against a relative humidity of 90,reliable operation under high humidity conditions,0.82496506,0.658813287548675,0.22182697803875462
+moisture resistant semipermeable encapsulant,reliable operation under high humidity conditions,0.64839923,0.7400570995767477,0.32009096077320054
+monolayer of graphene is coated onto the ag film surface,superior gas sensitivity of monolayer graphene,0.69352955,0.5410150617156312,0.12919400037486917
+monolayer pg is most preferred for the no x x 1 2 molecules with suitable adsorption strength and apparent charge transfer,superior gas sensitivity of monolayer graphene,0.61855215,0.5405096960088406,0.21058695061301969
+monolithically integrated cmos monolayer graphene gas sensor,sensitive and uniform graphene gas sensors,0.86987114,0.40009159523224064,0.009370041604146673
+monolithically integrated cmos monolayer graphene gas sensor,superior gas sensitivity of monolayer graphene,0.8098439,0.7467238938418025,0.32898931991316094
+monolithically integrated cmos monolayer graphene gas sensor,ultra sensitive gas sensor,0.7324983,0.39329430337859766,0.007185352271890988
+mutliwalled carbon nanotubes,one atom thick carbon allotrope,0.72588664,0.5499723317824728,0.22422119826995213
+mutliwalled carbon nanotubes,sp 2 hybridized carbon atoms,0.6404978,0.7653315135803009,0.39708061115626414
+n type semiconducting behavior,p n heterojunctions of p type rgo cnt and n type sn tio2 nanoparticles,0.62447786,0.45132560278751466,0.028706954082798775
+n type semiconducting behavior,semiconductive nature,0.73192334,0.7251453367512976,0.29384175046818617
+nanomesh,nanosphere lithography,0.6903006,0.7098898473650901,0.28055017087076617
+nanomesh,sheets between a few hundred nanometers and a few micrometers large,0.6319883,0.46628573209605784,0.06866056155656086
+nanosphere lithography,reactive ion etching,0.68825674,0.6057313702447826,0.22970249392061348
+nanosphere lithography,sheets between a few hundred nanometers and a few micrometers large,0.6192596,0.47679059595703127,0.06599757411893392
+nanosphere lithography,small secondary sno x x ≤ 2 nanoparticles deposited on the surfaces,0.64657116,0.6728176448158609,0.25214163064241035
+nanosphere lithography,volumetric structuring of graphene sheets single layered and stacked forms,0.65532243,0.36697310934962507,0.008771255172956183
+needlelike lig,stretchable serpentine structure in the lig electrode,0.6912354,0.4879238240828313,0.16050538580134976
+next generation sensing electronics,reliable sensing performance with a bending strain of less than 1.4,0.66556376,0.7210790497176298,0.3058919229633139
+next generation sensing electronics,sensitive sensing response,0.6968771,0.823033179093004,0.46431230015325897
+next generation sensing electronics,ultra sensitive gas sensor,0.67772484,0.6145415274535023,0.21767872031112867
+nh 3,nh3,0.7737845,0.929303622538115,0.7338402166961661
+nh 3,no 2,0.8095262,0.4587811588135092,0.032512272343259485
+nh3,ultrahigh selectivity to nh3,0.74721384,0.730909497098939,0.31009615929265866
+nitrogen doped to improving the gas sensing properties of reduced graphene oxide,reduced graphene oxide rgo,0.75314057,0.6365671889802349,0.23267092531853162
+nitrogen doped to improving the gas sensing properties of reduced graphene oxide,sensitive and uniform graphene gas sensors,0.76664406,0.5949941648335584,0.14661239389077085
+no 2,no2,0.82357275,0.8903165082664553,0.6249977918090601
+no 2,one atom thin,0.6908726,0.709068637848585,0.2892222591473351
+no2,no2 single molecule detection,0.74866146,0.5170946620733375,0.08424679262193113
+no2 single molecule detection,parts per million level detection of nh 3 and no 2 in air at room temperature,0.7631583,0.47069411725582516,0.11419285259493739
+no2 single molecule detection,selective sensitivity to no 2 gas,0.7140667,0.8409984055546245,0.5037160663620622
+no2 single molecule detection,ultralow detection limit of 8.3 ppb to no and 4.0 ppb to no 2,0.73506474,0.659628752160362,0.22147162514411933
+one atom thick carbon allotrope,one atom thin,0.8308661,0.9122207214184226,0.6739414350836644
+one atom thick carbon allotrope,pristine form graphene,0.7103801,0.9830822199736112,0.9114748915258918
+one atom thick carbon allotrope,single walled carbon nanotubes,0.7207211,0.5423062998691235,0.3037435389466059
+one atom thick carbon allotrope,sp 2 hybridized carbon atoms,0.69771945,0.9779573405500013,0.8904308006079573
+one atom thin,sheets between a few hundred nanometers and a few micrometers large,0.6519659,0.5882503267122592,0.12743107525834008
+one atom thin,single walled carbon nanotubes,0.67844844,0.5473157706955163,0.15664283166814807
+one atom thin,sp 2 hybridized carbon atoms,0.664032,0.8824877763804498,0.5965454542462403
+operated at room temperature,room temperature,0.77800643,0.9150481651674932,0.6825091709767392
+operated at room temperature,room temperature gas sensor,0.6561357,0.8163973866575017,0.4547842295208785
+optical transparency,overall device optical transmittance that exceeds 90,0.7504328,0.49122393427211364,0.13414383561844123
+optical transparency,reliable transparency 90.3 at 550 nm,0.7936852,0.45294855007165813,0.08065467052349351
+optical transparency,superb mechanical and optical characteristics,0.6603024,0.4819078156851176,0.1072003562404722
+optical transparency,transparency,0.7972185,0.8550072794639583,0.5448348391691287
+optical transparency,transparent,0.73888487,0.9131013633628179,0.6796205509333579
+optimal sensor response of the wo 3 s rgo sensor toward 20 ppm no 2 is 149 in 6 s,selective sensitivity to no 2 gas,0.67407006,0.701560153543083,0.2807119934735476
+optimal sensor response of the wo 3 s rgo sensor toward 20 ppm no 2 is 149 in 6 s,sensitive sensing response,0.6788459,0.8606352444114992,0.5613441681024705
+optimal sensor response of the wo 3 s rgo sensor toward 20 ppm no 2 is 149 in 6 s,sensitivities 4 to 16 times higher than that of a sensor based on rgo,0.7603605,0.5105206174222618,0.060445212846161445
+optimal sensor response of the wo 3 s rgo sensor toward 20 ppm no 2 is 149 in 6 s,ultra sensitive gas sensor,0.67396647,0.507023867214537,0.12644099780440987
+organic vapors,selective sensing of volatile organic gases,0.6933544,0.7875474666827788,0.41946935647060546
+organic vapors,volatile organic compounds,0.76861155,0.7791292118607023,0.3954681673541326
+outstanding flexibility,stability,0.73526055,0.4711219602014754,0.13352085587842355
+outstanding flexibility,superior flexibility,0.8777588,0.809279928134188,0.44503353038398785
+overall device optical transmittance that exceeds 90,reliable transparency 90.3 at 550 nm,0.69649196,0.637499285818111,0.1794924824213513
+overall device optical transmittance that exceeds 90,superb mechanical and optical characteristics,0.674956,0.5223013175063352,0.16075100662390973
+overall device optical transmittance that exceeds 90,transparency,0.61096865,0.4660474115852805,0.03714334912383843
+p doping,p type semiconducting behavior,0.76274884,0.7125157103111716,0.2932123499738166
+p n heterojunctions of p type rgo cnt and n type sn tio2 nanoparticles,p type semiconducting behavior,0.6650935,0.38328828986001945,0.005313507592431765
+p n heterojunctions of p type rgo cnt and n type sn tio2 nanoparticles,small secondary sno x x ≤ 2 nanoparticles deposited on the surfaces,0.63158584,0.5810085708178705,0.12113125114216683
+p type semiconducting behavior,semiconductive nature,0.73858666,0.8145183844776789,0.47232721387084864
+p type semiconducting large area monolayer graphene film,superior gas sensitivity of monolayer graphene,0.7821389,0.5535103764905184,0.1465642578310189
+palladium nanoparticles were then deposited on the gnrs as catalysts for sensing hydrogen gases,the palladium decorated gnr array exhibited a rectangular sensing curve with unprecedented rapid response and recovery properties 90 response within 60 s at 1,0.67993826,0.8066289423798949,0.4310837305224633
+parts per million level detection of nh 3 and no 2 in air at room temperature,responsive to low concentrations of no gases 1000 ppb at room temperature,0.7796412,0.4533101645319896,0.0806500389924174
+parts per million level detection of nh 3 and no 2 in air at room temperature,ultrahigh selective nh3 gas sensor,0.7795754,0.6616555557774844,0.20615189915064658
+polyimide substrate,polyimide substrates,0.98153985,0.9280029600728477,0.7202404462549421
+porous graphene,porous three dimensional 3d framework structures interspersed among two dimensional 2d rgo sheets,0.7062198,0.40208253590479187,0.03168804703437089
+porous graphene,three dimensional graphene networks,0.78327525,0.42733903841844895,0.02623266085648701
+porous three dimensional 3d framework structures interspersed among two dimensional 2d rgo sheets,reduced graphene oxide rgo,0.66969526,0.5737930011623757,0.1384110204931267
+porous three dimensional 3d framework structures interspersed among two dimensional 2d rgo sheets,three dimensional graphene networks,0.67454314,0.36121190496251765,0.0015709518267064126
+porous three dimensional 3d framework structures interspersed among two dimensional 2d rgo sheets,volumetric structuring of graphene sheets single layered and stacked forms,0.7079114,0.5943056248043814,0.12957899406416262
+practicability,reliability,0.7247522,0.5403254084132456,0.1798929153963309
+practicability,stability,0.7117827,0.6949453898310415,0.3013620658757531
+pristine form graphene,volumetric structuring of graphene sheets single layered and stacked forms,0.74752843,0.661183638534967,0.2568873869089803
+rapid recovery ≈11 s,rapid response times,0.81359893,0.5629422619503994,0.10617386013668939
+rapid recovery ≈11 s,short response time of 9.6 s,0.8001386,0.664360210120049,0.20779160408422015
+rapid response times,short response time of 9.6 s,0.79248595,0.7061838494276546,0.2687017528109197
+reduced graphene oxide mesoporous zinc oxide nanosheets,reduced graphene oxide rgo,0.7934302,0.4967997630238679,0.07406879000047584
+reduced graphene oxide mesoporous zinc oxide nanosheets,rgo loaded metal oxide nanofiber nf,0.65727675,0.7114682871140904,0.27791071842090287
+reduced graphene oxide nanofiber mat,reduced graphene oxide rgo,0.80650306,0.8910265801741187,0.6354158378372528
+reduced graphene oxide nanofiber mat,rgo loaded metal oxide nanofiber nf,0.77824426,0.8227796907728104,0.46379483721136683
+reduced graphene oxide rgo,superb transport capability of rgo,0.70167506,0.8890304345451365,0.6183827233744341
+reliability,reliable operation under high humidity conditions,0.7150534,0.5260664666860617,0.09275343191945296
+reliability,stability,0.77065885,0.8147884458195697,0.46159334740217794
+reliable and repeatable sensing behaviors were obtained when the sensor was exposed to different h2 concentrations ranging from 0.025 to 2,reliable and repeatable sensing behaviors were revealed when the array was exposed to various gas concentrations even at 30 ppm,0.75248307,0.40546014874201625,0.028337586151087724
+reliable and repeatable sensing behaviors were obtained when the sensor was exposed to different h2 concentrations ranging from 0.025 to 2,room temperature h 2 s gas sensors,0.6562706,0.6147702511728765,0.15643654183734002
+reliable and repeatable sensing behaviors were revealed when the array was exposed to various gas concentrations even at 30 ppm,responsive to low concentrations of no gases 1000 ppb at room temperature,0.6945383,0.4545851868052185,0.1437203224554776
+reliable and repeatable sensing behaviors were revealed when the array was exposed to various gas concentrations even at 30 ppm,sensitive and uniform graphene gas sensors,0.6943479,0.6277085607592038,0.16464335492787563
+reliable and repeatable sensing behaviors were revealed when the array was exposed to various gas concentrations even at 30 ppm,the palladium decorated gnr array exhibited a rectangular sensing curve with unprecedented rapid response and recovery properties 90 response within 60 s at 1,0.61472696,0.506228745747719,0.09265072672773011
+reliable and repeatable sensing behaviors were revealed when the array was exposed to various gas concentrations even at 30 ppm,ultra sensitive gas sensor,0.7142739,0.5360268580499075,0.09543186490503563
+reliable sensing performance with a bending strain of less than 1.4,robust flexibility without an obvious performance decrease after 1000 bending extending cycles,0.748929,0.5017906338653861,0.16279434098983014
+reliable transparency 90.3 at 550 nm,transparency,0.7427925,0.5218640186069966,0.09844083747908183
+reliable transparency 90.3 at 550 nm,transparent,0.64697826,0.5836984425947833,0.1521503465863282
+repeatable,reversible,0.8006034,0.800413689862434,0.420082932181826
+repeatable,sensor to sensor reproducible,0.62905926,0.9020623391731987,0.6472364410201396
+repeatable,stability,0.66860706,0.8898486868517442,0.6153761065022059
+repeated cycles of hydrogenation and dehydrogenation,reversible,0.64368534,0.6250342729684472,0.16415725354494792
+resistive based gas sensors,ultra sensitive gas sensor,0.84518474,0.4136456301864479,0.04082816768456299
+reversible,stability,0.68884677,0.7116627071341616,0.30015149922477025
+room temperature,room temperature gas sensor,0.7402489,0.6966442578868586,0.2500161786817109
+room temperature gas sensor,ti3c2tx mxene gas sensors exhibited a very low limit of detection of 50 100 ppb for voc gases at room temperature,0.6962601,0.4157575908487768,0.021473382006051644
+rutile sno2 nanocrystals were exclusively deposited on graphene sheets with high density and high uniformity to form layered composite sheets,small secondary sno x x ≤ 2 nanoparticles deposited on the surfaces,0.6751239,0.44047622118538604,0.03981431092184062
+rutile sno2 nanocrystals were exclusively deposited on graphene sheets with high density and high uniformity to form layered composite sheets,sno 2 graphene heterojunctions,0.70630205,0.7294496918313065,0.3486043767147714
+scanning electron microscopy,scanning electron microscopy sem,0.92356026,0.7063018763959967,0.2734246676330707
+scanning electron microscopy,x ray photoelectron microscopy xps,0.76261914,0.8406109522558662,0.5087513756417743
+selective,selectivity,0.8647568,0.9601354599534532,0.8231055497567359
+selective,ti and au,0.6014718,0.39814175628160065,0.03685728800797772
+selective sensing of volatile organic gases,selectivity to other gases such as acetone ethanol ethylene and co2,0.7506592,0.6923791242484854,0.2838428353800334
+selective sensing of volatile organic gases,ultra sensitive gas sensor,0.8177798,0.7149049699421791,0.2863559768599434
+selective sensing of volatile organic gases,ultrasensitive chemical or gas sensor,0.82467306,0.6329021063909056,0.17395032901854568
+selective sensing of volatile organic gases,volatile organic compounds,0.7609762,0.8949984206734237,0.6308708908532079
+selective sensitivity to no 2 gas,selectivity to other gases such as acetone ethanol ethylene and co2,0.7811872,0.6571860956597594,0.2843349969049317
+selective sensitivity to no 2 gas,the sensor had no responses to methane carbon monoxide or nitrogen dioxide gas,0.73738354,0.4486503894670014,0.12478364441861645
+selectivity,selectivity to other gases such as acetone ethanol ethylene and co2,0.71369016,0.6153115939682154,0.16730118228168644
+sensitive and uniform graphene gas sensors,sensitivity of the graphene based lpfg spr sensor can reach 0.344 nm -1 for methane,0.7669521,0.5395365213573541,0.08162231028853217
+sensitive and uniform graphene gas sensors,superior gas sensitivity of monolayer graphene,0.83600056,0.683672536463616,0.23843902748635326
+sensitive and uniform graphene gas sensors,ultra sensitive gas sensor,0.8311694,0.7246640788815294,0.31524379631700483
+sensitive sensing response,sensitivities 4 to 16 times higher than that of a sensor based on rgo,0.72464085,0.7381594844992843,0.3168225069127659
+sensitive sensing response,sensor to sensor reproducible,0.6232869,0.414286664407671,0.04961720418318871
+sensitive sensing response,stimuli response characteristics,0.7538153,0.5016587520543112,0.07534295681073588
+sensitive sensing response,stimuli responsive materials,0.74665797,0.6316455614977288,0.17841068051215525
+sensitive sensing response,ultra sensitive gas sensor,0.7643528,0.7702055046105413,0.3774557736997931
+sensitivities 4 to 16 times higher than that of a sensor based on rgo,ultra sensitive gas sensor,0.6792909,0.7749573196016037,0.4223325559456549
+sensitivity better than the experimentally limited 1 ppb,ultralow detection limit of 8.3 ppb to no and 4.0 ppb to no 2,0.79824626,0.518093890818411,0.11611126739078292
+sensitivity of the graphene based lpfg spr sensor can reach 0.344 nm -1 for methane,superior gas sensitivity of monolayer graphene,0.7156091,0.7543679610343315,0.33758189975269004
+small secondary sno x x ≤ 2 nanoparticles deposited on the surfaces,sno 2 sno 2 homojunctions,0.6389766,0.4765318995569703,0.059028605063583206
+small secondary sno x x ≤ 2 nanoparticles deposited on the surfaces,sno 2 sno x x 2 heterojunctions,0.6654024,0.42198835367859855,0.020591703427763175
+sno 2 graphene heterojunctions,sno 2 sno 2 homojunctions,0.831006,0.6299204498877865,0.18299765345649288
+sno 2 graphene heterojunctions,sno 2 sno x x 2 heterojunctions,0.85494125,0.5285863774035475,0.07704241034395176
+sno 2 graphene heterojunctions,sno x x 2 phase,0.62202513,0.5579541926389425,0.14374636849254518
+sno 2 sno 2 homojunctions,sno 2 sno x x 2 heterojunctions,0.93949044,0.40559693866284646,0.02749201794123146
+stimuli response characteristics,stimuli responsive materials,0.7440115,0.8785956424332675,0.5907254164053286
+superior gas sensitivity of monolayer graphene,ultralow concentrations of adsorbed molecules induce a significant response on the electronic properties of graphene,0.7783506,0.5238021817793068,0.14465618125903446
+the pd np slg hybrid was then coated with polymer membrane layer for the selective filtration of h2,the pmma pd np slg hybrid sensor exhibited a good response to exposure to 2 h2 on average 66.37 response within 1.81 min and recovery within 5.52 min,0.6553096,0.4846492612502559,0.0703542526686306
+the sensor had no responses to methane carbon monoxide or nitrogen dioxide gas,ultra sensitive gas sensor,0.7177978,0.40372201565024063,0.014892038642796979
+three dimensional graphene networks,volumetric structuring of graphene sheets single layered and stacked forms,0.7616322,0.7265205356050333,0.30061355565751
+transmission electron microscopy,x ray photoelectron microscopy xps,0.72417766,0.7409629858327766,0.4095543406343528
+transparency,transparent,0.8484955,0.9591159013458281,0.8190905202308258
+ultra sensitive gas sensor,ultrahigh selective nh3 gas sensor,0.873918,0.6052480543253038,0.2640138431613521
+ultra sensitive gas sensor,ultrasensitive chemical or gas sensor,0.9454675,0.7824972260615694,0.3928532447712215
+ultrahigh selective nh3 gas sensor,ultrahigh selectivity to nh3,0.8427434,0.9707767105841221,0.8623596551823056
+ultrasensitive chemical or gas sensor,volatile organic compounds,0.65163434,0.38473540883251905,0.021249018443584622
+x ray photoelectron microscopy xps,x ray photoelectron spectroscopy,0.89307785,0.924488162513836,0.7093274415650209

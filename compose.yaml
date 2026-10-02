@@ -103,6 +103,7 @@ services:
       - ./src:/opt/app/src:ro
       - ./config:/opt/app/config:ro
       - ./data/checkpoints:/opt/app/data/checkpoints
+      - ./docs/validation/GRAPH-002:/opt/app/docs/validation/GRAPH-002
     working_dir: /opt/app
     read_only: true
     tmpfs: [/tmp]

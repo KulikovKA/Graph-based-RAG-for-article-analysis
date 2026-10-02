@@ -127,6 +127,7 @@ flowchart LR
 | EVAL-000 | Мини-набор для разработки retrieval | P0 | Sol / Medium | ING-001 | выполнена |
 | IDX-001 | 4 Qdrant | P0 | Sol / Medium | ING-001,LLM-002 | выполнена |
 | GRAPH-001 | 4 Neo4j | P0 | Sol / High | ING-001,IDX-001,LLM-002 | выполнена |
+| GRAPH-002 | Canonicalization / entity resolution shadow experiment | P1 | Sol / High | GRAPH-001,LLM-002,CORPUS-001 | выполнена |
 | LR-001 | 4 LightRAG | P1 | Sol / High | GRAPH-001,LLM-002,ARCH-001 | выполнена |
 | LLM-001 | 5 Inference | P0 | Sol / High | INFRA-001 | выполнена |
 | LLM-002 | Выбор локальных весов и CPU smoke | P0 | Sol / High | LLM-001 | выполнена |
@@ -256,6 +257,14 @@ flowchart LR
 - **Сделать:** constraints/indexes, allowlist labels/edges, validated extraction с evidence IDs, upsert/remove revision provenance, bounded traversal. **Приёмка/тесты:** ни один LLM type вне enum не записан, все disclosure edges имеют provenance, 1-hop query bounded, ревизионное удаление корректно. **Не делать:** не писать приватные идеи в общий граф, не принимать raw Cypher от клиента.
 - **Context:** GRAPH_SCHEMA/DATA_MODEL и graph modules. **Модель:** Sol/High. **Размер:** L, 2–4 ч, review 45 мин. **Риск:** entity identity/provenance.
 - **Уточнение ARCH-002:** Сначала durable graph_facts в PG, затем projection по fact_id. Gate: восстановление без LLM, две ревизии с одинаковым текстом не смешиваются; реальные Qdrant+Neo4j ACK активируют generation атомарно.
+
+### GRAPH-002 — TechnicalFeature canonicalization (experimental)
+
+- **Цель/зачем:** проверить, улучшает ли консервативное разрешение технических признаков связанность графа на одном immutable active-revision snapshot.
+- **Depends / priority:** GRAPH-001,LLM-002,CORPUS-001; P1. **Files:** `scripts/graph002_canonicalize.py`, `src/app/services/graph002.py`, `src/app/services/feature_equivalence.py`, shadow PostgreSQL/Qdrant/Neo4j adapters, `docs/validation/GRAPH-002/`. **References:** docs/GRAPH_SCHEMA.md, docs/DATA_MODEL.md, config/models.yaml.
+- **Сделать:** decode `GraphFact.to_key`; pinned Qwen3 Embedding 0.6B candidates; отдельный Tev1 `feature-equivalence-v1`; exact/deterministic normalization; SAME/DIFFERENT/UNCERTAIN; constrained cannot-link clustering; resumable 0.90/0.95 sensitivity; additive canonical projection and same-snapshot reports. **Приёмка/тесты:** baseline immutable; no extractor/retrieval switch; only completed active revisions; duplicate semantic edge carries evidence_count; rerun/resume idempotent.
+- **Не делать:** менять `GraphFact`, `TechnicalFeature`, `DISCLOSES_FEATURE`, article-chunk collection, corpus activation, production retrieval или скачивать модели.
+- **Результат:** эксперимент завершён на snapshot из 100 документов, 417 GraphFacts и 409 уникальных raw features. При выбранном пороге 0.95 409 canonical features; при sensitivity-пороге 0.90 — 406. Артефакты и same-snapshot метрики: `docs/validation/GRAPH-002/`. Live unit/integration checks прошли. Production graph и retrieval остаются на baseline до отдельного review.
 
 ### LR-001 — LightRAG adapter (отключаемый)
 

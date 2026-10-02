@@ -1,0 +1,26 @@
+{
+  "experiment": "GRAPH-002",
+  "snapshot_hash": "5b80378fa2d8312951446fcbb3ada7994d775f13d452ff08fd415377a5fcade0",
+  "snapshot_created_at": "2026-10-01T23:17:52.315959+00:00",
+  "snapshot_document_count": 100,
+  "snapshot_graph_fact_count": 417,
+  "active_documents_total": 100,
+  "documents_excluded_missing_completed_graph_state": 0,
+  "metrics": {
+    "processed_documents": 100,
+    "graph_documents": 89,
+    "raw_features": 409,
+    "raw_edges": 417,
+    "documents_without_facts": 11,
+    "zero_fact_percent": 11.0,
+    "shared_features": 6,
+    "singleton_features": 403,
+    "shared_feature_percent": 1.466992665036675,
+    "features_per_document": 4.17,
+    "edges_per_graph_document": 4.685393258426966,
+    "connected_components": 92,
+    "largest_component_documents": 4,
+    "largest_component_nodes": 30,
+    "connected_document_pairs": 11
+  }
+}
