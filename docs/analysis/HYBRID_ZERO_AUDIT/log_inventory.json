@@ -1,0 +1,44 @@
+[
+  {
+    "file": "server-1.log",
+    "bytes": 47343552,
+    "sha256": "ee1386025adccc4587666a9a9841331e531ff23836d459d8543642cc6152a2e4",
+    "first_timestamp": "2026-10-01T19:54:44.044+03:00",
+    "last_timestamp": "2026/10/02 - 13:14:15"
+  },
+  {
+    "file": "server-2.log",
+    "bytes": 2531712,
+    "sha256": "419aeda446753aa6cafb88fc93c15ae25c80420548650f6634b983ce0eadaaac",
+    "first_timestamp": "2026-10-01T01:40:50.549+03:00",
+    "last_timestamp": "2026/10/01 - 19:47:15"
+  },
+  {
+    "file": "server-3.log",
+    "bytes": 6159783,
+    "sha256": "01bbe37ed6607fa47b793077bd2af6ddb53a2cc518c3b0326204fa61bd7db5cd",
+    "first_timestamp": "2026-09-29T16:56:24.244+03:00",
+    "last_timestamp": "2026/10/01 - 01:24:32"
+  },
+  {
+    "file": "server-4.log",
+    "bytes": 137315,
+    "sha256": "b724e5ee3cc98e993a23036cd32071851f2b2901bb82bce754e24443b3cef4db",
+    "first_timestamp": "2026-09-13T14:19:05.601+03:00",
+    "last_timestamp": "2026/09/13 - 22:07:07"
+  },
+  {
+    "file": "server-5.log",
+    "bytes": 147461,
+    "sha256": "a436fa95d78a2abcf34d2729fd6b7c507ca69c6bcb02229860cb654ade8b508e",
+    "first_timestamp": "2026-09-09T10:27:26.178+03:00",
+    "last_timestamp": "2026/09/10 - 14:27:56"
+  },
+  {
+    "file": "server.log",
+    "bytes": 5811869,
+    "sha256": "6ab1ed48e48dd3a4530c427ae0280d9649d97a66332d2d0ac1d92f6addc4739f",
+    "first_timestamp": "2026-10-02T17:12:00.402+03:00",
+    "last_timestamp": "2026/10/02 - 22:26:05"
+  }
+]

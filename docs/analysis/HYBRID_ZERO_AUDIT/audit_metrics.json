@@ -1,0 +1,83 @@
+{
+  "run_id": "d895217d-ebbe-4117-9066-8ae0ebcd0bdc",
+  "snapshot_hash": "5b80378fa2d8312951446fcbb3ada7994d775f13d452ff08fd415377a5fcade0",
+  "audited_head": "14470be839a6aaddca2328c36cab2e4d6fe0a0fb",
+  "collected_at_utc": "2026-10-02T19:24:18.160976+00:00",
+  "documents": 100,
+  "completed": 100,
+  "failed": 0,
+  "zero_documents": 27,
+  "concept_documents": 73,
+  "concepts": 532,
+  "unique_document_concept_edges": 692,
+  "persisted_mentions": 747,
+  "neo4j_mentions": 747,
+  "checkpoint_mentions": 747,
+  "projection_missing_mentions": 0,
+  "projection_extra_mentions": 0,
+  "projection_property_mismatches": 0,
+  "validated_accepted_spans": 747,
+  "validated_chunk_hashes": 136,
+  "raw_graphfacts": 417,
+  "zero_document_chunks": 36,
+  "cause_unknown_zero_documents": 27,
+  "source_obvious_concept_documents": 26,
+  "source_low_specificity_documents": 1,
+  "manual_source_anchors": 80,
+  "validation_reject_counter": 686,
+  "recorded_llm_calls": 138,
+  "document_retries": [
+    {
+      "run_id": "d895217d-ebbe-4117-9066-8ae0ebcd0bdc",
+      "document_id": "136d5083-0254-4930-a35e-88441bb802a0",
+      "revision_id": "fbd87a44-35d0-4f51-80d6-39abd117d01f",
+      "status": "completed",
+      "attempts": 2,
+      "error": null,
+      "updated_at": "2026-10-02 19:01:39.104117+00:00",
+      "document_code": "D010"
+    }
+  ],
+  "groups": {
+    "concept_documents": {
+      "documents": 73,
+      "median_raw_candidate_count": null,
+      "median_rejected_count": null,
+      "median_accepted_candidate_count": null,
+      "median_persisted_accepted_mentions": 11,
+      "median_unique_concepts": 9,
+      "median_chunks": 1,
+      "median_chunk_text_length": 1020
+    },
+    "zero_documents": {
+      "documents": 27,
+      "median_raw_candidate_count": null,
+      "median_rejected_count": null,
+      "median_accepted_candidate_count": null,
+      "median_persisted_accepted_mentions": 0,
+      "median_unique_concepts": 0,
+      "median_chunks": 1,
+      "median_chunk_text_length": 1053
+    }
+  },
+  "pair_sensitivity": {
+    "all_connected_pairs": 476,
+    "legacy_generic_concept_nodes": 13,
+    "legacy_generic_pair_union": 173,
+    "pairs_after_removing_legacy_generic_concepts": 344,
+    "legacy_generic_only_pairs": 132,
+    "reviewed_top30_generic_nodes": 12,
+    "reviewed_top30_generic_pair_union": 184,
+    "pairs_after_removing_reviewed_top30_generic_concepts": 327,
+    "pairs_after_removing_eight_unsupported_analyte_mentions": 397,
+    "unsupported_analyte_mentions": 8,
+    "interpretation": "Offline sensitivity calculations only; no production writes; categories overlap and are not retrieval relevance judgments."
+  },
+  "controlled_rerun": "NOT_PERFORMED",
+  "historical_bottleneck": "UNKNOWN_INSUFFICIENT_ARTIFACTS",
+  "verdicts": {
+    "HYBRID_ARCHITECTURE": "ACCEPT_WITH_REFINEMENT",
+    "CURRENT_EXTRACTOR": "REFINE",
+    "CURRENT_VALIDATOR": "REFINE"
+  }
+}

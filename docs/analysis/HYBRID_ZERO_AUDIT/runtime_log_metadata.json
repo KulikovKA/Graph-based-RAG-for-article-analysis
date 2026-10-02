@@ -1,0 +1,23 @@
+{
+  "window_local": [
+    "2026-10-02 18:25:10 Europe/Moscow",
+    "2026-10-02 22:01:40 Europe/Moscow"
+  ],
+  "http_chat_completions_in_window": 139,
+  "http_status_counts": {
+    "200": 139
+  },
+  "server_context_env_values": [
+    "0"
+  ],
+  "server_parallel_env_values": [
+    "1"
+  ],
+  "runner_context_values": [
+    "4096"
+  ],
+  "input_truncation_warning_count_whole_log": 0,
+  "done_reason_length_literal_count_whole_log": 0,
+  "document_or_run_id_retained": false,
+  "warning": "HTTP 200 is not proof of valid JSON or terminal done_reason=stop. Context values cover the entire active server log; request association is not available."
+}

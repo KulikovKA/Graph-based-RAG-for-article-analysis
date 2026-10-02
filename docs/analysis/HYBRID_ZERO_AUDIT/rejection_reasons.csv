@@ -1,0 +1,2 @@
+reason,count,percent_of_recorded_reject_counter,scope,availability
+UNRECORDED_AGGREGATE,686,100,Cumulative final-run checkpoint; may include successful chunk prefixes of failed document attempts.,No per-candidate reasons retained; not a validator reason taxonomy.

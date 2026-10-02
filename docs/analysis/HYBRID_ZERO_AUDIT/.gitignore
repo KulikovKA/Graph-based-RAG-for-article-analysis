@@ -1,0 +1,5 @@
+# Local database/source exports and logs; keep the corpus private like GRAPH_CORPUS_AUDIT.
+live_read.json
+runtime_read.json
+source_reading.txt
+log_inventory.local.json

@@ -1,0 +1,17 @@
+{
+  "data\\checkpoints\\hybrid-001-full-v1.3.json": "7647c69a3f83d85a9d3f89ebdb4c6cf28b7822abed1a2686794ae0dd64d9632b",
+  "data\\checkpoints\\graph002-live-20261002.snapshot.json": "2842cf0909f29c7850a190a5418032548e67e0e220e4b15a539ca277ffb7b8bc",
+  "docs\\analysis\\HYBRID_ZERO_AUDIT\\live_read.json": "d97612cbb7b363cbf22005eec196c95595ba755be1e8f22887c5c6899ab956fc",
+  "docs\\analysis\\HYBRID_ZERO_AUDIT\\runtime_read.json": "b22cbbcb4370e364b4a6815e0f7ea952281311fa7486bc5fec050ead03c69b68",
+  "scripts\\hybrid_concept_backfill.py": "1ae7170e1f960b066465a454c2943c1be005bceae4a41985be75f6d86129c571",
+  "src\\app\\services\\technical_concepts.py": "b7bc97fc30075282b0a6b24e061b2c8c77755db4f906c0a3826c7fa3ba43cd55",
+  "src\\app\\integrations\\inference_http.py": "612fc3c51fd3a54395b5d4631de278448694a414d6337e034079bdd100dbab98",
+  "migrations\\versions\\0007_hybrid_semantic_concepts.py": "baf794084c2d8f874b14bd4d96217e21a53de0e4a38a00fab305bcedc6cc401b",
+  "docs\\analysis\\HYBRID_ZERO_AUDIT\\source_annotations.json": "09b4e584105c81510a9b0a3c107b6bd324cde90aa62aa1ba6356c58dc40c2c2a",
+  "docs\\analysis\\HYBRID_ZERO_AUDIT\\high_degree_review.json": "749b0077e89157e169a3b8581855beb309946c389e2d2f2072e9d785ddf6b769",
+  "docs\\analysis\\HYBRID_ZERO_AUDIT\\build_artifacts.py": "df65ac497d51366e9ab2bf7d998a4c38b9cf15485d2a427d985c9ef3bfe11ce0",
+  "docs\\analysis\\HYBRID_ZERO_AUDIT\\collect_live.py": "8c8f285ff56988be983c742fe39827896aeb2aea6205d8f0062be8d7728ca8fb",
+  "docs\\analysis\\HYBRID_ZERO_AUDIT\\inspect_logs.py": "96f821215813b5893cca28216188ae9a4414a9eeecaeb1d1eb4bd7b936fa926a",
+  "docs\\analysis\\HYBRID_ZERO_AUDIT\\runtime_log_metadata.json": "a344f0aeb6a286a7e95414ba0243205b5fdf9bed4707242b26287580dee1b587",
+  "docs\\analysis\\HYBRID_ZERO_AUDIT\\log_inventory.json": "eeb429e3387c0635d8c4f4053031ed64e8240502dcfba9c1004d491b70df1ba7"
+}
