@@ -2,6 +2,7 @@
 
 Проверено 2026-10-02. API-001 предварительно реализована и опубликована по указанию
 пользователя (commit 7bfc784). UI подключён к реальному API по same-origin `/api/v1`.
+Реализация UI-001 опубликована в `origin/main`: commit `890eb94`, удалённый SHA проверен.
 
 Изменения: login/session/logout, история и создание диалогов, чат и optimistic
 acceptance, indicator версии идеи, follow-up и source_run_id, SSE status/elapsed/counts,
