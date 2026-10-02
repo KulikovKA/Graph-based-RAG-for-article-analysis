@@ -266,7 +266,9 @@ class RunEventsService:
     def __init__(self, session: Session) -> None:
         self.session = session
 
-    def replay(self, run_id: UUID, *, cursor: int | None = None) -> list[StoredEvent]:
+    def replay(
+        self, run_id: UUID, *, cursor: int | None = None, limit: int | None = None
+    ) -> list[StoredEvent]:
         run = self.session.scalar(
             select(AnalysisRun).where(AnalysisRun.id == run_id).with_for_update(read=True)
         )
@@ -293,11 +295,16 @@ class RunEventsService:
                 "reset": True,
             }
             return [StoredEvent(run.id, high_water, "run_snapshot", snapshot, utcnow())]
-        rows = self.session.scalars(
+        query = (
             select(RunEvent)
             .where(RunEvent.run_id == run_id, RunEvent.sequence_no > cursor)
             .order_by(RunEvent.sequence_no)
         )
+        if limit is not None:
+            if not 1 <= limit <= 128:
+                raise ValueError("invalid replay limit")
+            query = query.limit(limit)
+        rows = self.session.scalars(query)
         return [
             StoredEvent(
                 row.run_id, row.sequence_no, row.event_type, row.payload_json, row.created_at

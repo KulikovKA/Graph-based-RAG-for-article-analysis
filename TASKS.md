@@ -142,7 +142,7 @@ flowchart LR
 | JOB-001 | 8 Jobs | P0 | Sol / High | PLAN-001,STATE-001,ANALYST-001 | выполнена |
 | JOB-002 | Проверенная публикация результата и SSE replay | P0 | Sol / High | JOB-001 | выполнена |
 | AUTH-001 | 12 Multi-user/security | P0 | Sol / High | STATE-001 | выполнена |
-| API-001 | 9 API | P0 | Sol / Medium | JOB-002,AUTH-001 | ожидает |
+| API-001 | 9 API | P0 | Sol / Medium | JOB-002,AUTH-001 | ожидает публикации |
 | AUTH-002 | Внешний доступ и проверка периметра | P1 | Sol / High | API-001,AUTH-001 | ожидает |
 | UI-001 | 10 Frontend | P0 | Sol / Medium | API-001 | ожидает |
 | GRAPHUI-001 | 11 Graph UI | P1 | Sol / Medium | UI-001,GRAPH-001 | ожидает |
@@ -408,6 +408,7 @@ flowchart LR
 
 ### API-001 — FastAPI v1 и поток ответов
 
+- **Результат (2026-10-02):** реализация и приёмка проверены; ожидает публикации. [Отчёт](docs/validation/API-001/README.md): owner-scoped API, bounded inputs, conflicts/idempotency, public DTO, durable SSE replay/reset/revoke/backpressure и реальная передача через Caddy. GraphV1 не входит в объём.
 - **Дополнение ADR-011 / приёмка:** RunV1 с progress/public_analysis/answer_presentation, typed event payloads по API_CONTRACTS; tests запрещают AnalysisV1/raw reasoning в API. Проверить Last-Event-ID, missing/stale/future cursor, terminal cursor, reset replace, session revoke/ownership на replay. GET результата возможен до окончания доставки deltas; cancel тогда возвращает completed. Реальный Caddy flush без buffering, heartbeat, bounded backpressure/disconnect без отмены run; Files включают Caddyfile/docker proxy config только при необходимости. OpenAPI и SSE fixture contract согласованы с DTO; GraphV1 по-прежнему P1.
 
 - **Цель/зачем:** реализовать стабильный frontend/backend контракт.

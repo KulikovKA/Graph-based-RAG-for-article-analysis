@@ -6,7 +6,14 @@ from datetime import datetime
 from typing import Literal
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    field_validator,
+    model_serializer,
+    model_validator,
+)
 
 
 class StrictModel(BaseModel):
@@ -238,6 +245,9 @@ class RunV1(StrictModel):
     id: UUID
     status: Literal["pending", "running", "completed", "failed", "cancelled"]
     stage: str
+    progress: ProgressV1 | dict[str, object] = {}
+    public_analysis: PublicAnalysisV1 | None = None
+    answer_presentation: AnswerPresentationV1 | None = None
     idea_version_id: UUID | None = None
     source_run_id: UUID | None = None
     outcome: Literal["analysis", "safe_fallback", "no_evidence", "clarification"] | None = None
@@ -248,6 +258,13 @@ class RunV1(StrictModel):
     created_at: datetime
     completed_at: datetime | None = None
     error_code: str | None = None
+
+    @field_validator("progress", mode="before")
+    @classmethod
+    def validated_progress(cls, value: object) -> object:
+        if value == {}:
+            return value
+        return ProgressV1.model_validate(value)
 
 
 class EvidenceV1(StrictModel):
@@ -260,3 +277,25 @@ class EvidenceV1(StrictModel):
     span_end: int = Field(ge=0)
     quoted_span: str
     source_url: str
+
+
+class ProgressCountsV1(StrictModel):
+    feature_count: int | None = Field(default=None, ge=0)
+    candidate_count: int | None = Field(default=None, ge=0)
+    selected_document_count: int | None = Field(default=None, ge=0)
+
+    @model_serializer
+    def known_counts(self) -> dict[str, int]:
+        return {key: value for key, value in self.__dict__.items() if value is not None}
+
+
+class ProgressV1(StrictModel):
+    schema_version: Literal[1] = 1
+    attempt: int = Field(ge=0)
+    stage: str
+    phase: Literal["started", "completed", "waiting"]
+    stage_started_at: datetime | None = None
+    counts: ProgressCountsV1
+
+
+RunV1.model_rebuild()

@@ -1,0 +1,34 @@
+[
+  {
+    "event": "run_started",
+    "payload": {
+      "schema_version": 1,
+      "progress": {
+        "schema_version": 1,
+        "attempt": 0,
+        "stage": "accepted",
+        "phase": "waiting",
+        "counts": {}
+      }
+    }
+  },
+  {
+    "event": "answer_started",
+    "payload": {
+      "schema_version": 1,
+      "presentation_id": "cb7b6bbe57b1a8e35be45af021ea67331116ef9d3f1a5839f9d3c24975253452",
+      "renderer_version": "test-v1",
+      "text_sha256": "8bdd0ff28b6a410fa6ef0474766cd078bf78194a042363cfa8829fe8be96e377",
+      "chunk_count": 1
+    }
+  },
+  {
+    "event": "answer_delta",
+    "payload": {
+      "schema_version": 1,
+      "presentation_id": "cb7b6bbe57b1a8e35be45af021ea67331116ef9d3f1a5839f9d3c24975253452",
+      "chunk_index": 0,
+      "text": "Проверенный фрагмент."
+    }
+  }
+]
