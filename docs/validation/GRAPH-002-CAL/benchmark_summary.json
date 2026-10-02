@@ -1,0 +1,325 @@
+{
+  "contract_version": "feature-equivalence-v2",
+  "model_id": "tev1:4b",
+  "model_digest": "cef45ef93cf6df8bf32bdd689b0a8fd01f88ae9034d33ce890c54f77e4cd981e",
+  "gold_set_sha256": "dfa05987a13f20e1fb6a1eafed9c645e1c43e234a48a7dde70112887b4dc8dba",
+  "labeled_pairs": 143,
+  "benchmark_3class": {
+    "count": 143,
+    "class_distribution": {
+      "DIFFERENT": 119,
+      "SAME": 21,
+      "UNCERTAIN": 3
+    },
+    "accuracy": 0.6923076923076923,
+    "macro_f1": 0.42722794446932383,
+    "per_class": {
+      "SAME": {
+        "precision": 0.3392857142857143,
+        "recall": 0.9047619047619048,
+        "f1": 0.49350649350649356,
+        "support": 21
+      },
+      "DIFFERENT": {
+        "precision": 0.9523809523809523,
+        "recall": 0.6722689075630253,
+        "f1": 0.7881773399014779,
+        "support": 119
+      },
+      "UNCERTAIN": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 3
+      }
+    },
+    "same_precision": 0.3392857142857143,
+    "same_recall": 0.9047619047619048,
+    "same_f1": 0.49350649350649356,
+    "false_merge_count": 37,
+    "false_merge_rate": 0.25874125874125875,
+    "confusion_matrix": {
+      "SAME": {
+        "SAME": 19,
+        "DIFFERENT": 1,
+        "UNCERTAIN": 1
+      },
+      "DIFFERENT": {
+        "SAME": 37,
+        "DIFFERENT": 80,
+        "UNCERTAIN": 2
+      },
+      "UNCERTAIN": {
+        "SAME": 0,
+        "DIFFERENT": 3,
+        "UNCERTAIN": 0
+      }
+    }
+  },
+  "benchmark_5class": {
+    "count": 143,
+    "class_distribution": {
+      "RELATED": 62,
+      "SAME": 21,
+      "DIFFERENT": 38,
+      "BROADER_NARROWER": 19,
+      "UNCERTAIN": 3
+    },
+    "accuracy": 0.4755244755244755,
+    "macro_f1": 0.3798425011199396,
+    "per_class": {
+      "SAME": {
+        "precision": 0.32653061224489793,
+        "recall": 0.7619047619047619,
+        "f1": 0.45714285714285713,
+        "support": 21
+      },
+      "RELATED": {
+        "precision": 0.7272727272727273,
+        "recall": 0.12903225806451613,
+        "f1": 0.2191780821917808,
+        "support": 62
+      },
+      "BROADER_NARROWER": {
+        "precision": 0.3783783783783784,
+        "recall": 0.7368421052631579,
+        "f1": 0.5,
+        "support": 19
+      },
+      "DIFFERENT": {
+        "precision": 0.6666666666666666,
+        "recall": 0.7894736842105263,
+        "f1": 0.7228915662650601,
+        "support": 38
+      },
+      "UNCERTAIN": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 3
+      }
+    },
+    "same_precision": 0.32653061224489793,
+    "same_recall": 0.7619047619047619,
+    "same_f1": 0.45714285714285713,
+    "false_merge_count": 33,
+    "false_merge_rate": 0.23076923076923078,
+    "confusion_matrix": {
+      "SAME": {
+        "SAME": 16,
+        "RELATED": 0,
+        "BROADER_NARROWER": 5,
+        "DIFFERENT": 0,
+        "UNCERTAIN": 0
+      },
+      "RELATED": {
+        "SAME": 29,
+        "RELATED": 8,
+        "BROADER_NARROWER": 15,
+        "DIFFERENT": 9,
+        "UNCERTAIN": 1
+      },
+      "BROADER_NARROWER": {
+        "SAME": 0,
+        "RELATED": 1,
+        "BROADER_NARROWER": 14,
+        "DIFFERENT": 4,
+        "UNCERTAIN": 0
+      },
+      "DIFFERENT": {
+        "SAME": 3,
+        "RELATED": 2,
+        "BROADER_NARROWER": 3,
+        "DIFFERENT": 30,
+        "UNCERTAIN": 0
+      },
+      "UNCERTAIN": {
+        "SAME": 1,
+        "RELATED": 0,
+        "BROADER_NARROWER": 0,
+        "DIFFERENT": 2,
+        "UNCERTAIN": 0
+      }
+    }
+  },
+  "threshold_sweep_3class": [
+    {
+      "threshold": 0.7,
+      "same_precision": 0.42105263157894735,
+      "same_recall": 0.7619047619047619,
+      "accepted_same_count": 38,
+      "false_merge_count": 22,
+      "safety_veto_count": 0,
+      "safety_critical_false_same_count": 0
+    },
+    {
+      "threshold": 0.75,
+      "same_precision": 0.3793103448275862,
+      "same_recall": 0.5238095238095238,
+      "accepted_same_count": 29,
+      "false_merge_count": 18,
+      "safety_veto_count": 0,
+      "safety_critical_false_same_count": 0
+    },
+    {
+      "threshold": 0.8,
+      "same_precision": 0.34615384615384615,
+      "same_recall": 0.42857142857142855,
+      "accepted_same_count": 26,
+      "false_merge_count": 17,
+      "safety_veto_count": 0,
+      "safety_critical_false_same_count": 0
+    },
+    {
+      "threshold": 0.85,
+      "same_precision": 0.21428571428571427,
+      "same_recall": 0.14285714285714285,
+      "accepted_same_count": 14,
+      "false_merge_count": 11,
+      "safety_veto_count": 0,
+      "safety_critical_false_same_count": 0
+    },
+    {
+      "threshold": 0.9,
+      "same_precision": 0.0,
+      "same_recall": 0.0,
+      "accepted_same_count": 9,
+      "false_merge_count": 9,
+      "safety_veto_count": 0,
+      "safety_critical_false_same_count": 0
+    },
+    {
+      "threshold": 0.95,
+      "same_precision": 0.0,
+      "same_recall": 0.0,
+      "accepted_same_count": 3,
+      "false_merge_count": 3,
+      "safety_veto_count": 0,
+      "safety_critical_false_same_count": 0
+    }
+  ],
+  "threshold_sweep_5class": [
+    {
+      "threshold": 0.7,
+      "same_precision": 0.4444444444444444,
+      "same_recall": 0.38095238095238093,
+      "accepted_same_count": 18,
+      "false_merge_count": 10,
+      "safety_veto_count": 0,
+      "safety_critical_false_same_count": 0
+    },
+    {
+      "threshold": 0.75,
+      "same_precision": 0.42857142857142855,
+      "same_recall": 0.2857142857142857,
+      "accepted_same_count": 14,
+      "false_merge_count": 8,
+      "safety_veto_count": 0,
+      "safety_critical_false_same_count": 0
+    },
+    {
+      "threshold": 0.8,
+      "same_precision": 0.2857142857142857,
+      "same_recall": 0.09523809523809523,
+      "accepted_same_count": 7,
+      "false_merge_count": 5,
+      "safety_veto_count": 0,
+      "safety_critical_false_same_count": 0
+    },
+    {
+      "threshold": 0.85,
+      "same_precision": 0.0,
+      "same_recall": 0.0,
+      "accepted_same_count": 4,
+      "false_merge_count": 4,
+      "safety_veto_count": 0,
+      "safety_critical_false_same_count": 0
+    },
+    {
+      "threshold": 0.9,
+      "same_precision": 0.0,
+      "same_recall": 0.0,
+      "accepted_same_count": 3,
+      "false_merge_count": 3,
+      "safety_veto_count": 0,
+      "safety_critical_false_same_count": 0
+    },
+    {
+      "threshold": 0.95,
+      "same_precision": 0.0,
+      "same_recall": 0.0,
+      "accepted_same_count": 0,
+      "false_merge_count": 0,
+      "safety_veto_count": 0,
+      "safety_critical_false_same_count": 0
+    }
+  ],
+  "selected_contract": {
+    "contract_version": "feature-equivalence-v2",
+    "selected_contract": "3-class",
+    "labels": [
+      "SAME",
+      "DIFFERENT",
+      "UNCERTAIN"
+    ],
+    "prompt_criteria_version": "feature-equivalence-v2-strict-2026-10-02",
+    "gold_set_sha256": "dfa05987a13f20e1fb6a1eafed9c645e1c43e234a48a7dde70112887b4dc8dba",
+    "metrics": {
+      "count": 143,
+      "class_distribution": {
+        "DIFFERENT": 119,
+        "SAME": 21,
+        "UNCERTAIN": 3
+      },
+      "accuracy": 0.6923076923076923,
+      "macro_f1": 0.42722794446932383,
+      "per_class": {
+        "SAME": {
+          "precision": 0.3392857142857143,
+          "recall": 0.9047619047619048,
+          "f1": 0.49350649350649356,
+          "support": 21
+        },
+        "DIFFERENT": {
+          "precision": 0.9523809523809523,
+          "recall": 0.6722689075630253,
+          "f1": 0.7881773399014779,
+          "support": 119
+        },
+        "UNCERTAIN": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 3
+        }
+      },
+      "same_precision": 0.3392857142857143,
+      "same_recall": 0.9047619047619048,
+      "same_f1": 0.49350649350649356,
+      "false_merge_count": 37,
+      "false_merge_rate": 0.25874125874125875,
+      "confusion_matrix": {
+        "SAME": {
+          "SAME": 19,
+          "DIFFERENT": 1,
+          "UNCERTAIN": 1
+        },
+        "DIFFERENT": {
+          "SAME": 37,
+          "DIFFERENT": 80,
+          "UNCERTAIN": 2
+        },
+        "UNCERTAIN": {
+          "SAME": 0,
+          "DIFFERENT": 3,
+          "UNCERTAIN": 0
+        }
+      }
+    },
+    "threshold_policy": "model decision == SAME AND P(SAME) >= threshold; confidence is recorded but not thresholded",
+    "selected_threshold": null,
+    "threshold_metrics": null,
+    "acceptance_gate_passed": false,
+    "selection_reason": "Neither contract meets SAME precision >= 0.95 with zero safety-critical false merges; selected the higher-scoring benchmark by SAME precision, false merges, recall, then macro F1."
+  }
+}

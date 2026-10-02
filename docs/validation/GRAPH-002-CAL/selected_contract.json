@@ -1,0 +1,68 @@
+{
+  "contract_version": "feature-equivalence-v2",
+  "selected_contract": "3-class",
+  "labels": [
+    "SAME",
+    "DIFFERENT",
+    "UNCERTAIN"
+  ],
+  "prompt_criteria_version": "feature-equivalence-v2-strict-2026-10-02",
+  "gold_set_sha256": "dfa05987a13f20e1fb6a1eafed9c645e1c43e234a48a7dde70112887b4dc8dba",
+  "metrics": {
+    "count": 143,
+    "class_distribution": {
+      "DIFFERENT": 119,
+      "SAME": 21,
+      "UNCERTAIN": 3
+    },
+    "accuracy": 0.6923076923076923,
+    "macro_f1": 0.42722794446932383,
+    "per_class": {
+      "SAME": {
+        "precision": 0.3392857142857143,
+        "recall": 0.9047619047619048,
+        "f1": 0.49350649350649356,
+        "support": 21
+      },
+      "DIFFERENT": {
+        "precision": 0.9523809523809523,
+        "recall": 0.6722689075630253,
+        "f1": 0.7881773399014779,
+        "support": 119
+      },
+      "UNCERTAIN": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 3
+      }
+    },
+    "same_precision": 0.3392857142857143,
+    "same_recall": 0.9047619047619048,
+    "same_f1": 0.49350649350649356,
+    "false_merge_count": 37,
+    "false_merge_rate": 0.25874125874125875,
+    "confusion_matrix": {
+      "SAME": {
+        "SAME": 19,
+        "DIFFERENT": 1,
+        "UNCERTAIN": 1
+      },
+      "DIFFERENT": {
+        "SAME": 37,
+        "DIFFERENT": 80,
+        "UNCERTAIN": 2
+      },
+      "UNCERTAIN": {
+        "SAME": 0,
+        "DIFFERENT": 3,
+        "UNCERTAIN": 0
+      }
+    }
+  },
+  "threshold_policy": "model decision == SAME AND P(SAME) >= threshold; confidence is recorded but not thresholded",
+  "selected_threshold": null,
+  "threshold_metrics": null,
+  "acceptance_gate_passed": false,
+  "selection_reason": "Neither contract meets SAME precision >= 0.95 with zero safety-critical false merges; selected the higher-scoring benchmark by SAME precision, false merges, recall, then macro F1."
+}

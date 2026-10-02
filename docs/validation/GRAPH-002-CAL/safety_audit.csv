@@ -1,0 +1,7 @@
+﻿feature_a,feature_b,safety_reason,gold_label,3-class_decision,3-class_same_probability,5-class_decision,5-class_same_probability
+high selectivity,low selectivity,contradictory technical qualifier,DIFFERENT,DIFFERENT,0.16644869487138544,RELATED,0.11674516334667466
+n type semiconducting behavior,p type semiconducting behavior,opposite carrier polarity (n-type vs p-type),DIFFERENT,DIFFERENT,0.0666593035495748,DIFFERENT,0.09141639791161191
+low temperature chemical reduction,low temperature oxidizing reaction process,opposing oxidation/reduction processes,DIFFERENT,DIFFERENT,0.10552658486712657,DIFFERENT,0.0996163350737998
+nh3,no2,different analytes (NO2 vs NH3),DIFFERENT,DIFFERENT,0.0236390239127549,DIFFERENT,0.026438119322347707
+higher selectivity to no2,ultrahigh selectivity to nh3,different analytes (NO2 vs NH3),DIFFERENT,DIFFERENT,0.0515811775913696,DIFFERENT,0.05662710302749518
+high performance nh 3 gas sensor at room temperature,highly sensitive and rapidly responding room temperature no 2 gas sensor,different analytes (NO2 vs NH3),DIFFERENT,DIFFERENT,0.02062428703939752,DIFFERENT,0.025065327350848397

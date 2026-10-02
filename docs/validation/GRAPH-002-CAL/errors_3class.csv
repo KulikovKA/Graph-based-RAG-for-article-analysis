@@ -1,0 +1,45 @@
+﻿feature_a,feature_b,gold_label,prediction,same_probability,confidence,notes
+hexagonal honeycomb crystalline structure,one atom thick carbon allotrope,DIFFERENT,SAME,0.9734472598977536,0.8743791260915261,"Explicit graphene lattice description and carbon allotrope are related descriptions, not one replaceable feature."
+graphene,one atom thick carbon allotrope,DIFFERENT,SAME,0.9688780246149539,0.8566344746213658,Graphene is the object; the allotrope phrase is a related description.
+one atom thick carbon allotrope,pristine form graphene,DIFFERENT,SAME,0.9537903764615341,0.8037040776279689,"Graphene identity and its structural description are related, not strict aliases."
+one atom thick carbon allotrope,sp 2 hybridized carbon atoms,DIFFERENT,SAME,0.8985876581666511,0.6520780111344198,"Related topic/object/property, but not interchangeable as one feature."
+ultrahigh selective nh3 gas sensor,ultrahigh selectivity to nh3,DIFFERENT,SAME,0.9349263970611397,0.7421496721133127,Sensor entity and selectivity property are related concepts.
+atomic thickness,one atom thick carbon allotrope,DIFFERENT,SAME,0.8996557775888514,0.6550639312315903,Atomic thickness is a property; carbon allotrope is a material concept.
+atomic thickness,graphene,DIFFERENT,SAME,0.7769681920378531,0.4419050973297899,Graphene and atomic thickness are related material/property concepts.
+intrinsic high surface to volume ratio,large specific surface areas,DIFFERENT,SAME,0.9236950855828512,0.7117414295070634,"Related topic/object/property, but not interchangeable as one feature."
+graphene was used as a buffer layer which transports electrons from cu for pd to nucleate on the slg surface,pd nps were deposited on slg via the galvanic displacement reaction between graphene buffered copper cu and pd ion,DIFFERENT,SAME,0.9356014304031436,0.7548448524542035,"Both refer to graphene-assisted palladium deposition processes, but describe different process details."
+heteroatom doping,heteroatom doping can endow graphene with various new or improved electromagnetic physicochemical optical and structural properties,DIFFERENT,SAME,0.8382045048986376,0.5040180153504641,"Related topic/object/property, but not interchangeable as one feature."
+high sensitivity to gas adsorption,ultrasensitive chemical or gas sensor,DIFFERENT,SAME,0.844795779488621,0.5183029349354795,"Related topic/object/property, but not interchangeable as one feature."
+cnts 20 μm in length,vertically aligned cnt array,DIFFERENT,SAME,0.9238189039499297,0.71071527528686,CNT length and array orientation are distinct structural descriptors.
+full recovery steps without significant signal degradation,rapid recovery ≈11 s,DIFFERENT,SAME,0.9283807631502501,0.720418466936893,"Related topic/object/property, but not interchangeable as one feature."
+distinct octahedral morphology,eight 111 equivalent crystal faces,DIFFERENT,SAME,0.9151647490825272,0.6869016124829795,"Related topic/object/property, but not interchangeable as one feature."
+high intrinsic surface area,large specific surface areas,DIFFERENT,SAME,0.8162444304461102,0.4651614642493582,"Related topic/object/property, but not interchangeable as one feature."
+extremely fast recovery kinetics,fast response recovery time 36 s 18 s,DIFFERENT,SAME,0.8074643694798366,0.4344873546116029,"Related topic/object/property, but not interchangeable as one feature."
+highly stable,stability,DIFFERENT,SAME,0.6737775816318207,0.24261838426662785,"Related topic/object/property, but not interchangeable as one feature."
+hydrophobic reduced graphene oxide rgo,reduced graphene oxide rgo,DIFFERENT,SAME,0.5909518145499622,0.3304312030813301,"Related topic/object/property, but not interchangeable as one feature."
+high sensitivity to gas adsorption,highly sensitive gas sensors,DIFFERENT,SAME,0.8408431866463649,0.5162355777041256,"Related topic/object/property, but not interchangeable as one feature."
+fast response recovery,rapid response times,DIFFERENT,SAME,0.5957705941303947,0.24132848897675008,"Related topic/object/property, but not interchangeable as one feature."
+excellent sensitivity to no2 gas,high response to no2 gas,DIFFERENT,SAME,0.6771466849192611,0.24808210814669307,"Related topic/object/property, but not interchangeable as one feature."
+high selectivity to nh 3 over several gases vocs including formaldehyde ethanol methanol isopropanol toluene and acetone,ultrahigh selective nh3 gas sensor,DIFFERENT,SAME,0.7072215233434711,0.28091879175188184,A selectivity property for a set of VOCs is not equivalent to a selective NH3 sensor.
+fast response recovery,fast response recovery time 36 s 18 s,DIFFERENT,SAME,0.7234632977315831,0.29509149929068723,"Related topic/object/property, but not interchangeable as one feature."
+one atom thick carbon allotrope,one atom thin,DIFFERENT,SAME,0.8211679938385283,0.4813099484409128,"Related topic/object/property, but not interchangeable as one feature."
+conductive,high electronic conductivity,DIFFERENT,SAME,0.7212916686915791,0.29717072859026894,"Related topic/object/property, but not interchangeable as one feature."
+high sensitivity to gas adsorption,increase the gas sensitivity,DIFFERENT,SAME,0.7219515907975467,0.3282715590328732,"Related topic/object/property, but not interchangeable as one feature."
+excellent selectivity,highly selective,DIFFERENT,SAME,0.5326572986646224,0.1478088343418298,"Related topic/object/property, but not interchangeable as one feature."
+extremely fast recovery kinetics,fast response recovery,DIFFERENT,SAME,0.6995582763864268,0.27001712625096586,"Related topic/object/property, but not interchangeable as one feature."
+fast ≈14 s and slow ≈95 s response due to sp 2 -carbon bonding and disorders on graphene,graphene,DIFFERENT,SAME,0.5728635002973735,0.19927820528329765,"A response-time statement is a performance property of graphene, not the material itself."
+excellent selectivity,selective,SAME,DIFFERENT,0.31722881111657286,0.10561703433690883,Manually reviewed as the same narrow feature or condition.
+graphene,graphene s unique electronic structures and properties,DIFFERENT,SAME,0.6608363244478608,0.2804396022147262,"Related topic/object/property, but not interchangeable as one feature."
+favorable charge transfer occurring at the s rgo wo 3 interfaces,wo 3 nanorods sulfonated reduced graphene oxide s rgo,DIFFERENT,SAME,0.5811438343816095,0.24527059695889997,Interfacial charge transfer and a composite material are related system concepts.
+high response to no2 gas,selective sensitivity to no 2 gas,DIFFERENT,SAME,0.6492250053296242,0.2384802175308537,"Related topic/object/property, but not interchangeable as one feature."
+selective sensing of volatile organic gases,volatile organic compounds,DIFFERENT,SAME,0.6588472903558108,0.23251888942643306,VOC analytes versus the narrower activity of sensing those analytes.
+favorable linearity,good linear relationship r 2 0.998,DIFFERENT,SAME,0.6522921293017839,0.19403350992004342,Qualitative linearity and a reported regression relationship describe the same property family but different scope.
+covalent binding modification,non covalent binding modification,DIFFERENT,SAME,0.5330699165946425,0.11483590478302308,Covalent and non-covalent are contrasting bond mechanisms.
+intrinsic high surface to volume ratio,large surface area,DIFFERENT,SAME,0.36207911210378213,0.005496336178920425,"Related topic/object/property, but not interchangeable as one feature."
+22 °c,room temperature,SAME,UNCERTAIN,0.1680692117550487,0.13302444857764673,22 ?C and room temperature denote the same operating condition in this corpus.
+high sensitivity,high sensor response of 24.7,DIFFERENT,UNCERTAIN,0.3125301545377046,0.001013427750389151,"Related topic/object/property, but not interchangeable as one feature."
+doped graphene,heteroatom doping,DIFFERENT,UNCERTAIN,0.154381420330884,0.12027143646667027,"Related topic/object/property, but not interchangeable as one feature."
+high response,up to 80,UNCERTAIN,DIFFERENT,0.25250530833696755,0.03252113136078438,The short numeric phrase does not specify which response property it quantifies.
+about an order of magnitude,up to 80,UNCERTAIN,DIFFERENT,0.2013428497122907,0.07134393492878788,The reported percentage and approximate magnitude lack a shared defined metric.
+about an order of magnitude,almost 13 times,UNCERTAIN,DIFFERENT,0.27550649969823965,0.07129670399638588,Approximate order-of-magnitude and a separate 13x statement lack enough shared context to establish equivalence.
+optical transparency,transparency,DIFFERENT,SAME,0.661558503819185,0.21471865928516365,Optical transparency is a scoped subtype of transparency.
