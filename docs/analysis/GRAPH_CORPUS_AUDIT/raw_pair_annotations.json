@@ -1,0 +1,805 @@
+{
+  "method": "Manual analyst reading of top30_pairs_raw_first.txt before inspecting feature labels. Concepts denote shared mentions/topics, not equality of materials, numerical performance, or claims. Exact substrings are evidence anchors; later offline script records Unicode offsets.",
+  "pairs": [
+    {
+      "rank": 1,
+      "concepts": [
+        [
+          "graphene gas sensing",
+          "graphene sensors",
+          "graphene gas sensors"
+        ],
+        [
+          "molecular doping",
+          "molecular doping",
+          "molecular n-doping"
+        ],
+        [
+          "NO2 adsorption/doping",
+          "adsorption of NO2 molecules",
+          "adsorption of NO 2"
+        ],
+        [
+          "NH3 as discussed analyte",
+          "NH3 molecules",
+          "NH 3"
+        ]
+      ],
+      "assessment": "Same molecular-doping sensor area; D060 improves NH3 detection, D078 reports no NH3 response. Do not merge these claims."
+    },
+    {
+      "rank": 2,
+      "concepts": [
+        [
+          "DFT investigation",
+          "density functional theory (DFT)",
+          "density functional computations"
+        ],
+        [
+          "boron/nitrogen doped graphene",
+          "B@, N@",
+          "B- or N-doped"
+        ],
+        [
+          "gas adsorption energy",
+          "adsorption energies",
+          "adsorption energy"
+        ],
+        [
+          "NO/NO2 analytes",
+          "NO, and NO 2",
+          "NO, NO(2)"
+        ],
+        [
+          "electronic properties",
+          "electronic properties",
+          "electronic properties"
+        ]
+      ],
+      "assessment": "Same theoretical doped-graphene gas-sensing area; co-doping and defects differ."
+    },
+    {
+      "rank": 3,
+      "concepts": [
+        [
+          "epitaxial graphene",
+          "epitaxial graphene",
+          "epitaxial graphene"
+        ],
+        [
+          "quasi-free-standing graphene",
+          "quasi freestanding epitaxial graphene",
+          "quasi-free-standing graphene"
+        ],
+        [
+          "SiC substrate",
+          "6H-SiC substrates",
+          "SiC substrates"
+        ],
+        [
+          "NO2 sensitivity",
+          "NO2 sensitivity",
+          "high sensitivity to NO2"
+        ],
+        [
+          "ppb detection",
+          "1 ppb",
+          "1 ppb"
+        ]
+      ],
+      "assessment": "Highly specific common platform; relative sensitivity rankings differ and must stay separate."
+    },
+    {
+      "rank": 4,
+      "concepts": [
+        [
+          "density functional theory",
+          "density functional theory",
+          "density-functional theory"
+        ],
+        [
+          "B/N doped graphene",
+          "B@, N@",
+          "B- and N-doped graphene"
+        ],
+        [
+          "NO/NO2 adsorption",
+          "NO, and NO 2",
+          "NO and NO2"
+        ],
+        [
+          "adsorption",
+          "adsorption energies",
+          "adsorption"
+        ]
+      ],
+      "assessment": "Same computational adsorption area; dopant sets and conclusions differ."
+    },
+    {
+      "rank": 5,
+      "concepts": [
+        [
+          "graphene gas sensors",
+          "Graphene holds great promise in gas sensor applications",
+          "graphene-based chemical gas sensors"
+        ],
+        [
+          "graphene doping",
+          "graphene doping level",
+          "B- or N-doped"
+        ],
+        [
+          "NO2 adsorption",
+          "adsorbed molecules",
+          "adsorbed molecules"
+        ],
+        [
+          "electrical/electronic response",
+          "electrical responses",
+          "electronic properties"
+        ]
+      ],
+      "assessment": "Experimental versus theoretical work in same doping/adsorption area."
+    },
+    {
+      "rank": 6,
+      "concepts": [
+        [
+          "graphene gas sensors",
+          "graphene sensors",
+          "graphene-based chemical gas sensors"
+        ],
+        [
+          "graphene doping",
+          "doping",
+          "B-doped graphene"
+        ],
+        [
+          "NH3 discussion",
+          "NH3 molecules",
+          "NH(3)"
+        ],
+        [
+          "NO2 discussion",
+          "NO2 molecules",
+          "NO(2)"
+        ],
+        [
+          "adsorption",
+          "adsorption",
+          "adsorption"
+        ]
+      ],
+      "assessment": "Same area; D060 molecular doping versus substitutional/defect models in D092."
+    },
+    {
+      "rank": 7,
+      "concepts": [
+        [
+          "metal oxide/graphene composites",
+          "metal-oxide semiconductors and graphene",
+          "Metal oxide/graphene nanocomposites"
+        ],
+        [
+          "room-temperature sensing",
+          "at room temperature",
+          "room-temperature gas sensors"
+        ],
+        [
+          "NO2 sensing",
+          "NO 2",
+          "NO 2"
+        ],
+        [
+          "response/recovery kinetics",
+          "response/recovery rate",
+          "recovery kinetics"
+        ],
+        [
+          "selectivity",
+          "selectivity",
+          "selectivity"
+        ]
+      ],
+      "assessment": "Review and concrete WO3/S-rGO device share platform and design challenges."
+    },
+    {
+      "rank": 8,
+      "concepts": [
+        [
+          "density functional calculations",
+          "density-functional theory",
+          "density functional computations"
+        ],
+        [
+          "B/N doped graphene",
+          "B- and N-doped graphene",
+          "B- or N-doped"
+        ],
+        [
+          "gas adsorption",
+          "adsorption",
+          "adsorption"
+        ],
+        [
+          "NO2 analyte",
+          "NO2",
+          "NO(2)"
+        ]
+      ],
+      "assessment": "Same theoretical sensing area."
+    },
+    {
+      "rank": 9,
+      "concepts": [
+        [
+          "graphene",
+          "Graphene",
+          "graphene"
+        ],
+        [
+          "atomically thin carbon",
+          "single-atom-thick",
+          "Atomically thin sheets of carbon"
+        ],
+        [
+          "gas sensors",
+          "gas sensor",
+          "gas sensors"
+        ],
+        [
+          "carbon nanotubes",
+          "carbon nanotubes",
+          "carbon nanotubes"
+        ]
+      ],
+      "assessment": "Same graphene sensor review topic; nanotubes are discussed as related material, not graphene alias."
+    },
+    {
+      "rank": 10,
+      "concepts": [
+        [
+          "graphene gas sensing",
+          "graphene sensors",
+          "Graphene holds great promise in gas sensor applications"
+        ],
+        [
+          "NO2 doping/adsorption",
+          "adsorption of NO2 molecules",
+          "graphene and NO2"
+        ],
+        [
+          "electrical response",
+          "electrical resistance",
+          "electrical response"
+        ],
+        [
+          "graphene doping",
+          "doping",
+          "graphene doping level"
+        ]
+      ],
+      "assessment": "Strong shared mechanism; target sensing task NH3 versus NO2 differs."
+    },
+    {
+      "rank": 11,
+      "concepts": [
+        [
+          "2D gas-sensing materials",
+          "2D materials",
+          "2D materials"
+        ],
+        [
+          "graphene material family",
+          "Graphene oxide",
+          "Graphene"
+        ],
+        [
+          "transition metal chalcogenides",
+          "MoS₂",
+          "transition metal chalcogenides"
+        ],
+        [
+          "gas sensors",
+          "gas sensing devices",
+          "gas sensors"
+        ]
+      ],
+      "assessment": "Two broad reviews with overlapping material families; not equivalence of all members."
+    },
+    {
+      "rank": 12,
+      "concepts": [
+        [
+          "reduced graphene oxide",
+          "reduced graphene oxide",
+          "reduced graphene oxide"
+        ],
+        [
+          "NH3 sensing",
+          "ammonia (NH3)",
+          "ammonia (NH3)"
+        ],
+        [
+          "pyrrole reduction",
+          "pyrrole vapor",
+          "by pyrrole"
+        ],
+        [
+          "repeatability",
+          "repeatability",
+          "repeatability"
+        ],
+        [
+          "low-cost/scalable fabrication",
+          "low-cost",
+          "low cost"
+        ]
+      ],
+      "assessment": "Specific common rGO/pyrrole/NH3 platform; electrode architecture and metrics differ."
+    },
+    {
+      "rank": 13,
+      "concepts": [
+        [
+          "reduced graphene oxide",
+          "reduced graphene oxide",
+          "reduced graphene oxide"
+        ],
+        [
+          "room-temperature gas sensing",
+          "room temperature",
+          "room temperature"
+        ],
+        [
+          "graphene oxide precursor",
+          "Graphene oxide",
+          "graphene oxide"
+        ],
+        [
+          "sensitivity",
+          "higher sensitivity",
+          "sensitivity"
+        ]
+      ],
+      "assessment": "Common rGO ambient sensing; NO and NH3 are distinct analytes and cannot be merged."
+    },
+    {
+      "rank": 14,
+      "concepts": [
+        [
+          "graphene gas sensors",
+          "gas sensors",
+          "graphene gas sensors"
+        ],
+        [
+          "specific surface area",
+          "large specific surface areas",
+          "large specific surface area"
+        ],
+        [
+          "high conductivity",
+          "high conductivity",
+          "high conductivity"
+        ],
+        [
+          "synthesis/preparation",
+          "synthesis",
+          "preparation methods"
+        ]
+      ],
+      "assessment": "Same review topic; high conductivity and area are distinct properties."
+    },
+    {
+      "rank": 15,
+      "concepts": [
+        [
+          "graphene gas adsorption",
+          "graphene surface",
+          "graphene-molecule adsorption"
+        ],
+        [
+          "first-principles calculations",
+          "first-principles calculations",
+          "density functional computations"
+        ],
+        [
+          "NH3/CO/NO2/NO analytes",
+          "Motivated by the recent realization of graphene sensors to detect individual gas molecules, we investigate the adsorption of ${\\mathrm{H}}_{2}\\mathrm{O}$, $\\mathrm{N}{\\mathrm{H}}_{3}$, CO, $\\mathrm{N}{\\mathrm{O}}_{2}$, and NO on a graphene substrate using first-principles calculations.",
+          "CO, NO, NO(2) and NH(3)"
+        ],
+        [
+          "adsorption energy",
+          "adsorption energies",
+          "adsorption energy"
+        ],
+        [
+          "electronic structure",
+          "density of states",
+          "electronic properties"
+        ]
+      ],
+      "assessment": "Pristine versus doped/defective graphene theoretical adsorption."
+    },
+    {
+      "rank": 16,
+      "concepts": [
+        [
+          "graphene NH3 sensors",
+          "graphene sensors for ammonia (NH3)",
+          "graphene/mica and graphene/SiO2 based ammonia gas sensors"
+        ],
+        [
+          "NH3 adsorption",
+          "ammonia (NH3)",
+          "NH3 molecule adsorption"
+        ],
+        [
+          "sensitivity",
+          "high sensitivity",
+          "high sensitivity"
+        ]
+      ],
+      "assessment": "Review versus substrate-modulated graphene NH3 experiment."
+    },
+    {
+      "rank": 17,
+      "concepts": [
+        [
+          "doped graphene sensors",
+          "n-doped graphene",
+          "B- or N-doped"
+        ],
+        [
+          "NO2 adsorption",
+          "adsorption of NO 2",
+          "NO(2)"
+        ],
+        [
+          "NH3 discussion",
+          "no response to NH 3",
+          "NH(3)"
+        ],
+        [
+          "first-principles modelling",
+          "first-principles calculation",
+          "density functional computations"
+        ]
+      ],
+      "assessment": "NH3 is negatively detected in D078; shared mention does not assert common response."
+    },
+    {
+      "rank": 18,
+      "concepts": [
+        [
+          "graphene/gas interaction platform",
+          "graphene gas sensors",
+          "Graphene holds great promise in gas sensor applications"
+        ],
+        [
+          "NO2 as discussed analyte",
+          "NO 2 detection",
+          "testing gas NO2"
+        ],
+        [
+          "doping",
+          "n-doped graphene",
+          "graphene doping level"
+        ],
+        [
+          "adsorption",
+          "adsorption",
+          "adsorption"
+        ],
+        [
+          "electrical response",
+          "current decrease",
+          "electrical responses"
+        ]
+      ],
+      "assessment": "Common NO2/doping mechanism; dopant and device structure differ."
+    },
+    {
+      "rank": 19,
+      "concepts": [
+        [
+          "reduced graphene oxide",
+          "reduced graphene oxide",
+          "Reduced graphene oxide"
+        ],
+        [
+          "chemical modification",
+          "nitrogen-doped",
+          "chemical modification"
+        ],
+        [
+          "gas sensitivity",
+          "gas sensitivity",
+          "high sensitivity"
+        ],
+        [
+          "gas sensing",
+          "gas-sensing",
+          "gas sensing"
+        ]
+      ],
+      "assessment": "Common modified rGO sensing; N-doping versus sulfonation and NO versus NO2/NH3 differ."
+    },
+    {
+      "rank": 20,
+      "concepts": [
+        [
+          "graphene gas sensors",
+          "graphene gas sensors",
+          "Graphene-based gas/vapor sensors"
+        ],
+        [
+          "NH3 analyte",
+          "NH3",
+          "NH 3"
+        ],
+        [
+          "room-temperature operation",
+          "room temperature",
+          "room-temperature working conditions"
+        ],
+        [
+          "sensing mechanisms",
+          "sensing mechanism",
+          "detection mechanisms"
+        ]
+      ],
+      "assessment": "Overlapping reviews; narrower NH3 review versus multi-gas review."
+    },
+    {
+      "rank": 21,
+      "concepts": [
+        [
+          "2D gas sensors",
+          "2D layered inorganic materials for gas sensors",
+          "2D materials-based gas sensor"
+        ],
+        [
+          "graphene oxide",
+          "graphene oxide (GO)",
+          "Graphene oxide"
+        ],
+        [
+          "transition-metal chalcogenide family",
+          "transition metal dichalcogenides",
+          "MoS₂"
+        ],
+        [
+          "phosphorene",
+          "phosphorene",
+          "phosphorene"
+        ]
+      ],
+      "assessment": "Strong overlap of material families in two reviews."
+    },
+    {
+      "rank": 22,
+      "concepts": [
+        [
+          "graphene/SnO2 composite",
+          "graphene–SnO 2 nanocomposites",
+          "SnO2/graphene composite"
+        ],
+        [
+          "SnO2-containing particles",
+          "SnO 2 particles",
+          "SnO2 nanoparticles"
+        ],
+        [
+          "gas sensors",
+          "sensor response",
+          "gas sensor"
+        ]
+      ],
+      "assessment": "Common composite platform; NO2 versus propanal and electrical versus CTL detection differ."
+    },
+    {
+      "rank": 23,
+      "concepts": [
+        [
+          "graphene/metal oxide composites",
+          "graphene-based materials with metal oxide nanostructures",
+          "Metal oxide/graphene nanocomposites"
+        ],
+        [
+          "gas sensing",
+          "gas sensing properties",
+          "gas sensors"
+        ],
+        [
+          "improved sensing performance",
+          "improved gas sensing properties",
+          "superior sensing performance"
+        ]
+      ],
+      "assessment": "Same broad composite strategy, but D013 abstract is one sentence and ZnO/WO3 differ."
+    },
+    {
+      "rank": 24,
+      "concepts": [
+        [
+          "reduced graphene oxide",
+          "reduced graphene oxide",
+          "Reduced graphene oxide"
+        ],
+        [
+          "NH3 sensing",
+          "NH3 gas",
+          "NH3"
+        ],
+        [
+          "high sensitivity",
+          "sensitive",
+          "high sensitivity"
+        ],
+        [
+          "selectivity",
+          "selectivity",
+          "selectivity"
+        ],
+        [
+          "fast response",
+          "response time as fast",
+          "fast response"
+        ]
+      ],
+      "assessment": "Common rGO sensing concepts; pyrrole reduction versus sulfonation/3D hydrogel differs."
+    },
+    {
+      "rank": 25,
+      "concepts": [
+        [
+          "functionalized/doped graphene sensing",
+          "functionalized graphene gas sensors",
+          "n-doped graphene"
+        ],
+        [
+          "NH3 discussion",
+          "ammonia (NH3) detection",
+          "no response to NH 3"
+        ],
+        [
+          "selectivity",
+          "great selectivity",
+          "selective detection"
+        ]
+      ],
+      "assessment": "Broad graphene sensor overlap; D078 explicitly excludes NH3 response. Shared analyte topic is not shared positive sensing claim."
+    },
+    {
+      "rank": 26,
+      "concepts": [
+        [
+          "graphene gas sensors",
+          "graphene",
+          "graphene gas sensors"
+        ],
+        [
+          "NO2 as discussed analyte",
+          "NO2",
+          "NO 2"
+        ],
+        [
+          "graphene doping",
+          "doping types",
+          "n-doped graphene"
+        ],
+        [
+          "detection limit",
+          "detection limit",
+          "detection limit"
+        ]
+      ],
+      "assessment": "Common NO2 sensing with different graphene platform and radically different numerical limits."
+    },
+    {
+      "rank": 27,
+      "concepts": [
+        [
+          "graphene NH3 sensing",
+          "graphene sensors",
+          "ammonia gas sensors"
+        ],
+        [
+          "NH3 adsorption",
+          "adsorption of NH3 molecules",
+          "NH3 molecule adsorption"
+        ],
+        [
+          "doping/hole concentration",
+          "hole concentration",
+          "p-doping"
+        ],
+        [
+          "electrical resistance response",
+          "electrical resistance",
+          "graphene resistance"
+        ]
+      ],
+      "assessment": "Strong shared NH3/graphene/electronic doping concepts; NO2 dopant versus mica substrate modulation differs."
+    },
+    {
+      "rank": 28,
+      "concepts": [
+        [
+          "reduced graphene oxide material family",
+          "reduced graphene oxide",
+          "reduced graphene oxide"
+        ],
+        [
+          "NO2 sensitivity",
+          "excellent sensitivity to NO2",
+          "NO 2 adsorption ability"
+        ],
+        [
+          "gas sensors",
+          "gas sensor",
+          "gas sensor"
+        ]
+      ],
+      "assessment": "Common rGO/NO2 sensing; electrospun scaffold versus WO3/S-rGO differs."
+    },
+    {
+      "rank": 29,
+      "concepts": [
+        [
+          "all-graphene gas sensor",
+          "all graphene gas sensors",
+          "all-graphene device"
+        ],
+        [
+          "transparency",
+          "transparency",
+          "transparent"
+        ],
+        [
+          "flexibility",
+          "flexibility",
+          "flexible"
+        ],
+        [
+          "bending tolerance",
+          "bending strain",
+          "bending strain"
+        ],
+        [
+          "NO2 sensing",
+          "responses to NO2",
+          "exposure to NO2 gas"
+        ]
+      ],
+      "assessment": "Strong shared device/property concepts; self-activation without heating versus integrated heater differs."
+    },
+    {
+      "rank": 30,
+      "concepts": [
+        [
+          "graphene sensors",
+          "graphene gas sensors",
+          "ammonia gas sensors"
+        ],
+        [
+          "NH3 interaction",
+          "no response to NH 3",
+          "NH3 molecule adsorption"
+        ],
+        [
+          "electronic doping (polarity retained)",
+          "n-doped graphene",
+          "p-doping"
+        ],
+        [
+          "gas adsorption",
+          "adsorption",
+          "adsorbed NH3 molecules"
+        ]
+      ],
+      "assessment": "Common graphene/doping/adsorption topics with opposite NH3 behavior and different doping polarity."
+    }
+  ]
+}

@@ -1,0 +1,479 @@
+{
+  "audit_date_moscow": "2026-10-02",
+  "snapshot_hash": "5b80378fa2d8312951446fcbb3ada7994d775f13d452ff08fd415377a5fcade0",
+  "manifest_path": "data/checkpoints/graph002-live-20261002.snapshot.json",
+  "manifest_sha256": "2842cf0909f29c7850a190a5418032548e67e0e220e4b15a539ca277ffb7b8bc",
+  "snapshot_created_utc": "2026-10-01T23:17:52.315959+00:00",
+  "snapshot_created_moscow": "2026-10-02T02:17:52.315959+03:00",
+  "postgres_export_utc": "2026-10-02T12:34:50.953159+00:00",
+  "source_counts": {
+    "openalex": 100
+  },
+  "kind_counts": {
+    "article": 100
+  },
+  "documents": 100,
+  "revisions": 100,
+  "chunks": 136,
+  "content_scope": "abstracts_only; no full-text article sections; all normalized nonwhitespace text covered by chunks",
+  "graph": {
+    "features": 409,
+    "facts": 417,
+    "feature_document_degree_distribution": {
+      "1": 403,
+      "2": 5,
+      "4": 1
+    },
+    "singleton_features": 403,
+    "shared_features": 6,
+    "shared_percent": 1.466992665036675,
+    "documents_with_facts": 89,
+    "zero_fact_documents": 11,
+    "full_baseline_nodes_in_neo4j": 509,
+    "incident_nodes_only": 498,
+    "edges_per_incident_vertex": 0.8373493975903614,
+    "distinct_features_per_document_mean": 4.17,
+    "globally_unique_features_div_documents": 4.09,
+    "edges_per_fact_bearing_document": 4.685393258426966,
+    "baseline_document_component_sizes": [
+      4,
+      4,
+      2,
+      2,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "connected_document_pairs": 11,
+    "chunk_sha256_verified": 136,
+    "fact_quote_normalized_target_verified": 417,
+    "nonwhitespace_section_coverage_verified_documents": 100,
+    "citation_metadata": {
+      "directed_in_corpus_links": 406,
+      "docs_with_incident_citation_link": 99,
+      "undirected_component_sizes": [
+        99,
+        1
+      ],
+      "self_references_excluded": [
+        "W2082723121",
+        "W2083254069",
+        "W2563624639"
+      ]
+    },
+    "fact_confidence_distribution": {
+      "0.9": 362,
+      "0.95": 24,
+      "0.85": 4,
+      "0.8": 9,
+      "1": 18
+    }
+  },
+  "similarity": {
+    "snapshot_hash": "5b80378fa2d8312951446fcbb3ada7994d775f13d452ff08fd415377a5fcade0",
+    "documents": 100,
+    "chunks": 136,
+    "sections": {
+      "abstract": 136
+    },
+    "similarity_method": "L2-normalize existing 1024d Qwen3 chunk vectors, equal-weight mean per frozen revision, L2-normalize mean, cosine; percentile linear interpolation (n-1)*p",
+    "qdrant_collection": "article_analysis_v1_chunks_5ee7692323ffab32c32bfa2b",
+    "all_pairs": {
+      "n": 4950,
+      "min": 0.27376937136216384,
+      "median": 0.6003205645802067,
+      "p75": 0.6559169327995917,
+      "p90": 0.7065883791877746,
+      "p95": 0.736831384575009,
+      "max": 0.8854469609014056
+    },
+    "nearest_neighbor": {
+      "n": 100,
+      "min": 0.6078124864109605,
+      "median": 0.7775735461541002,
+      "p75": 0.8075526617805846,
+      "p90": 0.8358654503500277,
+      "p95": 0.8552774883633889,
+      "max": 0.8854469609014056
+    },
+    "nearest_neighbor_histogram": {
+      "[0,0.5)": 0,
+      "[0.5,0.6)": 0,
+      "[0.6,0.7)": 15,
+      "[0.7,0.8)": 52,
+      "[0.8,0.85)": 26,
+      "[0.85,0.9)": 7,
+      "[0.9,0.95)": 0,
+      "[0.95,1.000001)": 0
+    },
+    "all_pairs_histogram": {
+      "[0,0.5)": 789,
+      "[0.5,0.6)": 1678,
+      "[0.6,0.7)": 1923,
+      "[0.7,0.8)": 528,
+      "[0.8,0.85)": 28,
+      "[0.85,0.9)": 4,
+      "[0.9,0.95)": 0,
+      "[0.95,1.000001)": 0
+    },
+    "chunk_vector_export_sha256": "74f4a9686808538e77cee2cc6b0afa8844503d5b63358f5c32a89e53e4f986e7",
+    "pooling_sensitivity": {
+      "alternative": "character-length-weighted normalized chunk mean",
+      "nearest_neighbor": {
+        "n": 100,
+        "min": 0.6078124864109605,
+        "median": 0.7812969263233265,
+        "p75": 0.8095105925519487,
+        "p90": 0.839624725836521,
+        "p95": 0.8800035686231118,
+        "max": 0.8864470859590801
+      },
+      "same_top1_document_count": 82,
+      "same_top30_pair_count": 26,
+      "limitation": "Equal-chunk pooling can over-weight short residual chunks; alternative is a sensitivity check, not an independent human similarity gold."
+    }
+  },
+  "corpus_composition": {
+    "primary_clusters": [
+      {
+        "cluster": "C01",
+        "name": "Metal-oxide / graphene hybrids for gas sensing",
+        "documents": 14,
+        "nearest_neighbor_within_primary_cluster": 12,
+        "within_pair_mean": 0.6443205408920142,
+        "cross_pair_mean": 0.5917025553626634,
+        "representative_titles": [
+          "Microwave-Assisted Synthesis of Graphene–SnO2 Nanocomposites and Their Applications in Gas Sensors",
+          "Highly aligned SnO2 nanorods on graphene sheets for gas sensors",
+          "Room-Temperature Ammonia Gas Sensor Based on Ti3C2Tx MXene/Graphene Oxide/CuO/ZnO Nanocomposite"
+        ]
+      },
+      {
+        "cluster": "C02",
+        "name": "Flexible, wearable and integrated gas-sensor devices",
+        "documents": 13,
+        "nearest_neighbor_within_primary_cluster": 8,
+        "within_pair_mean": 0.626833434906961,
+        "cross_pair_mean": 0.5758595165333714,
+        "representative_titles": [
+          "Reduced Graphene Oxide/Mesoporous ZnO NSs Hybrid Fibers for Flexible, Stretchable, Twisted, and Wearable NO2 E-Textile Gas Sensor",
+          "Wearable, wireless gas sensors using highly stretchable and transparent structures of nanowires and graphene",
+          "Moisture-resistant, stretchable NOx gas sensors based on laser-induced graphene for environmental monitoring and breath analysis"
+        ]
+      },
+      {
+        "cluster": "C03",
+        "name": "Electronic gas sensors: reduction, doping, interfaces and film processing",
+        "documents": 15,
+        "nearest_neighbor_within_primary_cluster": 10,
+        "within_pair_mean": 0.6946590679110725,
+        "cross_pair_mean": 0.6179933441954959,
+        "representative_titles": [
+          "N-doped reduced graphene oxide for room-temperature NO gas sensors",
+          "NO2 and NH3 Sensing Characteristics of Inkjet Printing Graphene Gas Sensors",
+          "Graphene-Based Gas Sensors with High Sensitivity and Minimal Sensor-to-Sensor Variation"
+        ]
+      },
+      {
+        "cluster": "C04",
+        "name": "Graphene gas sensing through 3D, patterned and array architectures",
+        "documents": 5,
+        "nearest_neighbor_within_primary_cluster": 1,
+        "within_pair_mean": 0.6656370331772756,
+        "cross_pair_mean": 0.6207536892961057,
+        "representative_titles": [
+          "A 3D scaffold for ultra-sensitive reduced graphene oxide gas sensors",
+          "Highly selective gas sensor arrays based on thermally reduced graphene oxide",
+          "A 3D Chemically Modified Graphene Hydrogel for Fast, Highly Sensitive, and Selective Gas Sensor"
+        ]
+      },
+      {
+        "cluster": "C05",
+        "name": "Metal-nanoparticle catalysis and selective electronic gas sensors",
+        "documents": 4,
+        "nearest_neighbor_within_primary_cluster": 2,
+        "within_pair_mean": 0.6740047498889279,
+        "cross_pair_mean": 0.5806415178987302,
+        "representative_titles": [
+          "A Highly Sensitive Hydrogen Sensor with Gas Selectivity Using a PMMA Membrane-Coated Pd Nanoparticle/Single-Layer Graphene Hybrid",
+          "Palladium-Decorated Hydrogen-Gas Sensors Using Periodically Aligned Graphene Nanoribbons",
+          "Graphene Decorated with Silver Nanoparticles as a Low-Temperature Methane Gas Sensor"
+        ]
+      },
+      {
+        "cluster": "C06",
+        "name": "Optical and electrochemical gas-sensor mechanisms",
+        "documents": 4,
+        "nearest_neighbor_within_primary_cluster": 1,
+        "within_pair_mean": 0.6466871418445335,
+        "cross_pair_mean": 0.5992834236128001,
+        "representative_titles": [
+          "Graphene-Based Long-Period Fiber Grating Surface Plasmon Resonance Sensor for High-Sensitivity Gas Sensing",
+          "Graphene sheets decorated with SnO2 nanoparticles: in situ synthesis and highly efficient materials for cataluminescence gas sensors",
+          "Free‐Standing Functionalized Graphene Oxide Solid Electrolytes in Electrochemical Gas Sensors"
+        ]
+      },
+      {
+        "cluster": "C07",
+        "name": "Gas adsorption and sensing: first-principles, transport and molecular mechanisms",
+        "documents": 11,
+        "nearest_neighbor_within_primary_cluster": 9,
+        "within_pair_mean": 0.68919988318207,
+        "cross_pair_mean": 0.5788606206978167,
+        "representative_titles": [
+          "Adsorption of gas molecules on transition metal embedded graphene: a search for high-performance graphene-based catalysts and gas sensors",
+          "Adsorption of Gas Molecules on Graphene Nanoribbons and Its Implication for Nanoscale Molecule Sensor",
+          "Recent Developments in Graphene-Based Toxic Gas Sensors: A Theoretical Overview"
+        ]
+      },
+      {
+        "cluster": "C08",
+        "name": "Reviews of gas-sensor materials, fabrication and deployment",
+        "documents": 20,
+        "nearest_neighbor_within_primary_cluster": 12,
+        "within_pair_mean": 0.6949709507904952,
+        "cross_pair_mean": 0.6102083270106949,
+        "representative_titles": [
+          "A Review on Functionalized Graphene Sensors for Detection of Ammonia",
+          "Gas sensing in 2D materials",
+          "Graphene-based gas sensors"
+        ]
+      },
+      {
+        "cluster": "C09",
+        "name": "Metallic MXene gas-sensing channels",
+        "documents": 1,
+        "nearest_neighbor_within_primary_cluster": 0,
+        "within_pair_mean": null,
+        "cross_pair_mean": 0.5706429472510797,
+        "representative_titles": [
+          "Metallic Ti3C2T x MXene Gas Sensors with Ultrahigh Signal-to-Noise Ratio"
+        ]
+      },
+      {
+        "cluster": "C10",
+        "name": "Graphene material synthesis, functionalization and broad applications",
+        "documents": 7,
+        "nearest_neighbor_within_primary_cluster": 3,
+        "within_pair_mean": 0.5735972883177173,
+        "cross_pair_mean": 0.5010330421082992,
+        "representative_titles": [
+          "A review of graphene and graphene oxide sponge: material synthesis and applications to energy and the environment",
+          "Graphene Oxide Dispersions in Organic Solvents",
+          "Laser-Induced Graphene"
+        ]
+      },
+      {
+        "cluster": "C11",
+        "name": "Graphene physical properties, mechanics and technology roadmaps",
+        "documents": 4,
+        "nearest_neighbor_within_primary_cluster": 2,
+        "within_pair_mean": 0.5698421888193747,
+        "cross_pair_mean": 0.4590523790795094,
+        "representative_titles": [
+          "Science and technology roadmap for graphene, related two-dimensional crystals, and hybrid systems",
+          "Properties of graphene: a theoretical perspective",
+          "Mechanical properties of graphene and graphene-based nanocomposites"
+        ]
+      },
+      {
+        "cluster": "C12",
+        "name": "Biological and chemical sensors across multiple sensing modalities",
+        "documents": 1,
+        "nearest_neighbor_within_primary_cluster": 0,
+        "within_pair_mean": null,
+        "cross_pair_mean": 0.6098441554116611,
+        "representative_titles": [
+          "Biological and chemical sensors based on graphene materials"
+        ]
+      },
+      {
+        "cluster": "C13",
+        "name": "Porous graphene membranes for gas separation",
+        "documents": 1,
+        "nearest_neighbor_within_primary_cluster": 0,
+        "within_pair_mean": null,
+        "cross_pair_mean": 0.5564618638259482,
+        "representative_titles": [
+          "Porous Graphene as the Ultimate Membrane for Gas Separation"
+        ]
+      }
+    ],
+    "gas_sensing_core_documents": 87,
+    "broader_adjacent_documents": 13,
+    "within_primary_cluster_similarity": {
+      "n": 568,
+      "mean": 0.6698256538196273,
+      "median": 0.6710447099095451,
+      "p75": 0.7247575790813918,
+      "p90": 0.7659991546928898,
+      "p95": 0.7931349177094337,
+      "min": 0.44922990107469746,
+      "max": 0.8854469609014056
+    },
+    "between_primary_cluster_similarity": {
+      "n": 4382,
+      "mean": 0.5838706214289042,
+      "median": 0.5920549391820021,
+      "p75": 0.6456104077496053,
+      "p90": 0.691353791319474,
+      "p95": 0.7215417411763158,
+      "min": 0.27376937136216384,
+      "max": 0.8436862411116655
+    },
+    "same_primary_cluster_top1": 60,
+    "partition_method": "inductive single-rater analyst reading; not an objective unique ontology or independent human gold"
+  },
+  "manual_pair_audit": {
+    "closest_pairs_read": 30,
+    "unique_documents": 31,
+    "pairs_related_at_technology_area_level": 30,
+    "pairs_with_exact_shared_feature": 0,
+    "pairs_involving_zero_fact_document": 12,
+    "manual_shared_topic_annotations": 124,
+    "mapping_limitation": "Selected label correspondences are supplemental and rubric-dependent; not extractor recall or causal contribution percentages. Source claims may differ in polarity, analyte or conditions."
+  },
+  "read_only_validation": {
+    "postgres_transaction": "repeatable_read read_only, rollback",
+    "postgres_manifest_revisions_and417fact_ids": "matched",
+    "neo4j509nodes417edges": "MATCH/RETURN through execute_read; fact IDs and endpoints matched PostgreSQL",
+    "qdrant": "GET metadata and POST points/scroll only,136 existing vectors matched all chunk IDs",
+    "models_called": 0,
+    "ingestion_runs": 0,
+    "production_files_changed": 0,
+    "commits_created": 0,
+    "scope": "audit_execution_before_separately_authorized_publication"
+  },
+  "diagnosis": "CASE E: ontology/representation plus selective extraction, secondary lexical canonicalization, real periphery and claim-specific differences; corpus-limited-only rejected for thematic connectivity, not for strict detailed claim equality",
+  "publication_policy": {
+    "local_only_exports": [
+      "corpus_export.json",
+      "existing_chunk_vectors.json",
+      "neo4j_projection_read.json",
+      "raw_corpus_reading.txt",
+      "top30_pairs_raw_first.txt"
+    ],
+    "published": "authored audit reports, derived analysis tables, integrity hashes and analysis scripts; raw corpus/vector/database exports excluded"
+  },
+  "feature_audit": {
+    "semantic_kind": {
+      "PERFORMANCE": 109,
+      "DEVICE": 33,
+      "OPERATING_CONDITION": 12,
+      "MATERIAL": 51,
+      "MORPHOLOGY": 32,
+      "PROPERTY": 84,
+      "TECHNOLOGY": 18,
+      "PROCESS": 37,
+      "MECHANISM": 18,
+      "ANALYTE": 10,
+      "OTHER": 5
+    },
+    "granularity": {
+      "QUALIFIED_CONCEPT": 270,
+      "ATOMIC_NARROW": 101,
+      "PROPOSITION": 38
+    },
+    "over_specific_phrase": {
+      "false": 389,
+      "true": 20
+    },
+    "mixed_kind": {
+      "false": 341,
+      "true": 68
+    },
+    "label_requires_context": {
+      "true": 36,
+      "false": 373
+    },
+    "label_truncated": {
+      "false": 406,
+      "true": 3
+    }
+  }
+}

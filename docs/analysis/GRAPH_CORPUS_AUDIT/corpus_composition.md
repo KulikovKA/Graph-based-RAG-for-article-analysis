@@ -1,0 +1,54 @@
+# Corpus composition from independent abstract reading
+
+Frozen source: `corpus_export.json`, exported 2026-10-02T12:34:50.953159+00:00; manifest SHA-256 `2842cf0909f29c7850a190a5418032548e67e0e220e4b15a539ca277ffb7b8bc`. The stable D001-D100 numbering follows UUID order in `raw_corpus_reading.txt`.
+
+All 100 documents and all 136 chunks were read before assigning topics. Assignments are a manual, inductive primary-topic partition; the existing GraphFact target labels, OpenAlex topic labels and embeddings were not used to define it. Each document has exactly one primary cluster; secondary concepts in `topic_clusters.csv` intentionally overlap. Counts are for the exported active revisions only.
+
+## Content scope
+
+The corpus contains 100 OpenAlex articles, 100 normalized revisions and 136 chunks. Every normalized revision contains one available, nonempty abstract section, and every chunk is an abstract chunk. There are no title-only records, no absent abstracts and no full-text article sections in this export. A substantive audit therefore describes abstract-level evidence, not the articles in their entirety.
+
+Stored abstract lengths range from very short summaries to several paragraphs. In particular D013, D020, D034 and D072 contain only 147, 270, 163 and 152 characters respectively; D013 and D034 have generic single-sentence text, so their material/device subtype uses an explicitly identified title cue and is less certain. A short stored abstract does not establish a truncation incident or a source-fetch failure.
+
+## Primary topic partition
+
+| Cluster | Primary topic | Documents | Share | Representative documents |
+|---|---|---:|---:|---|
+| C01 | Metal-oxide / graphene hybrids for gas sensing | 14 | 14% | D004 Microwave-Assisted Synthesis of Graphene–SnO2 Nanocomposites and Their Applications in Gas Sensors; D010 Room-Temperature Ammonia Gas Sensor Based on Ti3C2Tx MXene/Graphene Oxide/CuO/ZnO Nanocomposite; D052 Sensitive Room-Temperature H2S Gas Sensors Employing SnO2 Quantum Wire/Reduced Graphene Oxide Nanocomposites; D083 Ultrahigh Selective Room-Temperature Ammonia Gas Sensor Based on Tin–Titanium Dioxide/reduced Graphene/Carbon Nanotube Nanocomposites by the Solvothermal Method |
+| C02 | Flexible, wearable and integrated gas-sensor devices | 13 | 13% | D001 Reduced Graphene Oxide/Mesoporous ZnO NSs Hybrid Fibers for Flexible, Stretchable, Twisted, and Wearable NO2 E-Textile Gas Sensor; D003 Moisture-resistant, stretchable NOx gas sensors based on laser-induced graphene for environmental monitoring and breath analysis; D054 3D integrated monolayer graphene–Si CMOS RF gas sensor platform; D100 Flexible and Transparent Gas Molecule Sensor Integrated with Sensing and Heating Graphene Layers |
+| C03 | Electronic gas sensors: reduction, doping, interfaces and film processing | 15 | 15% | D008 N-doped reduced graphene oxide for room-temperature NO gas sensors; D032 Graphene-Based Gas Sensors with High Sensitivity and Minimal Sensor-to-Sensor Variation; D078 Ultrasensitive N-Channel Graphene Gas Sensors by Nondestructive Molecular Doping; D099 Graphene/mica based ammonia gas sensors |
+| C04 | Graphene gas sensing through 3D, patterned and array architectures | 5 | 5% | D006 A 3D scaffold for ultra-sensitive reduced graphene oxide gas sensors; D012 Highly selective gas sensor arrays based on thermally reduced graphene oxide; D082 A 3D Chemically Modified Graphene Hydrogel for Fast, Highly Sensitive, and Selective Gas Sensor; D088 Graphene Nanomesh As Highly Sensitive Chemiresistor Gas Sensor |
+| C05 | Metal-nanoparticle catalysis and selective electronic gas sensors | 4 | 4% | D061 A Highly Sensitive Hydrogen Sensor with Gas Selectivity Using a PMMA Membrane-Coated Pd Nanoparticle/Single-Layer Graphene Hybrid; D069 Palladium-Decorated Hydrogen-Gas Sensors Using Periodically Aligned Graphene Nanoribbons; D079 Graphene Decorated with Silver Nanoparticles as a Low-Temperature Methane Gas Sensor; D091 Nanostructured Pt decorated graphene and multi walled carbon nanotube based room temperature hydrogen gas sensor |
+| C06 | Optical and electrochemical gas-sensor mechanisms | 4 | 4% | D027 Graphene-Based Long-Period Fiber Grating Surface Plasmon Resonance Sensor for High-Sensitivity Gas Sensing; D037 Graphene sheets decorated with SnO2 nanoparticles: in situ synthesis and highly efficient materials for cataluminescence gas sensors; D090 Free‐Standing Functionalized Graphene Oxide Solid Electrolytes in Electrochemical Gas Sensors; D097 Highly Sensitive and Selective Gas Sensor Using Hydrophilic and Hydrophobic Graphenes |
+| C07 | Gas adsorption and sensing: first-principles, transport and molecular mechanisms | 11 | 11% | D016 Adsorption of gas molecules on transition metal embedded graphene: a search for high-performance graphene-based catalysts and gas sensors; D031 Penta-Graphene as a Potential Gas Sensor for NOx Detection; D042 Pt-doped armchair graphene nanoribbon as a promising gas sensor for CO and CO2: DFT study; D081 Phosphorene as a Superior Gas Sensor: Selective Adsorption and Distinct I – V Response |
+| C08 | Reviews of gas-sensor materials, fabrication and deployment | 20 | 20% | D014 A Review on Functionalized Graphene Sensors for Detection of Ammonia; D043 Semiconductor Gas Sensors: Materials, Technology, Design, and Application; D062 Graphene-based chemiresistive gas sensors; D073 Frontiers of graphene and 2D material-based gas sensors for environmental monitoring |
+| C09 | Metallic MXene gas-sensing channels | 1 | 1% | D026 Metallic Ti3C2T x MXene Gas Sensors with Ultrahigh Signal-to-Noise Ratio |
+| C10 | Graphene material synthesis, functionalization and broad applications | 7 | 7% | D009 Graphene Oxide Dispersions in Organic Solvents; D015 Laser-Induced Graphene; D021 Synthesis, properties, and applications of graphene oxide/reduced graphene oxide and their nanocomposites; D087 Design of advanced porous graphene materials: from graphene nanomesh to 3D architectures |
+| C11 | Graphene physical properties, mechanics and technology roadmaps | 4 | 4% | D048 Science and technology roadmap for graphene, related two-dimensional crystals, and hybrid systems; D049 Properties of graphene: a theoretical perspective; D051 Mechanical properties of graphene and graphene-based nanocomposites; D055 Graphene: carbon in two dimensions |
+| C12 | Biological and chemical sensors across multiple sensing modalities | 1 | 1% | D023 Biological and chemical sensors based on graphene materials |
+| C13 | Porous graphene membranes for gas separation | 1 | 1% | D024 Porous Graphene as the Ultimate Membrane for Gas Separation |
+
+**Total: 100 documents, 100%; all 100 documents assigned exactly once.**
+
+The first nine clusters account for 87 documents whose primary focus is gas sensing or its adsorption/transport mechanisms. The remaining 13 documents are broader material/physics works, a biological/chemical sensor review, and a gas-separation membrane study. This 87/13 split is a topic decision, not an experimental/review classification and not a count derived from graph edges.
+
+## Assignment rules and boundary cases
+
+- Gas-focused reviews are grouped in C08 even when they discuss flexible devices, oxides, metals or optical fibers. D028 is the narrower theory-specific review and remains in C07.
+- For studies of actual devices, a defining optical/electrochemical mechanism takes C06; explicit mechanical/wireless/integration emphasis takes C02; metal nanoparticle catalysis takes C05; metal-oxide hybrids take C01; 3D/patterned/array architecture takes C04; the remaining reduction/doping/contact/film studies take C03. These are reviewable editorial choices, not a claimed uniquely correct taxonomy.
+- D010 includes MXene and oxide components but its mixed GO/CuO/ZnO composition study fits C01. D026 is the isolated metallic-MXene-channel study (C09).
+- D078 has a flexible prototype but its dominant contribution is nondestructive molecular n-doping and selective electronic response; therefore C03. D082 combines chemistry and microheating but its dominant platform is a 3D modified hydrogel with temperature-response patterns; therefore C04.
+- D076 is multifunctional ZnO/graphene nanostructure work with field emission and photocatalysis as well as sensing; C01 captures its oxide/graphene structure, and its broader uses remain secondary tags.
+- D024 discusses possible sensors only as a downstream application. Its main result is membrane selectivity/permeance for gas separation, so C13. D023 addresses sensor modalities across biological and chemical detection, so C12 rather than a gas-only review.
+
+## Homogeneous groups and peripheral works
+
+The strongest repeated experimental families are oxide/graphene hybrids (C01), wearable/flexible/integrated devices (C02), and electronic material/interface tuning (C03). Most of them discuss NO2/NOx or NH3; H2, H2S, CH4, alcohols and other VOCs provide smaller subfamilies. NO2 and NH3 are shared secondary analytes, so they are useful comparison dimensions but not mutually exclusive primary topics.
+
+C07 is unusually homogeneous in methodological language: first-principles/DFT, adsorption energy, charge transfer, electronic bands and sometimes NEGF transport. The standalone phosphorene prediction D081 and penta-graphene study D031 broaden material coverage while keeping that method. C08 is homogeneous in review purpose but heterogeneous in device/material detail; it cannot provide the same disclosure granularity as a specific sensor experiment merely because its topic is close.
+
+The small C05/C06 families are technically meaningful: catalytic metal nanoparticles for H2/CH4 differ from optical transduction and solid-electrolyte electrochemical sensing. Their shared graphene language alone should not collapse mechanism differences. D070 also uses a thermal-conductivity mechanism rather than a conventional adsorption chemiresistor; it remains C02 because flexible/embeddable deployment is its defining abstract contribution.
+
+The corpus has a core and a material-science periphery, with three topical singleton groups: D026 metallic MXene sensing, D023 multimodal biological/chemical sensors, and D024 gas separation. Broad synthesis/property works D005,D009,D015,D021,D048,D049,D051,D055,D080,D087,D096 are adjacent to the core but should not be treated as equivalent specific gas-sensor disclosures. They may bridge vocabulary in retrieval while contributing weak or broad technical evidence for sensor comparisons.
+
+No cluster is an objective or manually validated feature-equivalence gold standard. The partition supports sampling and reading-based coverage analysis; individual secondary concepts and disclosure scope still need inspection before claiming feature sharing.

@@ -1,0 +1,2 @@
+# Сохранять точные байты UTF-8/BOM и окончания строк для SHA-256 артефактов.
+* -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

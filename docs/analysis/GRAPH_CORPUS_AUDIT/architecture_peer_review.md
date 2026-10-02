@@ -1,0 +1,113 @@
+# Architecture peer review grounded in the frozen corpus
+
+Date: 2026-10-02. This is an independent critique and experiment proposal, not an implementation plan already approved for execution. Only this analysis artifact was created. No ingestion, model inference, database mutation, service initialization or dependency change was performed.
+
+The corpus evidence comes from independently reading all 100 active-document abstracts and all 136 frozen chunks before assigning the primary topics in `topic_clusters.csv`. The source is `corpus_export.json`. The citation, similarity and live-graph results below were supplied by the coordinating auditor as independently verified offline results; they were not independently recomputed in this peer review. Relevant extraction and pinned LightRAG paths were read locally to check the architectural interpretation.
+
+## Diagnosis: shared subject matter and distinct disclosures coexist
+
+The pure corpus-limited explanation is weak for this collection. Eighty-seven documents have gas sensing or its adsorption/transport mechanisms as their primary focus. Repeated families include metal-oxide/graphene hybrids (14), flexible/wearable/integrated devices (13), electronic processing/doping/interface studies (15), and first-principles adsorption/transport mechanisms (11). Twenty documents are gas-sensor reviews. The remaining 13 broader or adjacent works explain a periphery, not 100 unrelated technologies.
+
+The supplied document nearest-neighbor statistics support that reading: median 0.77757, p75 0.80755, p90 0.83587 and p95 0.85528. These cosine values depend on the frozen embedding model and aggregation procedure; they have no universal topical-equivalence threshold. More persuasive evidence is the human review of the top 30 related pairs, all with zero exact shared features. That selected sample establishes a mismatch between textual similarity and the current feature identity; it does not estimate global extractor recall or prove that each pair has equivalent disclosures.
+
+The strongest architectural diagnosis is **mixed, led by an ontology and representation mismatch, with selective extraction coverage gaps**. The current graph represents source-supported exact features with one flat disclosure relation. Many source concepts that support navigation occur as review scope, background, related materials, compared gases or discussed methods. Legitimately rejecting them as a paper's disclosed feature removes useful topic connections from this particular graph. At the same time, D007, D064 and D092 contain concrete source-supported feature candidates despite having zero retained facts. Those are specific underextraction hypotheses, not merely requests to extract every background noun.
+
+There is also genuine specificity in the corpus. A Pd/graphene hydrogen sensor, an optical methane fiber sensor, a pyrrole-reduced rGO ammonia sensor and a calculated phosphorene adsorption system should not become the same technical feature because all concern gas sensing. Some mostly singleton qualified structures and propositions may be correct. Canonicalization cannot supply missing mentions, create omitted claims or erase real material/mechanism differences.
+
+No defensible numerical allocation such as "60% ontology, 25% extraction" follows from the current audit. A causal decomposition requires aligned source mentions, extractor drafts, validator rejections and held-out retrieval outcomes. We can rank explanations, but should not invent their percentage contributions.
+
+The live baseline has 417 facts and 509 nodes when its 11 zero-fact document nodes are included. The earlier 498-vertex figure excludes those 11. This changes the denominator, not the core fragmentation diagnosis. The preserved facts have valuable exact evidence; exact provenance alone still does not prove that every extracted label is the best semantic representation or that every claim is interpreted correctly.
+
+## Separate concept presence from source claims
+
+The most consequential design decision is the meaning of an edge, not the number of nodes it adds.
+
+| Layer | What it can truthfully say | Evidence required | What it must not imply |
+|---|---|---|---|
+| Source mention | A particular revision mentions a typed concept | An exact chunk span and revision identity; separate mapping to a concept ID | The authors implemented, demonstrated or improved that concept |
+| Bibliographic metadata | A source record lists a reference or topic classification | Frozen metadata field and source/version | The reference supports the paper's claim; topic equality means design equality |
+| Raw disclosure | The source explicitly discloses a technical feature under the existing contract | Preserved GraphFact and exact source quote/span | Generic discussion or co-occurrence is a new disclosure |
+| Typed claim | A particular described experimental device, modeled system or proposal has a material, analyte, process, condition or mechanism | A relation-specific source span plus scope and qualifications | Every material/gas named in the article has that role in the same device |
+| Taxonomy | Two distinct concepts are related by a curated broader/narrower relation | A versioned vocabulary assertion and reviewable rule | The concepts are strict aliases |
+
+`MENTIONS` is suitable for source-supported presence. More specific roles such as `USES_MATERIAL`, `DETECTS_ANALYTE`, `OPERATES_AT` and `HAS_MORPHOLOGY` should attach to an identified device/system/claim when that scope is explicit. A modeled material is better marked `STUDIES_MATERIAL` or assigned a modeled-system scope than silently represented as a fabricated sensor. Reviewed, proposed, experimental and theoretical scope should remain distinguishable. An initial pilot can retain scope as structured attributes rather than introduce a large claim-node ontology immediately.
+
+Examples from the actual abstracts show why this matters:
+
+- D061 uses Pd nanoparticles and a PMMA membrane for hydrogen sensing. Methane, CO and NO2 are gases for which the sensor has no response, not additional detected analytes.
+- D083 lists many gases/VOCs as selectivity contrasts. A noun extractor can correctly mention them while an incorrect `DETECTS_ANALYTE` edge would reverse the scientific result.
+- D053 gives annealing temperatures for preparing rGO and room-temperature sensing conditions. Those are different roles for temperature.
+- D031 and D081 are first-principles/transport predictions for penta-graphene and phosphorene. Their high-sensitivity language is modeled performance, not experimental validation.
+- D015 reviews concrete LIG methods retrospectively. D048 is a broad roadmap. Both can have useful concepts while their eligibility for strict disclosure extraction differs.
+
+The semantic layer can map "high optical transparency" to the property concept "optical transparency" while retaining "high" and any numerical measurement on the mention or claim. This is a property abstraction, not permission to label the full phrase and the unqualified concept `SAME`. Similarly, graphene oxide and reduced graphene oxide can have a graphene-family parent without being merged into graphene; NOx can have narrower analyte members without being an alias for NO2. Related morphology phrases and different device architectures need explicit relations, not destructive identity merges.
+
+## Compare five architecture options
+
+These are qualitative engineering expectations, not measured runtime or retrieval forecasts. Each option needs the same source-based evaluation. Costs refer to the incremental work beyond the current frozen ingestion unless stated otherwise.
+
+| Option | Expected usefulness and interpretation | Provenance and false-merge risk | Complexity, CPU and ingestion | Reuse and required changes |
+|---|---|---|---|---|
+| 1. Preserve exact raw graph; prioritize vector retrieval | Strong baseline for exact evidence and specific features; weak cross-document concept navigation. Sparse claims remain interpretable. | Best preservation of existing evidence. No new merge risk if canonicalization remains disabled. Current omissions persist. | Lowest incremental cost; no new LLM role required. Existing extraction cost remains. | Reuse PostgreSQL, Qdrant, Neo4j, planner and evidence resolution. No component needs deletion. Retrieval should acknowledge that graph adjacency covers only a subset of topical relations. |
+| 2A. Typed semantic projection over existing facts only | Separates material/property/process/condition and creates reviewable concept abstractions for retained facts. Helps interpretation of the 417 incidences. | Raw facts remain unchanged. Type errors and overly broad concept mapping are risks; subtype/qualified relations must stay distinct from aliases. | Low to moderate engineering. Deterministic mappings for safe cases; optional LLM classification for unresolved contexts. No additional model family is inherently necessary. | Reuse all current stores and source provenance. Add a versioned derived projection and mapping evidence. It cannot cover omitted concepts or the 11 documents with no facts. |
+| 2B. Typed source-mention and claim projection from chunks | Directly addresses missing shared concepts, review topics and selected missed claims. Can support material/analyte/condition-aware retrieval. | High potential if every relation retains evidence and scope. Role confusion, negation loss and context-free canonicalization are principal risks. | Moderate to high engineering; another extraction contract over frozen chunks, validation and scope handling. Extra inference calls; the configured model can first be tested without downloading another model. | Preserve the raw graph. Reuse frozen PG chunks, IDs and vector infrastructure; add a separately versioned projection. This is more than normalization of existing facts. |
+| 3. Native pinned LightRAG as a separate builder | May create recurring concept/entity names and entity relations useful for retrieval. Its value on this corpus is unmeasured. Generic hubs could dominate. | Chunk attribution is weaker than exact fact spans; name-only identity and merged descriptions can collapse scopes. Never automatically promote its descriptions into authoritative GraphFacts. | Moderate adapter work plus potentially high inference/summary cost. Extraction, optional gleaning and aggregation summaries are additional operations. Current generation-disabled runtime cannot simply be reused as a native extractor. | Reuse pinned donor code and retrieval/evidence-resolution boundaries. Requires isolated builder/runtime and native-to-PG chunk mapping. No baseline deletion or replacement is justified. |
+| 4. Gated hybrid: raw facts + typed source concepts + vectors; optional LightRAG | Best fit for auditable article comparison if channels are bounded and independently evaluated. Raw claims answer disclosure questions; concepts help discovery; vectors handle lexical/semantic recall. | Strong if all final evidence resolves through PG and labels preserve scope. More projections introduce duplicate-context, contradictory-summary and stale-revision risks. | Highest integration/lifecycle complexity if every channel is enabled. Do not pay for all builders before proving incremental retrieval value. | Reuse the full authoritative stack. Add derived channels incrementally. Existing context-only LightRAG can remain optional; native LightRAG is not a required prerequisite. |
+| 5. Frozen citation and taxonomy projection | Immediate navigation and candidate expansion using metadata; supports zero-fact documents. Cheap complement to vectors and the raw graph. It does not recover device claims. | Precise metadata provenance, but citations and topic tags do not mean semantic equivalence or claim support. Taxonomy assignments may be coarse. | Lowest additional inference cost: references require none. Taxonomy can begin with metadata/manual tags and limited review. Incremental edge processing rather than pairwise feature classification. | Reuse frozen references/topic fields and document IDs. Add a derived, source-qualified `CITES`/classification projection. No existing component needs deletion. |
+
+Option 2 must not be presented as one homogeneous solution. **2A is bounded by the existing fact set; 2B reads the source again under a different, explicit mention/claim contract.** A successful 2A pilot could improve interpretation and still leave document-to-concept recall poor. That limitation is especially visible in this corpus because a substantial part of useful shared terminology is review/background language and because all 11 zero-fact revisions contain text.
+
+For a diploma, option 1 is a credible reproducible baseline, option 2 offers a focused hypothesis about typed source semantics, option 3 is a meaningful donor A/B, and option 4 is a stronger system contribution with a larger evaluation burden. Option 5 is a valuable ablation/control showing that useful navigation need not depend on extra generative inference. The most scientifically useful result is a measured comparison on source-grounded questions, not a visually dense graph.
+
+## Scale expectations: 1k, 10k and 100k documents
+
+| Option | 1k | 10k | 100k |
+|---|---|---|---|
+| Preserve raw + vectors | Straightforward extension of the baseline, subject to measured extraction throughput | Incremental versioned ingestion and bounded graph traversal become important | Requires routine capacity/lifecycle engineering; no dense pairwise comparisons are intrinsically needed |
+| Typed source projection | Manageable pilot-to-production step after role/evidence validation | Inference and mention counts become significant; use deterministic rules for safe cases and budgeted ambiguous cases | Incremental mention extraction, stable taxonomy IDs, projection generations and bounded retrieval are essential; avoid global all-pairs alias inference |
+| Native LightRAG | Feasible experimental target, but CPU model throughput must be measured | Extraction/gleaning/summaries and popular-node aggregation may dominate cost | Revision cleanup, source tracking, concurrent aggregation and cross-store recovery require demonstrated behavior; no scalability claim follows from the current smoke test |
+| Full hybrid | Multiple channels are still auditable | Retain only channels with demonstrated incremental utility; handle duplication and stale evidence | Projection lifecycle and query-budget control become at least as important as graph capacity |
+| Citation/taxonomy | Low marginal computational burden | Sparse adjacency and bounded expansion remain tractable | Usually cheaper than extra LLM extraction; large review hubs and high-frequency topics must not generate quadratic document-pair edges |
+
+These are directional assessments. The corpus has only 136 abstract chunks, so extrapolating ingestion time by document count alone is unsafe. Full-text ingestion would change chunks/document, inference budgets and ambiguity. The approximately four-hour historical GRAPH-002 run was dominated by pair classification; it is evidence against routinely classifying every possible feature pair, not a measured LightRAG ingestion cost.
+
+## Citation evidence changes the cheapest next opportunity
+
+The coordinator verified 406 directed in-corpus citation links after excluding three self-links. Their undirected projection has one component containing 99 documents and one isolated document. That is a powerful counterexample to the claim that the collection has no usable document relationships. It also supplies a graph with no extra LLM extraction.
+
+It does **not** prove that all 99 documents disclose related technical features, validate the feature extractor or make every citation suitable evidence for a query. References in reviews and highly cited foundational works can connect very different results. Retrieval should traverse a small, ranked neighbor set, preserve citation direction, discount generic hubs and retrieve the actual neighbor chunks before using them. Do not materialize every pair of documents sharing a citation or a taxonomy parent; that converts a cheap sparse layer into noisy quadratic expansion.
+
+A taxonomy layer can make graphene-family, gas sensing and device/modality groupings visible, including records with zero facts. However, the manually derived 13 primary clusters are audit strata, not a universal ontology or alias gold standard. OpenAlex topics are source metadata with their own granularity; mapping them into domain concepts must remain a separately versioned decision.
+
+## Native LightRAG: useful experiment, insufficient replacement case
+
+The pinned code was checked locally at `data/arch001/HKUDS-LightRAG-453dce8/`. Native ingestion groups entities by their normalized name (`lightrag/operate.py` around lines 2449-2457 and 3642-3649). The name normalizer delegates to formatting sanitization (`lightrag/utils.py` around lines 5833-5867), not ontology-aware semantic equivalence. Native relations are collected by sorted endpoint pairs (`operate.py` around lines 3651-3654), so direction and different relation meanings cannot be assumed to survive as separate domain claims.
+
+The current adapter explicitly inserts `entities=[]` and `relationships=[]` (`src/app/integrations/lightrag_adapter.py` around lines 222-239). It is a chunk/context channel; it has not already tested native entity extraction on these articles. A native A/B therefore tests a different builder and inference contract, not merely a different parameter of the existing production channel.
+
+Native LightRAG may improve recurring entity names and graph-assisted retrieval. It does not automatically solve strict alias precision, typed scientific roles or exact-span claim provenance. Name-based aggregation can merge the same name across conflicting contexts and leave semantic aliases as distinct names. Merged descriptions can conflate review discussion with experimentally demonstrated behavior. Chunk attribution and subsequent PG evidence resolution are necessary, but a sourced chunk still needs entailment checking for any final scientific assertion.
+
+The donor review and ARCH-001 establish integration/provenance caveats; the historical smoke used stubbed inference and did not establish native extraction quality. A separate native runtime, fixed model/prompt budget, isolated stores and an unambiguous native chunk-to-frozen evidence map would be required in a later authorized experiment. Keep it context-only for answer generation, and score its final retrieved PG chunks against the same gold as other channels. It should remain optional until that comparison shows a benefit.
+
+## Recommendation and the minimal next experiment
+
+Recommend a **gated hybrid**, beginning with option 1 plus option 5, then testing option 2B as the first source-semantic extension. Option 2A is useful as an explanatory ablation, not a complete fix. Native LightRAG is the next competing builder to evaluate if the source-semantic pilot establishes that additional graph semantics improve retrieval. No implementation is recommended before the user compares architecture analyses.
+
+The smallest useful first experiment has to distinguish missing source concepts from projection/canonicalization effects. A fixed 24-document slice is sufficient for an initial engineering/quality gate: all 11 zero-fact documents plus D001, D003, D004, D008, D012, D018, D022, D027, D031, D037, D040, D052 and D082. This includes specific sensor studies, theoretical systems, optical mechanisms, sparse text, review scope and a roadmap control. It is a deliberately stratified slice, not an unbiased estimate of corpus-wide performance.
+
+Before inference, annotate exact source mentions and a small set of relation-specific claims, explicitly labeling experimental/theoretical/review/proposed/background scope, analyte contrasts, negation and operating versus fabrication conditions. Freeze development/held-out documents and query gold before prompt tuning. Include retrieval questions that distinguish materials, detection targets, mechanisms and conditions; a question whose answer is simply "graphene" will reward generic hubs without testing the design.
+
+Compare these arms:
+
+1. Existing vector + raw graph baseline.
+2. The same baseline plus citation/taxonomy hints.
+3. Typed projection from existing facts only (2A).
+4. Typed mentions/claims from frozen chunks (2B), using the configured extraction model first.
+
+Measure source-mention and role precision/recall, unsupported-claim rate, exact provenance resolution, evidence retrieval Recall@k/nDCG, latency and additional inference tokens/calls. Report raw graph counts only as diagnostics. Explicitly compare zero-fact documents and the three high-priority candidate cases, without treating every zero as an error. No automatic equivalence merging is needed in this pilot. Require every returned evidence reference to resolve to the correct frozen PG revision/chunk; role mistakes and false subtype-as-alias decisions must be surfaced individually.
+
+If the pilot reveals source/role validation problems, fix the contract before scaling. If it is promising, expand to the same frozen 100 documents and add native pinned LightRAG as another isolated builder. Perform paired retrieval evaluation on untouched questions with identical final evidence/context budgets. Separate builder quality from retrieval quality: a denser graph can have better mention recall and worse relevance. A small pilot cannot certify 95% strict-alias precision or 100k-document scalability; either claim needs a suitably powered independent evaluation.
+
+Do not lower the SAME threshold to make the graph look connected; relabel RELATED/BROADER_NARROWER as aliases; equate gas mentions with detected analytes; retrofit review wording into `DISCLOSES_FEATURE`; or replace authoritative raw facts with free summaries. Preserve all frozen evidence and treat derived semantics as a reversible, versioned hypothesis until their retrieval and claim accuracy are measured.
+
+Confidence is high that raw exact-feature identity does not capture all useful corpus relationships, and high that typed normalization of existing facts alone cannot fix source omissions. Confidence is moderate in the recommended extension's retrieval benefit, because that benefit has not yet been measured. The unresolved causal questions are model-empty versus validator-filtered zero results, how broadly reviewed/modelled methods should count as disclosures, source-role annotation consistency, and the incremental utility/cost of native LightRAG on this exact corpus.

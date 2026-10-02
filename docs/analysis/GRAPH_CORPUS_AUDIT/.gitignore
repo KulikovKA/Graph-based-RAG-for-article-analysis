@@ -1,0 +1,6 @@
+# Полные локальные выгрузки корпуса, векторов и базы не публикуются.
+corpus_export.json
+existing_chunk_vectors.json
+neo4j_projection_read.json
+raw_corpus_reading.txt
+top30_pairs_raw_first.txt
