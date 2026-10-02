@@ -2,6 +2,9 @@
 
 Дата проверки: 2026-10-02. Объём: только AUTH-001.
 
+Реализация опубликована в `origin/main`: `ec22c0a349148e4fbc0eedeb4f0bb199b34ff427`.
+Успешный push и совпадение SHA через `git ls-remote` подтверждены до отметки выполнения.
+
 Реализованы три auth endpoints, Argon2id, operator create/disable CLI, DB sessions
 с хешами token/CSRF, expiry и revoke, смена токена при повторном login, проверка
 Origin/CSRF, общий PostgreSQL fixed-window rate limiter, owner dependency и scoped

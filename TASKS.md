@@ -141,7 +141,7 @@ flowchart LR
 | ANALYST-001 | 7 Analyst | P0 | Sol / High | RANK-001,LLM-002 | выполнена |
 | JOB-001 | 8 Jobs | P0 | Sol / High | PLAN-001,STATE-001,ANALYST-001 | выполнена |
 | JOB-002 | Проверенная публикация результата и SSE replay | P0 | Sol / High | JOB-001 | выполнена |
-| AUTH-001 | 12 Multi-user/security | P0 | Sol / High | STATE-001 | ожидает публикации |
+| AUTH-001 | 12 Multi-user/security | P0 | Sol / High | STATE-001 | выполнена |
 | API-001 | 9 API | P0 | Sol / Medium | JOB-002,AUTH-001 | ожидает |
 | AUTH-002 | Внешний доступ и проверка периметра | P1 | Sol / High | API-001,AUTH-001 | ожидает |
 | UI-001 | 10 Frontend | P0 | Sol / Medium | API-001 | ожидает |
@@ -400,7 +400,7 @@ flowchart LR
 
 ### AUTH-001 — Сессии и базовая изоляция
 
-- **Результат (2026-10-02):** реализация и критерии приёмки проверены, статус — ожидает публикации до push и сверки удалённой ветки. [Отчёт и ограничения](docs/validation/AUTH-001/README.md): 187 локальных тестов и 21 PostgreSQL/security тест, Ruff и strict mypy. Argon2id login/logout/session, operator CLI create/disable, DB revoke/expiry/rotation, CSRF/Origin, общие DB user/IP/email limits и owner dependency.
+- **Результат (2026-10-02):** выполнена; реализация опубликована коммитом `ec22c0a349148e4fbc0eedeb4f0bb199b34ff427`, push и совпадение SHA удалённой `main` подтверждены. [Отчёт и ограничения](docs/validation/AUTH-001/README.md): 187 локальных тестов и 21 PostgreSQL/security тест, Ruff и strict mypy. Argon2id login/logout/session, operator CLI create/disable, DB revoke/expiry/rotation, CSRF/Origin, общие DB user/IP/email limits и owner dependency.
 - **Цель/зачем:** подготовить несколько пользователей и безопасный LAN/внешний demo.
 - **Depends / priority:** STATE-001; P0. **Files:** src/app/api/auth.py, src/app/services/auth.py, Caddyfile, tests/security/test_isolation.py. **References:** docs/SECURITY.md, docs/API_CONTRACTS.md, docs/DEPLOYMENT.md.
 - **Сделать:** локальный Argon2id login/logout/session, операторскую CLI для аккаунтов, DB sessions/revoke, CSRF/Origin, user/IP rate limits и owner dependency. **Приёмка/тесты:** два пользователя изолированы в repositories и тестовом защищённом route, неверный CSRF отклонён, logout отзывает session; HTTP dev явно opt-in. Полные API IDOR проверяет API-001, graph IDOR — GRAPHUI-001; внешний TLS gate — AUTH-002. **Не делать:** не добавлять публичную регистрацию или OIDC provider flow в MVP.
