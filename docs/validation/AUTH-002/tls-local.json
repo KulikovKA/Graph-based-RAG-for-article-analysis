@@ -1,0 +1,12 @@
+{
+  "passed": true,
+  "protocols": [
+    "TLSv1.2",
+    "TLSv1.3"
+  ],
+  "verified_certificate": true,
+  "public_trust_checked": false,
+  "https_health": 200,
+  "http_redirect": 308,
+  "hsts": "max-age=31536000"
+}

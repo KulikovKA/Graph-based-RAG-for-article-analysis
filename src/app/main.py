@@ -5,6 +5,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from sqlalchemy.exc import SQLAlchemyError
 from starlette.exceptions import HTTPException
+from starlette.middleware.cors import CORSMiddleware
 
 from app.api.auth import AuthSettings
 from app.api.auth import router as auth_router
@@ -24,6 +25,14 @@ def create_app(
     application.state.auth_service = auth
     application.state.auth_settings = auth_settings or AuthSettings.from_env()
 
+    application.add_middleware(
+        CORSMiddleware,
+        allow_origins=list(application.state.auth_settings.origins),
+        allow_credentials=True,
+        allow_methods=["GET", "POST", "DELETE"],
+        allow_headers=["Content-Type", "X-CSRF-Token", "Idempotency-Key", "Last-Event-ID"],
+        expose_headers=["X-Request-ID", "Retry-After"],
+    )
     application.add_middleware(RequestContextMiddleware)
 
     @application.exception_handler(HTTPException)

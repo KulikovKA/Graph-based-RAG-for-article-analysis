@@ -13,5 +13,8 @@ COPY config ./config
 COPY docs/model_inventory.json ./docs/model_inventory.json
 COPY alembic.ini ./
 COPY tests ./tests
+COPY scripts/audit_perimeter.py ./scripts/audit_perimeter.py
+COPY compose.yaml Caddyfile ./
+COPY docker/Caddyfile.prod ./docker/Caddyfile.prod
 
 CMD ["pytest", "tests/integration/test_db.py"]

@@ -1,0 +1,90 @@
+{
+  "scope": "running_docker_containers",
+  "passed": false,
+  "findings": [
+    {
+      "container": "/article-analysis-neo4j-bolt-proxy-1",
+      "port": "17687/tcp",
+      "host_ip": "127.0.0.1",
+      "host_port": "17687",
+      "reason": "project_non_caddy_port"
+    },
+    {
+      "container": "/article-analysis-neo4j-browser-proxy-1",
+      "port": "17474/tcp",
+      "host_ip": "127.0.0.1",
+      "host_port": "17474",
+      "reason": "project_non_caddy_port"
+    },
+    {
+      "container": "/graph_rag_db",
+      "port": "5432/tcp",
+      "host_ip": "0.0.0.0",
+      "host_port": "5432",
+      "reason": "host_public_port"
+    },
+    {
+      "container": "/graph_rag_db",
+      "port": "5432/tcp",
+      "host_ip": "::",
+      "host_port": "5432",
+      "reason": "host_public_port"
+    },
+    {
+      "container": "/graph_rag_qdrant",
+      "port": "6333/tcp",
+      "host_ip": "0.0.0.0",
+      "host_port": "6333",
+      "reason": "host_public_port"
+    },
+    {
+      "container": "/graph_rag_qdrant",
+      "port": "6333/tcp",
+      "host_ip": "::",
+      "host_port": "6333",
+      "reason": "host_public_port"
+    },
+    {
+      "container": "/graph_rag_qdrant",
+      "port": "6334/tcp",
+      "host_ip": "0.0.0.0",
+      "host_port": "6334",
+      "reason": "host_public_port"
+    },
+    {
+      "container": "/graph_rag_qdrant",
+      "port": "6334/tcp",
+      "host_ip": "::",
+      "host_port": "6334",
+      "reason": "host_public_port"
+    },
+    {
+      "container": "/graph_rag_neo4j",
+      "port": "7474/tcp",
+      "host_ip": "0.0.0.0",
+      "host_port": "7474",
+      "reason": "host_public_port"
+    },
+    {
+      "container": "/graph_rag_neo4j",
+      "port": "7474/tcp",
+      "host_ip": "::",
+      "host_port": "7474",
+      "reason": "host_public_port"
+    },
+    {
+      "container": "/graph_rag_neo4j",
+      "port": "7687/tcp",
+      "host_ip": "0.0.0.0",
+      "host_port": "7687",
+      "reason": "host_public_port"
+    },
+    {
+      "container": "/graph_rag_neo4j",
+      "port": "7687/tcp",
+      "host_ip": "::",
+      "host_port": "7687",
+      "reason": "host_public_port"
+    }
+  ]
+}

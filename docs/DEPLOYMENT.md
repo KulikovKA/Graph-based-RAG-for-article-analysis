@@ -23,6 +23,58 @@
 
 До AUTH-001 Caddy слушает только loopback; после auth/isolation gate допускается доверенный LAN. Перед внешним demo: TLS, login, CSRF/CORS, rate limits и восстановление backup. Один worker обслуживает analysis и ingestion очереди; отдельный общий semaphore ограничивает **все** генеративные роли (planner, extractor, analyst), а embedding/rerank имеют собственные RAM/batch лимиты. Ingestion не запускает вторую тяжёлую генерацию в обход очереди. Budget 6k input не гарантирует размещение двух моделей; загрузку/выгрузку и RSS измерить в LLM-002.
 
+## Периметр AUTH-002 и внешний TLS gate
+
+Статус на 2026-10-02: реализация и локальные проверки готовы, **ожидает внешнего
+доступа**. Реальный домен с публично доверенным сертификатом не проверен. Локальный
+TLS smoke с отдельным тестовым CA не закрывает этот критерий. Отчёт и выявленные
+публикации портов: [AUTH-002](validation/AUTH-002/README.md).
+
+Профиль `prod` использует `docker/Caddyfile.prod`: TLS 1.2–1.3, автоматический
+HTTP→HTTPS redirect, HSTS `max-age=31536000` только на HTTPS и отключённый admin API
+Caddy. Dev-профиль использует `Caddyfile` без HSTS. Настройки соответствуют
+[документации Caddy TLS](https://caddyserver.com/docs/caddyfile/directives/tls).
+Loopback bind по умолчанию сохраняется. CORS берёт точные origins из
+`AUTH_ALLOWED_ORIGINS`, разрешает credentials и необходимые API headers;
+неразрешённый или повторяющийся Origin блокируется сервером до чтения API/SSE.
+Запрос без Origin по-прежнему требует сессию, а mutation — Origin и CSRF.
+
+Перед внешним demo оператор должен устранить все findings следующего аудита:
+
+```sh
+python scripts/audit_perimeter.py --output data/auth002-ports.json
+```
+
+Аудит проверяет реально работающие Docker-контейнеры, включая Compose overrides:
+у проекта допустимы только публикации Caddy 80/443; контейнеры с host network и
+сторонние публикации на нелокальных интерфейсах блокируют gate. Exit code 1
+означает незакрытый gate, ошибки Docker также завершают проверку неуспешно.
+Секреты/env контейнеров в отчёт не попадают. Это не проверка Windows Firewall,
+нативных host-сервисов, маршрутизатора или доступности из Интернета. Их проверяют
+отдельно, включая host Ollama и сканирование с внешнего узла.
+
+После исправления периметра настроить реальный `PUBLIC_DOMAIN`,
+`AUTH_ALLOWED_ORIGINS=https://<домен>`, `APP_ENV=production`,
+`APP_HTTP_DEV_ENABLED=false`, `AUTH_COOKIE_SECURE=true`, реальные пароли БД/Redis.
+Не запускать одновременно dev и prod для внешнего demo. DNS A/AAAA должен указывать
+на правильный адрес; публичные TCP 80/443 должны маршрутизироваться только в Caddy.
+Смена `CADDY_BIND_ADDRESS` и проброс портов разрешены только после локального gate.
+Пока есть findings, Интернет не открывать.
+
+После разрешённой настройки домена проверить сертификат без `--cafile` и без
+отключения проверки TLS:
+
+```sh
+python scripts/check_perimeter_tls.py https://<домен> --http-origin http://<домен> --output data/auth002-tls.json
+docker compose --profile tools run --build --rm db-test python -m pytest tests/security/test_perimeter.py tests/security/test_isolation.py tests/contract/test_api.py tests/contract/test_graph_api.py
+```
+
+Первый скрипт проверяет handshake TLS 1.2/1.3, hostname/цепочку сертификата,
+HTTPS health, redirect и защитные headers. Дополнительно повторить login двух
+операторских аккаунтов, Origin/CSRF/rate-limit и session revoke на реальном HTTPS,
+включая открытый SSE и сохранённую evidence. Внешний smoke, внешний port scan и
+release gates остаются обязательными; отметку «выполнена» ставить только после них.
+
 ## Локальные аккаунты и AUTH-001
 
 Перед запуском новой версии применить `alembic upgrade head` (в Compose это сервис

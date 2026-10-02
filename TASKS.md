@@ -143,7 +143,7 @@ flowchart LR
 | JOB-002 | Проверенная публикация результата и SSE replay | P0 | Sol / High | JOB-001 | выполнена |
 | AUTH-001 | 12 Multi-user/security | P0 | Sol / High | STATE-001 | выполнена |
 | API-001 | 9 API | P0 | Sol / Medium | JOB-002,AUTH-001 | выполнена |
-| AUTH-002 | Внешний доступ и проверка периметра | P1 | Sol / High | API-001,AUTH-001 | ожидает |
+| AUTH-002 | Внешний доступ и проверка периметра | P1 | Sol / High | API-001,AUTH-001 | ожидает внешнего доступа |
 | UI-001 | 10 Frontend | P0 | Sol / Medium | API-001 | выполнена |
 | GRAPHUI-001 | 11 Graph UI | P1 | Sol / Medium | UI-001,GRAPH-001 | выполнена |
 | EVAL-001 | 13 Evaluation | P1 | Sol / High | API-001,EVAL-000 | ожидает |
@@ -418,6 +418,8 @@ flowchart LR
 - **Уточнение ARCH-002:** Auth уже выполнен. P0 routes не требуют GraphV1 реализации; graph_url=null до GRAPHUI-001. Проверить scoped evidence endpoint, source_run_id, pending/terminal DTO, idempotency и snapshot reset после compaction.
 
 ### AUTH-002 — Внешний доступ и проверка периметра
+
+- **Результат (2026-10-02):** [отчёт AUTH-002](docs/validation/AUTH-002/README.md). TLS 1.2–1.3/HSTS, CORS allowlist, SSRF redirects, rotation/revoke и rate limits проверены; 97 тестов прошли, дополнительный live SSE smoke через Caddy выполнен отдельно (1 passed). Локальный TLS smoke с тестовым CA успешен. **Gate ожидает внешнего доступа:** реальный домен/публичный TLS не проверены, runtime audit выявил Neo4j-прокси проекта и сторонние БД-порты на wildcard. Интернет не открывать до устранения findings и внешнего smoke; задачу не считать выполненной.
 
 - **Цель/зачем:** закрыть внешний TLS/security gate отдельно от ранней session auth
 - **Depends / priority:** API-001,AUTH-001; P1. **Files:** Caddyfile, tests/security/test_perimeter.py, docs/DEPLOYMENT.md. **References:** docs/SECURITY.md, docs/DEPLOYMENT.md.
