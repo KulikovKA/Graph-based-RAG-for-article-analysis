@@ -1,0 +1,5 @@
+﻿"document_id","error"
+"00f9cfc7-459f-4c4d-8131-b425d01527dc","1 validation error for TechnicalConceptMentionV1
+surface_text
+  Value error, text fields must be non-empty and trimmed [type=value_error, input_value='NO 2 ', input_type=str]
+    For further information visit https://errors.pydantic.dev/2.11/v/value_error"

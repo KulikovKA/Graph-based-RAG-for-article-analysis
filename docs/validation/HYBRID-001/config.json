@@ -1,0 +1,24 @@
+{
+  "experiment": "HYBRID-001",
+  "status": "smoke-blocked-inference-routing",
+  "snapshot_manifest": "data/checkpoints/graph002-live-20261002.snapshot.json",
+  "snapshot_hash": "5b80378fa2d8312951446fcbb3ada7994d775f13d452ff08fd415377a5fcade0",
+  "documents": 100,
+  "evidence_chunks": 136,
+  "extractor_version": "hybrid-technical-concepts-v1",
+  "schema_version": "technical-concept-mention-v1",
+  "generation_model": "qwen3.5:4b-q4_K_M",
+  "generation_digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+  "temperature": 0,
+  "embedding_model": "qwen3-embedding:0.6b",
+  "embedding_digest": "ac6da0dfba84a81fdbfbaf330198c33cd77c4cdfc53e8bc50eb581914a15621d",
+  "embedding_dimension": 1024,
+  "embedding_used_for_identity": false,
+  "neo4j_shadow": {
+    "label": "TechnicalConcept",
+    "relationship": "MENTIONS_CONCEPT"
+  },
+  "production_retrieval_changed": false,
+  "external_backfill": false,
+  "model_download": false
+}

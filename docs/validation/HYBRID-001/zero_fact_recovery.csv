@@ -1,0 +1,12 @@
+document_code,document_id,title,hybrid_concept_count,recovered,concepts
+D007,1012c1e5-ed99-4e3a-ba11-ac77cc359a2e,Highly aligned SnO2 nanorods on graphene sheets for gas sensors,12,True,H2S; SnO2; attributed; exert; exhibit; graphene; hydrothermal; nanorods; synthesized; tuned; used; varying
+D013,218cb72e-a7df-4303-9d9e-e374b6e450d7,Reduced graphene oxide/ZnO nanocomposite for application in chemical gas sensors,3,True,NH3; NO2; selectivity
+D015,24e7049e-e304-4bc5-b9b9-e739b7cf5f9c,Laser-Induced Graphene,23,True,LIG; PI; additive manufacturing; annealing; chemical vapor deposition (CVD) methods; commercial device platforms; composition; direct lasing; easy transition; graphene; graphene foams; laminated object manufacturing; laser scribing system; laser-induced graphene (LIG); morphology; polyimide (PI); porosity; powder bed fabrication; roll-to-roll production; two-dimensional (2D) forms; wet-chemical approaches
+D019,2dab9e82-5d29-40da-b093-b12b1fbde4da,Graphene-based gas sensors,7,True,atom-thick; configuration; conjugated; fabrication; performance; synthesis; two-dimensional
+D023,3263deed-de40-4cc0-bf0f-e980647f6535,Biological and chemical sensors based on graphene materials,0,False,
+D041,70b57363-3591-4f4b-a1a9-d0f8987b6b80,A Review on Graphene-Based Gas/Vapor Sensors with Unique Properties and Potential Applications,11,True,CO; Graphene-based gas/vapor sensors; H2S; NH3; NO2; SO2; VOC; detection mechanisms; room-temperature working conditions; sensing properties; sensor construction
+D048,7e8119f4-3272-488b-a741-a7b4abb14a69,"Science and technology roadmap for graphene, related two-dimensional crystals, and hybrid systems",0,False,
+D059,95caebbb-a861-49f1-a707-2bf74b2c9a8b,Noble Metal Decorated Graphene-Based Gas Sensors and Their Fabrication: A Review,10,True,detection; electron transfer; electronic mechanism; gas sensing; junctions effects; selectivity; sensitivity; synergistic effect
+D064,a5c41f35-df49-4f31-95dd-394405e4c276,Ultrafast and sensitive room temperature NH3 gas sensors based on chemically reduced graphene oxide,11,True,NH3; detection; fabrication; illumination; recovery; reduction; sensing
+D084,d9353f7c-7923-4367-bf9f-78451104b2f5,Research Progress of Gas Sensor Based on Graphene and Its Derivatives: A Review,0,False,
+D092,ea87c55e-72ef-439c-aa6b-7285edc49095,Improving gas sensing properties of graphene by introducing dopants and defects: a first-principles study,0,False,

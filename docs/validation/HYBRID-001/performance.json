@@ -1,0 +1,13 @@
+{
+  "llm_calls": 138,
+  "median_sec_per_document": 102.80572014800418,
+  "p95_sec_per_document": 238.87166828299814,
+  "semantic_extraction_total_sec": 12601.206659673044,
+  "neo4j_projected_mentions": 747,
+  "postgres_persistence_sec": null,
+  "neo4j_projection_sec": null,
+  "peak_process_rss_bytes": null,
+  "run_id": "d895217d-ebbe-4117-9066-8ae0ebcd0bdc",
+  "total_runtime_sec": 12988.993951,
+  "total_runtime_hours": 3.608
+}

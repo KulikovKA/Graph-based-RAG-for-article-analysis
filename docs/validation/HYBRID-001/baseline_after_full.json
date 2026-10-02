@@ -1,0 +1,22 @@
+{
+  "postgres": {
+    "source_documents": 100,
+    "graph_facts": 417,
+    "canonical_features": 409,
+    "semantic_concept_runs": 6,
+    "technical_concepts": 532,
+    "concept_mentions": 843
+  },
+  "neo4j": {
+    "scientific_work_nodes": 100,
+    "technical_feature_nodes": 409,
+    "discloses_feature_edges": 417,
+    "canonical_technical_feature_nodes": 409,
+    "discloses_canonical_feature_edges": 417,
+    "technical_concept_nodes": 532,
+    "mentions_concept_edges": 843
+  },
+  "unchanged_from_pre_experiment": true,
+  "snapshot_hash": "5b80378fa2d8312951446fcbb3ada7994d775f13d452ff08fd415377a5fcade0",
+  "hybrid_run_id": "d895217d-ebbe-4117-9066-8ae0ebcd0bdc"
+}

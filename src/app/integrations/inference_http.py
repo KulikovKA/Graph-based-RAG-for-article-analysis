@@ -24,8 +24,15 @@ from app.workers.inference import GenerationGate
 
 
 class RerankerBackend(Protocol):
-    async def score(self, *, model_id: str, query: str, documents: list[str],
-                    timeout: float, cancel: asyncio.Event | None) -> list[float]: ...
+    async def score(
+        self,
+        *,
+        model_id: str,
+        query: str,
+        documents: list[str],
+        timeout: float,
+        cancel: asyncio.Event | None,
+    ) -> list[float]: ...
 
 
 T = TypeVar("T")
@@ -33,7 +40,10 @@ T = TypeVar("T")
 
 class OllamaProvider:
     def __init__(
-        self, client: httpx.AsyncClient, *, gate: GenerationGate,
+        self,
+        client: httpx.AsyncClient,
+        *,
+        gate: GenerationGate,
         model_revisions: dict[str, str],
         supported_efforts: dict[str, set[str]],
         reranker: RerankerBackend | None = None,
@@ -63,16 +73,22 @@ class OllamaProvider:
 
     async def _confirm_unloaded(self, model_id: str) -> None:
         try:
-            response = await self.client.post("/api/generate", json={
-                "model": model_id, "prompt": "", "keep_alive": 0, "stream": False,
-            }, timeout=5)
+            response = await self.client.post(
+                "/api/generate",
+                json={
+                    "model": model_id,
+                    "prompt": "",
+                    "keep_alive": 0,
+                    "stream": False,
+                },
+                timeout=5,
+            )
             response.raise_for_status()
             deadline = time.monotonic() + 5
             while time.monotonic() < deadline:
                 state = await self.client.get("/api/ps", timeout=2)
                 state.raise_for_status()
-                if not any(item.get("name") == model_id
-                           for item in state.json().get("models", [])):
+                if not any(item.get("name") == model_id for item in state.json().get("models", [])):
                     return
                 await asyncio.sleep(0.1)
         except (httpx.HTTPError, ValueError):
@@ -115,21 +131,35 @@ class OllamaProvider:
         return content, bool(thinking)
 
     async def _generate(
-        self, *, model_id: str, prompt: str, schema: dict[str, Any] | None,
-        max_output_tokens: int, effort: ReasoningEffort,
+        self,
+        *,
+        model_id: str,
+        prompt: str,
+        schema: dict[str, Any] | None,
+        max_output_tokens: int,
+        effort: ReasoningEffort,
         context_window: int | None = None,
+        think_override: bool | None = None,
         on_content: Callable[[str], Awaitable[None]] | None = None,
     ) -> tuple[list[str], InferenceMetadata]:
         think = self._effort(model_id, effort)
-        if max_output_tokens < 1 or not prompt or (
-            context_window is not None and context_window < 1
+        if think_override is not None:
+            think = think_override
+        if (
+            max_output_tokens < 1
+            or not prompt
+            or (context_window is not None and context_window < 1)
         ):
             raise InferenceConfigurationError("invalid generation request")
         body: dict[str, Any] = {
-            "model": model_id, "messages": [{"role": "user", "content": prompt}],
-            "stream": True, "keep_alive": self.generation_keep_alive,
-            "options": {"num_predict": max_output_tokens,
-                        "temperature": 0 if schema is not None else 0.2},
+            "model": model_id,
+            "messages": [{"role": "user", "content": prompt}],
+            "stream": True,
+            "keep_alive": self.generation_keep_alive,
+            "options": {
+                "num_predict": max_output_tokens,
+                "temperature": 0 if schema is not None else 0.2,
+            },
         }
         if context_window is not None:
             body["options"]["num_ctx"] = context_window
@@ -178,17 +208,21 @@ class OllamaProvider:
         eval_count = terminal.get("eval_count")
         output_count_reliable = isinstance(eval_count, int) and first_token == final_started
         metadata = InferenceMetadata(
-            provider="ollama", model_id=model_id,
-            model_revision=self.model_revisions[model_id], finish_reason=reason,
+            provider="ollama",
+            model_id=model_id,
+            model_revision=self.model_revisions[model_id],
+            finish_reason=reason,
             model_ttft_ms=(first_token - started) * 1000 if first_token else None,
             model_ttft_reason=None if first_token else "no_token_timing",
-            reasoning_duration_ms=None, reasoning_duration_reason="not_reported_separately",
-            reasoning_tokens=None, reasoning_tokens_reason="not_reported_separately",
-            output_duration_ms=(time.monotonic() - final_started) * 1000
-            if final_started else None,
+            reasoning_duration_ms=None,
+            reasoning_duration_reason="not_reported_separately",
+            reasoning_tokens=None,
+            reasoning_tokens_reason="not_reported_separately",
+            output_duration_ms=(time.monotonic() - final_started) * 1000 if final_started else None,
             output_duration_reason=None if final_started else "no_final_token_timing",
             output_tokens=eval_count if output_count_reliable else None,
-            output_tokens_reason=None if output_count_reliable
+            output_tokens_reason=None
+            if output_count_reliable
             else "provider_count_includes_reasoning_or_missing",
             total_ms=total_ms,
             load_ms=load_ms / 1_000_000 if isinstance(load_ms, int) else None,
@@ -197,19 +231,32 @@ class OllamaProvider:
         return pieces, metadata
 
     async def complete_json(
-        self, *, model_id: str, prompt_version: str, request_id: str, prompt: str,
-        timeout: float, schema: dict[str, Any], max_output_tokens: int,
+        self,
+        *,
+        model_id: str,
+        prompt_version: str,
+        request_id: str,
+        prompt: str,
+        timeout: float,
+        schema: dict[str, Any],
+        max_output_tokens: int,
         context_window: int | None = None,
         reasoning_effort: ReasoningEffort = "default",
+        thinking: bool | None = None,
         cancel: asyncio.Event | None = None,
     ) -> JsonResult:
         self._effort(model_id, reasoning_effort)
 
         async def operation() -> tuple[list[str], InferenceMetadata]:
-            return await self._generate(model_id=model_id, prompt=prompt, schema=schema,
-                                        max_output_tokens=max_output_tokens,
-                                        effort=reasoning_effort,
-                                        context_window=context_window)
+            return await self._generate(
+                model_id=model_id,
+                prompt=prompt,
+                schema=schema,
+                max_output_tokens=max_output_tokens,
+                effort=reasoning_effort,
+                think_override=thinking,
+                context_window=context_window,
+            )
 
         pieces, metadata = await self.gate.run(operation, timeout=timeout, cancel=cancel)
         try:
@@ -221,8 +268,14 @@ class OllamaProvider:
         return JsonResult(value=value, metadata=metadata)
 
     async def stream_text(
-        self, *, model_id: str, prompt_version: str, request_id: str, prompt: str,
-        timeout: float, max_output_tokens: int,
+        self,
+        *,
+        model_id: str,
+        prompt_version: str,
+        request_id: str,
+        prompt: str,
+        timeout: float,
+        max_output_tokens: int,
         reasoning_effort: ReasoningEffort = "default",
         cancel: asyncio.Event | None = None,
     ) -> AsyncIterator[str]:
@@ -235,10 +288,16 @@ class OllamaProvider:
         async def produce() -> None:
             try:
                 await self.gate.run(
-                    lambda: self._generate(model_id=model_id, prompt=prompt, schema=None,
-                                           max_output_tokens=max_output_tokens,
-                                           effort=reasoning_effort, on_content=publish),
-                    timeout=timeout, cancel=cancel,
+                    lambda: self._generate(
+                        model_id=model_id,
+                        prompt=prompt,
+                        schema=None,
+                        max_output_tokens=max_output_tokens,
+                        effort=reasoning_effort,
+                        on_content=publish,
+                    ),
+                    timeout=timeout,
+                    cancel=cancel,
                 )
             except Exception as error:
                 queue.put_nowait(error)
@@ -263,8 +322,13 @@ class OllamaProvider:
                 pass
 
     async def embed(
-        self, *, model_id: str, request_id: str, texts: list[str],
-        timeout: float = 60, cancel: asyncio.Event | None = None,
+        self,
+        *,
+        model_id: str,
+        request_id: str,
+        texts: list[str],
+        timeout: float = 60,
+        cancel: asyncio.Event | None = None,
     ) -> list[list[float]]:
         if not texts or any(not isinstance(value, str) or not value.strip() for value in texts):
             raise InferenceConfigurationError("embedding input must contain nonempty texts")
@@ -274,13 +338,18 @@ class OllamaProvider:
         async def operation() -> list[list[float]]:
             all_vectors: list[list[float]] = []
             for start in range(0, len(texts), self.embedding_batch_size):
-                batch = texts[start:start + self.embedding_batch_size]
-                keep_alive = (self.embedding_keep_alive if start + len(batch) == len(texts)
-                              else "1m")
+                batch = texts[start : start + self.embedding_batch_size]
+                keep_alive = self.embedding_keep_alive if start + len(batch) == len(texts) else "1m"
                 try:
-                    response = await self.client.post("/api/embed", json={
-                        "model": model_id, "input": batch, "keep_alive": keep_alive,
-                    }, timeout=timeout)
+                    response = await self.client.post(
+                        "/api/embed",
+                        json={
+                            "model": model_id,
+                            "input": batch,
+                            "keep_alive": keep_alive,
+                        },
+                        timeout=timeout,
+                    )
                     response.raise_for_status()
                     data = response.json()
                 except httpx.TimeoutException:
@@ -290,9 +359,12 @@ class OllamaProvider:
                 vectors = data.get("embeddings")
                 if not isinstance(vectors, list) or len(vectors) != len(batch):
                     raise InferenceProtocolError("embedding count mismatch")
-                if not all(isinstance(v, list) and v and all(
-                    isinstance(x, float | int) and math.isfinite(x) for x in v
-                ) for v in vectors):
+                if not all(
+                    isinstance(v, list)
+                    and v
+                    and all(isinstance(x, float | int) and math.isfinite(x) for x in v)
+                    for v in vectors
+                ):
                     raise InferenceProtocolError("invalid embedding vector")
                 all_vectors.extend([float(x) for x in vector] for vector in vectors)
             if len({len(vector) for vector in all_vectors}) != 1:
@@ -306,22 +378,32 @@ class OllamaProvider:
             raise
 
     async def rerank(
-        self, *, model_id: str, request_id: str, query: str, documents: list[str],
-        timeout: float = 60, cancel: asyncio.Event | None = None,
+        self,
+        *,
+        model_id: str,
+        request_id: str,
+        query: str,
+        documents: list[str],
+        timeout: float = 60,
+        cancel: asyncio.Event | None = None,
     ) -> list[float]:
         if self.reranker is None:
             raise InferenceConfigurationError("reranker backend is not configured")
         if not query.strip() or not documents or any(not item.strip() for item in documents):
             raise InferenceConfigurationError("invalid reranking input")
-        scores = await self.reranker.score(model_id=model_id, query=query,
-                                           documents=documents, timeout=timeout, cancel=cancel)
+        scores = await self.reranker.score(
+            model_id=model_id, query=query, documents=documents, timeout=timeout, cancel=cancel
+        )
         if len(scores) != len(documents) or any(not math.isfinite(score) for score in scores):
             raise InferenceProtocolError("invalid reranker scores")
         return scores
 
 
 async def _run_optional_cancel(
-    awaitable: Awaitable[T], *, timeout: float, cancel: asyncio.Event | None,
+    awaitable: Awaitable[T],
+    *,
+    timeout: float,
+    cancel: asyncio.Event | None,
 ) -> T:
     if timeout <= 0:
         raise ValueError("timeout must be positive")
@@ -329,8 +411,7 @@ async def _run_optional_cancel(
     cancellation = asyncio.create_task(cancel.wait()) if cancel is not None else None
     try:
         waiting = {task, cancellation} if cancellation is not None else {task}
-        done, _ = await asyncio.wait(waiting, timeout=timeout,
-                                     return_when=asyncio.FIRST_COMPLETED)
+        done, _ = await asyncio.wait(waiting, timeout=timeout, return_when=asyncio.FIRST_COMPLETED)
         if cancellation is not None and cancellation in done:
             raise InferenceCancelled("inference cancelled")
         if task not in done:

@@ -1,0 +1,10 @@
+{
+  "snapshot_hash": "5b80378fa2d8312951446fcbb3ada7994d775f13d452ff08fd415377a5fcade0",
+  "run_id": "321713c9-6238-49f5-b1e9-b1de6ba223b5",
+  "attempted_documents": 10,
+  "successful_documents": 10,
+  "zero_fact_documents_included": 2,
+  "mentions": 96,
+  "validation_rejects": 58,
+  "passed": true
+}

@@ -73,26 +73,51 @@ class JsonResult:
 
 class InferenceProvider(Protocol):
     async def complete_json(
-        self, *, model_id: str, prompt_version: str, request_id: str, prompt: str,
-        timeout: float, schema: dict[str, Any], max_output_tokens: int,
+        self,
+        *,
+        model_id: str,
+        prompt_version: str,
+        request_id: str,
+        prompt: str,
+        timeout: float,
+        schema: dict[str, Any],
+        max_output_tokens: int,
         context_window: int | None = None,
         reasoning_effort: ReasoningEffort = "default",
+        thinking: bool | None = None,
         cancel: asyncio.Event | None = None,
     ) -> JsonResult: ...
 
     def stream_text(
-        self, *, model_id: str, prompt_version: str, request_id: str, prompt: str,
-        timeout: float, max_output_tokens: int,
+        self,
+        *,
+        model_id: str,
+        prompt_version: str,
+        request_id: str,
+        prompt: str,
+        timeout: float,
+        max_output_tokens: int,
         reasoning_effort: ReasoningEffort = "default",
         cancel: asyncio.Event | None = None,
     ) -> AsyncIterator[str]: ...
 
     async def embed(
-        self, *, model_id: str, request_id: str, texts: list[str],
-        timeout: float = 60, cancel: asyncio.Event | None = None,
+        self,
+        *,
+        model_id: str,
+        request_id: str,
+        texts: list[str],
+        timeout: float = 60,
+        cancel: asyncio.Event | None = None,
     ) -> list[list[float]]: ...
 
     async def rerank(
-        self, *, model_id: str, request_id: str, query: str, documents: list[str],
-        timeout: float = 60, cancel: asyncio.Event | None = None,
+        self,
+        *,
+        model_id: str,
+        request_id: str,
+        query: str,
+        documents: list[str],
+        timeout: float = 60,
+        cancel: asyncio.Event | None = None,
     ) -> list[float]: ...
