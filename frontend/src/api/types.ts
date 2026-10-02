@@ -105,6 +105,15 @@ export interface Run {
   completed_at: string | null;
   error_code: string | null;
 }
+export interface GraphNode {
+  id: string; type: string; label: string; document_id?: string; revision_id?: string;
+  feature_id?: string; evidence_ids: string[];
+}
+export interface GraphEdge { id: string; source: string; target: string; type: string; evidence_ids: string[] }
+export interface GraphView {
+  run_id: string; graph_version: string; nodes: GraphNode[]; edges: GraphEdge[];
+  next_cursor: string | null; truncated: boolean;
+}
 export interface Accepted {
   message_id: string;
   run_id: string;

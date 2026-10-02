@@ -1006,3 +1006,28 @@ svg {
     scroll-behavior: auto !important;
   }
 }
+
+.graph-explorer { margin: 22px 0; padding: 18px; border: 1px solid var(--line, #e7e5ee); border-radius: 16px; background: #fff; }
+.graph-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.graph-heading p, .graph-note { margin: 5px 0 0; color: #727080; font-size: 12px; }
+.graph-zoom { display: flex; gap: 6px; }
+.graph-zoom button { width: 34px; height: 34px; border: 1px solid #e5e2ed; border-radius: 9px; background: #fff; color: #493c82; font-size: 20px; cursor: pointer; }
+.graph-canvas { display: block; width: 100%; max-height: 410px; margin-top: 12px; border-radius: 12px; background: #faf9fc; }
+.graph-edge { stroke: #cbc7d7; stroke-width: 2; }
+.graph-edge.active { stroke: #7767b8; stroke-width: 3; }
+.graph-node { cursor: pointer; outline: none; }
+.graph-node circle { stroke: #fff; stroke-width: 3; transition: r .15s ease; }
+.graph-node:hover circle, .graph-node:focus circle { stroke: #ded8ff; }
+.graph-node text { fill: #fff; text-anchor: middle; font-size: 10px; pointer-events: none; }
+.graph-details { position: relative; padding: 14px; margin-top: 12px; border-radius: 11px; background: #f5f3fa; display: grid; gap: 7px; }
+.graph-details strong { padding-right: 20px; font-size: 13px; }
+.graph-close { position: absolute; right: 10px; top: 8px; border: 0; background: transparent; font-size: 22px; cursor: pointer; }
+.graph-detail-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.graph-mobile-list { display: none; }
+@media (max-width: 700px) {
+  .graph-explorer { padding: 13px; }
+  .graph-canvas { display: none; }
+  .graph-mobile-list { display: grid; gap: 6px; max-height: 230px; overflow: auto; margin-top: 12px; }
+  .graph-mobile-list button { display: flex; align-items: center; gap: 9px; padding: 9px; border: 1px solid #eceaf1; border-radius: 9px; background: #fff; text-align: left; color: #252333; }
+  .graph-mobile-list span { flex: 0 0 10px; height: 10px; border-radius: 50%; }
+}

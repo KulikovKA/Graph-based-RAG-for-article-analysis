@@ -3,6 +3,7 @@ import type { Claim, Run } from '../../api/types';
 import type { Connection } from './useRun';
 import type { RunState } from './runState';
 import { terminal } from './runState';
+import { GraphExplorer } from '../graph/GraphExplorer';
 
 const stages: Record<string, string> = {
   accepted: 'В очереди',
@@ -271,6 +272,7 @@ export function RunView({
           ))}
         </div>
       )}
+      {run.status === 'completed' && <GraphExplorer run={run} onCitation={onCitation} />}
       {terminal(run) && (
         <div className="result-footer">
           {run.status === 'completed' ? 'Ответ сохранён' : stages[run.status]}

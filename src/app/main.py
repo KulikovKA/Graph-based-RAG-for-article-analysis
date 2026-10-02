@@ -11,6 +11,7 @@ from app.api.auth import router as auth_router
 from app.api.health import router as health_router
 from app.api.middleware import RequestContextMiddleware
 from app.api.routes.conversations import router as conversations_router
+from app.api.routes.graph import router as graph_router
 from app.api.routes.runs import router as runs_router
 from app.api.routes.sources import router as sources_router
 from app.services.auth import AuthService
@@ -50,6 +51,7 @@ def create_app(
     application.include_router(auth_router)
     application.include_router(conversations_router)
     application.include_router(runs_router)
+    application.include_router(graph_router)
     application.include_router(sources_router)
     application.include_router(health_router)
     return application

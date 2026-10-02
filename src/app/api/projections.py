@@ -42,7 +42,9 @@ def public_snapshot(value: dict[str, Any]) -> RunV1:
     if data.get("status") != "completed":
         for field in ("answer", "public_analysis", "answer_presentation", "outcome"):
             data[field] = None
-    data["graph_url"] = None
+    data["graph_url"] = (
+        f"/api/v1/runs/{data['id']}/graph" if data.get("status") == "completed" else None
+    )
     try:
         dto = RunV1.model_validate(data)
         for source in dto.sources:

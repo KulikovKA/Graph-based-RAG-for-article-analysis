@@ -3,6 +3,7 @@ import type {
   Conversation,
   ConversationDetail,
   Evidence,
+  GraphView,
   Message,
   MessageInput,
   Page,
@@ -90,6 +91,11 @@ export const api = {
     ),
   evidence: (run: string, id: string) =>
     request<Evidence>(`/api/v1/runs/${encodeURIComponent(run)}/evidence/${encodeURIComponent(id)}`),
+  graph: (run: string) => request<GraphView>(`/api/v1/runs/${encodeURIComponent(run)}/graph`),
+  graphNeighbors: (run: string, node: string, cursor?: string) => request<GraphView>(
+    `/api/v1/runs/${encodeURIComponent(run)}/graph/neighbors?node_id=${encodeURIComponent(node)}` +
+      (cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''),
+  ),
 };
 
 export function errorMessage(error: unknown): string {

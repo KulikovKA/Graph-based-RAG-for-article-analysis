@@ -107,6 +107,7 @@ async function setup(page: Page, mode: Mode = 'normal') {
         text_sha256: digest(text),
       },
       sources: empty ? [] : sources,
+      graph_url: `/api/v1/runs/${run.id}/graph`,
       completed_at: NOW,
     };
   }
@@ -199,6 +200,29 @@ async function setup(page: Page, mode: Mode = 'normal') {
     const runId = path.split('/')[4],
       run = runs[runId];
     if (!run) return json(route, { error: { code: 'NOT_FOUND' } }, 404);
+    if (path.endsWith('/graph/neighbors'))
+      return json(route, {
+        run_id: runId, graph_version: 'graph-v1',
+        nodes: [
+          { id: `technical:${runId}`, type: 'TechnicalFeature', label: 'Связанный технический признак', evidence_ids: [EVIDENCE] },
+        ],
+        edges: [
+          { id: `discloses:${runId}`, source: 'document:paper', target: `technical:${runId}`, type: 'DISCLOSES_FEATURE', evidence_ids: [EVIDENCE] },
+        ], next_cursor: null, truncated: false,
+      });
+    if (path.endsWith('/graph'))
+      return json(route, {
+        run_id: runId, graph_version: 'graph-v1',
+        nodes: [
+          { id: 'idea:version', type: 'Idea', label: 'Идея анализа', evidence_ids: [] },
+          { id: 'feature:f1', type: 'IdeaFeature', label: 'Регулирование по температуре', feature_id: 'f1', evidence_ids: [] },
+          { id: 'document:paper', type: 'ScientificWork', label: sources[0].title, document_id: 'paper', revision_id: 'revision-a', evidence_ids: [EVIDENCE] },
+        ],
+        edges: [
+          { id: 'has:f1', source: 'idea:version', target: 'feature:f1', type: 'HAS_FEATURE', evidence_ids: [] },
+          { id: 'matches:f1:paper', source: 'feature:f1', target: 'document:paper', type: 'MATCHES', evidence_ids: [EVIDENCE] },
+        ], next_cursor: null, truncated: false,
+      });
     if (path.endsWith('/cancel')) {
       runs[runId] = final(run);
       return json(route, { status: 'completed', cancel_requested: false });
@@ -315,6 +339,23 @@ test('new request, citations, saved-source follow-up and responsive layout', asy
   expect(fixture.submitted[1].source_run_id).toBe(ID);
   expect(fixture.submitted[1].expected_idea_version).toBe(1);
   await expect(page.getByText('По сохранённым источникам')).toBeVisible();
+});
+
+test('interactive graph expands, links citations and collapses on desktop and mobile', async ({ page }) => {
+  await setup(page);
+  await login(page);
+  await send(page);
+  await expect(page.getByRole('region', { name: 'Карта анализа' })).toBeVisible();
+  await page.getByRole('button', { name: sources[0].title }).click();
+  await page.getByRole('button', { name: 'Раскрыть один hop' }).click();
+  const technicalNode = page.getByRole('button', { name: 'Связанный технический признак' });
+  await expect(technicalNode).toBeVisible();
+  await technicalNode.click();
+  await expect(page.getByRole('button', { name: 'Открыть цитату 1' })).toBeVisible();
+  await page.getByRole('button', { name: 'Открыть цитату 1' }).click();
+  await expect(page.getByText('Cooling uses temperature feedback.', { exact: false })).toBeVisible();
+  await page.getByRole('button', { name: 'Свернуть связи' }).click();
+  await expect(technicalNode).toHaveCount(0);
 });
 
 test('reconnect resumes with cursor and does not duplicate answer', async ({ page }) => {

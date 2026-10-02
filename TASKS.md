@@ -145,7 +145,7 @@ flowchart LR
 | API-001 | 9 API | P0 | Sol / Medium | JOB-002,AUTH-001 | выполнена |
 | AUTH-002 | Внешний доступ и проверка периметра | P1 | Sol / High | API-001,AUTH-001 | ожидает |
 | UI-001 | 10 Frontend | P0 | Sol / Medium | API-001 | выполнена |
-| GRAPHUI-001 | 11 Graph UI | P1 | Sol / Medium | UI-001,GRAPH-001 | ожидает |
+| GRAPHUI-001 | 11 Graph UI | P1 | Sol / Medium | UI-001,GRAPH-001 | выполнена |
 | EVAL-001 | 13 Evaluation | P1 | Sol / High | API-001,EVAL-000 | ожидает |
 | EVAL-002 | 100 случаев и baseline evaluation | P1 | Sol / Medium | EVAL-001 | ожидает |
 | OBS-001 | 14 Observability | P1 | Luna / Medium | API-001 | ожидает |
@@ -435,6 +435,8 @@ flowchart LR
 - **Context:** API_CONTRACTS/ARCHITECTURE и frontend source. **Модель:** Sol/Medium. **Размер:** L, 2–4 ч, review 40 мин. **Риск:** mobile UX/stream state.
 
 ### GRAPHUI-001 — Объясняющий интерактивный граф
+
+- **Результат (2026-10-02):** выполнена; owner-scoped GraphV1 и one-hop evidence projection, bounded DTO/cursors, pan/zoom/path highlight, details/citation linking, collapse и mobile list fallback. Контрактные проверки PostgreSQL и browser проверки desktop/mobile проходят. [Отчёт](docs/validation/GRAPHUI-001/README.md).
 
 - **Цель/зачем:** дать понятную карту текущего анализа без показа полного внутреннего графа.
 - **Depends / priority:** UI-001,GRAPH-001; P1. **Files:** frontend/src/features/graph/, src/app/api/routes/graph.py, tests/contract/test_graph_api.py. **References:** docs/GRAPH_SCHEMA.md, docs/API_CONTRACTS.md, LightRAG GraphViewer.tsx как reference.
