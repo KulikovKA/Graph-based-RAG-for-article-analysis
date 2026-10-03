@@ -1,0 +1,68 @@
+{
+  "diagnostic_run_id": "hybrid-zero-replay-20261003",
+  "code_commit": "8fb0326d575b33d17a0c63413311ec839fff392f",
+  "code_sha256": {
+    "scripts/hybrid_concept_backfill.py": "1494ce4402eaacd6bc2225f38dd1175c5c201723946c201b03b44e582340f9ba",
+    "scripts/hybrid_zero_replay.py": "ab8cb174632688adc0503c6572307f771dc10df7b96e2315faaf9287db88fd5c",
+    "src/app/services/technical_concepts.py": "c62e387a739b4e36d50d16033266d783561b3f512a810af601eec902378c23f7",
+    "src/app/integrations/inference_http.py": "612fc3c51fd3a54395b5d4631de278448694a414d6337e034079bdd100dbab98"
+  },
+  "extractor_version": "hybrid-technical-concepts-v1.4",
+  "schema_version": "technical-concept-mention-v1",
+  "schema_sha256": "32de2363d1540d3b9ce5b9870a578f188a5a51a78544c2b4e044b9800cc9a36c",
+  "model": "qwen3.5:4b-q4_K_M",
+  "model_digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+  "provider": "Ollama",
+  "provider_version": "0.35.0",
+  "inference_endpoint_route": "loopback Ollama; repository host.docker.internal endpoint is container-oriented and unreachable from host process",
+  "model_reported_context_length": 262144,
+  "effective_context_size": 4096,
+  "temperature": 0,
+  "thinking": false,
+  "output_token_budgets": [
+    2048,
+    3072
+  ],
+  "timeout_seconds": 300,
+  "retry_policy": "retry once at 3072 only after OUTPUT_LIMIT at 2048",
+  "documents_replayed": 27,
+  "chunks_replayed": 36,
+  "model_calls": 36,
+  "classifications": {
+    "ALL_REJECTED": 6,
+    "PARTIAL_ACCEPTED": 18,
+    "ACCEPTED": 3
+  },
+  "model_empty_documents": 0,
+  "all_rejected_documents": 6,
+  "mixed_chunk_documents": 0,
+  "inference_failure_documents": 0,
+  "total_raw_candidates_known": 362,
+  "total_accepted_before_dedup_known": 198,
+  "total_rejected_known": 164,
+  "total_deduplicated": 21,
+  "rejection_reason_histogram": {
+    "NO_EXACT_SOURCE_OCCURRENCE": 111,
+    "QUOTE_SURFACE_REQUIRED": 1,
+    "UNSUPPORTED_CANONICAL_NAME": 37,
+    "AMBIGUOUS_SOURCE_OCCURRENCE": 15
+  },
+  "retry_count": 0,
+  "latency": {
+    "count": 36,
+    "total_ms": 3592620.000000003,
+    "mean_ms": 99795.00000000007,
+    "median_ms": 100093.50000000268,
+    "min_ms": 20389.999999999418,
+    "max_ms": 197015.99999999598
+  },
+  "token_metadata_available_calls": 36,
+  "token_metadata_total_calls": 36,
+  "production_stores_touched": false,
+  "unchanged_artifact_sha256": {
+    "data/checkpoints/hybrid-001-full-v1.3.json": "7647c69a3f83d85a9d3f89ebdb4c6cf28b7822abed1a2686794ae0dd64d9632b",
+    "data/checkpoints/graph002-live-20261002.snapshot.json": "2842cf0909f29c7850a190a5418032548e67e0e220e4b15a539ca277ffb7b8bc",
+    "docs/analysis/HYBRID_ZERO_AUDIT/live_read.json": "d97612cbb7b363cbf22005eec196c95595ba755be1e8f22887c5c6899ab956fc"
+  },
+  "production_immutability_evidence": "runner used frozen read export and wrote only this diagnostic directory; it opened no database or Neo4j connection. Checkpoint, frozen snapshot and source-export hashes match the pre-replay audit manifest."
+}

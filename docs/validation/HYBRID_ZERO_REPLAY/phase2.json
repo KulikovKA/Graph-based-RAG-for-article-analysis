@@ -1,0 +1,1443 @@
+{
+  "documents": [
+    {
+      "diagnostic_run_id": "hybrid-zero-replay-20261003",
+      "document_code": "D011",
+      "document_id": "156b15bb-dbd9-4d9d-a871-3c46ae7d5515",
+      "revision_id": "978dce12-735d-431e-be83-362972cddcd6",
+      "outer_attempt": 1,
+      "chunks": [
+        {
+          "chunk_id": "658c581f-b972-4500-83fb-0c881a212867",
+          "chunk_ordinal": 0,
+          "chunk_sha256": "41541c07fdaefcd1656eab0bbaa1b17dfccc91c2d0579f5224b79f62eced62b4",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 109671.99999999866,
+              "ttft_ms": 12780.999999995402,
+              "load_ms": 6963.6642,
+              "output_tokens": 870,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 12,
+          "accepted_candidate_count": 5,
+          "rejected_candidate_count": 7,
+          "rejection_reasons": {
+            "QUOTE_SURFACE_REQUIRED": 1,
+            "UNSUPPORTED_CANONICAL_NAME": 6
+          },
+          "prompt_sha256": "12c6776c04462ed546cc39b2543ebd555026d4b10b16091b884bb971e4a45f52",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 5,
+          "rejected_after_reanchor_count": 6,
+          "elapsed_ms": 109671.7853999944,
+          "calls": 1,
+          "final_concepts": 5,
+          "outcome": "success"
+        }
+      ],
+      "expected_chunk_count": 1,
+      "annotation_assessment": "OBVIOUS_SOURCE_CONCEPTS",
+      "annotation_expected": "YES",
+      "raw_candidates": 12,
+      "accepted_before_dedup": 5,
+      "rejected": 7,
+      "deduplicated": 0,
+      "final_concepts": 5,
+      "retries": 0,
+      "final_classification": "PARTIAL_ACCEPTED"
+    },
+    {
+      "diagnostic_run_id": "hybrid-zero-replay-20261003",
+      "document_code": "D012",
+      "document_id": "20376efd-3954-4627-a0f9-768d09825046",
+      "revision_id": "be9897e9-7b62-459c-9361-82a519e24f68",
+      "outer_attempt": 1,
+      "chunks": [
+        {
+          "chunk_id": "b3a3302f-238c-403f-ba93-37727ed82718",
+          "chunk_ordinal": 0,
+          "chunk_sha256": "58aeb58e42d3ba6d3d52479a0e9a71e5702a28c11ed422b7d46d7fd5ffecc53c",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 127797.00000000594,
+              "ttft_ms": 14062.000000005355,
+              "load_ms": 6951.5638,
+              "output_tokens": 1087,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 12,
+          "accepted_candidate_count": 2,
+          "rejected_candidate_count": 10,
+          "rejection_reasons": {
+            "AMBIGUOUS_SOURCE_OCCURRENCE": 1,
+            "UNSUPPORTED_CANONICAL_NAME": 5,
+            "NO_EXACT_SOURCE_OCCURRENCE": 4
+          },
+          "prompt_sha256": "3c0cd2aca4c0d392aa0bca270f17e5e51f9b84f0a95bd1955906232c7f5e2656",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 2,
+          "rejected_after_reanchor_count": 5,
+          "elapsed_ms": 127811.61599999905,
+          "calls": 1,
+          "final_concepts": 2,
+          "outcome": "success"
+        }
+      ],
+      "expected_chunk_count": 1,
+      "annotation_assessment": "OBVIOUS_SOURCE_CONCEPTS",
+      "annotation_expected": "YES",
+      "raw_candidates": 12,
+      "accepted_before_dedup": 2,
+      "rejected": 10,
+      "deduplicated": 0,
+      "final_concepts": 2,
+      "retries": 0,
+      "final_classification": "PARTIAL_ACCEPTED"
+    },
+    {
+      "diagnostic_run_id": "hybrid-zero-replay-20261003",
+      "document_code": "D017",
+      "document_id": "2860ed7f-a2a8-4e76-9250-e3558d092f23",
+      "revision_id": "d80633dc-c57a-4253-8754-29c9366084f5",
+      "outer_attempt": 1,
+      "chunks": [
+        {
+          "chunk_id": "52c7bac2-feff-4316-934f-2726c4842540",
+          "chunk_ordinal": 0,
+          "chunk_sha256": "651d394d86153236deeb8d70507215a9e8b8d77ab04eec43518a0daabf9003e2",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 27046.99999999866,
+              "ttft_ms": 13906.000000002678,
+              "load_ms": 6690.3128,
+              "output_tokens": 120,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 2,
+          "accepted_candidate_count": 0,
+          "rejected_candidate_count": 2,
+          "rejection_reasons": {
+            "NO_EXACT_SOURCE_OCCURRENCE": 2
+          },
+          "prompt_sha256": "d16c034df4023723b75cdc1be8de20cc8f5f0647a673ee96b65fdf0c3be8b9fc",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 0,
+          "rejected_after_reanchor_count": 0,
+          "elapsed_ms": 27048.555599998508,
+          "calls": 1,
+          "final_concepts": 0,
+          "outcome": "success"
+        },
+        {
+          "chunk_id": "60c46884-0b00-408c-a0d7-693eeae8beca",
+          "chunk_ordinal": 1,
+          "chunk_sha256": "e52aca9b25835eb15b142479046e050ec9f21ae5aedcd22b3e2294c658206c41",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 43110.00000000058,
+              "ttft_ms": 10735.000000000582,
+              "load_ms": 6687.7437,
+              "output_tokens": 289,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 4,
+          "accepted_candidate_count": 0,
+          "rejected_candidate_count": 4,
+          "rejection_reasons": {
+            "NO_EXACT_SOURCE_OCCURRENCE": 4
+          },
+          "prompt_sha256": "bebd02e8531722e5d9951b83699b5c85038979e5e7a06a9113267bf83a60c616",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 0,
+          "rejected_after_reanchor_count": 0,
+          "elapsed_ms": 43115.47730000166,
+          "calls": 1,
+          "final_concepts": 0,
+          "outcome": "success"
+        }
+      ],
+      "expected_chunk_count": 2,
+      "annotation_assessment": "OBVIOUS_SOURCE_CONCEPTS",
+      "annotation_expected": "YES",
+      "raw_candidates": 6,
+      "accepted_before_dedup": 0,
+      "rejected": 6,
+      "deduplicated": 0,
+      "final_concepts": 0,
+      "retries": 0,
+      "final_classification": "ALL_REJECTED"
+    },
+    {
+      "diagnostic_run_id": "hybrid-zero-replay-20261003",
+      "document_code": "D018",
+      "document_id": "298b9ec6-547c-4544-ad9b-1d7796ef32c1",
+      "revision_id": "c3e96320-21ac-4704-a4fb-19af06571af0",
+      "outer_attempt": 1,
+      "chunks": [
+        {
+          "chunk_id": "6b6b66f9-d41f-4669-95f2-f8ed58d4693b",
+          "chunk_ordinal": 0,
+          "chunk_sha256": "71fb06d8719f4977cde44efea8717cffa98001b25e550eb3677255280e72c79b",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 185625.0,
+              "ttft_ms": 14875.0,
+              "load_ms": 6691.8209,
+              "output_tokens": 1663,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 12,
+          "accepted_candidate_count": 11,
+          "rejected_candidate_count": 1,
+          "rejection_reasons": {
+            "NO_EXACT_SOURCE_OCCURRENCE": 1
+          },
+          "prompt_sha256": "ab9cf06a026c3c2ca2a06b128c087b2d3330aa7ff9edc8b3b61406b274cb5b4e",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 11,
+          "rejected_after_reanchor_count": 0,
+          "elapsed_ms": 185614.68420000165,
+          "calls": 1,
+          "final_concepts": 11,
+          "outcome": "success"
+        },
+        {
+          "chunk_id": "2f4dc259-06bf-47d1-b373-54df2cb8b173",
+          "chunk_ordinal": 1,
+          "chunk_sha256": "6ca07e20b362ed66b0856ca8a6f39ed7c25ed74190f1b63a5dfc49f9d49ff6b8",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 91375.0,
+              "ttft_ms": 12953.000000001339,
+              "load_ms": 6698.3669,
+              "output_tokens": 818,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 12,
+          "accepted_candidate_count": 9,
+          "rejected_candidate_count": 3,
+          "rejection_reasons": {
+            "UNSUPPORTED_CANONICAL_NAME": 3
+          },
+          "prompt_sha256": "a58b28e49f6ddacf8b88c3e00b3b3948795d432c4008cbd6bcfc05adf2f44385",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 9,
+          "rejected_after_reanchor_count": 3,
+          "elapsed_ms": 91382.06470000296,
+          "calls": 1,
+          "final_concepts": 9,
+          "outcome": "success"
+        }
+      ],
+      "expected_chunk_count": 2,
+      "annotation_assessment": "OBVIOUS_SOURCE_CONCEPTS",
+      "annotation_expected": "YES",
+      "raw_candidates": 24,
+      "accepted_before_dedup": 20,
+      "rejected": 4,
+      "deduplicated": 2,
+      "final_concepts": 18,
+      "retries": 0,
+      "final_classification": "PARTIAL_ACCEPTED"
+    },
+    {
+      "diagnostic_run_id": "hybrid-zero-replay-20261003",
+      "document_code": "D023",
+      "document_id": "3263deed-de40-4cc0-bf0f-e980647f6535",
+      "revision_id": "59a10538-663c-4715-b18e-1868af20a2e4",
+      "outer_attempt": 1,
+      "chunks": [
+        {
+          "chunk_id": "e1c0cbfd-ed9b-4abe-8b86-a4065a5fa15f",
+          "chunk_ordinal": 0,
+          "chunk_sha256": "c0eeb06b3a45f43db7c4c79720e76c658ef506269063b5be890b946790ce039f",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 120781.00000000268,
+              "ttft_ms": 12563.00000000192,
+              "load_ms": 6685.6527,
+              "output_tokens": 1099,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 12,
+          "accepted_candidate_count": 9,
+          "rejected_candidate_count": 3,
+          "rejection_reasons": {
+            "AMBIGUOUS_SOURCE_OCCURRENCE": 2,
+            "UNSUPPORTED_CANONICAL_NAME": 1
+          },
+          "prompt_sha256": "9874de25ad72254ca7da27082588b7961fc8c1e6796b4e3faf43515d169645c8",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 9,
+          "rejected_after_reanchor_count": 1,
+          "elapsed_ms": 120786.11989999627,
+          "calls": 1,
+          "final_concepts": 9,
+          "outcome": "success"
+        }
+      ],
+      "expected_chunk_count": 1,
+      "annotation_assessment": "OBVIOUS_SOURCE_CONCEPTS",
+      "annotation_expected": "YES",
+      "raw_candidates": 12,
+      "accepted_before_dedup": 9,
+      "rejected": 3,
+      "deduplicated": 0,
+      "final_concepts": 9,
+      "retries": 0,
+      "final_classification": "PARTIAL_ACCEPTED"
+    },
+    {
+      "diagnostic_run_id": "hybrid-zero-replay-20261003",
+      "document_code": "D025",
+      "document_id": "3c6c7dee-038f-4e1a-a3be-1f829a96ebdd",
+      "revision_id": "2376d87c-359e-427e-8d73-2eaf5638baf9",
+      "outer_attempt": 1,
+      "chunks": [
+        {
+          "chunk_id": "9644c802-76bc-4447-9648-8252e609a52a",
+          "chunk_ordinal": 0,
+          "chunk_sha256": "79941fea94d580c3c90cd52807240600ba633b771b4847d124487e26f77e4c2d",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 112828.00000000134,
+              "ttft_ms": 13561.99999999808,
+              "load_ms": 6711.1112,
+              "output_tokens": 963,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 12,
+          "accepted_candidate_count": 8,
+          "rejected_candidate_count": 4,
+          "rejection_reasons": {
+            "AMBIGUOUS_SOURCE_OCCURRENCE": 1,
+            "UNSUPPORTED_CANONICAL_NAME": 2,
+            "NO_EXACT_SOURCE_OCCURRENCE": 1
+          },
+          "prompt_sha256": "5ea23fee53371d5ec70adcafe2023e237192d950f7db5677ac1bf0d1e0ba3789",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 8,
+          "rejected_after_reanchor_count": 2,
+          "elapsed_ms": 112825.1756000027,
+          "calls": 1,
+          "final_concepts": 8,
+          "outcome": "success"
+        }
+      ],
+      "expected_chunk_count": 1,
+      "annotation_assessment": "OBVIOUS_SOURCE_CONCEPTS",
+      "annotation_expected": "YES",
+      "raw_candidates": 12,
+      "accepted_before_dedup": 8,
+      "rejected": 4,
+      "deduplicated": 0,
+      "final_concepts": 8,
+      "retries": 0,
+      "final_classification": "PARTIAL_ACCEPTED"
+    },
+    {
+      "diagnostic_run_id": "hybrid-zero-replay-20261003",
+      "document_code": "D028",
+      "document_id": "4321f854-bd6e-4799-a118-a50733440314",
+      "revision_id": "e4ba7be0-b5d7-4fd4-b42f-918fa6ac55cc",
+      "outer_attempt": 1,
+      "chunks": [
+        {
+          "chunk_id": "b75fa64e-72ef-4631-9c5d-5a57f888340d",
+          "chunk_ordinal": 0,
+          "chunk_sha256": "3766e14e3e41bf7461cb5b36f4a23654c6a38b9502412b26db2d1bcef8050f59",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 89264.99999999942,
+              "ttft_ms": 13983.99999999674,
+              "load_ms": 6950.4219,
+              "output_tokens": 764,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 12,
+          "accepted_candidate_count": 4,
+          "rejected_candidate_count": 8,
+          "rejection_reasons": {
+            "UNSUPPORTED_CANONICAL_NAME": 3,
+            "AMBIGUOUS_SOURCE_OCCURRENCE": 4,
+            "NO_EXACT_SOURCE_OCCURRENCE": 1
+          },
+          "prompt_sha256": "514fc62ab221c4e79d1e2f17032655f1b9b51e82144019d9a13b8c028f87db22",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 4,
+          "rejected_after_reanchor_count": 3,
+          "elapsed_ms": 89268.69830000214,
+          "calls": 1,
+          "final_concepts": 4,
+          "outcome": "success"
+        },
+        {
+          "chunk_id": "563b8247-88d1-4b46-bf68-256f71504dd4",
+          "chunk_ordinal": 1,
+          "chunk_sha256": "a81cdcbca046315252c3d3b7a96dcab8686cf4f8482782211ddf6d488f92d1a9",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 20389.999999999418,
+              "ttft_ms": 10671.000000002095,
+              "load_ms": 6937.8268,
+              "output_tokens": 88,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 1,
+          "accepted_candidate_count": 0,
+          "rejected_candidate_count": 1,
+          "rejection_reasons": {
+            "NO_EXACT_SOURCE_OCCURRENCE": 1
+          },
+          "prompt_sha256": "e3a2288535759dfa165f088559c2f7fbe82d0ec50bcaf64bd9cd05d371468a2a",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 0,
+          "rejected_after_reanchor_count": 0,
+          "elapsed_ms": 20395.045099998242,
+          "calls": 1,
+          "final_concepts": 0,
+          "outcome": "success"
+        }
+      ],
+      "expected_chunk_count": 2,
+      "annotation_assessment": "OBVIOUS_SOURCE_CONCEPTS",
+      "annotation_expected": "YES",
+      "raw_candidates": 13,
+      "accepted_before_dedup": 4,
+      "rejected": 9,
+      "deduplicated": 0,
+      "final_concepts": 4,
+      "retries": 0,
+      "final_classification": "PARTIAL_ACCEPTED"
+    },
+    {
+      "diagnostic_run_id": "hybrid-zero-replay-20261003",
+      "document_code": "D029",
+      "document_id": "4a17444d-09e0-4cad-becb-0ad9e9a95b73",
+      "revision_id": "94abe07d-65fd-4ac6-96c3-0c65e777ed09",
+      "outer_attempt": 1,
+      "chunks": [
+        {
+          "chunk_id": "28d1c15e-e2d5-41b9-96f3-dfb222eb27f1",
+          "chunk_ordinal": 0,
+          "chunk_sha256": "1b03dbb818cbfa9687373be6d034d98968ed06e5e12d54386847f91cb999477b",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 100125.0,
+              "ttft_ms": 13531.000000002678,
+              "load_ms": 6924.2615,
+              "output_tokens": 907,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 12,
+          "accepted_candidate_count": 0,
+          "rejected_candidate_count": 12,
+          "rejection_reasons": {
+            "NO_EXACT_SOURCE_OCCURRENCE": 12
+          },
+          "prompt_sha256": "33d5bcf3da66e0b543b5c42caa4fabbc305af0285c09a2e6812c58f336b82f0c",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 0,
+          "rejected_after_reanchor_count": 0,
+          "elapsed_ms": 100121.24299999414,
+          "calls": 1,
+          "final_concepts": 0,
+          "outcome": "success"
+        }
+      ],
+      "expected_chunk_count": 1,
+      "annotation_assessment": "OBVIOUS_SOURCE_CONCEPTS",
+      "annotation_expected": "YES",
+      "raw_candidates": 12,
+      "accepted_before_dedup": 0,
+      "rejected": 12,
+      "deduplicated": 0,
+      "final_concepts": 0,
+      "retries": 0,
+      "final_classification": "ALL_REJECTED"
+    },
+    {
+      "diagnostic_run_id": "hybrid-zero-replay-20261003",
+      "document_code": "D035",
+      "document_id": "5f698fb2-5265-4343-a012-0c0fb3c6e9c4",
+      "revision_id": "6612f9ab-0007-4924-a4da-dc7e0bafdba3",
+      "outer_attempt": 1,
+      "chunks": [
+        {
+          "chunk_id": "4f0f0e24-163f-4d49-a509-72a2393efd6a",
+          "chunk_ordinal": 0,
+          "chunk_sha256": "dc77ce8cc6bc90047c157e3478fef185677252383873f9ccd1db64ae3daab659",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 40593.99999999732,
+              "ttft_ms": 12889.999999999418,
+              "load_ms": 6732.4687,
+              "output_tokens": 286,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 2,
+          "accepted_candidate_count": 2,
+          "rejected_candidate_count": 0,
+          "rejection_reasons": {},
+          "prompt_sha256": "06be1fbb3dfc8342474be6479d525e38add25b2f3954dd8d3877d84c3ed98728",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 2,
+          "rejected_after_reanchor_count": 0,
+          "elapsed_ms": 40605.80689999915,
+          "calls": 1,
+          "final_concepts": 2,
+          "outcome": "success"
+        }
+      ],
+      "expected_chunk_count": 1,
+      "annotation_assessment": "OBVIOUS_SOURCE_CONCEPTS",
+      "annotation_expected": "YES",
+      "raw_candidates": 2,
+      "accepted_before_dedup": 2,
+      "rejected": 0,
+      "deduplicated": 0,
+      "final_concepts": 2,
+      "retries": 0,
+      "final_classification": "ACCEPTED"
+    },
+    {
+      "diagnostic_run_id": "hybrid-zero-replay-20261003",
+      "document_code": "D040",
+      "document_id": "704d0fb4-dc04-4a88-ab73-ab9204758f98",
+      "revision_id": "6af55266-4d07-48b0-8540-e27c75e2b857",
+      "outer_attempt": 1,
+      "chunks": [
+        {
+          "chunk_id": "6d47eced-5f01-430f-ad40-e3712888465c",
+          "chunk_ordinal": 0,
+          "chunk_sha256": "705eb0c4173ebb3561b27572a72cb3f2e30adc8f68c9acd48747e22d7462faef",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 140360.00000000058,
+              "ttft_ms": 13796.999999998661,
+              "load_ms": 6659.1834,
+              "output_tokens": 1316,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 12,
+          "accepted_candidate_count": 12,
+          "rejected_candidate_count": 0,
+          "rejection_reasons": {},
+          "prompt_sha256": "96e9dde96d1dd051fb62a2ec39a26c1367e28591652f3c3adb8758e2971da095",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 12,
+          "rejected_after_reanchor_count": 0,
+          "elapsed_ms": 140358.2735999953,
+          "calls": 1,
+          "final_concepts": 12,
+          "outcome": "success"
+        },
+        {
+          "chunk_id": "48dfe6c5-1997-429f-adc2-1a637fa0d938",
+          "chunk_ordinal": 1,
+          "chunk_sha256": "ae61496ef522da28a944151c773a3ca97d5afefbcbd300b52a6392d0082a8bf0",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 95358.99999999674,
+              "ttft_ms": 11406.000000002678,
+              "load_ms": 6921.8498,
+              "output_tokens": 857,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 12,
+          "accepted_candidate_count": 0,
+          "rejected_candidate_count": 12,
+          "rejection_reasons": {
+            "NO_EXACT_SOURCE_OCCURRENCE": 12
+          },
+          "prompt_sha256": "5915f430e52ecdd5d5bf766d7785adffad2e6550806e9b3b4b7e41c7fe235bb6",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 0,
+          "rejected_after_reanchor_count": 0,
+          "elapsed_ms": 95348.54499999346,
+          "calls": 1,
+          "final_concepts": 0,
+          "outcome": "success"
+        }
+      ],
+      "expected_chunk_count": 2,
+      "annotation_assessment": "OBVIOUS_SOURCE_CONCEPTS",
+      "annotation_expected": "YES",
+      "raw_candidates": 24,
+      "accepted_before_dedup": 12,
+      "rejected": 12,
+      "deduplicated": 0,
+      "final_concepts": 12,
+      "retries": 0,
+      "final_classification": "PARTIAL_ACCEPTED"
+    },
+    {
+      "diagnostic_run_id": "hybrid-zero-replay-20261003",
+      "document_code": "D045",
+      "document_id": "7b462286-ce94-41ea-b031-543d6aaef0f2",
+      "revision_id": "1c23d08f-1b37-4fe9-b84f-2d1671faf6f9",
+      "outer_attempt": 1,
+      "chunks": [
+        {
+          "chunk_id": "ddf32319-6303-4e68-94ac-f38e91d629c9",
+          "chunk_ordinal": 0,
+          "chunk_sha256": "fc228ec7fab2a4097615e8de3df47aecde291416e3cea54dc52f3954cf10513a",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 97390.99999999598,
+              "ttft_ms": 12140.999999995984,
+              "load_ms": 6677.4859,
+              "output_tokens": 885,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 12,
+          "accepted_candidate_count": 7,
+          "rejected_candidate_count": 5,
+          "rejection_reasons": {
+            "UNSUPPORTED_CANONICAL_NAME": 3,
+            "NO_EXACT_SOURCE_OCCURRENCE": 1,
+            "AMBIGUOUS_SOURCE_OCCURRENCE": 1
+          },
+          "prompt_sha256": "5851618dab8bee69d7f5ff3b1201a47a4751ef0d073a89c22e5393b586ede422",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 7,
+          "rejected_after_reanchor_count": 3,
+          "elapsed_ms": 97386.1523999949,
+          "calls": 1,
+          "final_concepts": 7,
+          "outcome": "success"
+        }
+      ],
+      "expected_chunk_count": 1,
+      "annotation_assessment": "OBVIOUS_SOURCE_CONCEPTS",
+      "annotation_expected": "YES",
+      "raw_candidates": 12,
+      "accepted_before_dedup": 7,
+      "rejected": 5,
+      "deduplicated": 0,
+      "final_concepts": 7,
+      "retries": 0,
+      "final_classification": "PARTIAL_ACCEPTED"
+    },
+    {
+      "diagnostic_run_id": "hybrid-zero-replay-20261003",
+      "document_code": "D058",
+      "document_id": "95ad40b5-46f9-4654-bdd2-96e396478d6c",
+      "revision_id": "5d78f622-9582-4379-86bc-349d581c6c09",
+      "outer_attempt": 1,
+      "chunks": [
+        {
+          "chunk_id": "598def39-7f5a-450c-96d7-156cc33157e1",
+          "chunk_ordinal": 0,
+          "chunk_sha256": "c0ebd7681bbba1711d19103d8fb8d74478a3c260d04dba7b3c93b16d765e7c2d",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 94561.99999999808,
+              "ttft_ms": 12983.99999999674,
+              "load_ms": 6669.5116,
+              "output_tokens": 854,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 12,
+          "accepted_candidate_count": 9,
+          "rejected_candidate_count": 3,
+          "rejection_reasons": {
+            "NO_EXACT_SOURCE_OCCURRENCE": 3
+          },
+          "prompt_sha256": "388be1bf62ab1acf22372e38679794c98d2900931c3b7203afbce39b85263a92",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 9,
+          "rejected_after_reanchor_count": 0,
+          "elapsed_ms": 94560.74140000419,
+          "calls": 1,
+          "final_concepts": 9,
+          "outcome": "success"
+        },
+        {
+          "chunk_id": "883b930f-3bb7-4fec-b6f6-b6ab406fff22",
+          "chunk_ordinal": 1,
+          "chunk_sha256": "e7935f9086d8564cbd65b1d3cb8fc8678416e2a7148f7a2d2e0d3ccfc93f8c40",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 99764.99999999942,
+              "ttft_ms": 13702.999999994063,
+              "load_ms": 6681.199,
+              "output_tokens": 900,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 12,
+          "accepted_candidate_count": 0,
+          "rejected_candidate_count": 12,
+          "rejection_reasons": {
+            "NO_EXACT_SOURCE_OCCURRENCE": 12
+          },
+          "prompt_sha256": "c759876028f6b71a010b2bf2c5b6449c122ab151f6c3d0513f1fdca5da4e8cf8",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 0,
+          "rejected_after_reanchor_count": 0,
+          "elapsed_ms": 99766.96390000143,
+          "calls": 1,
+          "final_concepts": 0,
+          "outcome": "success"
+        }
+      ],
+      "expected_chunk_count": 2,
+      "annotation_assessment": "OBVIOUS_SOURCE_CONCEPTS",
+      "annotation_expected": "YES",
+      "raw_candidates": 24,
+      "accepted_before_dedup": 9,
+      "rejected": 15,
+      "deduplicated": 3,
+      "final_concepts": 6,
+      "retries": 0,
+      "final_classification": "PARTIAL_ACCEPTED"
+    },
+    {
+      "diagnostic_run_id": "hybrid-zero-replay-20261003",
+      "document_code": "D063",
+      "document_id": "9e83b80f-5ab2-411c-b800-3f6eac578f51",
+      "revision_id": "0038a0ff-85d0-465c-995f-640533102966",
+      "outer_attempt": 1,
+      "chunks": [
+        {
+          "chunk_id": "b0355aae-2c8e-484c-a7c0-03c3a81d4aea",
+          "chunk_ordinal": 0,
+          "chunk_sha256": "30d0e5a2d43af3d5a4aaa4fb689211eb27b504a7731088158cc4553aebf0e27d",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 107781.00000000268,
+              "ttft_ms": 13593.000000000757,
+              "load_ms": 6662.3641,
+              "output_tokens": 909,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 12,
+          "accepted_candidate_count": 12,
+          "rejected_candidate_count": 0,
+          "rejection_reasons": {},
+          "prompt_sha256": "43b75af91c1df2ef8ef8079d40db73500d04ac5443491ad5c9af097632b32f5f",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 12,
+          "rejected_after_reanchor_count": 0,
+          "elapsed_ms": 107780.1657999953,
+          "calls": 1,
+          "final_concepts": 12,
+          "outcome": "success"
+        }
+      ],
+      "expected_chunk_count": 1,
+      "annotation_assessment": "OBVIOUS_SOURCE_CONCEPTS",
+      "annotation_expected": "YES",
+      "raw_candidates": 12,
+      "accepted_before_dedup": 12,
+      "rejected": 0,
+      "deduplicated": 6,
+      "final_concepts": 6,
+      "retries": 0,
+      "final_classification": "ACCEPTED"
+    },
+    {
+      "diagnostic_run_id": "hybrid-zero-replay-20261003",
+      "document_code": "D065",
+      "document_id": "a699dfba-8207-41f9-a491-43a360e40cd9",
+      "revision_id": "35ac4a5b-05aa-493c-b96d-a1935663963f",
+      "outer_attempt": 1,
+      "chunks": [
+        {
+          "chunk_id": "7ebb6e7c-9e6b-42ab-abab-9acd07414eab",
+          "chunk_ordinal": 0,
+          "chunk_sha256": "ff3b30f6183b174aa75ffc92793ba20432286eca57cb98103e86caa19f0d6ce0",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 120608.99999999674,
+              "ttft_ms": 13436.99999999808,
+              "load_ms": 6938.2684,
+              "output_tokens": 812,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 12,
+          "accepted_candidate_count": 6,
+          "rejected_candidate_count": 6,
+          "rejection_reasons": {
+            "AMBIGUOUS_SOURCE_OCCURRENCE": 5,
+            "UNSUPPORTED_CANONICAL_NAME": 1
+          },
+          "prompt_sha256": "3cefc4f4edbdb8d40da7cd3d1060073265a9586786bffeb42f12303c43cb89b0",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 6,
+          "rejected_after_reanchor_count": 1,
+          "elapsed_ms": 120611.25999999786,
+          "calls": 1,
+          "final_concepts": 6,
+          "outcome": "success"
+        }
+      ],
+      "expected_chunk_count": 1,
+      "annotation_assessment": "OBVIOUS_SOURCE_CONCEPTS",
+      "annotation_expected": "YES",
+      "raw_candidates": 12,
+      "accepted_before_dedup": 6,
+      "rejected": 6,
+      "deduplicated": 0,
+      "final_concepts": 6,
+      "retries": 0,
+      "final_classification": "PARTIAL_ACCEPTED"
+    },
+    {
+      "diagnostic_run_id": "hybrid-zero-replay-20261003",
+      "document_code": "D068",
+      "document_id": "b102c67e-e167-49c6-a3cf-5c14d31d8fc1",
+      "revision_id": "92e8fd81-3dcc-4b98-a485-c6e98506c30d",
+      "outer_attempt": 1,
+      "chunks": [
+        {
+          "chunk_id": "0ec317d5-3c20-41e0-9f78-67fec485b6cc",
+          "chunk_ordinal": 0,
+          "chunk_sha256": "ff1d405c9cd569d10f3dcf5e0b7daffe72a11ed69f1391e71e17ea5a8b69b179",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 154125.0,
+              "ttft_ms": 11375.0,
+              "load_ms": 6652.7262,
+              "output_tokens": 1277,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 12,
+          "accepted_candidate_count": 11,
+          "rejected_candidate_count": 1,
+          "rejection_reasons": {
+            "NO_EXACT_SOURCE_OCCURRENCE": 1
+          },
+          "prompt_sha256": "457950dcd755fd1232d363bafa160ec2c1dde42b0a4ec6cd1e8dfdb544dacaac",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 11,
+          "rejected_after_reanchor_count": 0,
+          "elapsed_ms": 154131.04989999556,
+          "calls": 1,
+          "final_concepts": 11,
+          "outcome": "success"
+        },
+        {
+          "chunk_id": "bf68e19f-1038-45d8-adae-8104c2c02f71",
+          "chunk_ordinal": 1,
+          "chunk_sha256": "50a0cbfb8b98c400523c7383c2f5b29b79676c75eb2250884d6c888dfa7d126e",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 24811.99999999808,
+              "ttft_ms": 11625.0,
+              "load_ms": 8440.2987,
+              "output_tokens": 114,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 2,
+          "accepted_candidate_count": 0,
+          "rejected_candidate_count": 2,
+          "rejection_reasons": {
+            "NO_EXACT_SOURCE_OCCURRENCE": 2
+          },
+          "prompt_sha256": "77b6849b6c107043406c79b32522a0a292a622e60425eb53f073eff885790439",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 0,
+          "rejected_after_reanchor_count": 0,
+          "elapsed_ms": 24820.749200000137,
+          "calls": 1,
+          "final_concepts": 0,
+          "outcome": "success"
+        }
+      ],
+      "expected_chunk_count": 2,
+      "annotation_assessment": "OBVIOUS_SOURCE_CONCEPTS",
+      "annotation_expected": "YES",
+      "raw_candidates": 14,
+      "accepted_before_dedup": 11,
+      "rejected": 3,
+      "deduplicated": 0,
+      "final_concepts": 11,
+      "retries": 0,
+      "final_classification": "PARTIAL_ACCEPTED"
+    },
+    {
+      "diagnostic_run_id": "hybrid-zero-replay-20261003",
+      "document_code": "D069",
+      "document_id": "b5e40c7d-735b-411c-b69b-1cb38751ddb4",
+      "revision_id": "5967d42f-3bfb-46d1-9892-30c69f4cc320",
+      "outer_attempt": 1,
+      "chunks": [
+        {
+          "chunk_id": "f25cd74a-8387-4ccc-8ad2-bba363cb455e",
+          "chunk_ordinal": 0,
+          "chunk_sha256": "851f03794d02ba08550ce491c330f12d5f4fff8cdb16768026ba4d972101f761",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 116078.00000000134,
+              "ttft_ms": 13515.999999995984,
+              "load_ms": 8180.4032,
+              "output_tokens": 1013,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 12,
+          "accepted_candidate_count": 3,
+          "rejected_candidate_count": 9,
+          "rejection_reasons": {
+            "UNSUPPORTED_CANONICAL_NAME": 8,
+            "NO_EXACT_SOURCE_OCCURRENCE": 1
+          },
+          "prompt_sha256": "6f506b88f39cfda9ab5d084649d46b534ec843be885d66cdd2d085ad494df1ea",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 3,
+          "rejected_after_reanchor_count": 8,
+          "elapsed_ms": 116065.17359999998,
+          "calls": 1,
+          "final_concepts": 3,
+          "outcome": "success"
+        }
+      ],
+      "expected_chunk_count": 1,
+      "annotation_assessment": "OBVIOUS_SOURCE_CONCEPTS",
+      "annotation_expected": "YES",
+      "raw_candidates": 12,
+      "accepted_before_dedup": 3,
+      "rejected": 9,
+      "deduplicated": 0,
+      "final_concepts": 3,
+      "retries": 0,
+      "final_classification": "PARTIAL_ACCEPTED"
+    },
+    {
+      "diagnostic_run_id": "hybrid-zero-replay-20261003",
+      "document_code": "D080",
+      "document_id": "c9984def-b7e0-46b4-a20c-b9abdb6e2c18",
+      "revision_id": "9cfa3835-9652-4a8e-8cf0-dc3517ae6238",
+      "outer_attempt": 1,
+      "chunks": [
+        {
+          "chunk_id": "6035e6b9-fee7-4f37-9c56-79cea9e286d0",
+          "chunk_ordinal": 0,
+          "chunk_sha256": "641227eea68ec088e0b38953b20268f9969083e0633149c9db442fd9df6746e3",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 98750.0,
+              "ttft_ms": 13921.999999998661,
+              "load_ms": 6698.9863,
+              "output_tokens": 859,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 12,
+          "accepted_candidate_count": 7,
+          "rejected_candidate_count": 5,
+          "rejection_reasons": {
+            "NO_EXACT_SOURCE_OCCURRENCE": 3,
+            "UNSUPPORTED_CANONICAL_NAME": 2
+          },
+          "prompt_sha256": "dce466e6f2f10bcf499cb4f0f60b579765d83911d53e6487a7151d0bc1f2a4bb",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 7,
+          "rejected_after_reanchor_count": 2,
+          "elapsed_ms": 98756.58099999418,
+          "calls": 1,
+          "final_concepts": 7,
+          "outcome": "success"
+        }
+      ],
+      "expected_chunk_count": 1,
+      "annotation_assessment": "OBVIOUS_SOURCE_CONCEPTS",
+      "annotation_expected": "YES",
+      "raw_candidates": 12,
+      "accepted_before_dedup": 7,
+      "rejected": 5,
+      "deduplicated": 0,
+      "final_concepts": 7,
+      "retries": 0,
+      "final_classification": "PARTIAL_ACCEPTED"
+    },
+    {
+      "diagnostic_run_id": "hybrid-zero-replay-20261003",
+      "document_code": "D084",
+      "document_id": "d9353f7c-7923-4367-bf9f-78451104b2f5",
+      "revision_id": "58e3ff7b-0115-48b5-bc95-f681f230bc5a",
+      "outer_attempt": 1,
+      "chunks": [
+        {
+          "chunk_id": "c2038fc8-891e-497b-bc0f-ef5a41e8ea42",
+          "chunk_ordinal": 0,
+          "chunk_sha256": "45cfeb8e2cd66cdd235e155cc4c3d7bf229371f1740ff7c9c6434edc4e57e048",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 108953.00000000134,
+              "ttft_ms": 13156.000000002678,
+              "load_ms": 6673.5387,
+              "output_tokens": 1020,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 12,
+          "accepted_candidate_count": 11,
+          "rejected_candidate_count": 1,
+          "rejection_reasons": {
+            "NO_EXACT_SOURCE_OCCURRENCE": 1
+          },
+          "prompt_sha256": "db49eeace8cbc7c1e4277e10b576a460e754a29ab698e1b5398a63512db05e74",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 11,
+          "rejected_after_reanchor_count": 0,
+          "elapsed_ms": 108960.81979999872,
+          "calls": 1,
+          "final_concepts": 11,
+          "outcome": "success"
+        }
+      ],
+      "expected_chunk_count": 1,
+      "annotation_assessment": "OBVIOUS_SOURCE_CONCEPTS",
+      "annotation_expected": "YES",
+      "raw_candidates": 12,
+      "accepted_before_dedup": 11,
+      "rejected": 1,
+      "deduplicated": 0,
+      "final_concepts": 11,
+      "retries": 0,
+      "final_classification": "PARTIAL_ACCEPTED"
+    },
+    {
+      "diagnostic_run_id": "hybrid-zero-replay-20261003",
+      "document_code": "D086",
+      "document_id": "dfbf11ae-d233-47e1-bfbf-505e8c2d0594",
+      "revision_id": "492a1b53-1647-494e-9c68-09a592c19fe4",
+      "outer_attempt": 1,
+      "chunks": [
+        {
+          "chunk_id": "c84b43c0-e4a1-4404-a809-3ca4777783cc",
+          "chunk_ordinal": 0,
+          "chunk_sha256": "5082d0347120b1c3ad9d869fddbf03c26fa7e66f8cb373f137f494cef6906e86",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 65109.000000004016,
+              "ttft_ms": 14703.000000001339,
+              "load_ms": 6979.5549,
+              "output_tokens": 545,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 5,
+          "accepted_candidate_count": 0,
+          "rejected_candidate_count": 5,
+          "rejection_reasons": {
+            "NO_EXACT_SOURCE_OCCURRENCE": 5
+          },
+          "prompt_sha256": "704cf7490670f40a00ccf8e98678e3a492c439946993b123e4f84fcd4e19e052",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 0,
+          "rejected_after_reanchor_count": 0,
+          "elapsed_ms": 65102.22779999458,
+          "calls": 1,
+          "final_concepts": 0,
+          "outcome": "success"
+        }
+      ],
+      "expected_chunk_count": 1,
+      "annotation_assessment": "OBVIOUS_SOURCE_CONCEPTS",
+      "annotation_expected": "YES",
+      "raw_candidates": 5,
+      "accepted_before_dedup": 0,
+      "rejected": 5,
+      "deduplicated": 0,
+      "final_concepts": 0,
+      "retries": 0,
+      "final_classification": "ALL_REJECTED"
+    },
+    {
+      "diagnostic_run_id": "hybrid-zero-replay-20261003",
+      "document_code": "D088",
+      "document_id": "e4a11c17-4a02-4845-9887-a6d113174d38",
+      "revision_id": "c7e13140-db25-4e2d-a4ed-0a1c7aa4723c",
+      "outer_attempt": 1,
+      "chunks": [
+        {
+          "chunk_id": "2de48374-7eff-4eaa-b28b-045e1eacca8a",
+          "chunk_ordinal": 0,
+          "chunk_sha256": "47c501a1dceb5a674113d3efb38f4a35eefbae4efc7d3fb0afc923a28c047667",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 100062.00000000536,
+              "ttft_ms": 14484.000000004016,
+              "load_ms": 6926.7378,
+              "output_tokens": 919,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 12,
+          "accepted_candidate_count": 11,
+          "rejected_candidate_count": 1,
+          "rejection_reasons": {
+            "NO_EXACT_SOURCE_OCCURRENCE": 1
+          },
+          "prompt_sha256": "0f43dab50c215f70bd8aefc028811056a351ddf18d429a2b90cbd1a415fe8924",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 11,
+          "rejected_after_reanchor_count": 0,
+          "elapsed_ms": 100068.61149999895,
+          "calls": 1,
+          "final_concepts": 11,
+          "outcome": "success"
+        },
+        {
+          "chunk_id": "8cd9a1d3-bdd3-46ec-9e1a-872ab12c3273",
+          "chunk_ordinal": 1,
+          "chunk_sha256": "111d54cb9e925d55afef02b37ec089b0dadcdbba2f00bb3251c99283b6c2c297",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 107514.99999999942,
+              "ttft_ms": 12108.99999999674,
+              "load_ms": 6666.1244,
+              "output_tokens": 1040,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 12,
+          "accepted_candidate_count": 12,
+          "rejected_candidate_count": 0,
+          "rejection_reasons": {},
+          "prompt_sha256": "088c0ed227c85039c721ee3f00bd8f1982d333712c821a2a3e31f37a3ee41cf3",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 12,
+          "rejected_after_reanchor_count": 0,
+          "elapsed_ms": 107522.20289999968,
+          "calls": 1,
+          "final_concepts": 12,
+          "outcome": "success"
+        }
+      ],
+      "expected_chunk_count": 2,
+      "annotation_assessment": "OBVIOUS_SOURCE_CONCEPTS",
+      "annotation_expected": "YES",
+      "raw_candidates": 24,
+      "accepted_before_dedup": 23,
+      "rejected": 1,
+      "deduplicated": 10,
+      "final_concepts": 13,
+      "retries": 0,
+      "final_classification": "PARTIAL_ACCEPTED"
+    },
+    {
+      "diagnostic_run_id": "hybrid-zero-replay-20261003",
+      "document_code": "D091",
+      "document_id": "e6844a28-6617-497a-bbdb-62545365b18d",
+      "revision_id": "b9727eb6-6a62-4734-b5c7-d4b76559d090",
+      "outer_attempt": 1,
+      "chunks": [
+        {
+          "chunk_id": "5259dff5-7b56-4a67-be3d-15b07f0a3590",
+          "chunk_ordinal": 0,
+          "chunk_sha256": "804b107693743626c54c4b3236e3d979d4698328fff212adbc69d4bb12e88f97",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 132718.00000000076,
+              "ttft_ms": 12780.999999995402,
+              "load_ms": 6683.0385,
+              "output_tokens": 1302,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 12,
+          "accepted_candidate_count": 0,
+          "rejected_candidate_count": 12,
+          "rejection_reasons": {
+            "NO_EXACT_SOURCE_OCCURRENCE": 12
+          },
+          "prompt_sha256": "1926370e45b6bbe32df1b69dc89ec587fb7817950abda8c03ad52021005e5d11",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 0,
+          "rejected_after_reanchor_count": 0,
+          "elapsed_ms": 132726.68599999452,
+          "calls": 1,
+          "final_concepts": 0,
+          "outcome": "success"
+        }
+      ],
+      "expected_chunk_count": 1,
+      "annotation_assessment": "OBVIOUS_SOURCE_CONCEPTS",
+      "annotation_expected": "YES",
+      "raw_candidates": 12,
+      "accepted_before_dedup": 0,
+      "rejected": 12,
+      "deduplicated": 0,
+      "final_concepts": 0,
+      "retries": 0,
+      "final_classification": "ALL_REJECTED"
+    },
+    {
+      "diagnostic_run_id": "hybrid-zero-replay-20261003",
+      "document_code": "D097",
+      "document_id": "f1c4d560-678f-4ead-af98-f670b31ac562",
+      "revision_id": "0601856a-895b-43e6-be4c-dd2b0af16f9e",
+      "outer_attempt": 1,
+      "chunks": [
+        {
+          "chunk_id": "cbfdda24-6c93-438e-99ac-3743eff2b9ae",
+          "chunk_ordinal": 0,
+          "chunk_sha256": "bc800ebb114d8b2db2dc386b5aba945baf4af9b52efe4554bfae253743575011",
+          "inference_attempts": [
+            {
+              "status": "success",
+              "max_output_tokens": 2048,
+              "retry_reason": null,
+              "finish_reason": "stop",
+              "provider": "ollama",
+              "model_revision": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+              "latency_ms": 84843.99999999732,
+              "ttft_ms": 13235.000000000582,
+              "load_ms": 6950.3119,
+              "output_tokens": 777,
+              "output_tokens_reason": null
+            }
+          ],
+          "status": "success",
+          "candidate_count": 12,
+          "accepted_candidate_count": 7,
+          "rejected_candidate_count": 5,
+          "rejection_reasons": {
+            "NO_EXACT_SOURCE_OCCURRENCE": 2,
+            "UNSUPPORTED_CANONICAL_NAME": 3
+          },
+          "prompt_sha256": "06da9986c8cdee1d25e7165ded46e1867e8307f280947ae66f4e66f21e9094e3",
+          "reported_offsets_valid_count": 0,
+          "reanchored_count": 7,
+          "rejected_after_reanchor_count": 3,
+          "elapsed_ms": 84846.33459999895,
+          "calls": 1,
+          "final_concepts": 7,
+          "outcome": "success"
+        }
+      ],
+      "expected_chunk_count": 1,
+      "annotation_assessment": "OBVIOUS_SOURCE_CONCEPTS",
+      "annotation_expected": "YES",
+      "raw_candidates": 12,
+      "accepted_before_dedup": 7,
+      "rejected": 5,
+      "deduplicated": 0,
+      "final_concepts": 7,
+      "retries": 0,
+      "final_classification": "PARTIAL_ACCEPTED"
+    }
+  ]
+}

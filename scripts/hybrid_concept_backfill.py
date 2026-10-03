@@ -319,10 +319,16 @@ async def _extract(
         "Empty mentions is valid.\n\n"
         "EVIDENCE CHUNK (JSON string):\n" + json.dumps(chunk.text, ensure_ascii=False)
     )
+    diagnostic["prompt_sha256"] = hashlib.sha256(prompt.encode("utf-8")).hexdigest()
     started = time.perf_counter()
 
     async def request(max_output_tokens: int) -> Any:
-        attempt = {"status": "processing", "max_output_tokens": max_output_tokens}
+        attempt_started = time.perf_counter()
+        attempt = {
+            "status": "processing",
+            "max_output_tokens": max_output_tokens,
+            "retry_reason": "OUTPUT_LIMIT" if max_output_tokens == 3072 else None,
+        }
         diagnostic["inference_attempts"].append(attempt)
         try:
             result = await provider.complete_json(
@@ -338,9 +344,22 @@ async def _extract(
             )
         except (Exception, asyncio.CancelledError) as exc:
             attempt["status"] = _error_code(exc)
+            attempt["latency_ms"] = (time.perf_counter() - attempt_started) * 1000
+            attempt["finish_reason"] = getattr(exc, "done_reason", None)
             diagnostic["status"] = attempt["status"]
             raise
         attempt["status"] = "success"
+        metadata = result.metadata
+        attempt.update(
+            finish_reason=metadata.finish_reason,
+            provider=metadata.provider,
+            model_revision=metadata.model_revision,
+            latency_ms=metadata.total_ms,
+            ttft_ms=metadata.model_ttft_ms,
+            load_ms=metadata.load_ms,
+            output_tokens=metadata.output_tokens,
+            output_tokens_reason=metadata.output_tokens_reason,
+        )
         return result
 
     request_attempts = 1
@@ -357,8 +376,37 @@ async def _extract(
         diagnostic["inference_attempts"][-1]["status"] = "INVALID_ENVELOPE"
         raise InferenceProtocolError("invalid concept mentions envelope")
     diagnostic["candidate_count"] = len(drafts)
+    diagnostic["reported_offsets_valid_count"] = 0
+    diagnostic["reanchored_count"] = 0
+    diagnostic["rejected_after_reanchor_count"] = 0
     for draft in drafts:
         reason = None
+        original_offsets_valid = False
+        unique_reanchor = False
+        if isinstance(draft, dict):
+            surface = draft.get("surface_text")
+            quote = draft.get("quote")
+            start = draft.get("start_offset")
+            end = draft.get("end_offset")
+            if (
+                isinstance(surface, str)
+                and isinstance(start, int)
+                and isinstance(end, int)
+                and 0 <= start < end <= len(chunk.text)
+                and chunk.text[start:end] == surface
+            ):
+                original_offsets_valid = True
+                diagnostic["reported_offsets_valid_count"] += 1
+            if isinstance(surface, str) and isinstance(quote, str) and surface and quote:
+                possible: set[int] = set()
+                quote_at = chunk.text.find(quote)
+                while quote_at >= 0:
+                    surface_at = quote.find(surface)
+                    while surface_at >= 0:
+                        possible.add(quote_at + surface_at)
+                        surface_at = quote.find(surface, surface_at + 1)
+                    quote_at = chunk.text.find(quote, quote_at + 1)
+                unique_reanchor = len(possible) == 1 and not original_offsets_valid
         try:
             if not isinstance(draft, dict):
                 raise ConceptGroundingError("DRAFT_NOT_OBJECT", "candidate must be an object")
@@ -371,10 +419,14 @@ async def _extract(
             reason = "DRAFT_INVALID"
         if reason is not None:
             rejects += 1
+            if unique_reanchor:
+                diagnostic["rejected_after_reanchor_count"] += 1
             reasons = diagnostic["rejection_reasons"]
             reasons[reason] = reasons.get(reason, 0) + 1
             continue
         mentions.append(mention)
+        if unique_reanchor:
+            diagnostic["reanchored_count"] += 1
     diagnostic.update(
         status="success" if drafts else "MODEL_EMPTY",
         accepted_candidate_count=len(mentions),
