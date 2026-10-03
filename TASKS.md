@@ -501,6 +501,23 @@ flowchart LR
 - **Запуск:** см. `frontend/src/demo/README.md`. Статус: проверено локально; публикация
   подтверждается наличием коммита этой задачи в удалённой ветке.
 
+### Продолжение после HYBRID-002 — запрос пользователя без нового ID
+
+- **Статус (2026-10-03): ожидает публикации.** Отдельной соответствующей карточки
+  в baseline нет; новый ID не назначен. По dependencies доступны EVAL-001/OBS-001,
+  их acceptance не заменяется этим follow-up; CORPUS-001 остаётся в работе.
+- **Сделано:** подтверждён и тестами воспроизведён пропуск canonical identity gate;
+  восемь сохранённых NO2/NH3 mentions отвергаются новым validator на исходных chunks;
+  exact evidence/provenance сохранены. Добавлен безопасный per-document sidecar с
+  counts/reasons/attempt history. Исторические model payloads отсутствуют,
+  причины 27 нулей остаются UNKNOWN. Production данные не изменялись.
+- **Проверки:** 43 целевых tests; полный pytest — 312 passed, 49 skipped;
+  целевые Ruff/mypy, frontend lint/typecheck/build и 7 unit tests, Compose config.
+- **Publication blocker:** общий Ruff — 205 ошибок в неизменённых файлах;
+  общий mypy — 8 ошибок в неизменённых evidence_pack/reranker_local/graph route,
+  включая отсутствующие inference imports. Push не выполняется до прохождения
+  обязательных gates согласно запросу пользователя. [Отчёт и ограничения](docs/validation/HYBRID_REFINEMENT/README.md).
+
 ## Milestones
 
 | Milestone | После | Проверяемое демо |

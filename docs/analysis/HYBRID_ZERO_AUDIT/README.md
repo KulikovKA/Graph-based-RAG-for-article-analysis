@@ -56,3 +56,11 @@ Get-Content docs/analysis/HYBRID_ZERO_AUDIT/collect_live.py -Raw -Encoding UTF8 
 `build_artifacts.py` is offline and requires the original ignored corpus export/checkpoint and local read exports. It asserts frozen identities/hashes/full nonwhitespace source coverage, all 747 exact accepted spans, equality of checkpoint/PG/Neo4j mention IDs and provenance, all 27 annotation identities and all 80 source spans. It only writes files in this audit directory. Historical measurements are captured in the committed CSV/JSON files for environments without the private exports. Existing contract tests: **11 passed**; no production code or tests were changed.
 
 Controlled rerun: **not performed**. Historical evidence insufficiency is established without generation; a future isolated instrumented replay can diagnose reproducible current behavior, but cannot recover the original rejected candidates. Git: analysis-only local commit requested; no push authorized.
+
+## Продолжение после аудита (2026-10-03)
+
+Подтверждён пропуск проверки canonical identity при exact surface grounding;
+добавлены консервативный gate и диагностика будущих запусков. Восемь retained
+mentions проверены offline, исходные production данные сохранены.
+Исторические причины 27 нулей остаются UNKNOWN.
+[Изменения, доказательства и publication blocker](../../validation/HYBRID_REFINEMENT/README.md).

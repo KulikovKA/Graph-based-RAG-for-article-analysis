@@ -23,10 +23,19 @@ from sqlalchemy.orm import Session, sessionmaker
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from app.domain.inference import InferenceOutputLimit, InferenceProvider  # noqa: E402
+from app.domain.inference import (  # noqa: E402
+    InferenceCancelled,
+    InferenceConfigurationError,
+    InferenceOutputLimit,
+    InferenceProtocolError,
+    InferenceProvider,
+    InferenceTimeout,
+    InferenceUnavailable,
+)
 from app.integrations.inference_http import OllamaProvider  # noqa: E402
 from app.services.technical_concepts import (  # noqa: E402
     CONCEPT_SCHEMA_VERSION,
+    ConceptGroundingError,
     TechnicalConceptMentionV1,
     concept_identity,
     validate_or_reanchor_draft,
@@ -42,7 +51,7 @@ from app.workers.inference import GenerationGate  # noqa: E402
 ROOT = Path(__file__).resolve().parents[1]
 SNAPSHOT_PATH = ROOT / "data/checkpoints/graph002-live-20261002.snapshot.json"
 REPORT_DIR = ROOT / "docs/validation/HYBRID-001"
-EXTRACTOR_VERSION = "hybrid-technical-concepts-v1.3"
+EXTRACTOR_VERSION = "hybrid-technical-concepts-v1.4"
 MODEL_ID = "qwen3.5:4b-q4_K_M"
 MODEL_DIGEST = "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd"
 MENTION_SCHEMA: dict[str, Any] = {
@@ -101,6 +110,101 @@ def _write(path: Path, value: Any) -> None:
     tmp = path.with_suffix(path.suffix + ".tmp")
     tmp.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     tmp.replace(path)
+
+
+def _error_code(exc: BaseException) -> str:
+    if isinstance(exc, InferenceOutputLimit):
+        return "OUTPUT_LIMIT"
+    if isinstance(exc, InferenceTimeout):
+        return "TIMEOUT"
+    if isinstance(exc, InferenceCancelled | asyncio.CancelledError):
+        return "CANCELLED"
+    if isinstance(exc, InferenceUnavailable):
+        return "UNAVAILABLE"
+    if isinstance(exc, InferenceConfigurationError):
+        return "CONFIGURATION_ERROR"
+    if isinstance(exc, InferenceProtocolError):
+        if str(exc) in ("final output is not JSON", "final output is not a JSON object"):
+            return "UNPARSEABLE_RESULT"
+        return "PROTOCOL_ERROR"
+    return "PROCESSING_ERROR"
+
+
+def _read_diagnostics(path: Path, run_id: UUID) -> dict[str, Any]:
+    try:
+        if path.exists():
+            value = json.loads(path.read_text(encoding="utf-8"))
+            if (
+                isinstance(value, dict)
+                and value.get("version") == "hybrid-document-diagnostics-v1"
+                and value.get("run_id") == str(run_id)
+                and isinstance(value.get("documents"), dict)
+                and all(
+                    isinstance(history, list) and all(isinstance(row, dict) for row in history)
+                    for history in value["documents"].values()
+                )
+            ):
+                return cast(dict[str, Any], value)
+            print("DIAGNOSTICS_READ_FAILED", flush=True)
+    except (OSError, ValueError):
+        print("DIAGNOSTICS_READ_FAILED", flush=True)
+    return {"version": "hybrid-document-diagnostics-v1", "run_id": str(run_id), "documents": {}}
+
+
+def _save_diagnostics(path: Path, diagnostics: dict[str, Any]) -> None:
+    # Наблюдение не участвует в authoritative-транзакции и не меняет её результат.
+    try:
+        _write(path, diagnostics)
+    except (OSError, ValueError, TypeError):
+        print("DIAGNOSTICS_WRITE_FAILED", flush=True)
+
+
+def _summarize_document(
+    diagnostic: dict[str, Any],
+    *,
+    status: str,
+    accepted_mentions: int = 0,
+    error_code: str | None = None,
+) -> None:
+    chunks = diagnostic["chunks"]
+    complete_counts = len(chunks) == diagnostic.get("expected_chunk_count", len(chunks)) and all(
+        chunk["candidate_count"] is not None for chunk in chunks
+    )
+    raw = sum(chunk["candidate_count"] or 0 for chunk in chunks)
+    accepted = sum(chunk["accepted_candidate_count"] for chunk in chunks)
+    rejected = sum(chunk["rejected_candidate_count"] for chunk in chunks)
+    reasons: dict[str, int] = {}
+    for chunk in chunks:
+        for reason, count in chunk["rejection_reasons"].items():
+            reasons[reason] = reasons.get(reason, 0) + count
+    calls = sum(len(chunk["inference_attempts"]) for chunk in chunks)
+    if status == "failed":
+        outcome = error_code or "PROCESSING_ERROR"
+    elif status == "processing":
+        outcome = "IN_PROGRESS"
+    elif not chunks:
+        outcome = "NO_CHUNKS"
+    elif raw == 0:
+        outcome = "MODEL_EMPTY"
+    elif accepted == 0:
+        outcome = "ALL_REJECTED"
+    elif rejected:
+        outcome = "PARTIALLY_ACCEPTED"
+    else:
+        outcome = "ACCEPTED"
+    diagnostic.update(
+        status=status,
+        outcome=outcome,
+        candidate_count=raw if complete_counts else None,
+        accepted_candidate_count=accepted,
+        accepted_mentions=accepted_mentions,
+        rejected_candidate_count=rejected if complete_counts else None,
+        rejection_reasons=reasons,
+        inference_attempts=calls,
+        inference_retries=sum(max(0, len(c["inference_attempts"]) - 1) for c in chunks),
+        document_retries=diagnostic["document_attempt"] - 1,
+        duplicate_count=accepted - accepted_mentions if status == "completed" else None,
+    )
 
 
 def _write_failures(path: Path, failures: list[dict[str, str]]) -> None:
@@ -186,14 +290,27 @@ def _make_provider() -> tuple[OllamaProvider, httpx.AsyncClient]:
 
 
 async def _extract(
-    provider: InferenceProvider, chunk: EvidenceChunk
+    provider: InferenceProvider, chunk: EvidenceChunk, diagnostic: dict[str, Any] | None = None
 ) -> tuple[list[TechnicalConceptMentionV1], float, int, int]:
+    if diagnostic is None:
+        diagnostic = {}
+    diagnostic.update(
+        chunk_id=str(chunk.id),
+        status="processing",
+        candidate_count=None,
+        accepted_candidate_count=0,
+        rejected_candidate_count=0,
+        rejection_reasons={},
+        inference_attempts=[],
+    )
     prompt = (
         "Extract at most 12 distinct, high-value source-grounded technical concepts "
         "from this chunk. "
         "Return concepts, not propositions. Preserve analyte, process, polarity, "
         "condition and degree "
         "as qualifiers where present. Include only explicit concepts; do not infer omitted facts. "
+        "canonical_name must match surface_text under NFKC, case and punctuation normalization; "
+        "do not substitute synonyms or chemical aliases. "
         "Offsets are zero-based Unicode codepoint offsets into the chunk. quote must be an exact "
         "substring of at most 320 characters and surface_text must be inside quote. "
         "Use the shortest "
@@ -203,18 +320,28 @@ async def _extract(
         "EVIDENCE CHUNK (JSON string):\n" + json.dumps(chunk.text, ensure_ascii=False)
     )
     started = time.perf_counter()
+
     async def request(max_output_tokens: int) -> Any:
-        return await provider.complete_json(
-            model_id=MODEL_ID,
-            prompt_version=CONCEPT_SCHEMA_VERSION,
-            request_id=f"hybrid-{chunk.id}",
-            prompt=prompt,
-            timeout=300,
-            schema=MENTION_SCHEMA,
-            max_output_tokens=max_output_tokens,
-            reasoning_effort="default",
-            thinking=False,
-        )
+        attempt = {"status": "processing", "max_output_tokens": max_output_tokens}
+        diagnostic["inference_attempts"].append(attempt)
+        try:
+            result = await provider.complete_json(
+                model_id=MODEL_ID,
+                prompt_version=CONCEPT_SCHEMA_VERSION,
+                request_id=f"hybrid-{chunk.id}",
+                prompt=prompt,
+                timeout=300,
+                schema=MENTION_SCHEMA,
+                max_output_tokens=max_output_tokens,
+                reasoning_effort="default",
+                thinking=False,
+            )
+        except (Exception, asyncio.CancelledError) as exc:
+            attempt["status"] = _error_code(exc)
+            diagnostic["status"] = attempt["status"]
+            raise
+        attempt["status"] = "success"
+        return result
 
     request_attempts = 1
     try:
@@ -224,13 +351,37 @@ async def _extract(
         result = await request(3072)
     mentions: list[TechnicalConceptMentionV1] = []
     rejects = 0
-    for draft in result.value["mentions"]:
+    drafts = result.value.get("mentions")
+    if not isinstance(drafts, list) or set(result.value) != {"mentions"}:
+        diagnostic["status"] = "INVALID_ENVELOPE"
+        diagnostic["inference_attempts"][-1]["status"] = "INVALID_ENVELOPE"
+        raise InferenceProtocolError("invalid concept mentions envelope")
+    diagnostic["candidate_count"] = len(drafts)
+    for draft in drafts:
+        reason = None
         try:
+            if not isinstance(draft, dict):
+                raise ConceptGroundingError("DRAFT_NOT_OBJECT", "candidate must be an object")
             mention = validate_or_reanchor_draft(draft, chunk.text)
-        except (ValidationError, ValueError, TypeError):
+        except ConceptGroundingError as exc:
+            reason = exc.code
+        except ValidationError:
+            reason = "DRAFT_SCHEMA_INVALID"
+        except (ValueError, TypeError):
+            reason = "DRAFT_INVALID"
+        if reason is not None:
             rejects += 1
+            reasons = diagnostic["rejection_reasons"]
+            reasons[reason] = reasons.get(reason, 0) + 1
             continue
         mentions.append(mention)
+    diagnostic.update(
+        status="success" if drafts else "MODEL_EMPTY",
+        accepted_candidate_count=len(mentions),
+        rejected_candidate_count=rejects,
+    )
+    if not drafts:
+        diagnostic["inference_attempts"][-1]["status"] = "MODEL_EMPTY"
     return mentions, time.perf_counter() - started, rejects, request_attempts
 
 
@@ -376,6 +527,8 @@ async def main_async(args: argparse.Namespace) -> int:
     if checkpoint.get("config_identity") != expected_config:
         raise ValueError("checkpoint model, schema, or thinking configuration mismatch")
     run_id = UUID(checkpoint["run_id"])
+    diagnostics_file = checkpoint_file.with_suffix(".diagnostics.json")
+    diagnostics = _read_diagnostics(diagnostics_file, run_id)
     try:
         with sessions.begin() as session:
             session.execute(
@@ -411,15 +564,32 @@ async def main_async(args: argparse.Namespace) -> int:
             print(f"[{n}/{total}] {doc['document_id']} {doc['title'][:90]}", flush=True)
             if doc["document_id"] in completed:
                 continue
+            history = diagnostics["documents"].setdefault(doc["document_id"], [])
+            document_diagnostic = {
+                "document_id": doc["document_id"],
+                "revision_id": doc["revision_id"],
+                "document_attempt": len(history) + 1,
+                "expected_chunk_count": len(doc["chunks"]),
+                "chunks": [],
+            }
+            history.append(document_diagnostic)
+            _summarize_document(document_diagnostic, status="processing")
+            _save_diagnostics(diagnostics_file, diagnostics)
             valid: list[tuple[EvidenceChunk, TechnicalConceptMentionV1]] = []
             try:
                 document_seconds = 0.0
                 for chunk in doc["chunks"]:
-                    mentions, elapsed, rejects, request_attempts = await _extract(provider, chunk)
+                    chunk_diagnostic: dict[str, Any] = {}
+                    document_diagnostic["chunks"].append(chunk_diagnostic)
+                    mentions, elapsed, rejects, request_attempts = await _extract(
+                        provider, chunk, chunk_diagnostic
+                    )
                     document_seconds += elapsed
                     checkpoint["llm_calls"] += request_attempts
                     checkpoint["validation_rejects"] += rejects
                     valid.extend((chunk, mention) for mention in mentions)
+                    _summarize_document(document_diagnostic, status="processing")
+                    _save_diagnostics(diagnostics_file, diagnostics)
                 rows = []
                 for chunk, mention in valid:
                     typ, name = concept_identity(mention)
@@ -515,16 +685,28 @@ async def main_async(args: argparse.Namespace) -> int:
                     for failure in checkpoint["failures"]
                     if failure["document_id"] != doc["document_id"]
                 ]
+                _summarize_document(
+                    document_diagnostic, status="completed", accepted_mentions=len(rows)
+                )
+            except asyncio.CancelledError:
+                _summarize_document(document_diagnostic, status="failed", error_code="CANCELLED")
+                _save_diagnostics(diagnostics_file, diagnostics)
+                raise
             except Exception as exc:
+                code = _error_code(exc)
+                if document_diagnostic["chunks"]:
+                    last_status = document_diagnostic["chunks"][-1]["status"]
+                    if last_status == "INVALID_ENVELOPE":
+                        code = last_status
+                _summarize_document(document_diagnostic, status="failed", error_code=code)
+                _save_diagnostics(diagnostics_file, diagnostics)
                 checkpoint["failures"] = [
                     failure
                     for failure in checkpoint["failures"]
                     if failure["document_id"] != doc["document_id"]
                 ]
-                checkpoint["failures"].append(
-                    {"document_id": doc["document_id"], "error": str(exc)[:500]}
-                )
-                print(f"  FAILED: {str(exc)[:180]}", flush=True)
+                checkpoint["failures"].append({"document_id": doc["document_id"], "error": code})
+                print(f"  FAILED: {code}", flush=True)
                 with sessions.begin() as session:
                     session.execute(
                         text(
@@ -532,8 +714,9 @@ async def main_async(args: argparse.Namespace) -> int:
                             "attempts=attempts+1,error=:e,updated_at=now() "
                             "WHERE run_id=:r AND document_id=:d"
                         ),
-                        {"e": str(exc)[:2000], "r": run_id, "d": UUID(doc["document_id"])},
+                        {"e": code, "r": run_id, "d": UUID(doc["document_id"])},
                     )
+            _save_diagnostics(diagnostics_file, diagnostics)
             _write(checkpoint_file, checkpoint)
         run_complete = len(checkpoint["completed"]) >= len(chosen) and not checkpoint["failures"]
         with sessions.begin() as session:
@@ -562,7 +745,7 @@ async def main_async(args: argparse.Namespace) -> int:
                     "surface_text",
                     "quote",
                     "start_offset",
-        "end_offset",
+                    "end_offset",
                     "qualifiers",
                 )
             }

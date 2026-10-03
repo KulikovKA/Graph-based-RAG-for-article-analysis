@@ -27,6 +27,14 @@ _SPACE = re.compile(r"\s+")
 _PUNCT = re.compile(r"[\W_]+", re.UNICODE)
 
 
+class ConceptGroundingError(ValueError):
+    """Ошибка контракта с безопасным стабильным кодом для диагностики."""
+
+    def __init__(self, code: str, message: str) -> None:
+        self.code = code
+        super().__init__(message)
+
+
 class TechnicalConceptMentionV1(BaseModel):
     """One semantic mention anchored to one EvidenceChunk using Python codepoint offsets."""
 
@@ -67,11 +75,17 @@ def normalize_concept_name(value: str) -> str:
 def validate_grounding(mention: TechnicalConceptMentionV1, chunk_text: str) -> None:
     """Validate exact Unicode-codepoint slice and quote against immutable chunk text."""
     if not chunk_text or mention.end_offset > len(chunk_text):
-        raise ValueError("mention offsets are outside the evidence chunk")
+        raise ConceptGroundingError(
+            "OFFSETS_OUTSIDE_CHUNK", "mention offsets are outside the evidence chunk"
+        )
     if chunk_text[mention.start_offset : mention.end_offset] != mention.surface_text:
-        raise ValueError("mention offsets do not resolve to surface_text")
+        raise ConceptGroundingError(
+            "SURFACE_OFFSET_MISMATCH", "mention offsets do not resolve to surface_text"
+        )
     if mention.quote not in chunk_text:
-        raise ValueError("quote does not occur in the evidence chunk")
+        raise ConceptGroundingError(
+            "QUOTE_NOT_IN_CHUNK", "quote does not occur in the evidence chunk"
+        )
     quote_start = chunk_text.find(mention.quote)
     grounded = False
     while quote_start >= 0:
@@ -85,12 +99,19 @@ def validate_grounding(mention: TechnicalConceptMentionV1, chunk_text: str) -> N
             break
         quote_start = chunk_text.find(mention.quote, quote_start + 1)
     if not grounded:
-        raise ValueError("surface offsets do not point inside the quoted occurrence")
+        raise ConceptGroundingError(
+            "SURFACE_OUTSIDE_QUOTED_OCCURRENCE",
+            "surface offsets do not point inside the quoted occurrence",
+        )
+    # Точное место в тексте само по себе не подтверждает произвольную canonical identity.
+    canonical = normalize_concept_name(mention.canonical_name)
+    if not canonical or canonical != normalize_concept_name(mention.surface_text):
+        raise ConceptGroundingError(
+            "UNSUPPORTED_CANONICAL_NAME", "canonical_name is not supported by the grounded surface"
+        )
 
 
-def validate_or_reanchor_draft(
-    draft: dict[str, Any], chunk_text: str
-) -> TechnicalConceptMentionV1:
+def validate_or_reanchor_draft(draft: dict[str, Any], chunk_text: str) -> TechnicalConceptMentionV1:
     """Accept only exact source spans, repairing whitespace and uniquely recoverable offsets."""
     value = dict(draft)
     for field in ("canonical_name", "surface_text", "quote"):
@@ -99,7 +120,7 @@ def validate_or_reanchor_draft(
     quote = value.get("quote")
     surface = value.get("surface_text")
     if not isinstance(quote, str) or not isinstance(surface, str) or not quote or not surface:
-        raise ValueError("quote and surface_text are required")
+        raise ConceptGroundingError("QUOTE_SURFACE_REQUIRED", "quote and surface_text are required")
     starts: set[int] = set()
     quote_at = chunk_text.find(quote)
     while quote_at >= 0:
@@ -109,11 +130,15 @@ def validate_or_reanchor_draft(
             surface_at = quote.find(surface, surface_at + 1)
         quote_at = chunk_text.find(quote, quote_at + 1)
     if not starts:
-        raise ValueError("no exact source occurrence for surface within quote")
+        raise ConceptGroundingError(
+            "NO_EXACT_SOURCE_OCCURRENCE", "no exact source occurrence for surface within quote"
+        )
     preferred = value.get("start_offset")
     if preferred not in starts:
         if len(starts) != 1:
-            raise ValueError("surface occurrence is ambiguous")
+            raise ConceptGroundingError(
+                "AMBIGUOUS_SOURCE_OCCURRENCE", "surface occurrence is ambiguous"
+            )
         preferred = next(iter(starts))
     value["start_offset"] = preferred
     value["end_offset"] = preferred + len(surface)
