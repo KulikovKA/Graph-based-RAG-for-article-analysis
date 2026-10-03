@@ -491,6 +491,16 @@ flowchart LR
 - **Сделать:** pin images/models, smoke script, backup/restore runbook, LAN demo, HTTPS external checklist, release tag после зелёных gates. **Приёмка/тесты:** clean host инструкциями поднимает сервисы; новый пользователь выполняет запрос и видит citations/graph; restore проверен; GitHub tag указывает на опубликованный commit. **Не делать:** не публиковать secrets/model weights/corpora и инфраструктурные порты.
 - **Context:** три названных docs, release/compose files. **Модель:** Sol/Medium. **Размер:** M, 1–2 ч, review 40 мин. **Риск:** различия Windows Docker host.
 
+### GRAPHUI-DEMO — локальный тестовый граф
+
+- **Запрос пользователя:** проверить навигацию по графу без работающего backend.
+- **Реализовано:** отдельная страница `frontend/graph-demo.html` с рабочим GraphExplorer,
+  вымышленными источниками, раскрытием связей, цитатами и сбросом вида.
+- **Проверки:** TypeScript и ESLint; Playwright — 3 passed, 1 skipped (перемещение
+  SVG на мобильном экране неприменимо, там используется список).
+- **Запуск:** см. `frontend/src/demo/README.md`. Статус: проверено локально; публикация
+  подтверждается наличием коммита этой задачи в удалённой ветке.
+
 ## Milestones
 
 | Milestone | После | Проверяемое демо |
