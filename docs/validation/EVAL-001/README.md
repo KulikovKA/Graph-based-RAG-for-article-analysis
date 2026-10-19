@@ -1,6 +1,9 @@
 # EVAL-001 — offline harness и regression report
 
-Дата: 2026-10-19. Статус: **ожидает публикации**.
+Дата: 2026-10-19. Статус: **выполнена и опубликована**.
+
+Коммит реализации: `43e7adf17365963f4e3ed451bd429bb76eeeb23b`. Push в main
+успешен; `git ls-remote origin refs/heads/main` подтвердил этот SHA после push.
 
 Реализация: [eval/README.md](../../../eval/README.md). Cases EVAL-000 и исходные
 fixtures не изменены; добавлен canonical-text SHA-256 lock. Judge является

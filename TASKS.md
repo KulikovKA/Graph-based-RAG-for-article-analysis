@@ -146,7 +146,7 @@ flowchart LR
 | AUTH-002 | Внешний доступ и проверка периметра | P1 | Sol / High | API-001,AUTH-001 | ожидает внешнего доступа |
 | UI-001 | 10 Frontend | P0 | Sol / Medium | API-001 | выполнена |
 | GRAPHUI-001 | 11 Graph UI | P1 | Sol / Medium | UI-001,GRAPH-001 | выполнена |
-| EVAL-001 | 13 Evaluation | P1 | Sol / High | API-001,EVAL-000 | ожидает публикации |
+| EVAL-001 | 13 Evaluation | P1 | Sol / High | API-001,EVAL-000 | выполнена |
 | EVAL-002 | 100 случаев и baseline evaluation | P1 | Sol / Medium | EVAL-001 | ожидает |
 | OBS-001 | 14 Observability | P1 | Luna / Medium | API-001 | ожидает |
 | TEST-001 | 14 Regression/security | P1 | Astra / High | GRAPHUI-001,EVAL-002,OBS-001,AUTH-002 | ожидает |
@@ -448,13 +448,15 @@ flowchart LR
 
 ### EVAL-001 — Offline harness и regression report
 
-- **Результат (2026-10-19): ожидает публикации.** Реализованы frozen dev fixture
+- **Результат (2026-10-19): выполнена.** Реализованы frozen dev fixture
   harness, validated artifacts, отдельный structured judge с одним schema retry,
   citation/grounding/fallback/public projection/replay gates, baseline diff,
   Markdown/HTML отчёты и атомарная запись в существующие eval_* таблицы.
   Synthetic contract run: 10/10 structural gates; semantic judge отключён,
   production model quality и latency не измерялись. [Отчёт](docs/validation/EVAL-001/README.md),
-  [запуск и ограничения](eval/README.md). Статус завершения — после push и remote SHA.
+  [запуск и ограничения](eval/README.md). Опубликовано коммитом
+  `43e7adf17365963f4e3ed451bd429bb76eeeb23b`; push успешен, SHA main проверен
+  через `git ls-remote origin refs/heads/main`.
 
 - **Дополнение ADR-011 / приёмка:** включить критерии PublicAnalysis faithfulness/unsupported relations/согласованности с AnswerV1, no-reasoning-leakage и replay из EVALUATION. Не сохранять raw thinking/drafts в eval artifacts. Safety fixtures обязательны раньше в соответствующих P0 cards, EVAL не блокирует их разработку.
 
@@ -510,6 +512,11 @@ flowchart LR
   подтверждается наличием коммита этой задачи в удалённой ветке.
 
 ### Продолжение после HYBRID-002 — запрос пользователя без нового ID
+
+- **Публикация (2026-10-19): выполнена.** Коммиты `8fb0326` (refinement) и
+  `4875379` (isolated zero replay) опубликованы в main вместе с EVAL-001.
+  Исходный blocker Ruff/mypy ниже снят коммитом `9634766`; общие проверки проходят.
+  Исторические результаты и ограничения предыдущего прогона сохранены ниже.
 
 - **Статус (2026-10-03): ожидает публикации.** Отдельной соответствующей карточки
   в baseline нет; новый ID не назначен. По dependencies доступны EVAL-001/OBS-001,
