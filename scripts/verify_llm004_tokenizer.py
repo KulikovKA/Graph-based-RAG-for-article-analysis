@@ -10,7 +10,9 @@ from pathlib import Path
 from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
-TOKENIZER = Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / ".cache/llm004-tokenizer/tokenizer.json"
+TOKENIZER = (
+    Path(sys.argv[1]) if len(sys.argv) > 1 else ROOT / ".cache/llm004-tokenizer/tokenizer.json"
+)
 EXPECTED_SHA256 = "0614fe83cadab421296e664e1f48f4261fa8fef6e03e63bb75c20f38e37d07d3"
 MODELS = ("gpt-oss:20b", "ducquoc/gpt-oss-sonnet:latest")
 BASE = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
@@ -18,8 +20,9 @@ BASE = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
 
 def api(path: str, payload: dict[str, object] | None = None) -> dict[str, object]:
     data = json.dumps(payload).encode() if payload is not None else None
-    request = Request(BASE + path, data=data,
-                      headers={"Content-Type": "application/json"} if data else {})
+    request = Request(
+        BASE + path, data=data, headers={"Content-Type": "application/json"} if data else {}
+    )
     with urlopen(request, timeout=30) as response:
         return json.load(response)
 
@@ -44,8 +47,9 @@ def main() -> None:
         model_info = info["model_info"]
         tokens = model_info["tokenizer.ggml.tokens"]
         gguf_merges = model_info["tokenizer.ggml.merges"]
-        shared_vocab_match = all(tokenizer.id_to_token(i) == tokens[i]
-                                 for i in range(upstream_vocab_size))
+        shared_vocab_match = all(
+            tokenizer.id_to_token(i) == tokens[i] for i in range(upstream_vocab_size)
+        )
         merges_match = merges == gguf_merges
         template_sha = hashlib.sha256(str(info["template"]).encode()).hexdigest()
         templates.add(template_sha)
@@ -69,9 +73,8 @@ def main() -> None:
         "tokenizer_bytes": len(raw),
         "models": checks,
         "templates_identical": len(templates) == 1,
-        "compatible": len(templates) == 1 and all(
-            c["shared_vocab_ids_match"] and c["bpe_merges_match"] for c in checks.values()
-        ),
+        "compatible": len(templates) == 1
+        and all(c["shared_vocab_ids_match"] and c["bpe_merges_match"] for c in checks.values()),
     }
     target = ROOT / "docs/validation/LLM-004/tokenizer_verification.json"
     target.parent.mkdir(parents=True, exist_ok=True)

@@ -27,13 +27,13 @@ def _worker(connection: Connection, model_path: str, max_length: int) -> None:
         from transformers import AutoModelForCausalLM, AutoTokenizer
         from transformers.utils import logging as transformers_logging
 
-        transformers_logging.disable_progress_bar()  # type: ignore[no-untyped-call]
+        transformers_logging.disable_progress_bar()
 
         tokenizer = AutoTokenizer.from_pretrained(model_path, local_files_only=True,
                                                    padding_side="left")
         tokenizer.pad_token = tokenizer.eos_token
         model = AutoModelForCausalLM.from_pretrained(model_path, local_files_only=True)
-        model.eval()  # type: ignore[no-untyped-call]
+        model.eval()
         no_id = tokenizer.convert_tokens_to_ids("no")
         yes_id = tokenizer.convert_tokens_to_ids("yes")
         prefix = ("<|im_start|>system\nJudge whether the Document meets the requirements "

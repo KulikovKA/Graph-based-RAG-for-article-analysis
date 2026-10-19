@@ -54,7 +54,7 @@ class TokenizerJsonCounter:
         if actual_sha256 != expected_sha256:
             raise ValueError("Analyst tokenizer SHA-256 does not match model inventory")
         try:
-            from tokenizers import Tokenizer  # type: ignore[import-untyped]
+            from tokenizers import Tokenizer
         except ImportError as exc:
             raise RuntimeError("tokenizers is required for evidence budgeting") from exc
         return cls(Tokenizer.from_file(str(path)))

@@ -31,8 +31,8 @@ from app.integrations.openalex import OpenAlexClient
 from app.integrations.qdrant import EmbeddingSpec, QdrantIndex
 from app.services.graph_index import (
     EXTRACTOR_VERSION,
-    GraphExtractionError,
     VOCABULARY_VERSION,
+    GraphExtractionError,
     GraphIndexingService,
     InferenceGraphExtractor,
 )
@@ -505,9 +505,8 @@ class CorpusPilot:
                 except Exception as exc:  # record safe exception type; source text is never logged
                     counts.errors += 1
                     counts.failed += 1
-                    localized = (
-                        failed_at == "graph_extraction_neo4j_projection"
-                        and isinstance(exc, InferenceProtocolError | GraphExtractionError)
+                    localized = failed_at == "graph_extraction_neo4j_projection" and isinstance(
+                        exc, InferenceProtocolError | GraphExtractionError
                     )
                     fatal = (
                         not localized
@@ -919,9 +918,7 @@ async def _run(args: argparse.Namespace) -> int:
         )
     elif args.stats_output and args.dry_run:
         print(
-            json.dumps(
-                {"stage": "stats_not_written", "reason": "dry_run_has_no_persistent_writes"}
-            )
+            json.dumps({"stage": "stats_not_written", "reason": "dry_run_has_no_persistent_writes"})
         )
     return 1 if new_fatal_errors else 0
 

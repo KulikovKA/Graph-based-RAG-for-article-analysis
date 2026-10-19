@@ -228,6 +228,8 @@ def neighbors(
         )
         grouped: dict[str, set[str]] = {}
         for fact in facts:
+            if fact.chunk_id is None:
+                continue
             for evidence in evidence_by_chunk.get(fact.chunk_id, []):
                 start = fact.span_start if fact.span_start is not None else evidence.span_start
                 end = fact.span_end if fact.span_end is not None else evidence.span_end
