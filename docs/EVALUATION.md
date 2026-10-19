@@ -10,6 +10,12 @@ Eval run фиксирует git commit, pipeline version, corpus/index snapshot,
 
 ## Порядок подготовки и проверки
 
+EVAL-001 реализован: [CLI, формат inputs, judge и ограничения](../eval/README.md),
+[acceptance report](validation/EVAL-001/README.md). Проверенный профиль —
+синтетический contract replay с production lexical/fallback/renderer; это не
+измерение качества production LLM. Подключение сохранённых observations и offline
+judge предусмотрено отдельно. Без judge faithfulness = N/A; latency gate UNSET.
+
 - EVAL-000 (P0, после ING-001): 10 небольших synthetic/licensed dev cases и frozen fixtures. Expected source IDs и точные spans готовы **до RANK-001**; это вход для двух компактных reranker вариантов, а не зависимость от ещё не написанного полного harness.
 - EVAL-001 (P1, после API-001): harness, versioned artifacts, judge/schema и negative regression tests на dev fixture. Не объявляет 100-case baseline выполненным.
 - EVAL-002 (P1): 100 размеченных случаев и полный baseline/report. Первые 10 остаются внутри 70 dev; никакого overlap с 15 validation/15 holdout. Подготовка/экспертная разметка — отдельно оценённые 8–16 часов человека сверх обычного code review; генерация 100 непроверенных queries не закрывает этот gate.

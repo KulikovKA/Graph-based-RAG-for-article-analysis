@@ -1,0 +1,44 @@
+<!doctype html><html lang="ru"><meta charset="utf-8"><title>EVAL-001</title><style>body{max-width:1100px;margin:2rem auto;font:16px system-ui}pre{white-space:pre-wrap;overflow-wrap:anywhere}</style><body><pre># EVAL-001 — offline regression report
+
+Profile: `fixture-contract-replay`. Run: `b18d0274-e38d-4677-93d0-4b4bb05a6203`.
+
+Fixture profile проверяет lexical fallback и deterministic Analyst fallback. Это не baseline качества production-моделей и не EVAL-002.
+
+Judge: disabled. Без judge semantic faithfulness = N/A.
+Latency gate: UNSET. Модель, RAM, TTFT, tokens и browser timings в fixture не измеряются.
+
+| Case | Outcome | Recall@10 | Citations | Errors |
+|---|---|---|---|---|
+| EVAL000-DEV-001 | safe_fallback | 1.0 | 1.0 | — |
+| EVAL000-DEV-002 | safe_fallback | 1.0 | 1.0 | — |
+| EVAL000-DEV-003 | safe_fallback | 1.0 | 1.0 | — |
+| EVAL000-DEV-004 | safe_fallback | 1.0 | 1.0 | — |
+| EVAL000-DEV-005 | safe_fallback | 1.0 | 1.0 | — |
+| EVAL000-DEV-006 | safe_fallback | 1.0 | 1.0 | — |
+| EVAL000-DEV-007 | safe_fallback | 0.5 | 1.0 | — |
+| EVAL000-DEV-008 | safe_fallback | 0.5 | 1.0 | — |
+| EVAL000-DEV-009 | no_evidence | N/A | N/A | — |
+| EVAL000-DEV-010 | safe_fallback | 1.0 | 1.0 | — |
+
+## Summary
+
+```json
+{
+  &quot;cases&quot;: 10,
+  &quot;passed&quot;: 10,
+  &quot;recall_at_10&quot;: 0.8888888888888888,
+  &quot;mrr&quot;: 1.0,
+  &quot;citation_validity&quot;: 1.0,
+  &quot;citation_denominator&quot;: 19,
+  &quot;citation_na_cases&quot;: 1,
+  &quot;faithfulness&quot;: null,
+  &quot;judge_evaluated_cases&quot;: 0,
+  &quot;latency_p50_ms&quot;: null,
+  &quot;latency_p95_ms&quot;: null,
+  &quot;latency_gate&quot;: &quot;UNSET&quot;,
+  &quot;planner_accuracy&quot;: null,
+  &quot;planner_reason&quot;: &quot;EVAL000_HAS_NO_PLANNER_GOLD&quot;,
+  &quot;failure_rate&quot;: 0.0
+}
+```
+</pre></body></html>

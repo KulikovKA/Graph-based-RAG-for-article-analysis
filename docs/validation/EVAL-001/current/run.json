@@ -1,0 +1,379 @@
+{
+  "schema_version": "eval.run.v1",
+  "run_id": "3e7cf5f0-fecf-42d1-9a5a-8872d6b9cb99",
+  "started_at": "2026-10-19T13:51:33.904428+00:00",
+  "git_commit": "9634766fb7031966986e1bdbd5610d7ab86b3b75",
+  "git_dirty": true,
+  "profile": "fixture-contract-replay",
+  "snapshot": {
+    "eval/cases/dev_smoke.jsonl": "40ec4608610a4025732d6b0f5f70fac247047992f62c8a5d99124ddf22481854",
+    "eval/cases/schema.json": "4a36f086cb49cb0bc1853eff739e033563034bad1b998470aad4fde2ef1a849d",
+    "eval/fixtures/manifest.json": "2b098fd82dd27d1aeaabb0462af276b4f872b071b1afb102128a97b061f42a58",
+    "eval/fixtures/epo_search.xml": "71a1ec488eb0c07c3e194f21fb31495aa998911cf5ef72e3d3448010bd918b51",
+    "eval/fixtures/openalex/W999999999001.json": "2efe50c4b747f1579ae804dc4921f5e1edae205efe35a620a98c839d4b2c1cd4",
+    "eval/fixtures/openalex/W999999999002.json": "39c8b5b86f10900d5a621326c4511e1ca060d160e7ad454a6841ed6617ece68b",
+    "eval/fixtures/openalex/W999999999003.json": "988367eb1b9faa52c8af48967594eeeef0a1d7e364b17c136bfaefc00582540c",
+    "eval/fixtures/openalex/W999999999004.json": "2a1129babae25edcabb452290abb3640ab3212338452251fe447c95f94664a9f"
+  },
+  "snapshot_id": "9fd6a4cad30ffacd7a39d0d2a52c3183cff0375bcabaff7b75a2368339243270",
+  "index_snapshot": "9dcc9ca1950261e72ff70e1c5fbc83f6706a9839f0262c78235d3cf27143d0f0",
+  "case_ids": [
+    "EVAL000-DEV-001",
+    "EVAL000-DEV-002",
+    "EVAL000-DEV-003",
+    "EVAL000-DEV-004",
+    "EVAL000-DEV-005",
+    "EVAL000-DEV-006",
+    "EVAL000-DEV-007",
+    "EVAL000-DEV-008",
+    "EVAL000-DEV-009",
+    "EVAL000-DEV-010"
+  ],
+  "versions": {
+    "config/models.yaml": "cc87c9068b55a62510f5048e3d0e5a475eed483172b78a8d790224816c608643",
+    "prompts/planner_v1.txt": "312e5fad5405d505396304abe2224ea698ac34c255a597125450f8319fca565c",
+    "prompts/analyst_v1.txt": "17699cc6eb0e1af9cf31fe8e6be0555b259d434729715980d19e4f04de391c36",
+    "prompts/analyst_narrative_v1.txt": "534d37b3a1ee54ae18fdfaac68f0b1d2da481f117c2371cb2af6cf8800b10e76",
+    "eval/harness.py": "d345d91082eba4e2a3da155952974ec3bcf1c7e4b3a02ef62f899e2302c0fd5c",
+    "eval/judge.py": "3013ae7d7b854d0ffc5ceeaa4a007c3c021fd33fab7b39ef7438a2af2078b382",
+    "eval/report.py": "520e48101474d02f921d0dc763c442b20bf48d05c12ca4bd449ae7b595f9b1cd",
+    "eval/run.py": "ff9b17ea26a453eff9b7eaed146a7a1a2bbacb6fcc20f57bb0f2f0c81d418baf",
+    "src/app/services/analyst.py": "1ddd5999683b9e5aa76ce8ae59924bad32f4e8bfe26aed3db0f7fd208eb57ad6",
+    "src/app/services/rerank.py": "3c959b322956c86d326eb8c6bff9f7b727a00461c0082b42efd80630cb1c8f6a",
+    "src/app/domain/contracts.py": "8760411a4a5814ca3623eff10f16fa7d12de684bf94bd809128e338bc1454374",
+    "src/app/services/ingestion.py": "a90bdf385d4c06c556042ffcbb575ed7efced7a4e211ba9b613f245b18358d66"
+  },
+  "judge_identity": "disabled",
+  "results": [
+    {
+      "case_id": "EVAL000-DEV-001",
+      "status": "completed",
+      "outcome": "safe_fallback",
+      "errors": [],
+      "passed": true,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "citation_validity": 1.0,
+      "citation_denominator": 3,
+      "elapsed_ms": null,
+      "timing_reason": "OFFLINE_REPLAY",
+      "judge": null,
+      "judge_status": "DISABLED"
+    },
+    {
+      "case_id": "EVAL000-DEV-002",
+      "status": "completed",
+      "outcome": "safe_fallback",
+      "errors": [],
+      "passed": true,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "citation_validity": 1.0,
+      "citation_denominator": 3,
+      "elapsed_ms": null,
+      "timing_reason": "OFFLINE_REPLAY",
+      "judge": null,
+      "judge_status": "DISABLED"
+    },
+    {
+      "case_id": "EVAL000-DEV-003",
+      "status": "completed",
+      "outcome": "safe_fallback",
+      "errors": [],
+      "passed": true,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "citation_validity": 1.0,
+      "citation_denominator": 2,
+      "elapsed_ms": null,
+      "timing_reason": "OFFLINE_REPLAY",
+      "judge": null,
+      "judge_status": "DISABLED"
+    },
+    {
+      "case_id": "EVAL000-DEV-004",
+      "status": "completed",
+      "outcome": "safe_fallback",
+      "errors": [],
+      "passed": true,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "citation_validity": 1.0,
+      "citation_denominator": 3,
+      "elapsed_ms": null,
+      "timing_reason": "OFFLINE_REPLAY",
+      "judge": null,
+      "judge_status": "DISABLED"
+    },
+    {
+      "case_id": "EVAL000-DEV-005",
+      "status": "completed",
+      "outcome": "safe_fallback",
+      "errors": [],
+      "passed": true,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "citation_validity": 1.0,
+      "citation_denominator": 2,
+      "elapsed_ms": null,
+      "timing_reason": "OFFLINE_REPLAY",
+      "judge": null,
+      "judge_status": "DISABLED"
+    },
+    {
+      "case_id": "EVAL000-DEV-006",
+      "status": "completed",
+      "outcome": "safe_fallback",
+      "errors": [],
+      "passed": true,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "citation_validity": 1.0,
+      "citation_denominator": 3,
+      "elapsed_ms": null,
+      "timing_reason": "OFFLINE_REPLAY",
+      "judge": null,
+      "judge_status": "DISABLED"
+    },
+    {
+      "case_id": "EVAL000-DEV-007",
+      "status": "completed",
+      "outcome": "safe_fallback",
+      "errors": [],
+      "passed": true,
+      "recall_at_10": 0.5,
+      "reciprocal_rank": 1.0,
+      "citation_validity": 1.0,
+      "citation_denominator": 1,
+      "elapsed_ms": null,
+      "timing_reason": "OFFLINE_REPLAY",
+      "judge": null,
+      "judge_status": "DISABLED"
+    },
+    {
+      "case_id": "EVAL000-DEV-008",
+      "status": "completed",
+      "outcome": "safe_fallback",
+      "errors": [],
+      "passed": true,
+      "recall_at_10": 0.5,
+      "reciprocal_rank": 1.0,
+      "citation_validity": 1.0,
+      "citation_denominator": 1,
+      "elapsed_ms": null,
+      "timing_reason": "OFFLINE_REPLAY",
+      "judge": null,
+      "judge_status": "DISABLED"
+    },
+    {
+      "case_id": "EVAL000-DEV-009",
+      "status": "completed",
+      "outcome": "no_evidence",
+      "errors": [],
+      "passed": true,
+      "recall_at_10": null,
+      "reciprocal_rank": null,
+      "citation_validity": null,
+      "citation_denominator": 0,
+      "elapsed_ms": null,
+      "timing_reason": "OFFLINE_REPLAY",
+      "judge": null,
+      "judge_status": "DISABLED"
+    },
+    {
+      "case_id": "EVAL000-DEV-010",
+      "status": "completed",
+      "outcome": "safe_fallback",
+      "errors": [],
+      "passed": true,
+      "recall_at_10": 1.0,
+      "reciprocal_rank": 1.0,
+      "citation_validity": 1.0,
+      "citation_denominator": 1,
+      "elapsed_ms": null,
+      "timing_reason": "OFFLINE_REPLAY",
+      "judge": null,
+      "judge_status": "DISABLED"
+    }
+  ],
+  "baseline_diff": {
+    "regressions": [],
+    "metric_deltas": {
+      "recall_at_10": 0.0,
+      "faithfulness": null
+    },
+    "per_case": [
+      {
+        "case_id": "EVAL000-DEV-001",
+        "previous_errors": [],
+        "current_errors": [],
+        "previous_outcome": "safe_fallback",
+        "current_outcome": "safe_fallback",
+        "recall_delta": 0.0
+      },
+      {
+        "case_id": "EVAL000-DEV-002",
+        "previous_errors": [],
+        "current_errors": [],
+        "previous_outcome": "safe_fallback",
+        "current_outcome": "safe_fallback",
+        "recall_delta": 0.0
+      },
+      {
+        "case_id": "EVAL000-DEV-003",
+        "previous_errors": [],
+        "current_errors": [],
+        "previous_outcome": "safe_fallback",
+        "current_outcome": "safe_fallback",
+        "recall_delta": 0.0
+      },
+      {
+        "case_id": "EVAL000-DEV-004",
+        "previous_errors": [],
+        "current_errors": [],
+        "previous_outcome": "safe_fallback",
+        "current_outcome": "safe_fallback",
+        "recall_delta": 0.0
+      },
+      {
+        "case_id": "EVAL000-DEV-005",
+        "previous_errors": [],
+        "current_errors": [],
+        "previous_outcome": "safe_fallback",
+        "current_outcome": "safe_fallback",
+        "recall_delta": 0.0
+      },
+      {
+        "case_id": "EVAL000-DEV-006",
+        "previous_errors": [],
+        "current_errors": [],
+        "previous_outcome": "safe_fallback",
+        "current_outcome": "safe_fallback",
+        "recall_delta": 0.0
+      },
+      {
+        "case_id": "EVAL000-DEV-007",
+        "previous_errors": [],
+        "current_errors": [],
+        "previous_outcome": "safe_fallback",
+        "current_outcome": "safe_fallback",
+        "recall_delta": 0.0
+      },
+      {
+        "case_id": "EVAL000-DEV-008",
+        "previous_errors": [],
+        "current_errors": [],
+        "previous_outcome": "safe_fallback",
+        "current_outcome": "safe_fallback",
+        "recall_delta": 0.0
+      },
+      {
+        "case_id": "EVAL000-DEV-009",
+        "previous_errors": [],
+        "current_errors": [],
+        "previous_outcome": "no_evidence",
+        "current_outcome": "no_evidence",
+        "recall_delta": null
+      },
+      {
+        "case_id": "EVAL000-DEV-010",
+        "previous_errors": [],
+        "current_errors": [],
+        "previous_outcome": "safe_fallback",
+        "current_outcome": "safe_fallback",
+        "recall_delta": 0.0
+      }
+    ]
+  },
+  "pipeline_version": "eval001-contract-replay-v1",
+  "configured_models": {
+    "schema_version": 1,
+    "generation": {
+      "planner": {
+        "provider": "ollama",
+        "model_id": "qwen3.5:4b-q4_K_M",
+        "digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+        "max_output_tokens": 384,
+        "reasoning_efforts": []
+      },
+      "graph_extractor": {
+        "provider": "ollama",
+        "model_id": "qwen3.5:4b-q4_K_M",
+        "digest": "2a654d98e6fba55d452b7043684e9b57a947e393bbffa62485a7aac05ee4eefd",
+        "extractor_version": "graph-extraction-v2",
+        "max_output_tokens": 2048,
+        "context_window": 16384,
+        "timeout_seconds": 300,
+        "temperature": 0,
+        "reasoning_efforts": []
+      },
+      "analyst": {
+        "provider": "ollama",
+        "model_id": "gpt-oss:20b",
+        "digest": "17052f91a42e97930aa6e28a6c6c06a983e6a58dbb00434885a0cf5313e376f7",
+        "max_output_tokens": 2048,
+        "reasoning_efforts": [
+          "low"
+        ],
+        "tokenizer": {
+          "provider": "huggingface",
+          "repo_id": "openai/gpt-oss-20b",
+          "revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+          "file_sha256": "0614fe83cadab421296e664e1f48f4261fa8fef6e03e63bb75c20f38e37d07d3"
+        }
+      },
+      "relation_classifier": {
+        "provider": "ollama",
+        "endpoint_type": "systemone",
+        "model_id": "tev1:4b",
+        "digest": "cef45ef93cf6df8bf32bdd689b0a8fd01f88ae9034d33ce890c54f77e4cd981e",
+        "thinking": false,
+        "contract_version": "relation-classifier-v1",
+        "max_state_bytes": 6000
+      }
+    },
+    "embedding": {
+      "provider": "ollama",
+      "model_id": "qwen3-embedding:0.6b",
+      "digest": "ac6da0dfba84a81fdbfbaf330198c33cd77c4cdfc53e8bc50eb581914a15621d",
+      "dimension": 1024,
+      "batch_size": 16
+    },
+    "reranker": {
+      "provider": "transformers-qwen-causal-reranker",
+      "model_id": "Qwen/Qwen3-Reranker-0.6B",
+      "revision": "e61197ed45024b0ed8a2d74b80b4d909f1255473",
+      "max_length": 1024,
+      "batch_size": 4
+    }
+  },
+  "execution": {
+    "models_called_by_harness": [],
+    "retrieval": "lexical_scores; top10; stopword overlap gate",
+    "analyst": "production Analyst; unavailable fixture provider",
+    "production_model_quality_measured": false,
+    "ttft_ms": null,
+    "reasoning_tokens": null,
+    "output_tokens": null,
+    "peak_ram_bytes": null,
+    "model_switch_ms": null,
+    "timing_reason": "NOT_MEASURED"
+  },
+  "summary": {
+    "cases": 10,
+    "passed": 10,
+    "recall_at_10": 0.8888888888888888,
+    "mrr": 1.0,
+    "citation_validity": 1.0,
+    "citation_denominator": 19,
+    "citation_na_cases": 1,
+    "faithfulness": null,
+    "judge_evaluated_cases": 0,
+    "latency_p50_ms": null,
+    "latency_p95_ms": null,
+    "latency_gate": "UNSET",
+    "planner_accuracy": null,
+    "planner_reason": "EVAL000_HAS_NO_PLANNER_GOLD",
+    "failure_rate": 0.0
+  }
+}

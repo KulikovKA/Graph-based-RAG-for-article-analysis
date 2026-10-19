@@ -1,0 +1,138 @@
+<!doctype html><html lang="ru"><meta charset="utf-8"><title>EVAL-001</title><style>body{max-width:1100px;margin:2rem auto;font:16px system-ui}pre{white-space:pre-wrap;overflow-wrap:anywhere}</style><body><pre># EVAL-001 — offline regression report
+
+Profile: `fixture-contract-replay`. Run: `3e7cf5f0-fecf-42d1-9a5a-8872d6b9cb99`.
+
+Fixture profile проверяет lexical fallback и deterministic Analyst fallback. Это не baseline качества production-моделей и не EVAL-002.
+
+Judge: disabled. Без judge semantic faithfulness = N/A.
+Latency gate: UNSET. Модель, RAM, TTFT, tokens и browser timings в fixture не измеряются.
+
+| Case | Outcome | Recall@10 | Citations | Errors |
+|---|---|---|---|---|
+| EVAL000-DEV-001 | safe_fallback | 1.0 | 1.0 | — |
+| EVAL000-DEV-002 | safe_fallback | 1.0 | 1.0 | — |
+| EVAL000-DEV-003 | safe_fallback | 1.0 | 1.0 | — |
+| EVAL000-DEV-004 | safe_fallback | 1.0 | 1.0 | — |
+| EVAL000-DEV-005 | safe_fallback | 1.0 | 1.0 | — |
+| EVAL000-DEV-006 | safe_fallback | 1.0 | 1.0 | — |
+| EVAL000-DEV-007 | safe_fallback | 0.5 | 1.0 | — |
+| EVAL000-DEV-008 | safe_fallback | 0.5 | 1.0 | — |
+| EVAL000-DEV-009 | no_evidence | N/A | N/A | — |
+| EVAL000-DEV-010 | safe_fallback | 1.0 | 1.0 | — |
+
+## Summary
+
+```json
+{
+  &quot;cases&quot;: 10,
+  &quot;passed&quot;: 10,
+  &quot;recall_at_10&quot;: 0.8888888888888888,
+  &quot;mrr&quot;: 1.0,
+  &quot;citation_validity&quot;: 1.0,
+  &quot;citation_denominator&quot;: 19,
+  &quot;citation_na_cases&quot;: 1,
+  &quot;faithfulness&quot;: null,
+  &quot;judge_evaluated_cases&quot;: 0,
+  &quot;latency_p50_ms&quot;: null,
+  &quot;latency_p95_ms&quot;: null,
+  &quot;latency_gate&quot;: &quot;UNSET&quot;,
+  &quot;planner_accuracy&quot;: null,
+  &quot;planner_reason&quot;: &quot;EVAL000_HAS_NO_PLANNER_GOLD&quot;,
+  &quot;failure_rate&quot;: 0.0
+}
+```
+
+## Baseline diff
+
+```json
+{
+  &quot;regressions&quot;: [],
+  &quot;metric_deltas&quot;: {
+    &quot;recall_at_10&quot;: 0.0,
+    &quot;faithfulness&quot;: null
+  },
+  &quot;per_case&quot;: [
+    {
+      &quot;case_id&quot;: &quot;EVAL000-DEV-001&quot;,
+      &quot;previous_errors&quot;: [],
+      &quot;current_errors&quot;: [],
+      &quot;previous_outcome&quot;: &quot;safe_fallback&quot;,
+      &quot;current_outcome&quot;: &quot;safe_fallback&quot;,
+      &quot;recall_delta&quot;: 0.0
+    },
+    {
+      &quot;case_id&quot;: &quot;EVAL000-DEV-002&quot;,
+      &quot;previous_errors&quot;: [],
+      &quot;current_errors&quot;: [],
+      &quot;previous_outcome&quot;: &quot;safe_fallback&quot;,
+      &quot;current_outcome&quot;: &quot;safe_fallback&quot;,
+      &quot;recall_delta&quot;: 0.0
+    },
+    {
+      &quot;case_id&quot;: &quot;EVAL000-DEV-003&quot;,
+      &quot;previous_errors&quot;: [],
+      &quot;current_errors&quot;: [],
+      &quot;previous_outcome&quot;: &quot;safe_fallback&quot;,
+      &quot;current_outcome&quot;: &quot;safe_fallback&quot;,
+      &quot;recall_delta&quot;: 0.0
+    },
+    {
+      &quot;case_id&quot;: &quot;EVAL000-DEV-004&quot;,
+      &quot;previous_errors&quot;: [],
+      &quot;current_errors&quot;: [],
+      &quot;previous_outcome&quot;: &quot;safe_fallback&quot;,
+      &quot;current_outcome&quot;: &quot;safe_fallback&quot;,
+      &quot;recall_delta&quot;: 0.0
+    },
+    {
+      &quot;case_id&quot;: &quot;EVAL000-DEV-005&quot;,
+      &quot;previous_errors&quot;: [],
+      &quot;current_errors&quot;: [],
+      &quot;previous_outcome&quot;: &quot;safe_fallback&quot;,
+      &quot;current_outcome&quot;: &quot;safe_fallback&quot;,
+      &quot;recall_delta&quot;: 0.0
+    },
+    {
+      &quot;case_id&quot;: &quot;EVAL000-DEV-006&quot;,
+      &quot;previous_errors&quot;: [],
+      &quot;current_errors&quot;: [],
+      &quot;previous_outcome&quot;: &quot;safe_fallback&quot;,
+      &quot;current_outcome&quot;: &quot;safe_fallback&quot;,
+      &quot;recall_delta&quot;: 0.0
+    },
+    {
+      &quot;case_id&quot;: &quot;EVAL000-DEV-007&quot;,
+      &quot;previous_errors&quot;: [],
+      &quot;current_errors&quot;: [],
+      &quot;previous_outcome&quot;: &quot;safe_fallback&quot;,
+      &quot;current_outcome&quot;: &quot;safe_fallback&quot;,
+      &quot;recall_delta&quot;: 0.0
+    },
+    {
+      &quot;case_id&quot;: &quot;EVAL000-DEV-008&quot;,
+      &quot;previous_errors&quot;: [],
+      &quot;current_errors&quot;: [],
+      &quot;previous_outcome&quot;: &quot;safe_fallback&quot;,
+      &quot;current_outcome&quot;: &quot;safe_fallback&quot;,
+      &quot;recall_delta&quot;: 0.0
+    },
+    {
+      &quot;case_id&quot;: &quot;EVAL000-DEV-009&quot;,
+      &quot;previous_errors&quot;: [],
+      &quot;current_errors&quot;: [],
+      &quot;previous_outcome&quot;: &quot;no_evidence&quot;,
+      &quot;current_outcome&quot;: &quot;no_evidence&quot;,
+      &quot;recall_delta&quot;: null
+    },
+    {
+      &quot;case_id&quot;: &quot;EVAL000-DEV-010&quot;,
+      &quot;previous_errors&quot;: [],
+      &quot;current_errors&quot;: [],
+      &quot;previous_outcome&quot;: &quot;safe_fallback&quot;,
+      &quot;current_outcome&quot;: &quot;safe_fallback&quot;,
+      &quot;recall_delta&quot;: 0.0
+    }
+  ]
+}
+```
+</pre></body></html>
