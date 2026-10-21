@@ -49,11 +49,15 @@ def audit(d):
 
 if __name__ == '__main__':
     reports = []
-    for p in sorted((BASE / 'annotations/drafts').glob('*.jsonl')):
+    from campaign_paths import draft_paths,private_root
+    for p in draft_paths():
         for line in p.read_text(encoding='utf-8').splitlines():
             d = json.loads(line)
             report = audit(d)
             report['draft_sha256'] = hashlib.sha256(p.read_bytes()).hexdigest()
+            if d['split']=='HOLDOUT':
+                (private_root()/'reports'/f'{d["document_code"]}_canonical_claims.json').write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+                report={k:v for k,v in report.items() if k not in ('canonical_triples','repeated_qualified_groups')}
             reports.append(report)
     (BASE / 'annotations/reports/canonical_claim_audit.json').write_text(
         json.dumps(reports, ensure_ascii=False, indent=2)+'\n', encoding='utf-8')

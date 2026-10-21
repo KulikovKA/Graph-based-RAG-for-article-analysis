@@ -1,0 +1,218 @@
+[
+  {
+    "document_code": "D001",
+    "split": "DEV",
+    "human_review": "NOT_REVIEWED",
+    "priority": "STANDARD",
+    "unresolved": 0,
+    "review_scope": "All mentions, all assertions and evidence; draft completeness not measured human recall",
+    "packet": "../reviews/D001_review.md"
+  },
+  {
+    "document_code": "D003",
+    "split": "DEV",
+    "human_review": "NOT_REVIEWED",
+    "priority": "STANDARD",
+    "unresolved": 0,
+    "review_scope": "All mentions, all assertions and evidence; draft completeness not measured human recall",
+    "packet": "../reviews/D003_review.md"
+  },
+  {
+    "document_code": "D004",
+    "split": "DEV",
+    "human_review": "NOT_REVIEWED",
+    "priority": "HIGH",
+    "unresolved": 3,
+    "review_scope": "All mentions, all assertions and evidence; draft completeness not measured human recall",
+    "packet": "../reviews/D004_review.md"
+  },
+  {
+    "document_code": "D010",
+    "split": "DEV",
+    "human_review": "NOT_REVIEWED",
+    "priority": "STANDARD",
+    "unresolved": 0,
+    "review_scope": "All mentions, all assertions and evidence; draft completeness not measured human recall",
+    "packet": "../reviews/D010_review.md"
+  },
+  {
+    "document_code": "D060",
+    "split": "DEV",
+    "human_review": "NOT_REVIEWED",
+    "priority": "HIGH",
+    "unresolved": 2,
+    "review_scope": "All mentions, all assertions and evidence; draft completeness not measured human recall",
+    "packet": "../reviews/D060_review.md"
+  },
+  {
+    "document_code": "D078",
+    "split": "DEV",
+    "human_review": "NOT_REVIEWED",
+    "priority": "HIGH",
+    "unresolved": 6,
+    "review_scope": "All mentions, all assertions and evidence; draft completeness not measured human recall",
+    "packet": "../reviews/D078_review.md"
+  },
+  {
+    "document_code": "D035",
+    "split": "DEV",
+    "human_review": "NOT_REVIEWED",
+    "priority": "STANDARD",
+    "unresolved": 0,
+    "review_scope": "All mentions, all assertions and evidence; draft completeness not measured human recall",
+    "packet": "../reviews/D035_review.md"
+  },
+  {
+    "document_code": "D092",
+    "split": "DEV",
+    "human_review": "NOT_REVIEWED",
+    "priority": "HIGH",
+    "unresolved": 2,
+    "review_scope": "All mentions, all assertions and evidence; draft completeness not measured human recall",
+    "packet": "../reviews/D092_review.md"
+  },
+  {
+    "document_code": "D017",
+    "split": "DEV",
+    "human_review": "NOT_REVIEWED",
+    "priority": "STANDARD",
+    "unresolved": 0,
+    "review_scope": "All mentions, all assertions and evidence; draft completeness not measured human recall",
+    "packet": "../reviews/D017_review.md"
+  },
+  {
+    "document_code": "D038",
+    "split": "DEV",
+    "human_review": "NOT_REVIEWED",
+    "priority": "HIGH",
+    "unresolved": 1,
+    "review_scope": "All mentions, all assertions and evidence; draft completeness not measured human recall",
+    "packet": "../reviews/D038_review.md"
+  },
+  {
+    "document_code": "D026",
+    "split": "DEV",
+    "human_review": "NOT_REVIEWED",
+    "priority": "HIGH",
+    "unresolved": 2,
+    "review_scope": "All mentions, all assertions and evidence; draft completeness not measured human recall",
+    "packet": "../reviews/D026_review.md"
+  },
+  {
+    "document_code": "D024",
+    "split": "DEV",
+    "human_review": "NOT_REVIEWED",
+    "priority": "HIGH",
+    "unresolved": 4,
+    "review_scope": "All mentions, all assertions and evidence; draft completeness not measured human recall",
+    "packet": "../reviews/D024_review.md"
+  },
+  {
+    "document_code": "D018",
+    "split": "CALIBRATION",
+    "human_review": "NOT_REVIEWED",
+    "priority": "HIGH",
+    "unresolved": 3,
+    "review_scope": "All mentions, all assertions and evidence; draft completeness not measured human recall",
+    "packet": "../reviews/D018_review.md"
+  },
+  {
+    "document_code": "D050",
+    "split": "CALIBRATION",
+    "human_review": "NOT_REVIEWED",
+    "priority": "HIGH",
+    "unresolved": 4,
+    "review_scope": "All mentions, all assertions and evidence; draft completeness not measured human recall",
+    "packet": "../reviews/D050_review.md"
+  },
+  {
+    "document_code": "D029",
+    "split": "CALIBRATION",
+    "human_review": "NOT_REVIEWED",
+    "priority": "HIGH",
+    "unresolved": 1,
+    "review_scope": "All mentions, all assertions and evidence; draft completeness not measured human recall",
+    "packet": "../reviews/D029_review.md"
+  },
+  {
+    "document_code": "D042",
+    "split": "CALIBRATION",
+    "human_review": "NOT_REVIEWED",
+    "priority": "HIGH",
+    "unresolved": 2,
+    "review_scope": "All mentions, all assertions and evidence; draft completeness not measured human recall",
+    "packet": "../reviews/D042_review.md"
+  },
+  {
+    "document_code": "D021",
+    "split": "CALIBRATION",
+    "human_review": "NOT_REVIEWED",
+    "priority": "HIGH",
+    "unresolved": 1,
+    "review_scope": "All mentions, all assertions and evidence; draft completeness not measured human recall",
+    "packet": "../reviews/D021_review.md"
+  },
+  {
+    "document_code": "D093",
+    "split": "CALIBRATION",
+    "human_review": "NOT_REVIEWED",
+    "priority": "HIGH",
+    "unresolved": 1,
+    "review_scope": "All mentions, all assertions and evidence; draft completeness not measured human recall",
+    "packet": "../reviews/D093_review.md"
+  },
+  {
+    "document_code": "D068",
+    "split": "HOLDOUT",
+    "human_review": "NOT_REVIEWED",
+    "priority": "STANDARD",
+    "unresolved": 0,
+    "review_scope": "All mentions, all assertions and evidence; draft completeness not measured human recall",
+    "packet": "PRIVATE_LOCAL_STORE"
+  },
+  {
+    "document_code": "D070",
+    "split": "HOLDOUT",
+    "human_review": "NOT_REVIEWED",
+    "priority": "HIGH",
+    "unresolved": 2,
+    "review_scope": "All mentions, all assertions and evidence; draft completeness not measured human recall",
+    "packet": "PRIVATE_LOCAL_STORE"
+  },
+  {
+    "document_code": "D098",
+    "split": "HOLDOUT",
+    "human_review": "NOT_REVIEWED",
+    "priority": "HIGH",
+    "unresolved": 1,
+    "review_scope": "All mentions, all assertions and evidence; draft completeness not measured human recall",
+    "packet": "PRIVATE_LOCAL_STORE"
+  },
+  {
+    "document_code": "D088",
+    "split": "HOLDOUT",
+    "human_review": "NOT_REVIEWED",
+    "priority": "HIGH",
+    "unresolved": 1,
+    "review_scope": "All mentions, all assertions and evidence; draft completeness not measured human recall",
+    "packet": "PRIVATE_LOCAL_STORE"
+  },
+  {
+    "document_code": "D061",
+    "split": "HOLDOUT",
+    "human_review": "NOT_REVIEWED",
+    "priority": "STANDARD",
+    "unresolved": 0,
+    "review_scope": "All mentions, all assertions and evidence; draft completeness not measured human recall",
+    "packet": "PRIVATE_LOCAL_STORE"
+  },
+  {
+    "document_code": "D090",
+    "split": "HOLDOUT",
+    "human_review": "NOT_REVIEWED",
+    "priority": "STANDARD",
+    "unresolved": 0,
+    "review_scope": "All mentions, all assertions and evidence; draft completeness not measured human recall",
+    "packet": "PRIVATE_LOCAL_STORE"
+  }
+]

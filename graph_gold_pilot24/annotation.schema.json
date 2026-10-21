@@ -1,0 +1,467 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "graph-gold-pilot-v0"
+    },
+    "document_code": {
+      "type": "string",
+      "pattern": "^D[0-9]{3}$"
+    },
+    "document_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "revision_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "split": {
+      "enum": [
+        "DEV",
+        "CALIBRATION",
+        "HOLDOUT"
+      ]
+    },
+    "annotation_status": {
+      "type": "string"
+    },
+    "annotation_scope": {
+      "type": "string"
+    },
+    "exhaustive_entities": {
+      "type": "boolean"
+    },
+    "exhaustive_relations": {
+      "type": "boolean"
+    },
+    "rubric_version": {
+      "type": "string"
+    },
+    "mentions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "mention_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "chunk_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "start": {
+            "type": "integer"
+          },
+          "end": {
+            "type": "integer"
+          },
+          "surface_text": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "MATERIAL",
+              "DEVICE",
+              "PROPERTY",
+              "PERFORMANCE",
+              "ANALYTE",
+              "PROCESS",
+              "MECHANISM",
+              "OPERATING_CONDITION",
+              "MORPHOLOGY",
+              "TECHNOLOGY",
+              "APPLICATION",
+              "OTHER"
+            ]
+          },
+          "contextual_role": {
+            "type": "string"
+          },
+          "canonical_concept": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "coreference_group": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "evidence_span_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "annotation_status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "mention_id",
+          "chunk_id",
+          "start",
+          "end",
+          "surface_text",
+          "kind",
+          "contextual_role",
+          "canonical_concept",
+          "coreference_group",
+          "evidence_span_ids",
+          "annotation_status"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "assertions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "assertion_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "head_mention_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "tail_mention_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "relation_type": {
+            "type": "string"
+          },
+          "polarity": {
+            "enum": [
+              "POSITIVE",
+              "NEGATIVE",
+              "UNKNOWN"
+            ]
+          },
+          "modality": {
+            "enum": [
+              "ASSERTED",
+              "PROPOSED",
+              "COMPARED",
+              "HYPOTHETICAL",
+              "UNKNOWN"
+            ]
+          },
+          "support_status": {
+            "enum": [
+              "SUPPORTED",
+              "CONTRADICTED",
+              "INSUFFICIENT",
+              "UNRESOLVED"
+            ]
+          },
+          "qualifiers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "qualifier_type": {
+                  "type": "string"
+                },
+                "raw_text": {
+                  "type": "string"
+                },
+                "raw_value": {},
+                "unit": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "applies_to_assertion_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "evidence_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uuid"
+                  }
+                }
+              },
+              "required": [
+                "qualifier_type",
+                "raw_text",
+                "raw_value",
+                "unit",
+                "applies_to_assertion_id",
+                "evidence_refs"
+              ],
+              "additionalProperties": true
+            }
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "span_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "document_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "revision_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "chunk_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "start": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "end": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "text": {
+                  "type": "string"
+                },
+                "source_text_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "span_id",
+                "document_id",
+                "revision_id",
+                "chunk_id",
+                "start",
+                "end",
+                "text",
+                "source_text_sha256"
+              ],
+              "additionalProperties": true
+            }
+          }
+        },
+        "required": [
+          "assertion_id",
+          "head_mention_id",
+          "tail_mention_id",
+          "relation_type",
+          "polarity",
+          "modality",
+          "support_status",
+          "qualifiers",
+          "evidence"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "identity_decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "decision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "left_mention_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "right_mention_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "label": {
+            "enum": [
+              "SAME",
+              "RELATED",
+              "BROADER",
+              "NARROWER",
+              "DIFFERENT",
+              "UNCERTAIN"
+            ]
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "span_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "document_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "revision_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "chunk_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "start": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "end": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "text": {
+                  "type": "string"
+                },
+                "source_text_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "span_id",
+                "document_id",
+                "revision_id",
+                "chunk_id",
+                "start",
+                "end",
+                "text",
+                "source_text_sha256"
+              ],
+              "additionalProperties": true
+            }
+          }
+        },
+        "required": [
+          "decision_id",
+          "left_mention_id",
+          "right_mention_id",
+          "label",
+          "evidence"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "unresolved": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "evidence_spans": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "span_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "document_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "chunk_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "start": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "end": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "text": {
+            "type": "string"
+          },
+          "source_text_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "span_id",
+          "document_id",
+          "revision_id",
+          "chunk_id",
+          "start",
+          "end",
+          "text",
+          "source_text_sha256"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "canonical_concepts": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "review": {
+      "type": "object",
+      "properties": {
+        "primary_annotator": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "secondary_annotator": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "human_review_status": {
+          "const": "NOT_REVIEWED"
+        }
+      },
+      "required": [
+        "primary_annotator",
+        "secondary_annotator",
+        "human_review_status"
+      ],
+      "additionalProperties": true
+    }
+  },
+  "required": [
+    "schema_version",
+    "document_code",
+    "document_id",
+    "revision_id",
+    "split",
+    "annotation_status",
+    "annotation_scope",
+    "exhaustive_entities",
+    "exhaustive_relations",
+    "rubric_version",
+    "mentions",
+    "assertions",
+    "identity_decisions",
+    "unresolved",
+    "review",
+    "evidence_spans",
+    "canonical_concepts"
+  ],
+  "additionalProperties": true,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

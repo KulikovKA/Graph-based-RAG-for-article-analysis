@@ -10,7 +10,7 @@ from pathlib import Path
 from uuid import NAMESPACE_URL, uuid5
 
 BASE = Path(__file__).resolve().parent
-VERSION = 'pilot24-dev-rubric-0.2-WORKING'
+VERSION = json.loads((BASE/'annotations/reviews/relation_vocabulary.json').read_text(encoding='utf-8'))['version']
 SOURCES = {d['document_code']: d for d in map(json.loads, (BASE / 'pilot24_sources.jsonl').read_text(encoding='utf-8').splitlines())}
 TEMPLATES = {d['document_code']: d for d in map(json.loads, (BASE / 'gold_annotation_template.jsonl').read_text(encoding='utf-8').splitlines())}
 
@@ -100,10 +100,11 @@ class Draft:
             self.mentions[key] = mention
             self.data['mentions'].append(mention)
 
-    def rel(self, head, relation, tail, sentences=None, qualifiers=(), modality='ASSERTED', scope='STUDY_RESULT', note=None):
+    def rel(self, head, relation, tail, sentences=None, qualifiers=(), modality='ASSERTED', scope='STUDY_RESULT', note=None,key_suffix=''):
         h, t = self.mentions[head], self.mentions[tail]
         ss = sentences or list(dict.fromkeys([h['sentence_id'], t['sentence_id']]))
         key = f'{head}/{relation}/{tail}'
+        if key_suffix:key += '/'+key_suffix
         assertion_id = uid(f'{self.code}/assertion/{key}')
         qs = []
         for sentence, raw, qtype, value, unit in qualifiers:

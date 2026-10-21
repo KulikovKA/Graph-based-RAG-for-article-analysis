@@ -1,0 +1,21 @@
+{
+  "ai_drafts_complete": 24,
+  "structural_pass": 24,
+  "documents_with_unresolved": 16,
+  "unresolved_questions": 36,
+  "unresolved_candidate_assertions": 43,
+  "human_reviewed": 0,
+  "approved_gold": 0,
+  "mentions": 1004,
+  "assertions": 584,
+  "unique_canonical_triples": 546,
+  "sentences": 153,
+  "chunks": 35,
+  "public_drafts": 18,
+  "private_holdout_drafts": 6,
+  "split_counts": {
+    "DEV": 12,
+    "CALIBRATION": 6,
+    "HOLDOUT": 6
+  }
+}

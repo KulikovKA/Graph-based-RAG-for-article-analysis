@@ -1,0 +1,47 @@
+{
+  "rubric_version": "pilot24-rubric-0.3-AUTO-FROZEN",
+  "accepted_relation_types": 18,
+  "used_relation_types": 18,
+  "relation_frequencies": {
+    "HAS_PROPERTY": 97,
+    "HAS_PERFORMANCE": 96,
+    "USED_FOR": 81,
+    "HAS_COMPONENT": 77,
+    "USES_MATERIAL": 46,
+    "FABRICATED_BY": 35,
+    "HAS_MORPHOLOGY": 33,
+    "HAS_MEMBER": 31,
+    "DETECTS": 26,
+    "ACTS_ON": 16,
+    "HAS_MECHANISM": 9,
+    "IMPROVES": 8,
+    "MECHANISM_INVOLVES": 8,
+    "FACILITATES": 7,
+    "FUNCTIONS_AS": 6,
+    "OPTIMIZES": 4,
+    "INTEGRATED_IN": 2,
+    "LOCATED_IN": 2
+  },
+  "proposed_new_types_from_DEV": {
+    "CAUSES": 3,
+    "EXPLAINS": 4,
+    "INCREASES": 2,
+    "DEPENDS_ON": 2,
+    "MEETS_REQUIREMENT": 1,
+    "DOMINATES": 1
+  },
+  "proposed_domain_extensions_from_DEV": {
+    "HAS_MECHANISM": 4,
+    "HAS_PROPERTY": 1,
+    "USED_FOR": 2
+  },
+  "dev_freeze_report": "DEV_ONTOLOGY_FREEZE.json",
+  "unresolved_questions_by_split": {
+    "DEV": 20,
+    "CALIBRATION": 12,
+    "HOLDOUT": 4
+  },
+  "evaluation_schema_modified": false,
+  "final_human_ontology_approval": false,
+  "limitation": "Frequencies are occurrence counts. Unique triples reported separately. Evaluation gaps were recorded without changing accepted types."
+}

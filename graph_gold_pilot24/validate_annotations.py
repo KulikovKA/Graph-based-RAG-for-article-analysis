@@ -6,6 +6,7 @@ import re
 from collections import Counter
 from pathlib import Path
 from uuid import UUID
+from jsonschema import Draft202012Validator, FormatChecker
 
 BASE = Path(__file__).resolve().parent
 KINDS = set('MATERIAL DEVICE PROPERTY PERFORMANCE ANALYTE PROCESS MECHANISM OPERATING_CONDITION MORPHOLOGY TECHNOLOGY APPLICATION OTHER'.split())
@@ -13,6 +14,7 @@ POLARITIES = {'POSITIVE', 'NEGATIVE', 'UNKNOWN'}
 MODALITIES = {'ASSERTED', 'PROPOSED', 'COMPARED', 'HYPOTHETICAL', 'UNKNOWN'}
 SUPPORT = {'SUPPORTED', 'CONTRADICTED', 'INSUFFICIENT', 'UNRESOLVED'}
 IDENTITY = {'SAME', 'RELATED', 'BROADER', 'NARROWER', 'DIFFERENT', 'UNCERTAIN'}
+SCHEMA = Draft202012Validator(json.loads((BASE/'annotation.schema.json').read_text(encoding='utf-8')), format_checker=FormatChecker())
 
 
 def read_jsonl(path):
@@ -20,7 +22,7 @@ def read_jsonl(path):
 
 
 def validate(d, source, template, vocabulary):
-    errors = []
+    errors = ['JSON Schema: '+'.'.join(map(str,e.absolute_path))+': '+e.message for e in SCHEMA.iter_errors(d)]
 
     def check(ok, msg):
         if not ok:
@@ -132,7 +134,7 @@ def validate(d, source, template, vocabulary):
             qs = [spans[e] for e in q['evidence_refs'] if e in spans]
             check(bool(qs) and len(qs) == len(q['evidence_refs']), 'Missing qualifier evidence')
             check(any(s['text'] == q['raw_text'] for s in qs), 'Qualifier raw text mismatch')
-            numbers = [float(n) for n in re.findall(r'\d+(?:\.\d+)?', q['raw_text'])]
+            numbers = [float(n.replace('−','-')) for n in re.findall(r'[−-]?\d+(?:\.\d+)?', q['raw_text'])]
             if type(q['raw_value']) in (int, float):
                 check(float(q['raw_value']) in numbers, 'Qualifier numeric value absent from raw text')
             if isinstance(q['raw_value'], list):
@@ -194,13 +196,14 @@ def main():
     templates = {d['document_code']: d for d in read_jsonl(BASE / 'gold_annotation_template.jsonl')}
     vocab = json.loads((BASE / 'annotations/reviews/relation_vocabulary.json').read_text(encoding='utf-8'))
     reports = []
-    paths = args.paths or sorted((BASE / 'annotations/drafts').glob('*.jsonl'))
+    from campaign_paths import draft_paths
+    paths = args.paths or draft_paths()
     if not paths:
         raise SystemExit('No annotation files supplied/found')
     for path in paths:
         for d in read_jsonl(path):
             errors = validate(d, sources[d['document_code']], templates[d['document_code']], vocab)
-            reports.append(dict(document_code=d['document_code'], status='FAIL' if errors else 'PASS',
+            report=dict(document_code=d['document_code'],split=d['split'], status='FAIL' if errors else 'PASS',
                 errors=errors, chunks=len(d['source_chunks']), sentences=len(d['sentence_review']),
                 mentions=len(d['mentions']), assertions=len(d['assertions']),
                 canonical_concepts=len(d['canonical_concepts']), identity_decisions=len(d['identity_decisions']),
@@ -211,7 +214,13 @@ def main():
                 polarity_counts=dict(Counter(a['polarity'] for a in d['assertions'])),
                 modality_counts=dict(Counter(a['modality'] for a in d['assertions'])),
                 annotation_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
-                human_review='NOT_REVIEWED', semantic_validation='NOT_ESTABLISHED_BY_THIS_SCRIPT'))
+                human_review='NOT_REVIEWED', semantic_validation='NOT_ESTABLISHED_BY_THIS_SCRIPT')
+            if d['split']=='HOLDOUT':
+                from campaign_paths import private_root
+                target=private_root()/'reports'/f'{d["document_code"]}_validation.json'
+                target.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+                report.pop('polarity_counts');report.pop('modality_counts')
+            reports.append(report)
     output = BASE / 'annotations/reports/structural_validation.json'
     output.write_text(json.dumps(reports, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(json.dumps(reports, ensure_ascii=True, indent=2))

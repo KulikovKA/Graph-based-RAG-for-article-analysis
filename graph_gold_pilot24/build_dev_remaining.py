@@ -61,7 +61,7 @@ defocus|defocus distance|PROPERTY|laser defocus distance|fabrication_parameter''
         reason='Source explicitly optimizes a device layer by tuning. IMPROVES only permits PROPERTY/PERFORMANCE tails, and no optimized metric is named.',
         evidence=[d.sentences['S3']], annotation_status='UNRESOLVED',
         alternatives=['Add OPTIMIZES PROCESS -> DEVICE', 'Extend IMPROVES tails to DEVICE, retain unspecified optimized metric', 'Keep UNRESOLVED']))
-    d.note('S3', 'Q2: tuning -> layer optimization is registered as an unresolved predicate candidate, not omitted negative gold. Positional sandwich information is explicit on HAS_COMPONENT(layer), without pretending between means inside either surrounding component.')
+    d.note('S3', 'Q2 resolved: OPTIMIZES(tuning, layer) is authorized without assigning an unspecified optimized metric. Positional sandwich information is explicit on HAS_COMPONENT(layer), without pretending between means inside either surrounding component.')
     d.ms('S4', '''sensor4|gas sensor|DEVICE|study stretchable LIG NOx sensor
 lig4|needlelike LIG|MATERIAL|needlelike laser-induced graphene
 needle|needlelike|MORPHOLOGY|needlelike morphology
@@ -147,9 +147,11 @@ diagnostics|early disease diagnostics|APPLICATION|early disease diagnostics''')
     d.same(['stretch1', 'stretch2', 'stretch7'], 'Same stretchability property concept; the background and study devices remain distinct.')
     d.same(['moist', 'encap_moist', 'moist6', 'moist7'], 'Same moisture-resistance property; device versus encapsulant bearer and RH qualifier remain separate.')
     d.same(['laser', 'laser4'], 'Same laser-processing concept; tuning parameters are not merged into the process.')
-    d.data['exhaustive_relations'] = False
-    d.data['completeness_status'] = 'ALL_SOURCE_SENTENCES_REVIEWED; RELATION_COMPLETENESS_PENDING_Q2; HUMAN_REVIEW_PENDING'
-    d.data['review']['adjudication_status'] = 'PENDING_Q2_ONTOLOGY_EXTENSION'
+    d.data['unresolved'] = []
+    d.rel('tuning', 'OPTIMIZES', 'layer')
+    d.data['exhaustive_relations'] = True
+    d.data['completeness_status'] = 'AI_FIRST_PASS_ALL_SENTENCES; HUMAN_RECALL_REVIEW_PENDING'
+    d.data['review']['adjudication_status'] = 'SCHEMA_Q1_Q2_Q3_RESOLVED_ANNOTATIONS_NOT_REVIEWED'
     d.save()
 
 

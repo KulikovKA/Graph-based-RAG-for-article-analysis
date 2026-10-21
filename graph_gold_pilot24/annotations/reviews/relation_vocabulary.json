@@ -1,6 +1,6 @@
 {
-  "version": "pilot24-dev-rubric-0.2-WORKING",
-  "status": "APPROVED_FOR_DEV_WORKING_NOT_FROZEN",
+  "version": "pilot24-rubric-0.3-AUTO-FROZEN",
+  "status": "TEMPORARY_FROZEN_FOR_AUTOMATIC_CALIBRATION_HOLDOUT",
   "human_approved": true,
   "relations": {
     "HAS_PROPERTY": {
@@ -169,11 +169,36 @@
       "tail_kinds": [
         "MATERIAL"
       ]
+    },
+    "OPTIMIZES": {
+      "direction": "?????????????? ??????? ? ??????????? ??????",
+      "head_kinds": [
+        "PROCESS"
+      ],
+      "tail_kinds": [
+        "DEVICE",
+        "MATERIAL"
+      ]
+    },
+    "FACILITATES": {
+      "direction": "????????/??????? ? ???????, ???????? ??? ????????????",
+      "head_kinds": [
+        "MATERIAL",
+        "PROCESS"
+      ],
+      "tail_kinds": [
+        "PROCESS"
+      ]
     }
   },
   "approval_scope": "Schema only, DEV working version; not annotation human review",
   "decision_refs": [
-    "Q1"
+    "Q1",
+    "Q2",
+    "Q3"
   ],
-  "frozen": false
+  "frozen": true,
+  "final_human_ontology_approved": false,
+  "freeze_id": "pilot24-auto-freeze-0.3",
+  "freeze_basis": "18 approved types fixed from DEV. First freeze persistence failed on a filesystem write before calibration text was displayed; persistence retried without changing any relation definition. Evaluation text was not used to extend or tune the schema."
 }

@@ -1,0 +1,12 @@
+{
+  "python": "3.11.15 | packaged by Anaconda, Inc. | (main, Jun 11 2026, 15:12:53) [MSC v.1942 64 bit (AMD64)]",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "jsonschema": "4.26.0",
+  "annotation_schema_sha256": "09306f65313c32302057b97c08e936979f77ce7348810bc14505241f99942ebd",
+  "source_jsonl_sha256": "c823beec159704998eeac8d1b18cebcfce1a567d408a9bfacd6d29d75c053116",
+  "manifest_sha256": "f096ad539d357a454ed7c5e33d0c9ea18d5bcd3b5295bf8bf9194d569e4d7909",
+  "template_sha256": "99127688c6bccb460f804a0b85fb2d69b376299f6d67f8905a7c289e797c8a28",
+  "vocabulary_sha256": "91b309feb792c31980c7b19c78c0d3a7ddf05d2bd2e49bc8fff0786118300141",
+  "annotation_method": "Source-only AI curation, code only grounds curated spans and serializes decisions; no tested extraction pipeline used",
+  "human_review": "NOT_REVIEWED"
+}

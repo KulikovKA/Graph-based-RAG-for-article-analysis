@@ -2,6 +2,11 @@
 import json
 from build_dev_pair import BASE, Draft
 
+decisions=BASE/'annotations/reviews/adjudication_decisions.jsonl'
+if decisions.exists() and any(json.loads(line).get('question_id')=='Q3' and json.loads(line).get('status')=='RESOLVED' for line in decisions.read_text(encoding='utf-8').splitlines() if line.strip()):
+    print('Q3 already resolved; current D004 draft contains the approved FACILITATES claims.')
+    raise SystemExit(0)
+
 d = Draft('D004')
 d.ms('S4', '''treatment|microwave treatment of graphene–SnO 2 nanocomposites|PROCESS|microwave treatment
 graphene|graphene|MATERIAL|graphene|energy_transport_promoter|2

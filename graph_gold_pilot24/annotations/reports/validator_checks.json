@@ -1,49 +1,41 @@
 {
-  "rubric_version": "pilot24-dev-rubric-0.2-WORKING",
-  "baseline_documents": {
-    "D001": "PASS",
-    "D003": "PASS",
-    "D010": "PASS"
-  },
+  "rubric_version": "pilot24-rubric-0.3-AUTO-FROZEN",
+  "validated_documents": 24,
+  "json_schema_and_source_checks": "PASS",
   "negative_validation_cases": {
-    "wrong_offset": {
+    "wrong_unicode_offset": {
       "status": "REJECTED_AS_EXPECTED",
       "errors_detected": 2
     },
-    "missing_endpoint": {
+    "nonexistent_endpoint": {
       "status": "REJECTED_AS_EXPECTED",
       "errors_detected": 1
     },
-    "unknown_predicate": {
+    "unapproved_predicate": {
       "status": "REJECTED_AS_EXPECTED",
       "errors_detected": 1
     },
-    "human_review_fabrication": {
-      "status": "REJECTED_AS_EXPECTED",
-      "errors_detected": 1
-    },
-    "missing_sentence_coverage": {
-      "status": "REJECTED_AS_EXPECTED",
-      "errors_detected": 1
-    },
-    "pending_relation_claims_exhaustive": {
-      "status": "REJECTED_AS_EXPECTED",
-      "errors_detected": 1
-    },
-    "invalid_candidate_endpoint": {
-      "status": "REJECTED_AS_EXPECTED",
-      "errors_detected": 1
-    },
-    "corrupt_candidate_evidence": {
+    "invalid_polarity": {
       "status": "REJECTED_AS_EXPECTED",
       "errors_detected": 2
+    },
+    "fabricated_human_review": {
+      "status": "REJECTED_AS_EXPECTED",
+      "errors_detected": 2
+    },
+    "incomplete_sentence_coverage": {
+      "status": "REJECTED_AS_EXPECTED",
+      "errors_detected": 1
+    },
+    "wrong_qualifier_attachment": {
+      "status": "REJECTED_AS_EXPECTED",
+      "errors_detected": 1
     }
   },
-  "Q1_roles_and_proposed_modality": "PASS",
-  "D001_temperature_attachment": "PASS",
-  "D010_best_no_invented_numeric_metric": "PASS",
-  "Q3_source_candidate_spans": "PASS",
-  "sources_and_preparation_package_unchanged": true,
-  "gold_empty": true,
-  "test_scope": "Structural rejection and preservation of recorded decisions; not independent human semantic validation"
+  "Q1_Q2_Q3_regressions": "PASS",
+  "sources_and_original_package_unchanged": true,
+  "private_holdout_separation": "PASS",
+  "human_reviewed": 0,
+  "approved_gold": 0,
+  "scope": "Structural negative tests and preservation of recorded decisions; not independent semantic validation."
 }

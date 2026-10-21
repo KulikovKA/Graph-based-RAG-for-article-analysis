@@ -1,6 +1,7 @@
 [
   {
     "document_code": "D001",
+    "split": "DEV",
     "status": "PASS",
     "errors": [],
     "chunks": 2,
@@ -21,38 +22,68 @@
       "ASSERTED": 47,
       "HYPOTHETICAL": 4
     },
-    "annotation_sha256": "343363dadc941d370b5e3bd28fa202b98a5068431ce46308399fe989798587df",
+    "annotation_sha256": "8f838f6c01454a89e93e71847c372d228c60c67513f59ccc819113c235806d9d",
     "human_review": "NOT_REVIEWED",
     "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
   },
   {
     "document_code": "D003",
+    "split": "DEV",
     "status": "PASS",
     "errors": [],
     "chunks": 2,
     "sentences": 7,
     "mentions": 69,
-    "assertions": 45,
+    "assertions": 46,
     "canonical_concepts": 51,
     "identity_decisions": 22,
-    "unresolved_questions": 1,
+    "unresolved_questions": 0,
     "unresolved_assertions": 0,
-    "unresolved_relation_candidates": 1,
+    "unresolved_relation_candidates": 0,
+    "exhaustive_entities": true,
+    "exhaustive_relations": true,
+    "polarity_counts": {
+      "POSITIVE": 46
+    },
+    "modality_counts": {
+      "ASSERTED": 44,
+      "HYPOTHETICAL": 2
+    },
+    "annotation_sha256": "e6bf165f3a511aaa6c916408fde980cf4da9bf6b0df41cddedc434dc339eac31",
+    "human_review": "NOT_REVIEWED",
+    "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
+  },
+  {
+    "document_code": "D004",
+    "split": "DEV",
+    "status": "PASS",
+    "errors": [],
+    "chunks": 2,
+    "sentences": 8,
+    "mentions": 46,
+    "assertions": 18,
+    "canonical_concepts": 34,
+    "identity_decisions": 16,
+    "unresolved_questions": 3,
+    "unresolved_assertions": 0,
+    "unresolved_relation_candidates": 3,
     "exhaustive_entities": true,
     "exhaustive_relations": false,
     "polarity_counts": {
-      "POSITIVE": 45
+      "POSITIVE": 18
     },
     "modality_counts": {
-      "ASSERTED": 43,
-      "HYPOTHETICAL": 2
+      "ASSERTED": 16,
+      "COMPARED": 1,
+      "PROPOSED": 1
     },
-    "annotation_sha256": "50866b44ea59ae392e6332425feab1dd70032c59d70e800477e66be5c517f96a",
+    "annotation_sha256": "8c9fce83f9cf5e7bc7d0bdf2a13fda73c680b0981510a54ae8905d4c45e271ec",
     "human_review": "NOT_REVIEWED",
     "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
   },
   {
     "document_code": "D010",
+    "split": "DEV",
     "status": "PASS",
     "errors": [],
     "chunks": 2,
@@ -74,7 +105,515 @@
       "COMPARED": 2,
       "PROPOSED": 12
     },
-    "annotation_sha256": "66b6fa533d19736754dfaacc7b3871f2f98194567df9152e4ea518ef7808f0cb",
+    "annotation_sha256": "c2586f56b6067d2949e96ae64d2f0c8916e106429b411ae7d9cf09f6edbdf488",
+    "human_review": "NOT_REVIEWED",
+    "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
+  },
+  {
+    "document_code": "D017",
+    "split": "DEV",
+    "status": "PASS",
+    "errors": [],
+    "chunks": 2,
+    "sentences": 7,
+    "mentions": 37,
+    "assertions": 29,
+    "canonical_concepts": 28,
+    "identity_decisions": 12,
+    "unresolved_questions": 0,
+    "unresolved_assertions": 0,
+    "unresolved_relation_candidates": 0,
+    "exhaustive_entities": true,
+    "exhaustive_relations": true,
+    "polarity_counts": {
+      "POSITIVE": 29
+    },
+    "modality_counts": {
+      "ASSERTED": 28,
+      "HYPOTHETICAL": 1
+    },
+    "annotation_sha256": "4f89ee8168f00b7489aef6a63b08300fe039f5f812ba2e059b28e88239d0945d",
+    "human_review": "NOT_REVIEWED",
+    "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
+  },
+  {
+    "document_code": "D018",
+    "split": "CALIBRATION",
+    "status": "PASS",
+    "errors": [],
+    "chunks": 2,
+    "sentences": 7,
+    "mentions": 44,
+    "assertions": 20,
+    "canonical_concepts": 39,
+    "identity_decisions": 6,
+    "unresolved_questions": 3,
+    "unresolved_assertions": 0,
+    "unresolved_relation_candidates": 3,
+    "exhaustive_entities": true,
+    "exhaustive_relations": false,
+    "polarity_counts": {
+      "POSITIVE": 20
+    },
+    "modality_counts": {
+      "ASSERTED": 17,
+      "PROPOSED": 1,
+      "COMPARED": 1,
+      "HYPOTHETICAL": 1
+    },
+    "annotation_sha256": "2fa9827b50a9c4089979702bdc17d56ca0f4f8c3f9e75c1dcddf53473300099e",
+    "human_review": "NOT_REVIEWED",
+    "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
+  },
+  {
+    "document_code": "D021",
+    "split": "CALIBRATION",
+    "status": "PASS",
+    "errors": [],
+    "chunks": 1,
+    "sentences": 5,
+    "mentions": 24,
+    "assertions": 16,
+    "canonical_concepts": 21,
+    "identity_decisions": 4,
+    "unresolved_questions": 1,
+    "unresolved_assertions": 0,
+    "unresolved_relation_candidates": 1,
+    "exhaustive_entities": true,
+    "exhaustive_relations": false,
+    "polarity_counts": {
+      "POSITIVE": 16
+    },
+    "modality_counts": {
+      "ASSERTED": 15,
+      "HYPOTHETICAL": 1
+    },
+    "annotation_sha256": "589fa113f2d9f9d492141ef1a9793402ec3959a8ec6fab2c13cda33a02496d7a",
+    "human_review": "NOT_REVIEWED",
+    "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
+  },
+  {
+    "document_code": "D024",
+    "split": "DEV",
+    "status": "PASS",
+    "errors": [],
+    "chunks": 2,
+    "sentences": 7,
+    "mentions": 39,
+    "assertions": 15,
+    "canonical_concepts": 33,
+    "identity_decisions": 7,
+    "unresolved_questions": 4,
+    "unresolved_assertions": 0,
+    "unresolved_relation_candidates": 4,
+    "exhaustive_entities": true,
+    "exhaustive_relations": false,
+    "polarity_counts": {
+      "POSITIVE": 15
+    },
+    "modality_counts": {
+      "ASSERTED": 7,
+      "PROPOSED": 6,
+      "HYPOTHETICAL": 2
+    },
+    "annotation_sha256": "0ea973236ee93ac17dfa84571867eb922e53df4e4bfdd363eb957c22722de772",
+    "human_review": "NOT_REVIEWED",
+    "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
+  },
+  {
+    "document_code": "D026",
+    "split": "DEV",
+    "status": "PASS",
+    "errors": [],
+    "chunks": 1,
+    "sentences": 7,
+    "mentions": 30,
+    "assertions": 12,
+    "canonical_concepts": 25,
+    "identity_decisions": 5,
+    "unresolved_questions": 2,
+    "unresolved_assertions": 0,
+    "unresolved_relation_candidates": 2,
+    "exhaustive_entities": true,
+    "exhaustive_relations": false,
+    "polarity_counts": {
+      "POSITIVE": 12
+    },
+    "modality_counts": {
+      "HYPOTHETICAL": 2,
+      "ASSERTED": 8,
+      "COMPARED": 2
+    },
+    "annotation_sha256": "8cf583c6a58865ff10e0387b604c5f99268b8ffca7f671821b41b8ef0824b6d1",
+    "human_review": "NOT_REVIEWED",
+    "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
+  },
+  {
+    "document_code": "D029",
+    "split": "CALIBRATION",
+    "status": "PASS",
+    "errors": [],
+    "chunks": 1,
+    "sentences": 5,
+    "mentions": 32,
+    "assertions": 16,
+    "canonical_concepts": 26,
+    "identity_decisions": 7,
+    "unresolved_questions": 1,
+    "unresolved_assertions": 0,
+    "unresolved_relation_candidates": 1,
+    "exhaustive_entities": true,
+    "exhaustive_relations": false,
+    "polarity_counts": {
+      "POSITIVE": 16
+    },
+    "modality_counts": {
+      "ASSERTED": 9,
+      "HYPOTHETICAL": 5,
+      "PROPOSED": 2
+    },
+    "annotation_sha256": "6b9942f8ab4f9369b48e9663e57d4b27447965245d5a7fe5f5c4d608b2cc3682",
+    "human_review": "NOT_REVIEWED",
+    "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
+  },
+  {
+    "document_code": "D035",
+    "split": "DEV",
+    "status": "PASS",
+    "errors": [],
+    "chunks": 1,
+    "sentences": 4,
+    "mentions": 32,
+    "assertions": 25,
+    "canonical_concepts": 22,
+    "identity_decisions": 14,
+    "unresolved_questions": 0,
+    "unresolved_assertions": 0,
+    "unresolved_relation_candidates": 0,
+    "exhaustive_entities": true,
+    "exhaustive_relations": true,
+    "polarity_counts": {
+      "POSITIVE": 25
+    },
+    "modality_counts": {
+      "COMPARED": 3,
+      "ASSERTED": 4,
+      "HYPOTHETICAL": 2,
+      "PROPOSED": 16
+    },
+    "annotation_sha256": "42e6d91d65ca2c72f46ec67200c86c09f2c36062f19dff68759e6cdb152d64ce",
+    "human_review": "NOT_REVIEWED",
+    "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
+  },
+  {
+    "document_code": "D038",
+    "split": "DEV",
+    "status": "PASS",
+    "errors": [],
+    "chunks": 1,
+    "sentences": 5,
+    "mentions": 27,
+    "assertions": 16,
+    "canonical_concepts": 24,
+    "identity_decisions": 6,
+    "unresolved_questions": 1,
+    "unresolved_assertions": 0,
+    "unresolved_relation_candidates": 1,
+    "exhaustive_entities": true,
+    "exhaustive_relations": false,
+    "polarity_counts": {
+      "POSITIVE": 16
+    },
+    "modality_counts": {
+      "ASSERTED": 15,
+      "PROPOSED": 1
+    },
+    "annotation_sha256": "209260022ede8f6a4f96fdae94b3a55ed0a596e9ce91835330c1de770882dc4c",
+    "human_review": "NOT_REVIEWED",
+    "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
+  },
+  {
+    "document_code": "D042",
+    "split": "CALIBRATION",
+    "status": "PASS",
+    "errors": [],
+    "chunks": 2,
+    "sentences": 8,
+    "mentions": 51,
+    "assertions": 19,
+    "canonical_concepts": 22,
+    "identity_decisions": 32,
+    "unresolved_questions": 2,
+    "unresolved_assertions": 0,
+    "unresolved_relation_candidates": 1,
+    "exhaustive_entities": true,
+    "exhaustive_relations": false,
+    "polarity_counts": {
+      "POSITIVE": 19
+    },
+    "modality_counts": {
+      "ASSERTED": 15,
+      "COMPARED": 4
+    },
+    "annotation_sha256": "2e0ff1bc3f62e906db02670b40b5562eb4594469b22bf288dcc2c5ca36be0970",
+    "human_review": "NOT_REVIEWED",
+    "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
+  },
+  {
+    "document_code": "D050",
+    "split": "CALIBRATION",
+    "status": "PASS",
+    "errors": [],
+    "chunks": 1,
+    "sentences": 5,
+    "mentions": 30,
+    "assertions": 16,
+    "canonical_concepts": 21,
+    "identity_decisions": 9,
+    "unresolved_questions": 4,
+    "unresolved_assertions": 0,
+    "unresolved_relation_candidates": 4,
+    "exhaustive_entities": true,
+    "exhaustive_relations": false,
+    "polarity_counts": {
+      "POSITIVE": 16
+    },
+    "modality_counts": {
+      "ASSERTED": 15,
+      "COMPARED": 1
+    },
+    "annotation_sha256": "a1c07383961e41ea49a3a34c0b4f27fc7cea431c4c2d23d3bd9a3e89d8108be7",
+    "human_review": "NOT_REVIEWED",
+    "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
+  },
+  {
+    "document_code": "D060",
+    "split": "DEV",
+    "status": "PASS",
+    "errors": [],
+    "chunks": 1,
+    "sentences": 4,
+    "mentions": 23,
+    "assertions": 10,
+    "canonical_concepts": 20,
+    "identity_decisions": 4,
+    "unresolved_questions": 2,
+    "unresolved_assertions": 0,
+    "unresolved_relation_candidates": 2,
+    "exhaustive_entities": true,
+    "exhaustive_relations": false,
+    "polarity_counts": {
+      "POSITIVE": 10
+    },
+    "modality_counts": {
+      "ASSERTED": 9,
+      "COMPARED": 1
+    },
+    "annotation_sha256": "303d4c8389a385286f8065d4fd61a3172d4dfc57b5432f037482a07860767c4d",
+    "human_review": "NOT_REVIEWED",
+    "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
+  },
+  {
+    "document_code": "D078",
+    "split": "DEV",
+    "status": "PASS",
+    "errors": [],
+    "chunks": 2,
+    "sentences": 9,
+    "mentions": 63,
+    "assertions": 24,
+    "canonical_concepts": 46,
+    "identity_decisions": 19,
+    "unresolved_questions": 6,
+    "unresolved_assertions": 0,
+    "unresolved_relation_candidates": 6,
+    "exhaustive_entities": true,
+    "exhaustive_relations": false,
+    "polarity_counts": {
+      "POSITIVE": 21,
+      "NEGATIVE": 3
+    },
+    "modality_counts": {
+      "HYPOTHETICAL": 3,
+      "ASSERTED": 15,
+      "COMPARED": 5,
+      "PROPOSED": 1
+    },
+    "annotation_sha256": "f559bd82059d4197b8af40fa3f4db3be9587584dca12d625c30268273ce0813c",
+    "human_review": "NOT_REVIEWED",
+    "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
+  },
+  {
+    "document_code": "D092",
+    "split": "DEV",
+    "status": "PASS",
+    "errors": [],
+    "chunks": 1,
+    "sentences": 7,
+    "mentions": 41,
+    "assertions": 13,
+    "canonical_concepts": 29,
+    "identity_decisions": 15,
+    "unresolved_questions": 2,
+    "unresolved_assertions": 0,
+    "unresolved_relation_candidates": 2,
+    "exhaustive_entities": true,
+    "exhaustive_relations": false,
+    "polarity_counts": {
+      "POSITIVE": 13
+    },
+    "modality_counts": {
+      "HYPOTHETICAL": 5,
+      "ASSERTED": 3,
+      "COMPARED": 5
+    },
+    "annotation_sha256": "0d05466b096d8929727f7c449a116c2884c7d8b3647681c2419587ed8a1cee65",
+    "human_review": "NOT_REVIEWED",
+    "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
+  },
+  {
+    "document_code": "D093",
+    "split": "CALIBRATION",
+    "status": "PASS",
+    "errors": [],
+    "chunks": 1,
+    "sentences": 4,
+    "mentions": 23,
+    "assertions": 14,
+    "canonical_concepts": 21,
+    "identity_decisions": 3,
+    "unresolved_questions": 1,
+    "unresolved_assertions": 0,
+    "unresolved_relation_candidates": 1,
+    "exhaustive_entities": true,
+    "exhaustive_relations": false,
+    "polarity_counts": {
+      "POSITIVE": 14
+    },
+    "modality_counts": {
+      "ASSERTED": 14
+    },
+    "annotation_sha256": "a8faccb39840218ed400ba8b25442f0dc1638c8a4a61052f38445a1613028127",
+    "human_review": "NOT_REVIEWED",
+    "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
+  },
+  {
+    "document_code": "D061",
+    "split": "HOLDOUT",
+    "status": "PASS",
+    "errors": [],
+    "chunks": 1,
+    "sentences": 8,
+    "mentions": 47,
+    "assertions": 23,
+    "canonical_concepts": 32,
+    "identity_decisions": 19,
+    "unresolved_questions": 0,
+    "unresolved_assertions": 0,
+    "unresolved_relation_candidates": 0,
+    "exhaustive_entities": true,
+    "exhaustive_relations": true,
+    "annotation_sha256": "a1857b0e1f95c8ca0dbcf6a052e62e6df5eeee99155f72f9c6749f89781263c2",
+    "human_review": "NOT_REVIEWED",
+    "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
+  },
+  {
+    "document_code": "D068",
+    "split": "HOLDOUT",
+    "status": "PASS",
+    "errors": [],
+    "chunks": 2,
+    "sentences": 8,
+    "mentions": 42,
+    "assertions": 24,
+    "canonical_concepts": 32,
+    "identity_decisions": 11,
+    "unresolved_questions": 0,
+    "unresolved_assertions": 0,
+    "unresolved_relation_candidates": 0,
+    "exhaustive_entities": true,
+    "exhaustive_relations": true,
+    "annotation_sha256": "36056badb5dd26b032b8e1ffaf8418004f42f091b0c19262c50073064ad4f3b4",
+    "human_review": "NOT_REVIEWED",
+    "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
+  },
+  {
+    "document_code": "D070",
+    "split": "HOLDOUT",
+    "status": "PASS",
+    "errors": [],
+    "chunks": 1,
+    "sentences": 8,
+    "mentions": 36,
+    "assertions": 21,
+    "canonical_concepts": 27,
+    "identity_decisions": 10,
+    "unresolved_questions": 2,
+    "unresolved_assertions": 0,
+    "unresolved_relation_candidates": 1,
+    "exhaustive_entities": true,
+    "exhaustive_relations": false,
+    "annotation_sha256": "1a4c83d34ab18136568ddd02f13f0f5574f01c5926bd72f6c25bc81db6e1ebbb",
+    "human_review": "NOT_REVIEWED",
+    "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
+  },
+  {
+    "document_code": "D088",
+    "split": "HOLDOUT",
+    "status": "PASS",
+    "errors": [],
+    "chunks": 2,
+    "sentences": 9,
+    "mentions": 49,
+    "assertions": 27,
+    "canonical_concepts": 36,
+    "identity_decisions": 15,
+    "unresolved_questions": 1,
+    "unresolved_assertions": 0,
+    "unresolved_relation_candidates": 1,
+    "exhaustive_entities": true,
+    "exhaustive_relations": false,
+    "annotation_sha256": "a513d43e8a63294a662ef04922698d8e951ee9fdd14b934b9f24861e153331bd",
+    "human_review": "NOT_REVIEWED",
+    "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
+  },
+  {
+    "document_code": "D090",
+    "split": "HOLDOUT",
+    "status": "PASS",
+    "errors": [],
+    "chunks": 1,
+    "sentences": 4,
+    "mentions": 24,
+    "assertions": 14,
+    "canonical_concepts": 18,
+    "identity_decisions": 7,
+    "unresolved_questions": 0,
+    "unresolved_assertions": 0,
+    "unresolved_relation_candidates": 0,
+    "exhaustive_entities": true,
+    "exhaustive_relations": true,
+    "annotation_sha256": "b6b4ea3106f21ed7d3dc3d97e5f58f9035e291939e790d2398cb6fddc12c5f6a",
+    "human_review": "NOT_REVIEWED",
+    "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
+  },
+  {
+    "document_code": "D098",
+    "split": "HOLDOUT",
+    "status": "PASS",
+    "errors": [],
+    "chunks": 1,
+    "sentences": 4,
+    "mentions": 29,
+    "assertions": 16,
+    "canonical_concepts": 21,
+    "identity_decisions": 11,
+    "unresolved_questions": 1,
+    "unresolved_assertions": 0,
+    "unresolved_relation_candidates": 1,
+    "exhaustive_entities": true,
+    "exhaustive_relations": false,
+    "annotation_sha256": "ba0d8878afdc60e6934f5a9c55c34529b2c4069ec24a0823c6f2d178aadf7de9",
     "human_review": "NOT_REVIEWED",
     "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
   }

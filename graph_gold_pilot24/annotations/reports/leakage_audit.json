@@ -1,0 +1,10 @@
+{
+  "scope": "24 frozen documents; snapshot DOI, full author IDs, normalized titles, exact abstract hashes; all 276 pairs checked",
+  "exact_publication_duplicates": [],
+  "cross_split_author_overlaps": [],
+  "documents_missing_doi": [],
+  "documents_missing_author_ids": [],
+  "metadata_source": "Original frozen normalized_json metadata; no model predictions read",
+  "split_changed": false,
+  "limitation": "Shared authors may indicate research-family dependence; abstract/hash/metadata screening cannot prove family independence. Do not treat this pilot as fully leakage-free confirmatory gold."
+}

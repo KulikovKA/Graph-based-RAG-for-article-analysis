@@ -1,0 +1,3 @@
+# Supplemental dependency for JSON Schema verification; application dependencies
+# remain defined by the repository's existing pyproject.toml.
+jsonschema>=4.0,<5

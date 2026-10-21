@@ -563,15 +563,15 @@
     "repeated_qualified_groups": [],
     "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
     "human_review": "NOT_REVIEWED",
-    "draft_sha256": "343363dadc941d370b5e3bd28fa202b98a5068431ce46308399fe989798587df"
+    "draft_sha256": "8f838f6c01454a89e93e71847c372d228c60c67513f59ccc819113c235806d9d"
   },
   {
     "document_code": "D003",
     "revision_id": "7af46631-a38f-430d-a43c-bcfa0dccac9e",
-    "assertion_occurrences": 45,
-    "unique_canonical_triples": 42,
+    "assertion_occurrences": 46,
+    "unique_canonical_triples": 43,
     "repeated_core_triple_occurrences": 3,
-    "unique_qualified_claims": 44,
+    "unique_qualified_claims": 45,
     "repeated_qualified_claim_occurrences": 1,
     "canonical_triples": [
       {
@@ -1038,6 +1038,17 @@
           "16753397-6a7f-5c7e-9268-bae9a469dba6"
         ],
         "occurrences": 1
+      },
+      {
+        "head_concept_id": "f5e7c41d-8db7-57ae-b93b-15ac1a1a1b6d",
+        "relation_type": "OPTIMIZES",
+        "tail_concept_id": "4fdc09cd-5563-5ee5-b201-a6d04f7c4320",
+        "head": "laser parameter tuning",
+        "tail": "LIG sensing/electrode layer",
+        "assertion_ids": [
+          "30301f7a-cfcd-5947-9f02-63b749e88859"
+        ],
+        "occurrences": 1
       }
     ],
     "repeated_qualified_groups": [
@@ -1063,7 +1074,220 @@
     ],
     "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
     "human_review": "NOT_REVIEWED",
-    "draft_sha256": "50866b44ea59ae392e6332425feab1dd70032c59d70e800477e66be5c517f96a"
+    "draft_sha256": "e6bf165f3a511aaa6c916408fde980cf4da9bf6b0df41cddedc434dc339eac31"
+  },
+  {
+    "document_code": "D004",
+    "revision_id": "5afc0eeb-3c76-40cf-99be-e70f066beb2b",
+    "assertion_occurrences": 18,
+    "unique_canonical_triples": 16,
+    "repeated_core_triple_occurrences": 2,
+    "unique_qualified_claims": 17,
+    "repeated_qualified_claim_occurrences": 1,
+    "canonical_triples": [
+      {
+        "head_concept_id": "9a1565fb-33a4-551f-9190-2d98eb14b749",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "26811012-1592-5040-b5fd-dffb6ae9da94",
+        "head": "graphene–SnO2 nanocomposite",
+        "tail": "high selective NO2 sensitivity",
+        "assertion_ids": [
+          "cf43d7e6-d753-5e37-8615-d8fb770c26c9",
+          "bf01d8ab-0dea-5777-aed7-1afefbc65604"
+        ],
+        "occurrences": 2
+      },
+      {
+        "head_concept_id": "9a1565fb-33a4-551f-9190-2d98eb14b749",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "35b73926-65b6-5450-8f54-fbf987308f2c",
+        "head": "graphene–SnO2 nanocomposite",
+        "tail": "nitrogen dioxide",
+        "assertion_ids": [
+          "b6252946-36a9-5f6c-a8c6-d05d2b57a86b",
+          "037db0ce-683c-5ee3-9f98-dca316911452"
+        ],
+        "occurrences": 2
+      },
+      {
+        "head_concept_id": "9a1565fb-33a4-551f-9190-2d98eb14b749",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "e3527da8-6c9c-50d2-ab6e-e2f8c548d5d5",
+        "head": "graphene–SnO2 nanocomposite",
+        "tail": "nanocomposite fabrication",
+        "assertion_ids": [
+          "f858e301-ef59-5904-9f61-de0b11300b14"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "244c142f-1abd-5337-bdd3-6608eff37bbc",
+        "relation_type": "ACTS_ON",
+        "tail_concept_id": "9a1565fb-33a4-551f-9190-2d98eb14b749",
+        "head": "structural characterization",
+        "tail": "graphene–SnO2 nanocomposite",
+        "assertion_ids": [
+          "043ed7f0-7300-5828-943c-780e540f2c13"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "9a1565fb-33a4-551f-9190-2d98eb14b749",
+        "relation_type": "HAS_MORPHOLOGY",
+        "tail_concept_id": "71dac1a6-fa3f-5757-b5ef-b2c79f39cf85",
+        "head": "graphene–SnO2 nanocomposite",
+        "tail": "agglomerated structure",
+        "assertion_ids": [
+          "566e25f4-eb84-51fd-9203-9894fec6c01a"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "9a1565fb-33a4-551f-9190-2d98eb14b749",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "cc37c952-e478-51af-be9b-35d80c46a5f3",
+        "head": "graphene–SnO2 nanocomposite",
+        "tail": "graphene",
+        "assertion_ids": [
+          "83367eb1-cadd-595f-ad31-3b76a3e5e4bd"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "9a1565fb-33a4-551f-9190-2d98eb14b749",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "4eb3fc04-8e90-5cbf-9d95-5bda0cfbb6e5",
+        "head": "graphene–SnO2 nanocomposite",
+        "tail": "SnO2 particles",
+        "assertion_ids": [
+          "b199a8ee-76de-58b0-8117-adbaef905c49"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "6fb4ffdc-a5cc-5c5b-b6fe-9fdf4deec585",
+        "relation_type": "HAS_MORPHOLOGY",
+        "tail_concept_id": "4ae05f13-8059-5c65-94a6-d03553078239",
+        "head": "SnOx nanoparticles x≤2",
+        "tail": "small secondary particle morphology",
+        "assertion_ids": [
+          "57963040-7a19-5aa9-876c-85b963d89cf2"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "9a1565fb-33a4-551f-9190-2d98eb14b749",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "6fb4ffdc-a5cc-5c5b-b6fe-9fdf4deec585",
+        "head": "graphene–SnO2 nanocomposite",
+        "tail": "SnOx nanoparticles x≤2",
+        "assertion_ids": [
+          "593c6d97-1e28-585f-81eb-8ec00828a4e5"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "9a1565fb-33a4-551f-9190-2d98eb14b749",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "05302b88-fdc3-5de0-999b-17d6f0a54719",
+        "head": "graphene–SnO2 nanocomposite",
+        "tail": "oxygen atomic ratio",
+        "assertion_ids": [
+          "fe304af4-53af-5321-ac1e-50e7cbc23c1c"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "49871fe1-4cdd-5db2-befa-08ae901dd56c",
+        "relation_type": "ACTS_ON",
+        "tail_concept_id": "9a1565fb-33a4-551f-9190-2d98eb14b749",
+        "head": "microwave treatment",
+        "tail": "graphene–SnO2 nanocomposite",
+        "assertion_ids": [
+          "46cabd37-9e57-518a-b253-a059bf32bbd5"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "cc37c952-e478-51af-be9b-35d80c46a5f3",
+        "relation_type": "FACILITATES",
+        "tail_concept_id": "c1a4aadd-9d4b-5889-a0b5-518aef0e86fd",
+        "head": "graphene",
+        "tail": "microwave energy transport",
+        "assertion_ids": [
+          "3d2e0168-bacc-5412-b779-0e6763e81edf"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "49871fe1-4cdd-5db2-befa-08ae901dd56c",
+        "relation_type": "FACILITATES",
+        "tail_concept_id": "fb8605cb-85ea-520c-b0e3-56d34d384b10",
+        "head": "microwave treatment",
+        "tail": "SnOx evaporation/redeposition",
+        "assertion_ids": [
+          "86bf0c14-8603-55c4-86ce-dd20f15e6422"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "fb8605cb-85ea-520c-b0e3-56d34d384b10",
+        "relation_type": "ACTS_ON",
+        "tail_concept_id": "f77a79e3-ca6f-50f2-bada-06fc2ab41f7b",
+        "head": "SnOx evaporation/redeposition",
+        "tail": "SnOx nanoparticles unspecified x",
+        "assertion_ids": [
+          "53f13ab5-7c1e-5fc3-871c-55e161c984b3"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "9a1565fb-33a4-551f-9190-2d98eb14b749",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "4a7662d7-5917-5fa5-9ba4-d80b6be3409b",
+        "head": "graphene–SnO2 nanocomposite",
+        "tail": "sensor response",
+        "assertion_ids": [
+          "27833545-b7cc-5a5e-8018-5fbc66a9c34c"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "9a1565fb-33a4-551f-9190-2d98eb14b749",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "4da3a92b-8b1d-596d-80e9-eee7e7a5d42c",
+        "head": "graphene–SnO2 nanocomposite",
+        "tail": "NO2 selectivity",
+        "assertion_ids": [
+          "db0741e2-bd20-5557-a50b-0a6b0449ea3c"
+        ],
+        "occurrences": 1
+      }
+    ],
+    "repeated_qualified_groups": [
+      {
+        "signature": [
+          [
+            "9a1565fb-33a4-551f-9190-2d98eb14b749",
+            "USED_FOR",
+            "35b73926-65b6-5450-8f54-fbf987308f2c"
+          ],
+          "POSITIVE",
+          "ASSERTED",
+          "STUDY_RESULT",
+          "SUPPORTED",
+          [],
+          null
+        ],
+        "assertion_ids": [
+          "b6252946-36a9-5f6c-a8c6-d05d2b57a86b",
+          "037db0ce-683c-5ee3-9f98-dca316911452"
+        ]
+      }
+    ],
+    "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
+    "human_review": "NOT_REVIEWED",
+    "draft_sha256": "8c9fce83f9cf5e7bc7d0bdf2a13fda73c680b0981510a54ae8905d4c45e271ec"
   },
   {
     "document_code": "D010",
@@ -2059,6 +2283,2913 @@
     ],
     "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
     "human_review": "NOT_REVIEWED",
-    "draft_sha256": "66b6fa533d19736754dfaacc7b3871f2f98194567df9152e4ea518ef7808f0cb"
+    "draft_sha256": "c2586f56b6067d2949e96ae64d2f0c8916e106429b411ae7d9cf09f6edbdf488"
+  },
+  {
+    "document_code": "D017",
+    "revision_id": "d80633dc-c57a-4253-8754-29c9366084f5",
+    "assertion_occurrences": 29,
+    "unique_canonical_triples": 28,
+    "repeated_core_triple_occurrences": 1,
+    "unique_qualified_claims": 29,
+    "repeated_qualified_claim_occurrences": 0,
+    "canonical_triples": [
+      {
+        "head_concept_id": "63e38805-19fa-5e5d-a61a-1d32ac075bc4",
+        "relation_type": "HAS_MORPHOLOGY",
+        "tail_concept_id": "fe681d9d-ed3c-53b6-b64a-11506b3aa28d",
+        "head": "2D layered inorganic nanomaterials",
+        "tail": "2D layered morphology",
+        "assertion_ids": [
+          "cdf52bfc-9193-583b-a669-4526c755c6cc"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "63e38805-19fa-5e5d-a61a-1d32ac075bc4",
+        "relation_type": "HAS_MORPHOLOGY",
+        "tail_concept_id": "6a9c5402-8d71-5487-8127-780fe235f83e",
+        "head": "2D layered inorganic nanomaterials",
+        "tail": "electronic structure",
+        "assertion_ids": [
+          "ae781da0-6690-578b-a4e5-0c588d2cef71"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "63e38805-19fa-5e5d-a61a-1d32ac075bc4",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "38cf212a-da4b-5c51-96f9-089c74f17bd1",
+        "head": "2D layered inorganic nanomaterials",
+        "tail": "physical/chemical property group",
+        "assertion_ids": [
+          "6ae39589-7ca0-53dc-b948-7222c58390a1"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "99abd398-e414-51b0-aedb-eaae1da54734",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "63e38805-19fa-5e5d-a61a-1d32ac075bc4",
+        "head": "chemical sensor",
+        "tail": "2D layered inorganic nanomaterials",
+        "assertion_ids": [
+          "4deee763-89e0-5c68-9f13-351d850cd228"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "63e38805-19fa-5e5d-a61a-1d32ac075bc4",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "c6f18f72-c663-5e26-9740-8b8122382491",
+        "head": "2D layered inorganic nanomaterials",
+        "tail": "electronics",
+        "assertion_ids": [
+          "e2db9ffc-afb4-5811-837c-c9eb3cda29dc"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "63e38805-19fa-5e5d-a61a-1d32ac075bc4",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "f2f9ebfe-5d39-57b9-a33b-05e093081151",
+        "head": "2D layered inorganic nanomaterials",
+        "tail": "optoelectronics",
+        "assertion_ids": [
+          "f4ac79df-452f-50cf-880b-13612f570655"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "63e38805-19fa-5e5d-a61a-1d32ac075bc4",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "25c33a57-6128-5a38-aca0-5d3099f69f70",
+        "head": "2D layered inorganic nanomaterials",
+        "tail": "spintronics",
+        "assertion_ids": [
+          "5d4c3080-202e-5aca-bc50-72e676b241d8"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "63e38805-19fa-5e5d-a61a-1d32ac075bc4",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "8dae94e4-ac25-58f2-ae5b-3e045fec741e",
+        "head": "2D layered inorganic nanomaterials",
+        "tail": "catalysis",
+        "assertion_ids": [
+          "dd542ef1-da61-5651-8af0-012886ef5a1d"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "63e38805-19fa-5e5d-a61a-1d32ac075bc4",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "501c6acd-09e0-51f7-acb1-5a68d6a73940",
+        "head": "2D layered inorganic nanomaterials",
+        "tail": "energy generation/storage",
+        "assertion_ids": [
+          "7c2bf8c8-3c33-5601-9a98-f115eb5ded36"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "d2852936-982d-5168-9ab5-1248b3de1bdf",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "a84ba395-159f-502b-aff8-32142138a45d",
+        "head": "graphene",
+        "tail": "gas sensing",
+        "assertion_ids": [
+          "7d0e15a7-5d57-5e5a-a8f1-f44664050556",
+          "200536a8-a356-5999-ba04-81e2cffc3890"
+        ],
+        "occurrences": 2
+      },
+      {
+        "head_concept_id": "d2852936-982d-5168-9ab5-1248b3de1bdf",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "85ae5ef2-c865-566e-8d52-66e6cd0289fa",
+        "head": "graphene",
+        "tail": "specific surface area",
+        "assertion_ids": [
+          "de831f29-1a65-5372-ae70-ae8660eb6ea9"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "d2852936-982d-5168-9ab5-1248b3de1bdf",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "a39c87ff-cbd4-5fec-8393-f8c81ce31391",
+        "head": "graphene",
+        "tail": "surface activity",
+        "assertion_ids": [
+          "7bc258aa-1c54-59c4-b09c-af1a990ac618"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e082302e-48ae-53b9-a864-47d52b553154",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "a84ba395-159f-502b-aff8-32142138a45d",
+        "head": "layered inorganic analogue class",
+        "tail": "gas sensing",
+        "assertion_ids": [
+          "b527ce89-74ff-55f9-afe3-01fcfe5d7513"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e082302e-48ae-53b9-a864-47d52b553154",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "85ae5ef2-c865-566e-8d52-66e6cd0289fa",
+        "head": "layered inorganic analogue class",
+        "tail": "specific surface area",
+        "assertion_ids": [
+          "8c9d61a9-5d96-5f84-bee4-beb1732defee"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e082302e-48ae-53b9-a864-47d52b553154",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "a39c87ff-cbd4-5fec-8393-f8c81ce31391",
+        "head": "layered inorganic analogue class",
+        "tail": "surface activity",
+        "assertion_ids": [
+          "c9c3072f-1bfc-535e-8f94-e5c0e6ffe55a"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "51778da5-3ce4-5da9-aa4b-c5dfb0e90b7e",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "63e38805-19fa-5e5d-a61a-1d32ac075bc4",
+        "head": "gas sensor",
+        "tail": "2D layered inorganic nanomaterials",
+        "assertion_ids": [
+          "3fe2e549-94a0-5ef3-a76a-05ba4e37189f"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "51778da5-3ce4-5da9-aa4b-c5dfb0e90b7e",
+        "relation_type": "HAS_MECHANISM",
+        "tail_concept_id": "a935f0b5-47b3-5b4a-932c-4259abac4177",
+        "head": "gas sensor",
+        "tail": "gas sensing mechanisms unspecified",
+        "assertion_ids": [
+          "f5394724-b1c2-5904-b3bc-6cfb4697bdf7"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "51778da5-3ce4-5da9-aa4b-c5dfb0e90b7e",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "33c78665-1dfe-5df9-bf12-450d865d04e7",
+        "head": "gas sensor",
+        "tail": "gas sensor parameters unspecified",
+        "assertion_ids": [
+          "8a1060d6-85a3-5af6-b83a-3ad2678a6390"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "51778da5-3ce4-5da9-aa4b-c5dfb0e90b7e",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "7dfeb7ed-732d-5b6b-9575-7b589f5516bd",
+        "head": "gas sensor",
+        "tail": "gas sensing performance",
+        "assertion_ids": [
+          "638abb66-464f-57b1-b4d4-0eba2a82b200"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "51de8d41-c4e7-5fa7-898c-fdee6bb5ad61",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "a84ba395-159f-502b-aff8-32142138a45d",
+        "head": "graphene oxide",
+        "tail": "gas sensing",
+        "assertion_ids": [
+          "196ec594-a41b-5213-910a-c861ad1bf58f"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "a9addc51-e4d9-5aff-a1ed-29f340b0a5df",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "a84ba395-159f-502b-aff8-32142138a45d",
+        "head": "reduced graphene oxide",
+        "tail": "gas sensing",
+        "assertion_ids": [
+          "e688076c-4947-5811-b1e2-aa67eb96dfb5"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "84d5c914-6f78-50ea-b803-00a20f1bb289",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "a84ba395-159f-502b-aff8-32142138a45d",
+        "head": "functionalized GO/rGO class",
+        "tail": "gas sensing",
+        "assertion_ids": [
+          "ede5b622-51be-55bc-acb1-c4e16a61a933"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "7efb82e4-beaa-51fc-ba83-c2d9b3452993",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "a84ba395-159f-502b-aff8-32142138a45d",
+        "head": "transition metal dichalcogenides",
+        "tail": "gas sensing",
+        "assertion_ids": [
+          "5edea99d-9254-5cf8-9329-5ed4e8671a14"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "c0a4b672-460c-5f48-9a9f-82c615b6f9cc",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "a84ba395-159f-502b-aff8-32142138a45d",
+        "head": "layered III-VI semiconductors",
+        "tail": "gas sensing",
+        "assertion_ids": [
+          "cc324505-a4d4-5f65-a58d-cc45e7bb5290"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "323ffe23-7236-5add-918a-2bbe7330fff4",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "a84ba395-159f-502b-aff8-32142138a45d",
+        "head": "layered metal oxides",
+        "tail": "gas sensing",
+        "assertion_ids": [
+          "5bf04470-4999-5162-9598-ee2cc826bdde"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "95b9d90a-dd6f-51f3-b2f1-3fb718baec6c",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "a84ba395-159f-502b-aff8-32142138a45d",
+        "head": "phosphorene",
+        "tail": "gas sensing",
+        "assertion_ids": [
+          "296f2fa7-3c29-5b60-993f-32f44b26aa7c"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "3480eacc-c67e-5943-ab1c-0c0c8220b158",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "a84ba395-159f-502b-aff8-32142138a45d",
+        "head": "hexagonal boron nitride",
+        "tail": "gas sensing",
+        "assertion_ids": [
+          "037b569d-f541-5397-827d-6af40fa02329"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "63e38805-19fa-5e5d-a61a-1d32ac075bc4",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "a84ba395-159f-502b-aff8-32142138a45d",
+        "head": "2D layered inorganic nanomaterials",
+        "tail": "gas sensing",
+        "assertion_ids": [
+          "6c20cdf6-4d11-5d31-9c20-760a0865b33f"
+        ],
+        "occurrences": 1
+      }
+    ],
+    "repeated_qualified_groups": [],
+    "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
+    "human_review": "NOT_REVIEWED",
+    "draft_sha256": "4f89ee8168f00b7489aef6a63b08300fe039f5f812ba2e059b28e88239d0945d"
+  },
+  {
+    "document_code": "D018",
+    "revision_id": "c3e96320-21ac-4704-a4fb-19af06571af0",
+    "assertion_occurrences": 20,
+    "unique_canonical_triples": 20,
+    "repeated_core_triple_occurrences": 0,
+    "unique_qualified_claims": 20,
+    "repeated_qualified_claim_occurrences": 0,
+    "canonical_triples": [
+      {
+        "head_concept_id": "88eb87f5-a784-5a6e-bde5-87dcc7285702",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "d10f5ccf-7a29-535b-af7e-e09fbc2a1078",
+        "head": "rGO-conjugated Cu2O nanowire mesocrystal",
+        "tail": "reduced graphene oxide",
+        "assertion_ids": [
+          "ea442a41-d4d6-5d73-93b1-6f482db7900e"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "88eb87f5-a784-5a6e-bde5-87dcc7285702",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "dcfa639d-bf21-55e2-9cb2-235ca23ef01d",
+        "head": "rGO-conjugated Cu2O nanowire mesocrystal",
+        "tail": "Cu2O",
+        "assertion_ids": [
+          "81d60432-638e-5065-af0c-19fd67b88e5c"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "88eb87f5-a784-5a6e-bde5-87dcc7285702",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "8af9c65a-fb0d-585b-958e-5c260ae1525d",
+        "head": "rGO-conjugated Cu2O nanowire mesocrystal",
+        "tail": "nonclassical crystallization",
+        "assertion_ids": [
+          "fe9b89ba-a7c9-52eb-b4aa-35f7c66773ea"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "88eb87f5-a784-5a6e-bde5-87dcc7285702",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "4472581e-1ebc-5196-9f20-ece3219eab92",
+        "head": "rGO-conjugated Cu2O nanowire mesocrystal",
+        "tail": "anisotropic nanowire building blocks",
+        "assertion_ids": [
+          "a9fc075d-a9e9-55d8-8e93-6ca6e6836087"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "88eb87f5-a784-5a6e-bde5-87dcc7285702",
+        "relation_type": "HAS_MORPHOLOGY",
+        "tail_concept_id": "f038c138-b621-5f50-a04e-4ad6191d8925",
+        "head": "rGO-conjugated Cu2O nanowire mesocrystal",
+        "tail": "octahedral morphology",
+        "assertion_ids": [
+          "39286b36-0837-5832-a789-08424610ab52"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "88eb87f5-a784-5a6e-bde5-87dcc7285702",
+        "relation_type": "HAS_MORPHOLOGY",
+        "tail_concept_id": "6c1e193c-50d6-5676-bd2f-adcb2ba024f9",
+        "head": "rGO-conjugated Cu2O nanowire mesocrystal",
+        "tail": "eight equivalent {111} faces",
+        "assertion_ids": [
+          "618685cb-7ceb-5281-a935-9eec6802a605"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "44de4259-e44d-53ab-a112-14d88cc0a731",
+        "relation_type": "FACILITATES",
+        "tail_concept_id": "6a584702-4d08-5f8a-9c00-0b78b105f487",
+        "head": "graphene oxide precursor",
+        "tail": "Cu2O nanoparticle agglomeration",
+        "assertion_ids": [
+          "7ec31c1d-c4db-5f1a-ac93-b9c4db122a8f"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "28e9f8f0-0f20-5824-981b-33e2938b2f15",
+        "relation_type": "FACILITATES",
+        "tail_concept_id": "4316ceb9-c896-5d05-9c13-565214843dfa",
+        "head": "Ostwald ripening",
+        "tail": "nanowire growth",
+        "assertion_ids": [
+          "58d6a088-a8cf-5d53-af51-621312cfb324"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e7c1c9a2-dc28-57fc-8a42-522c6437c1a5",
+        "relation_type": "ACTS_ON",
+        "tail_concept_id": "44de4259-e44d-53ab-a112-14d88cc0a731",
+        "head": "GO reduction",
+        "tail": "graphene oxide precursor",
+        "assertion_ids": [
+          "8c4f8fbc-9161-5235-9622-75efbea35c2d"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "d92d0fde-2c11-5902-a01e-1764b71f92b0",
+        "relation_type": "HAS_MORPHOLOGY",
+        "tail_concept_id": "50bbeb7b-bbf5-51b3-9145-bb11f0a7ce27",
+        "head": "3D framework/2D rGO integrated hybrid",
+        "tail": "porous 3D framework",
+        "assertion_ids": [
+          "dfccea3c-f6f4-500a-95b9-1a9bc560c156"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "d92d0fde-2c11-5902-a01e-1764b71f92b0",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "fa9d6936-7481-5ec7-8519-7ca873cee1f2",
+        "head": "3D framework/2D rGO integrated hybrid",
+        "tail": "2D rGO sheet",
+        "assertion_ids": [
+          "82c86f87-71c6-5980-961d-1f5e8a6b3a32"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "c10acb1d-74ef-53e0-b670-d2c84d557868",
+        "relation_type": "ACTS_ON",
+        "tail_concept_id": "113c2551-9005-5b46-8b08-eebb01809f1f",
+        "head": "microsphere hierarchical evolution",
+        "tail": "amorphous microspheres",
+        "assertion_ids": [
+          "50e864a5-3883-59c8-b608-2eb4134a10f2"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "d92d0fde-2c11-5902-a01e-1764b71f92b0",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "bfe8997a-4b67-56bc-a08d-ed18486e2723",
+        "head": "3D framework/2D rGO integrated hybrid",
+        "tail": "mesocrystal self-organization",
+        "assertion_ids": [
+          "b473c601-dee4-568c-ba1e-c304d49de4c5"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "69f355d5-be01-5232-87a1-4ed8144ebe85",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "f2b5ad47-bf29-56a1-877e-6ec20e180e7d",
+        "head": "super-mesocrystal",
+        "tail": "3D oriented mesocrystal attachment",
+        "assertion_ids": [
+          "84560ac4-1001-526b-8ead-caf423eab8bf"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "69f355d5-be01-5232-87a1-4ed8144ebe85",
+        "relation_type": "HAS_MORPHOLOGY",
+        "tail_concept_id": "257a882c-0ca9-58c6-8796-2cce21109fea",
+        "head": "super-mesocrystal",
+        "tail": "voided Sierpinski polyhedron",
+        "assertion_ids": [
+          "6dfc6f2f-6405-55b7-ac0d-3fe4fbbbaadc"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "88eb87f5-a784-5a6e-bde5-87dcc7285702",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "1dc76581-c522-5ccb-ac88-2b45803f64ee",
+        "head": "rGO-conjugated Cu2O nanowire mesocrystal",
+        "tail": "specific surface area",
+        "assertion_ids": [
+          "db47781e-e830-5d9a-bc95-0949312cc56a"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "88eb87f5-a784-5a6e-bde5-87dcc7285702",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "652d755b-3cb9-5f7f-a81c-58a97eee893b",
+        "head": "rGO-conjugated Cu2O nanowire mesocrystal",
+        "tail": "conductivity",
+        "assertion_ids": [
+          "e106f99f-0486-59a6-ad94-31fe16d01ba8"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "88eb87f5-a784-5a6e-bde5-87dcc7285702",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "0a9dac87-06a7-5fc6-9a89-04ae23161a1b",
+        "head": "rGO-conjugated Cu2O nanowire mesocrystal",
+        "tail": "nitrogen dioxide",
+        "assertion_ids": [
+          "e747bcba-0f8a-5e35-ad23-56e768ee7030"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "88eb87f5-a784-5a6e-bde5-87dcc7285702",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "54624502-e8a1-5094-8a73-bfbc3538a7f7",
+        "head": "rGO-conjugated Cu2O nanowire mesocrystal",
+        "tail": "NO2 sensitivity",
+        "assertion_ids": [
+          "934ed26a-0117-582f-8c94-ea673ca6fbb9"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e789630b-4791-529c-b7fb-e02894632470",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "88eb87f5-a784-5a6e-bde5-87dcc7285702",
+        "head": "prospective ultrasensitive environmental sensor",
+        "tail": "rGO-conjugated Cu2O nanowire mesocrystal",
+        "assertion_ids": [
+          "a6db6d20-0458-52d2-9dae-0f0a8e4b6e4b"
+        ],
+        "occurrences": 1
+      }
+    ],
+    "repeated_qualified_groups": [],
+    "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
+    "human_review": "NOT_REVIEWED",
+    "draft_sha256": "2fa9827b50a9c4089979702bdc17d56ca0f4f8c3f9e75c1dcddf53473300099e"
+  },
+  {
+    "document_code": "D021",
+    "revision_id": "48ba5b53-f32b-43a8-ae85-ea7232a2975d",
+    "assertion_occurrences": 16,
+    "unique_canonical_triples": 16,
+    "repeated_core_triple_occurrences": 0,
+    "unique_qualified_claims": 16,
+    "repeated_qualified_claim_occurrences": 0,
+    "canonical_triples": [
+      {
+        "head_concept_id": "9d4c45ea-e0e8-5142-83ea-ee924c19f57f",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "4a262306-10e2-5104-9c08-b7ff549eb867",
+        "head": "graphene-based nanocomposite class",
+        "tail": "mechanical properties",
+        "assertion_ids": [
+          "643d00b9-06a6-54da-ad87-44a8f85b559e"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "9d4c45ea-e0e8-5142-83ea-ee924c19f57f",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "7ec75a7a-c1c4-5b14-9d00-0701e9ad8f81",
+        "head": "graphene-based nanocomposite class",
+        "tail": "electrical properties",
+        "assertion_ids": [
+          "12ff7c52-a092-59c6-8a03-4e6a07d1d7a6"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "9d4c45ea-e0e8-5142-83ea-ee924c19f57f",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "ed1bdade-0a3c-5a7f-8c19-264cfab84637",
+        "head": "graphene-based nanocomposite class",
+        "tail": "thermal properties",
+        "assertion_ids": [
+          "d4a9b2e2-99e2-5f00-9d6c-3e2b26f695f8"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "9d4c45ea-e0e8-5142-83ea-ee924c19f57f",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "7a1f0066-adf4-53f2-a453-e52576ae9ffb",
+        "head": "graphene-based nanocomposite class",
+        "tail": "barrier properties",
+        "assertion_ids": [
+          "2681284e-27a6-5ae1-9ec7-05b0f3585672"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "6963042f-ff01-501c-bf70-659862438475",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "072007e4-e3e3-5cdc-98b2-e0d627065a86",
+        "head": "graphene oxide",
+        "tail": "top-down synthesis",
+        "assertion_ids": [
+          "3b6222fa-f90e-5d5f-96d8-baf8dff86e2f"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "6963042f-ff01-501c-bf70-659862438475",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "0c70391c-48a1-5ff5-9bfd-601559daa04c",
+        "head": "graphene oxide",
+        "tail": "gas barrier application",
+        "assertion_ids": [
+          "77244a7e-1866-5f25-8fa5-8ad5497db567"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "6963042f-ff01-501c-bf70-659862438475",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "23c04be4-f9aa-575f-ac9a-e86fc839766a",
+        "head": "graphene oxide",
+        "tail": "membrane separation",
+        "assertion_ids": [
+          "7e0b5a21-ec28-56cc-a816-5d538279ecde"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "82e4c698-a92a-5df1-808b-f4729c4d0ea4",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "072007e4-e3e3-5cdc-98b2-e0d627065a86",
+        "head": "reduced graphene oxide",
+        "tail": "top-down synthesis",
+        "assertion_ids": [
+          "c1e89a3a-2171-50e8-a6f0-eb3afe135654"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "82e4c698-a92a-5df1-808b-f4729c4d0ea4",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "0c70391c-48a1-5ff5-9bfd-601559daa04c",
+        "head": "reduced graphene oxide",
+        "tail": "gas barrier application",
+        "assertion_ids": [
+          "5b2f7d2d-cfe8-5090-8582-a831db720fff"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "82e4c698-a92a-5df1-808b-f4729c4d0ea4",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "23c04be4-f9aa-575f-ac9a-e86fc839766a",
+        "head": "reduced graphene oxide",
+        "tail": "membrane separation",
+        "assertion_ids": [
+          "23544123-a840-5b5f-8ebc-fbf5a9e0e956"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "d0bde706-6c35-553a-b863-09b7332fb983",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "a1458601-4688-55ea-be1c-01314a4ab868",
+        "head": "graphene-derivative nanocomposite class",
+        "tail": "stimuli-response characteristics",
+        "assertion_ids": [
+          "7974b193-0632-5dab-99b4-de9e4b0dd282"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "43f4740d-3330-5d5a-a0aa-f34c989b97da",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "1a179b76-4f74-5405-81ba-45fd260bb3e0",
+        "head": "GO/rGO derivative class",
+        "tail": "graphene-derivative synthesis",
+        "assertion_ids": [
+          "78c45fe5-483f-51e1-a216-a19d6abfce9d"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "d0bde706-6c35-553a-b863-09b7332fb983",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "4dc9a658-fcc7-5c07-9d95-ee69f94ef75d",
+        "head": "graphene-derivative nanocomposite class",
+        "tail": "separation application",
+        "assertion_ids": [
+          "96365364-afaf-5c9c-960e-b328a3fe7d04"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "d0bde706-6c35-553a-b863-09b7332fb983",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "015ec823-1f4d-56e7-af9f-83726f76b6e0",
+        "head": "graphene-derivative nanocomposite class",
+        "tail": "energy storage",
+        "assertion_ids": [
+          "73c49f35-d4f4-5df6-99ad-5a21437a017c"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "5b3d2933-2946-56b4-8821-90b0974c8089",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "d0bde706-6c35-553a-b863-09b7332fb983",
+        "head": "anti-corrosion coating",
+        "tail": "graphene-derivative nanocomposite class",
+        "assertion_ids": [
+          "28a36c83-3cef-5207-a6ea-cb2bee06518f"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "7aeb0684-5236-5e5d-82ab-9dcc8d2eb973",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "67e6359e-0a58-5cd9-923c-9fa8280d7fb1",
+        "head": "graphene-derivative polymer nanocomposite",
+        "tail": "industrial-scale polymer nanocomposite production",
+        "assertion_ids": [
+          "f890cdbc-9850-5575-85a1-a3fabd2382da"
+        ],
+        "occurrences": 1
+      }
+    ],
+    "repeated_qualified_groups": [],
+    "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
+    "human_review": "NOT_REVIEWED",
+    "draft_sha256": "589fa113f2d9f9d492141ef1a9793402ec3959a8ec6fab2c13cda33a02496d7a"
+  },
+  {
+    "document_code": "D024",
+    "revision_id": "95f3f5a0-077c-4f5d-859f-37fc344f12f0",
+    "assertion_occurrences": 15,
+    "unique_canonical_triples": 14,
+    "repeated_core_triple_occurrences": 1,
+    "unique_qualified_claims": 15,
+    "repeated_qualified_claim_occurrences": 0,
+    "canonical_triples": [
+      {
+        "head_concept_id": "3c053abc-b932-5b6d-bf09-6fc02a8fab9e",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "1629cd0b-b2bd-5aac-a65e-ed59996b6280",
+        "head": "porous graphene sheet",
+        "tail": "permeability",
+        "assertion_ids": [
+          "6820725f-4ea5-5684-8a40-e9972d72b5d1"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "3c053abc-b932-5b6d-bf09-6fc02a8fab9e",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "919adf4a-6529-5ff3-b05b-dc12fba4aa76",
+        "head": "porous graphene sheet",
+        "tail": "gas separation selectivity",
+        "assertion_ids": [
+          "6b487496-238e-5541-9478-c1df925ff767"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "3c053abc-b932-5b6d-bf09-6fc02a8fab9e",
+        "relation_type": "HAS_MORPHOLOGY",
+        "tail_concept_id": "cdefd6a9-62d5-5b37-a3ed-50b1997a998c",
+        "head": "porous graphene sheet",
+        "tail": "subnanometer pore",
+        "assertion_ids": [
+          "1db653ab-9788-5e7e-a281-615d60dc88c6"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "3c053abc-b932-5b6d-bf09-6fc02a8fab9e",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "fd67782b-537c-50d7-9043-5c04bac1e04d",
+        "head": "porous graphene sheet",
+        "tail": "H2/CH4 selectivity",
+        "assertion_ids": [
+          "063abde3-21c8-58c7-b14a-b9629a5826b1",
+          "8f8593b9-c7a1-5dd5-9ee1-bc96a588d85a"
+        ],
+        "occurrences": 2
+      },
+      {
+        "head_concept_id": "3c053abc-b932-5b6d-bf09-6fc02a8fab9e",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "9f1c30e3-646e-54a1-ab0b-2bbea09e9b29",
+        "head": "porous graphene sheet",
+        "tail": "H2 permeance",
+        "assertion_ids": [
+          "98f09fdf-33d5-5977-93d7-7240465a1863"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "3c053abc-b932-5b6d-bf09-6fc02a8fab9e",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "c9cfc3e1-62f0-5d45-bb7c-4efadfbd82cb",
+        "head": "porous graphene sheet",
+        "tail": "CH4 permeation barrier",
+        "assertion_ids": [
+          "c0a3b7f5-a63f-5e03-94b4-729fba03e84e"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "57d3d410-e920-50b6-9f91-e3c04b6bab9e",
+        "relation_type": "ACTS_ON",
+        "tail_concept_id": "3b6e7a74-b52f-5115-8148-2c2e8f5fabc5",
+        "head": "graphene pore creation",
+        "tail": "graphene",
+        "assertion_ids": [
+          "db248263-e11e-569d-ac7e-864cf3da64b3"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "57d3d410-e920-50b6-9f91-e3c04b6bab9e",
+        "relation_type": "OPTIMIZES",
+        "tail_concept_id": "3b6e7a74-b52f-5115-8148-2c2e8f5fabc5",
+        "head": "graphene pore creation",
+        "tail": "graphene",
+        "assertion_ids": [
+          "d3b20936-8ae1-5c2f-87c1-24b0566fd63c"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "3c053abc-b932-5b6d-bf09-6fc02a8fab9e",
+        "relation_type": "FUNCTIONS_AS",
+        "tail_concept_id": "145a0322-24af-5798-92b5-a7fb03e15829",
+        "head": "porous graphene sheet",
+        "tail": "porous graphene gas separation membrane",
+        "assertion_ids": [
+          "e54419db-37b1-5091-81ab-3bf5fe1b3a01"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "145a0322-24af-5798-92b5-a7fb03e15829",
+        "relation_type": "HAS_MORPHOLOGY",
+        "tail_concept_id": "258b75f7-1256-5db1-a269-b378a8ad18c1",
+        "head": "porous graphene gas separation membrane",
+        "tail": "one-atom-thin morphology",
+        "assertion_ids": [
+          "1e20cbfa-3b38-5cab-9429-7b04573fb73f"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "145a0322-24af-5798-92b5-a7fb03e15829",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "0356b31a-f5f1-5b99-913b-81baba2a28b5",
+        "head": "porous graphene gas separation membrane",
+        "tail": "high efficiency",
+        "assertion_ids": [
+          "1fac200d-57c7-5280-8211-75e7f867fd08"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "145a0322-24af-5798-92b5-a7fb03e15829",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "d678df6c-ca1b-5b41-8c92-b6ea99565614",
+        "head": "porous graphene gas separation membrane",
+        "tail": "high selectivity",
+        "assertion_ids": [
+          "5f2cbacc-9c7f-51fd-9324-955925176fde"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "145a0322-24af-5798-92b5-a7fb03e15829",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "67622c45-389c-5147-98d4-5da721ed9888",
+        "head": "porous graphene gas separation membrane",
+        "tail": "gas separation",
+        "assertion_ids": [
+          "6b4e16e4-910d-544f-b625-5c2907de1606"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "145a0322-24af-5798-92b5-a7fb03e15829",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "5f22d0ad-28e9-5713-8250-ceafefacbbff",
+        "head": "porous graphene gas separation membrane",
+        "tail": "carbon sequestration",
+        "assertion_ids": [
+          "751f0ef9-0cc9-5110-812c-5a2259232672"
+        ],
+        "occurrences": 1
+      }
+    ],
+    "repeated_qualified_groups": [],
+    "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
+    "human_review": "NOT_REVIEWED",
+    "draft_sha256": "0ea973236ee93ac17dfa84571867eb922e53df4e4bfdd363eb957c22722de772"
+  },
+  {
+    "document_code": "D026",
+    "revision_id": "3ed28d1a-4b30-4ea4-bf03-3a69308fb8ba",
+    "assertion_occurrences": 12,
+    "unique_canonical_triples": 12,
+    "repeated_core_triple_occurrences": 0,
+    "unique_qualified_claims": 12,
+    "repeated_qualified_claim_occurrences": 0,
+    "canonical_triples": [
+      {
+        "head_concept_id": "efde8626-2a04-5acb-aa50-434fabd174d3",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "7824583d-6f96-5010-88b6-f27fbff8b8f9",
+        "head": "solid-state gas sensor",
+        "tail": "precise chemical-agent detection",
+        "assertion_ids": [
+          "4338f10b-e91e-56b0-bc14-b449346c762e"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "38f96c87-3972-5e42-a0d1-08ad52850bba",
+        "relation_type": "HAS_MORPHOLOGY",
+        "tail_concept_id": "9693b2c1-0e40-5349-a367-88fc6d3eb64b",
+        "head": "2D metal carbide MXene",
+        "tail": "two-dimensional morphology",
+        "assertion_ids": [
+          "ce17bfe6-963d-5225-82e4-2347d167db45"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "38f96c87-3972-5e42-a0d1-08ad52850bba",
+        "relation_type": "HAS_MORPHOLOGY",
+        "tail_concept_id": "e2432f1d-5f4d-5727-a5df-e9d361175781",
+        "head": "2D metal carbide MXene",
+        "tail": "fully functionalized surface",
+        "assertion_ids": [
+          "86403c6e-3767-5d13-9975-f796a4dff97e"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "38f96c87-3972-5e42-a0d1-08ad52850bba",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "667fd049-e7e5-57e3-aaaf-6828f2adcc02",
+        "head": "2D metal carbide MXene",
+        "tail": "metallic conductivity",
+        "assertion_ids": [
+          "be8189f2-c9e0-5d61-ba51-8d37722fc073"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "38f96c87-3972-5e42-a0d1-08ad52850bba",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "496ee8f0-0c12-5949-87fc-608fe1fadad1",
+        "head": "2D metal carbide MXene",
+        "tail": "low electrical noise",
+        "assertion_ids": [
+          "ffe96ef7-5432-5939-a80b-b221d89c16d8"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "38f96c87-3972-5e42-a0d1-08ad52850bba",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "098c2b98-d378-5af3-a55d-40e4ce7cff65",
+        "head": "2D metal carbide MXene",
+        "tail": "strong signal",
+        "assertion_ids": [
+          "e45d8f64-aa17-51aa-8381-c901e38471f0"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "38f96c87-3972-5e42-a0d1-08ad52850bba",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "6a47bd86-5290-5543-9d4d-43aa75760a4b",
+        "head": "2D metal carbide MXene",
+        "tail": "sensitivity",
+        "assertion_ids": [
+          "b39b5aa9-6fea-598c-a300-923b7d2c3620"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "56ebbe75-4acf-5360-853e-e70a8b79ca59",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "a553424e-4dec-5200-9824-68174adac07a",
+        "head": "Ti3C2Tx MXene gas sensor",
+        "tail": "Ti3C2Tx MXene",
+        "assertion_ids": [
+          "1925ee55-b4f1-5030-8cf2-cc08631c609c"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "56ebbe75-4acf-5360-853e-e70a8b79ca59",
+        "relation_type": "DETECTS",
+        "tail_concept_id": "12f08b84-f057-53c4-82c9-814201fe5963",
+        "head": "Ti3C2Tx MXene gas sensor",
+        "tail": "volatile organic compounds",
+        "assertion_ids": [
+          "6c70f1c5-8ce1-57a9-a9af-d0e54d093f05"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "56ebbe75-4acf-5360-853e-e70a8b79ca59",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "452aea32-b59e-5e2a-990c-2b2cceced777",
+        "head": "Ti3C2Tx MXene gas sensor",
+        "tail": "detection limit",
+        "assertion_ids": [
+          "74db687b-7001-5f0c-ad68-ca627939acbf"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "56ebbe75-4acf-5360-853e-e70a8b79ca59",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "3fad6222-1fef-5466-a143-e05d155f5031",
+        "head": "Ti3C2Tx MXene gas sensor",
+        "tail": "signal-to-noise ratio",
+        "assertion_ids": [
+          "8906d32c-2735-5bbd-b65b-34317b083e43"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "626a085f-189c-5129-9567-cd53c9efc238",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "2ac50fb9-b12c-5cab-8d3e-66d20fee3c50",
+        "head": "prospective highly sensitive sensor",
+        "tail": "functionalized metallic sensing channel",
+        "assertion_ids": [
+          "eaa89cff-6cda-55f0-9bb9-709f4280a725"
+        ],
+        "occurrences": 1
+      }
+    ],
+    "repeated_qualified_groups": [],
+    "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
+    "human_review": "NOT_REVIEWED",
+    "draft_sha256": "8cf583c6a58865ff10e0387b604c5f99268b8ffca7f671821b41b8ef0824b6d1"
+  },
+  {
+    "document_code": "D029",
+    "revision_id": "94abe07d-65fd-4ac6-96c3-0c65e777ed09",
+    "assertion_occurrences": 16,
+    "unique_canonical_triples": 16,
+    "repeated_core_triple_occurrences": 0,
+    "unique_qualified_claims": 16,
+    "repeated_qualified_claim_occurrences": 0,
+    "canonical_triples": [
+      {
+        "head_concept_id": "fd09d7d8-4282-5c8c-b9fd-7b3b206e9bbd",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "35e43a92-94df-5bd0-ac25-062b5aa38f33",
+        "head": "graphene",
+        "tail": "large surface area",
+        "assertion_ids": [
+          "cd974bf3-b3fd-5cab-85e5-74f0a56291cf"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "fd09d7d8-4282-5c8c-b9fd-7b3b206e9bbd",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "06a61e1b-eb66-58d0-9e1b-f41b93961f71",
+        "head": "graphene",
+        "tail": "high mobility",
+        "assertion_ids": [
+          "da32049c-8ec8-54a3-be4f-d4db9c0ce539"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "fd09d7d8-4282-5c8c-b9fd-7b3b206e9bbd",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "ca87a815-f6bd-55fb-84e6-fb3080b871e0",
+        "head": "graphene",
+        "tail": "long-term stability",
+        "assertion_ids": [
+          "3d693b52-0067-5129-aabc-76910f950d14"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e256ac81-725b-5dc3-a954-f64cfaf0383a",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "c3b4eea1-e867-5651-86d0-27481886e4ec",
+        "head": "prospective graphene gas sensor",
+        "tail": "high sensitivity",
+        "assertion_ids": [
+          "d02caae1-7ca6-5c5b-8790-11616868dfc3"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e256ac81-725b-5dc3-a954-f64cfaf0383a",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "28492ed5-2550-51f8-a25a-246c3e883a2a",
+        "head": "prospective graphene gas sensor",
+        "tail": "contamination robustness",
+        "assertion_ids": [
+          "425225a0-2daa-5ea5-bc48-92ddc46696c9"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e256ac81-725b-5dc3-a954-f64cfaf0383a",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "de518dd5-16d1-5d04-85bb-5a4c2cb349f8",
+        "head": "prospective graphene gas sensor",
+        "tail": "low cost",
+        "assertion_ids": [
+          "9c15aacc-4920-57c9-93cf-991e6c057476"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e256ac81-725b-5dc3-a954-f64cfaf0383a",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "4b2cf4fe-3146-5fc7-9b6d-699845c8f02e",
+        "head": "prospective graphene gas sensor",
+        "tail": "low noise",
+        "assertion_ids": [
+          "be93cf5a-5d3a-5008-827b-faf1835c6979"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e256ac81-725b-5dc3-a954-f64cfaf0383a",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "6cd4a941-bb0e-59cb-ad81-3123462247f9",
+        "head": "prospective graphene gas sensor",
+        "tail": "low power consumption",
+        "assertion_ids": [
+          "ce294d90-4686-5902-82cb-c1bf8055597b"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "790690e3-9b99-5c7f-8ad7-adacad5c2e39",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "de518dd5-16d1-5d04-85bb-5a4c2cb349f8",
+        "head": "inkjet printing",
+        "tail": "low cost",
+        "assertion_ids": [
+          "7ca0628f-56c7-515b-865a-ec4f321272d8"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "26c53785-54af-5a6a-b853-a7133e83dfea",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "790690e3-9b99-5c7f-8ad7-adacad5c2e39",
+        "head": "graphene film",
+        "tail": "inkjet printing",
+        "assertion_ids": [
+          "44c20bc3-0eba-5b76-a42e-e7bb51de9eb2"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "0a9d005a-89d7-571d-a404-2a9f32c2a117",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "790690e3-9b99-5c7f-8ad7-adacad5c2e39",
+        "head": "inkjet-printed graphene chemiresistor",
+        "tail": "inkjet printing",
+        "assertion_ids": [
+          "cd0337df-0e81-5e99-8622-7f0b626e2d8b"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "0a9d005a-89d7-571d-a404-2a9f32c2a117",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "fd09d7d8-4282-5c8c-b9fd-7b3b206e9bbd",
+        "head": "inkjet-printed graphene chemiresistor",
+        "tail": "graphene",
+        "assertion_ids": [
+          "4777ae2d-ff67-5516-a976-97b1f5b451d9"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "0a9d005a-89d7-571d-a404-2a9f32c2a117",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "f53a9c42-523b-57a3-8398-be39ba8caf31",
+        "head": "inkjet-printed graphene chemiresistor",
+        "tail": "gas sensitivity",
+        "assertion_ids": [
+          "0cd8f6f4-8d4d-56ea-b9b0-5d752491219e"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "be09c369-1676-5ccc-a34a-ea11233e588a",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "fd09d7d8-4282-5c8c-b9fd-7b3b206e9bbd",
+        "head": "graphene ink",
+        "tail": "graphene",
+        "assertion_ids": [
+          "58456f91-943a-5cde-94cf-276415332ffb"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "0a9d005a-89d7-571d-a404-2a9f32c2a117",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "ea5b3ebd-c3db-5702-adac-b45846b659d3",
+        "head": "inkjet-printed graphene chemiresistor",
+        "tail": "gas sensor response",
+        "assertion_ids": [
+          "a4074453-852f-51b8-972e-4a0bcdd6d28f"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "0f0c684c-d370-5e52-b70b-df6ff8aeabbf",
+        "relation_type": "IMPROVES",
+        "tail_concept_id": "f53a9c42-523b-57a3-8398-be39ba8caf31",
+        "head": "layer thickness tuning",
+        "tail": "gas sensitivity",
+        "assertion_ids": [
+          "41def15f-c30c-593e-b69f-26a0815429d9"
+        ],
+        "occurrences": 1
+      }
+    ],
+    "repeated_qualified_groups": [],
+    "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
+    "human_review": "NOT_REVIEWED",
+    "draft_sha256": "6b9942f8ab4f9369b48e9663e57d4b27447965245d5a7fe5f5c4d608b2cc3682"
+  },
+  {
+    "document_code": "D035",
+    "revision_id": "6612f9ab-0007-4924-a4da-dc7e0bafdba3",
+    "assertion_occurrences": 25,
+    "unique_canonical_triples": 25,
+    "repeated_core_triple_occurrences": 0,
+    "unique_qualified_claims": 25,
+    "repeated_qualified_claim_occurrences": 0,
+    "canonical_triples": [
+      {
+        "head_concept_id": "737ca0f3-c40e-57cf-b3e9-7b47336a74a7",
+        "relation_type": "IMPROVES",
+        "tail_concept_id": "a7a39400-26fb-5985-9255-63d8332a98dc",
+        "head": "graphene doping",
+        "tail": "adsorption energy",
+        "assertion_ids": [
+          "1cbb9e95-f368-59f4-bf40-6ec0c7dae52d"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "737ca0f3-c40e-57cf-b3e9-7b47336a74a7",
+        "relation_type": "IMPROVES",
+        "tail_concept_id": "7e6a3ab7-7fcf-56eb-b3a0-9622bfa489c2",
+        "head": "graphene doping",
+        "tail": "gas selectivity",
+        "assertion_ids": [
+          "f9314c84-c652-5e4e-9762-a9fcbe7928be"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "cd9f2de6-e8b7-5c43-8b84-71bd208e79f4",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "05ee01cd-0821-5570-8e9d-e6b49b674479",
+        "head": "CO/CO2/NO/NO2 gas group",
+        "tail": "carbon monoxide",
+        "assertion_ids": [
+          "32ccbe78-5b7a-5574-aaff-4e1787e9b95d"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "cd9f2de6-e8b7-5c43-8b84-71bd208e79f4",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "56e931dd-9463-51b9-86ed-f5ae2bccc565",
+        "head": "CO/CO2/NO/NO2 gas group",
+        "tail": "carbon dioxide",
+        "assertion_ids": [
+          "3f5b4e3c-01ff-590e-890a-6630cf215ae8"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "cd9f2de6-e8b7-5c43-8b84-71bd208e79f4",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "e1aa1938-4275-5b11-bb72-02caccd3e7d0",
+        "head": "CO/CO2/NO/NO2 gas group",
+        "tail": "nitric oxide",
+        "assertion_ids": [
+          "a81674bb-6310-57d6-bd77-29a7f945c01e"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "cd9f2de6-e8b7-5c43-8b84-71bd208e79f4",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "2c0c74e4-67b4-58f5-bae0-5445bdfeb2db",
+        "head": "CO/CO2/NO/NO2 gas group",
+        "tail": "nitrogen dioxide",
+        "assertion_ids": [
+          "8fffae98-2c5f-55db-94f5-82bc42fff697"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "530b9c97-190e-5345-8b94-e3d8271a9c62",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "437b2f86-a010-566d-a59f-e5d26adc1636",
+        "head": "B,N-codoped graphene",
+        "tail": "electronic properties",
+        "assertion_ids": [
+          "ac8268e2-b445-509f-a599-c6e8d0214be9"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "530b9c97-190e-5345-8b94-e3d8271a9c62",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "7867d8d4-fa5b-5479-8dff-a529d7c3f88a",
+        "head": "B,N-codoped graphene",
+        "tail": "high sensitivity and selectivity",
+        "assertion_ids": [
+          "7eb870d4-afe2-59ca-8d9c-48b538e9fa7d"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "846aa8d3-648f-5c24-b382-5b3d9d644a70",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "530b9c97-190e-5345-8b94-e3d8271a9c62",
+        "head": "semiconductor-based gas sensor",
+        "tail": "B,N-codoped graphene",
+        "assertion_ids": [
+          "b9f67a09-7301-56c6-9007-503080bf7636"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "4ae7c1a5-822c-5dd3-94f8-cf5a0ed020d1",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "05ee01cd-0821-5570-8e9d-e6b49b674479",
+        "head": "pristine graphene",
+        "tail": "carbon monoxide",
+        "assertion_ids": [
+          "f8b23362-ab8a-59ad-92f9-a3ade8d4caaf"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "4ae7c1a5-822c-5dd3-94f8-cf5a0ed020d1",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "56e931dd-9463-51b9-86ed-f5ae2bccc565",
+        "head": "pristine graphene",
+        "tail": "carbon dioxide",
+        "assertion_ids": [
+          "73e1b47c-04f9-50bd-a7c8-136bf5b73870"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "4ae7c1a5-822c-5dd3-94f8-cf5a0ed020d1",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "e1aa1938-4275-5b11-bb72-02caccd3e7d0",
+        "head": "pristine graphene",
+        "tail": "nitric oxide",
+        "assertion_ids": [
+          "e4d07200-056c-53d0-a4e0-12ea385276f6"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "4ae7c1a5-822c-5dd3-94f8-cf5a0ed020d1",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "2c0c74e4-67b4-58f5-bae0-5445bdfeb2db",
+        "head": "pristine graphene",
+        "tail": "nitrogen dioxide",
+        "assertion_ids": [
+          "b087fb7d-c439-5a36-abb2-c79276b6d563"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "5113c796-4aeb-5fc2-b6c3-9fb4a58f7315",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "05ee01cd-0821-5570-8e9d-e6b49b674479",
+        "head": "B-doped graphene",
+        "tail": "carbon monoxide",
+        "assertion_ids": [
+          "9a0557dd-e0e1-57dc-8db1-93ff00b0f707"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "5113c796-4aeb-5fc2-b6c3-9fb4a58f7315",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "56e931dd-9463-51b9-86ed-f5ae2bccc565",
+        "head": "B-doped graphene",
+        "tail": "carbon dioxide",
+        "assertion_ids": [
+          "89da2c9c-4ad6-5e45-9bd4-5365c0d1a5e1"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "5113c796-4aeb-5fc2-b6c3-9fb4a58f7315",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "e1aa1938-4275-5b11-bb72-02caccd3e7d0",
+        "head": "B-doped graphene",
+        "tail": "nitric oxide",
+        "assertion_ids": [
+          "1ab7d22f-abd7-5d9b-9095-1373b19a14a2"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "5113c796-4aeb-5fc2-b6c3-9fb4a58f7315",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "2c0c74e4-67b4-58f5-bae0-5445bdfeb2db",
+        "head": "B-doped graphene",
+        "tail": "nitrogen dioxide",
+        "assertion_ids": [
+          "5c565190-ceca-5c2e-905d-f43417ad708c"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "597e2222-53e3-56e7-b9fb-4c742a4ce4bb",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "05ee01cd-0821-5570-8e9d-e6b49b674479",
+        "head": "N-doped graphene",
+        "tail": "carbon monoxide",
+        "assertion_ids": [
+          "eb499cb0-31a2-5a2f-916f-96ca2b5dd60d"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "597e2222-53e3-56e7-b9fb-4c742a4ce4bb",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "56e931dd-9463-51b9-86ed-f5ae2bccc565",
+        "head": "N-doped graphene",
+        "tail": "carbon dioxide",
+        "assertion_ids": [
+          "a6627b77-914b-57ea-85df-9fea52e65632"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "597e2222-53e3-56e7-b9fb-4c742a4ce4bb",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "e1aa1938-4275-5b11-bb72-02caccd3e7d0",
+        "head": "N-doped graphene",
+        "tail": "nitric oxide",
+        "assertion_ids": [
+          "41d6cdb5-6779-56e9-8a09-81e1f072741c"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "597e2222-53e3-56e7-b9fb-4c742a4ce4bb",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "2c0c74e4-67b4-58f5-bae0-5445bdfeb2db",
+        "head": "N-doped graphene",
+        "tail": "nitrogen dioxide",
+        "assertion_ids": [
+          "11877451-845e-52ae-b7e4-a0802a9fd975"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "530b9c97-190e-5345-8b94-e3d8271a9c62",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "05ee01cd-0821-5570-8e9d-e6b49b674479",
+        "head": "B,N-codoped graphene",
+        "tail": "carbon monoxide",
+        "assertion_ids": [
+          "46257233-5d7b-5cd9-8b87-d888391d8c63"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "530b9c97-190e-5345-8b94-e3d8271a9c62",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "56e931dd-9463-51b9-86ed-f5ae2bccc565",
+        "head": "B,N-codoped graphene",
+        "tail": "carbon dioxide",
+        "assertion_ids": [
+          "f024a31d-c232-5631-be48-23b6b2ea93f6"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "530b9c97-190e-5345-8b94-e3d8271a9c62",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "e1aa1938-4275-5b11-bb72-02caccd3e7d0",
+        "head": "B,N-codoped graphene",
+        "tail": "nitric oxide",
+        "assertion_ids": [
+          "c1be1a85-ea30-50bc-9c35-4db217927b23"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "530b9c97-190e-5345-8b94-e3d8271a9c62",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "2c0c74e4-67b4-58f5-bae0-5445bdfeb2db",
+        "head": "B,N-codoped graphene",
+        "tail": "nitrogen dioxide",
+        "assertion_ids": [
+          "97afc1d5-823f-5695-9508-95b5e3cebb15"
+        ],
+        "occurrences": 1
+      }
+    ],
+    "repeated_qualified_groups": [],
+    "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
+    "human_review": "NOT_REVIEWED",
+    "draft_sha256": "42e6d91d65ca2c72f46ec67200c86c09f2c36062f19dff68759e6cdb152d64ce"
+  },
+  {
+    "document_code": "D038",
+    "revision_id": "b6535766-c337-4abd-9925-8381f0acc7fa",
+    "assertion_occurrences": 16,
+    "unique_canonical_triples": 16,
+    "repeated_core_triple_occurrences": 0,
+    "unique_qualified_claims": 16,
+    "repeated_qualified_claim_occurrences": 0,
+    "canonical_triples": [
+      {
+        "head_concept_id": "38ddaedf-a26e-5658-96cb-1d141c81dae8",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "5bea77cb-6187-5596-a49f-0302be48e0f3",
+        "head": "graphene/metal oxide hybrid",
+        "tail": "gas sensing",
+        "assertion_ids": [
+          "6e5ce761-7f07-5d39-a349-7cafb1ac7705"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "38ddaedf-a26e-5658-96cb-1d141c81dae8",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "73081852-e5f8-552b-8266-2c055744764c",
+        "head": "graphene/metal oxide hybrid",
+        "tail": "sensing performance",
+        "assertion_ids": [
+          "3ca4f2af-7671-5cc8-a8a9-324e63218af4"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "38ddaedf-a26e-5658-96cb-1d141c81dae8",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "c30d00a2-bc72-597c-9d5c-df049a446301",
+        "head": "graphene/metal oxide hybrid",
+        "tail": "metal oxide class",
+        "assertion_ids": [
+          "b5092902-3081-5a8a-b185-06634fa818c7"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "38ddaedf-a26e-5658-96cb-1d141c81dae8",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "a96632da-529d-5212-9abe-6ea445d59822",
+        "head": "graphene/metal oxide hybrid",
+        "tail": "graphene",
+        "assertion_ids": [
+          "627c2363-4a09-575d-8251-a3374e3f2322"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "0786c927-029c-5b34-aa41-ad83b7017d81",
+        "relation_type": "IMPROVES",
+        "tail_concept_id": "73081852-e5f8-552b-8266-2c055744764c",
+        "head": "graphene–oxide hybridization",
+        "tail": "sensing performance",
+        "assertion_ids": [
+          "85a29097-6799-5457-b708-c4edf13de8dc"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "fbee7d8c-d44e-5a85-ad44-f2be0f9f34de",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "d675f6de-c44c-596b-a918-cb3d313df0e8",
+        "head": "graphene/oxide nanohybrid gas sensor",
+        "tail": "insufficient sensitivity",
+        "assertion_ids": [
+          "953faa82-6f30-5a57-9dde-78ac498c64ac"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "fbee7d8c-d44e-5a85-ad44-f2be0f9f34de",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "2a694bb6-17c0-56f3-9e88-78a6e23c5e16",
+        "head": "graphene/oxide nanohybrid gas sensor",
+        "tail": "insufficient response rate",
+        "assertion_ids": [
+          "cc13c2b3-1084-51ae-88bd-48ef3f1ca346"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "fbee7d8c-d44e-5a85-ad44-f2be0f9f34de",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "934b80a6-1383-5464-bd9f-2fce919df199",
+        "head": "graphene/oxide nanohybrid gas sensor",
+        "tail": "long recovery time",
+        "assertion_ids": [
+          "91304995-e92c-5cc8-887e-cdedf83fa2e7"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "fa5dcf13-78a8-5760-8cbd-568f63a975e3",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "15d32ab1-d500-5d11-a2bf-f03b5eba7a3b",
+        "head": "3D graphene/metal oxide hybrid",
+        "tail": "controllable 3D hybrid synthesis",
+        "assertion_ids": [
+          "904a0423-a35a-5432-b7ac-54f8e8d2efe3"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "fa5dcf13-78a8-5760-8cbd-568f63a975e3",
+        "relation_type": "HAS_MORPHOLOGY",
+        "tail_concept_id": "be810b65-ab6d-5971-a0d5-8744768fa760",
+        "head": "3D graphene/metal oxide hybrid",
+        "tail": "three-dimensional morphology",
+        "assertion_ids": [
+          "22e72f2f-c78d-5de2-ab57-d147dc063748"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "fa5dcf13-78a8-5760-8cbd-568f63a975e3",
+        "relation_type": "HAS_MORPHOLOGY",
+        "tail_concept_id": "e0f9d780-5408-553a-919f-87318fd73cbd",
+        "head": "3D graphene/metal oxide hybrid",
+        "tail": "well-organized structure",
+        "assertion_ids": [
+          "7a3e1a44-af5c-527e-98ed-986fe8881466"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "fa5dcf13-78a8-5760-8cbd-568f63a975e3",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "addc2900-0c61-5205-b57f-b4a9000fa447",
+        "head": "3D graphene/metal oxide hybrid",
+        "tail": "surface area",
+        "assertion_ids": [
+          "a4f0655d-7a71-5016-9eb8-98fec8941672"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "fa5dcf13-78a8-5760-8cbd-568f63a975e3",
+        "relation_type": "FACILITATES",
+        "tail_concept_id": "1d6e2dda-ce83-54d3-9a91-a1fb47a649d0",
+        "head": "3D graphene/metal oxide hybrid",
+        "tail": "gas adsorption/diffusion",
+        "assertion_ids": [
+          "abd3e3c2-17f4-50c6-a6cf-1276770c577a"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "fa5dcf13-78a8-5760-8cbd-568f63a975e3",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "8dc07368-3aea-5407-b415-3de2b143c175",
+        "head": "3D graphene/metal oxide hybrid",
+        "tail": "3D hybrid synthesis",
+        "assertion_ids": [
+          "1643754b-22d4-513c-b260-f02499451242"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "fa5dcf13-78a8-5760-8cbd-568f63a975e3",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "73427a51-05a9-54ce-b119-90657a87b665",
+        "head": "3D graphene/metal oxide hybrid",
+        "tail": "3D hybrid assembly",
+        "assertion_ids": [
+          "d1b3e1f5-9a02-5f78-a56e-1914432a1c08"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "fa5dcf13-78a8-5760-8cbd-568f63a975e3",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "5bea77cb-6187-5596-a49f-0302be48e0f3",
+        "head": "3D graphene/metal oxide hybrid",
+        "tail": "gas sensing",
+        "assertion_ids": [
+          "184b5f05-faf1-5d34-b95e-5374ad06c2fb"
+        ],
+        "occurrences": 1
+      }
+    ],
+    "repeated_qualified_groups": [],
+    "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
+    "human_review": "NOT_REVIEWED",
+    "draft_sha256": "209260022ede8f6a4f96fdae94b3a55ed0a596e9ce91835330c1de770882dc4c"
+  },
+  {
+    "document_code": "D042",
+    "revision_id": "fd3e8337-cb3f-46ee-b7d1-13ced4632d36",
+    "assertion_occurrences": 19,
+    "unique_canonical_triples": 15,
+    "repeated_core_triple_occurrences": 4,
+    "unique_qualified_claims": 19,
+    "repeated_qualified_claim_occurrences": 0,
+    "canonical_triples": [
+      {
+        "head_concept_id": "c0607f73-72d1-507b-8345-324466bb42c3",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "96a3ef70-b045-5a3a-bd71-2fc10e8fa806",
+        "head": "four AGNR sensor-material group",
+        "tail": "carbon monoxide",
+        "assertion_ids": [
+          "62524643-5d6b-5011-bad6-8b0a4b55ebba"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "c0607f73-72d1-507b-8345-324466bb42c3",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "1b504abf-43c8-5fb2-9d3f-c00100723210",
+        "head": "four AGNR sensor-material group",
+        "tail": "carbon dioxide",
+        "assertion_ids": [
+          "ed9a6340-3c40-595f-b374-61429c90064f"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "0c18b8c5-220d-5af9-8879-7c7d66d4459f",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "667d192c-b89f-5e3a-b99c-cdc0e510be75",
+        "head": "H-passivated AGNR",
+        "tail": "AGNR passivation",
+        "assertion_ids": [
+          "c9dab370-4634-5470-af9c-2b0391c9ce8f"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "af7d29a2-7a5d-57c8-b5a8-069450d90754",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "667d192c-b89f-5e3a-b99c-cdc0e510be75",
+        "head": "N-passivated AGNR",
+        "tail": "AGNR passivation",
+        "assertion_ids": [
+          "1e8522b7-6a85-5d43-8b5b-2f93afbf0553"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "0c18b8c5-220d-5af9-8879-7c7d66d4459f",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "eaf8b324-ab1b-5bfb-9780-8d28dd5802bc",
+        "head": "H-passivated AGNR",
+        "tail": "adsorption energy",
+        "assertion_ids": [
+          "c7b07d40-3398-548d-a6c2-757a44493e4f",
+          "bc4b7cf2-6f69-568a-810d-8d922a1a06a5"
+        ],
+        "occurrences": 2
+      },
+      {
+        "head_concept_id": "af7d29a2-7a5d-57c8-b5a8-069450d90754",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "eaf8b324-ab1b-5bfb-9780-8d28dd5802bc",
+        "head": "N-passivated AGNR",
+        "tail": "adsorption energy",
+        "assertion_ids": [
+          "1fb26914-f4d5-5b84-b22d-5862667c7d02",
+          "63e14f12-9077-5add-96a7-78c2455c7db9"
+        ],
+        "occurrences": 2
+      },
+      {
+        "head_concept_id": "7e7d3f91-0af1-563e-b23f-5ea0c0be319f",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "1e920625-b46a-51a0-bf5f-3deb1104b3ff",
+        "head": "Pt-doped H-AGNR",
+        "tail": "Pt doping",
+        "assertion_ids": [
+          "555bdb61-07e8-5208-aa06-0879683be463"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "c723f067-26ad-508e-b741-6b3c2a175f87",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "1e920625-b46a-51a0-bf5f-3deb1104b3ff",
+        "head": "Pt-doped N-AGNR",
+        "tail": "Pt doping",
+        "assertion_ids": [
+          "06692fe3-d6e4-5231-9456-9832f9b807ec"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "c723f067-26ad-508e-b741-6b3c2a175f87",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "eaf8b324-ab1b-5bfb-9780-8d28dd5802bc",
+        "head": "Pt-doped N-AGNR",
+        "tail": "adsorption energy",
+        "assertion_ids": [
+          "c1c6dda0-15ff-51ca-9809-e79cbc8b19cd",
+          "8ebb3d6d-c250-5d15-affd-c1b868615ca4"
+        ],
+        "occurrences": 2
+      },
+      {
+        "head_concept_id": "7e7d3f91-0af1-563e-b23f-5ea0c0be319f",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "eaf8b324-ab1b-5bfb-9780-8d28dd5802bc",
+        "head": "Pt-doped H-AGNR",
+        "tail": "adsorption energy",
+        "assertion_ids": [
+          "6c21bcc9-9cf9-5690-9441-f7e0b76a0b2b",
+          "294c2898-4fb0-5e29-bca4-7574fd75bfd2"
+        ],
+        "occurrences": 2
+      },
+      {
+        "head_concept_id": "c0607f73-72d1-507b-8345-324466bb42c3",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "eaf8b324-ab1b-5bfb-9780-8d28dd5802bc",
+        "head": "four AGNR sensor-material group",
+        "tail": "adsorption energy",
+        "assertion_ids": [
+          "86fa3c52-aed7-503c-bb5d-2f631272ef2c"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "c0607f73-72d1-507b-8345-324466bb42c3",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "8a2a730a-5208-5c7f-a657-e40109a6d611",
+        "head": "four AGNR sensor-material group",
+        "tail": "adsorption distance",
+        "assertion_ids": [
+          "0b365ea7-4d7f-520a-abec-0ad07f2f83d3"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "c0607f73-72d1-507b-8345-324466bb42c3",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "ba03269f-8015-55c5-9bd0-b5b9c7fcf3c1",
+        "head": "four AGNR sensor-material group",
+        "tail": "charge transfer",
+        "assertion_ids": [
+          "1b68c5f5-5936-53cf-a72b-fbbf12135897"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "c0607f73-72d1-507b-8345-324466bb42c3",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "11bcc6d2-8d8b-5150-8e1e-506b5e3450f0",
+        "head": "four AGNR sensor-material group",
+        "tail": "density of states",
+        "assertion_ids": [
+          "05562913-3963-516d-b91c-88f029f0b8ed"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "c0607f73-72d1-507b-8345-324466bb42c3",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "661526bc-e503-52c2-85f6-25d313da8c59",
+        "head": "four AGNR sensor-material group",
+        "tail": "band structure",
+        "assertion_ids": [
+          "d98717e6-ced3-59c8-a696-6ae388b29621"
+        ],
+        "occurrences": 1
+      }
+    ],
+    "repeated_qualified_groups": [],
+    "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
+    "human_review": "NOT_REVIEWED",
+    "draft_sha256": "2e0ff1bc3f62e906db02670b40b5562eb4594469b22bf288dcc2c5ca36be0970"
+  },
+  {
+    "document_code": "D050",
+    "revision_id": "f3937e44-f446-490b-8c4e-7b95768fca8a",
+    "assertion_occurrences": 16,
+    "unique_canonical_triples": 16,
+    "repeated_core_triple_occurrences": 0,
+    "unique_qualified_claims": 16,
+    "repeated_qualified_claim_occurrences": 0,
+    "canonical_triples": [
+      {
+        "head_concept_id": "f809ffb0-97fe-54e3-9868-00e9c3a0e2cc",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "2229fae8-2104-5f99-8f97-3e69fc5eef01",
+        "head": "flexible CNT/reduced graphene NO2 sensor",
+        "tail": "flexibility",
+        "assertion_ids": [
+          "5746cc66-e9fd-55a4-ae7d-3f9ab6f3a361"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "f809ffb0-97fe-54e3-9868-00e9c3a0e2cc",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "dca9f77c-c16e-5c81-918e-57bfbb4e731c",
+        "head": "flexible CNT/reduced graphene NO2 sensor",
+        "tail": "CNT/reduced graphene hybrid film",
+        "assertion_ids": [
+          "c4467e90-810d-5110-b034-c8a95fa5aa11"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "f809ffb0-97fe-54e3-9868-00e9c3a0e2cc",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "2cae43ae-e18b-5a5c-9466-7220590e22e2",
+        "head": "flexible CNT/reduced graphene NO2 sensor",
+        "tail": "polyimide substrate",
+        "assertion_ids": [
+          "2e95e5dd-a4aa-5dc8-b2dc-6efb49b320e2"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "2cae43ae-e18b-5a5c-9466-7220590e22e2",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "66c37a57-d08a-56cf-ad7a-3456c8751179",
+        "head": "polyimide substrate",
+        "tail": "polyimide",
+        "assertion_ids": [
+          "7d51f1d2-8bf6-5f52-8da7-58a613556caa"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "dca9f77c-c16e-5c81-918e-57bfbb4e731c",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "1b2becc0-f082-5351-abad-5da6442467a6",
+        "head": "CNT/reduced graphene hybrid film",
+        "tail": "carbon nanotubes",
+        "assertion_ids": [
+          "082a2d14-8dee-5e5d-a357-43679c3ce344"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "f809ffb0-97fe-54e3-9868-00e9c3a0e2cc",
+        "relation_type": "DETECTS",
+        "tail_concept_id": "92f1b9d1-9ac1-59bc-9da8-80c40b23e7d1",
+        "head": "flexible CNT/reduced graphene NO2 sensor",
+        "tail": "nitrogen dioxide",
+        "assertion_ids": [
+          "3028c823-3706-526e-96f7-0072b11aea53"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "4987e991-deac-5e39-bf07-7c5fd93b5d55",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "f544930e-8065-5e58-8500-3c136da170d2",
+        "head": "reduced graphene film",
+        "tail": "negligible NO2 response",
+        "assertion_ids": [
+          "9366b7dd-3de6-5ed0-beae-c31cae8a55c6"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "dca9f77c-c16e-5c81-918e-57bfbb4e731c",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "da160b20-64d3-540c-bfe3-b826d68fda7c",
+        "head": "CNT/reduced graphene hybrid film",
+        "tail": "vertical CNT array growth",
+        "assertion_ids": [
+          "5dba2d4a-968e-5439-b108-450222b43f68"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "dca9f77c-c16e-5c81-918e-57bfbb4e731c",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "ffecee1e-1066-5bd6-a5f8-8788240f54f7",
+        "head": "CNT/reduced graphene hybrid film",
+        "tail": "vertical CNT array",
+        "assertion_ids": [
+          "8bdb3ec8-f941-5883-8080-e6fcfe450a8e"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "dca9f77c-c16e-5c81-918e-57bfbb4e731c",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "4987e991-deac-5e39-bf07-7c5fd93b5d55",
+        "head": "CNT/reduced graphene hybrid film",
+        "tail": "reduced graphene film",
+        "assertion_ids": [
+          "6100a4f0-b73f-56a7-9b51-f2be2a86ece9"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "ffecee1e-1066-5bd6-a5f8-8788240f54f7",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "1b2becc0-f082-5351-abad-5da6442467a6",
+        "head": "vertical CNT array",
+        "tail": "carbon nanotubes",
+        "assertion_ids": [
+          "af93cd9a-ae13-53f6-9a3e-5a95e7dd7ea2"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "1b2becc0-f082-5351-abad-5da6442467a6",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "52c3e727-b3b8-5f2a-8bed-d3a6d00d0d5a",
+        "head": "carbon nanotubes",
+        "tail": "CNT length",
+        "assertion_ids": [
+          "afa4b7f3-dd4f-5903-ba6a-3289cc3dc4c0"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "dca9f77c-c16e-5c81-918e-57bfbb4e731c",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "061e0500-def8-51c3-aa90-6a0ed08cfd39",
+        "head": "CNT/reduced graphene hybrid film",
+        "tail": "NO2 sensitivity",
+        "assertion_ids": [
+          "86f72db9-9dd2-59f5-93f0-f83d47d92fc7"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "ffecee1e-1066-5bd6-a5f8-8788240f54f7",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "9c06f58f-ebd9-5c88-8d49-09b3e242e91e",
+        "head": "vertical CNT array",
+        "tail": "CNT array sensitivity",
+        "assertion_ids": [
+          "b47abe0c-1d80-5373-a251-b918ff5e66a7"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "4987e991-deac-5e39-bf07-7c5fd93b5d55",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "2229fae8-2104-5f99-8f97-3e69fc5eef01",
+        "head": "reduced graphene film",
+        "tail": "flexibility",
+        "assertion_ids": [
+          "0cf911fa-947d-52a8-81ed-0de6c8c041b8"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "f809ffb0-97fe-54e3-9868-00e9c3a0e2cc",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "0f524e99-fde9-52e7-805a-c28e0e378386",
+        "head": "flexible CNT/reduced graphene NO2 sensor",
+        "tail": "stable sensing performance",
+        "assertion_ids": [
+          "e6d15519-8bd7-5b4c-86b4-35947ecbbdd3"
+        ],
+        "occurrences": 1
+      }
+    ],
+    "repeated_qualified_groups": [],
+    "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
+    "human_review": "NOT_REVIEWED",
+    "draft_sha256": "a1c07383961e41ea49a3a34c0b4f27fc7cea431c4c2d23d3bd9a3e89d8108be7"
+  },
+  {
+    "document_code": "D060",
+    "revision_id": "61ce4e43-1d79-4cee-af6c-43026828532a",
+    "assertion_occurrences": 10,
+    "unique_canonical_triples": 10,
+    "repeated_core_triple_occurrences": 0,
+    "unique_qualified_claims": 10,
+    "repeated_qualified_claim_occurrences": 0,
+    "canonical_triples": [
+      {
+        "head_concept_id": "5fd49963-82a1-520e-9bef-34e8ca65bcc1",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "930dd922-51c6-55b4-9aa5-a036c0a84e78",
+        "head": "graphene sensor",
+        "tail": "chemical vapor deposition",
+        "assertion_ids": [
+          "d7d894fc-d4ec-55d9-ab79-73fdb5447c7f"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "dbaf66e7-cc2f-530c-8537-109367cfceff",
+        "relation_type": "IMPROVES",
+        "tail_concept_id": "3e032eb2-bf2b-503a-b0a5-b4e6c458b449",
+        "head": "molecular doping",
+        "tail": "NH3 sensitivity",
+        "assertion_ids": [
+          "134d35c1-834b-5311-b465-11ef97a3d47f"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "5fd49963-82a1-520e-9bef-34e8ca65bcc1",
+        "relation_type": "DETECTS",
+        "tail_concept_id": "efef9a78-5821-5743-80fc-72acf2b8612d",
+        "head": "graphene sensor",
+        "tail": "ammonia",
+        "assertion_ids": [
+          "11f3614c-6882-507e-a8a6-2846c08035dc"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "f9e0c9f3-4e25-563c-9a9c-e30f19c9448e",
+        "relation_type": "ACTS_ON",
+        "tail_concept_id": "5fd49963-82a1-520e-9bef-34e8ca65bcc1",
+        "head": "NO2 molecular doping",
+        "tail": "graphene sensor",
+        "assertion_ids": [
+          "0b20aed9-b07e-5b28-9882-1b059d6f63a0"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "f9e0c9f3-4e25-563c-9a9c-e30f19c9448e",
+        "relation_type": "IMPROVES",
+        "tail_concept_id": "dc5e0b55-603c-57a1-af44-694a5cbe0f14",
+        "head": "NO2 molecular doping",
+        "tail": "NH3 resistance sensitivity",
+        "assertion_ids": [
+          "132e21e4-570f-5ec1-bef1-2e01ac945971"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "b8dcc2cf-ceb7-51f9-bef3-54f3bc38c332",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "439f5999-b12f-5808-913f-861e08ea0d0a",
+        "head": "NO2-doped graphene sensor",
+        "tail": "detection limit",
+        "assertion_ids": [
+          "d70892bf-e6ee-5b34-9e0e-01072826f096"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "560fbb17-c6db-5f96-b877-e69f680e58f3",
+        "relation_type": "ACTS_ON",
+        "tail_concept_id": "6815d272-6ea5-5f2d-9ab1-8182dedc4b74",
+        "head": "electrical characterization",
+        "tail": "graphene field-effect transistor",
+        "assertion_ids": [
+          "b0127bf0-0781-5c50-b59c-7254bdbeff17"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "9c37c604-a6e3-5840-8b64-ebfd1900c07a",
+        "relation_type": "ACTS_ON",
+        "tail_concept_id": "6815d272-6ea5-5f2d-9ab1-8182dedc4b74",
+        "head": "Raman spectroscopy",
+        "tail": "graphene field-effect transistor",
+        "assertion_ids": [
+          "005dd882-8aae-58e5-87a8-ad075e7c2cef"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "6815d272-6ea5-5f2d-9ab1-8182dedc4b74",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "e6712e52-f258-5faf-9aa1-e2b2498da64f",
+        "head": "graphene field-effect transistor",
+        "tail": "graphene",
+        "assertion_ids": [
+          "5013c473-e70f-57d1-bd62-799bc0137e81"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e6712e52-f258-5faf-9aa1-e2b2498da64f",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "a4a35eb5-de0c-5d09-a209-f9433eb34f08",
+        "head": "graphene",
+        "tail": "hole concentration",
+        "assertion_ids": [
+          "6ad322b6-d1a8-5ce7-8228-2c7854e4a3e7"
+        ],
+        "occurrences": 1
+      }
+    ],
+    "repeated_qualified_groups": [],
+    "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
+    "human_review": "NOT_REVIEWED",
+    "draft_sha256": "303d4c8389a385286f8065d4fd61a3172d4dfc57b5432f037482a07860767c4d"
+  },
+  {
+    "document_code": "D078",
+    "revision_id": "85c8c16f-76e7-45fb-a9b2-6124974a51e9",
+    "assertion_occurrences": 24,
+    "unique_canonical_triples": 23,
+    "repeated_core_triple_occurrences": 1,
+    "unique_qualified_claims": 24,
+    "repeated_qualified_claim_occurrences": 0,
+    "canonical_triples": [
+      {
+        "head_concept_id": "6969957c-6644-5fd4-a47b-3c5ddda9403f",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "a4d9f5c8-5ffa-5b75-9206-e47f8c522f0c",
+        "head": "generic graphene gas sensor",
+        "tail": "sensitive selective gas detection",
+        "assertion_ids": [
+          "7ced17e5-c4c4-5037-8780-37f4a4d786aa"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "ddcf6ec7-8584-52d5-82e3-90c277d2b866",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "d036c0ec-51cd-51fb-8156-f82008d9ed64",
+        "head": "n-channel graphene gas sensor",
+        "tail": "ethylene-amine n-doped graphene",
+        "assertion_ids": [
+          "e90694d3-f34f-59cf-8fb4-568a0aae2cc3"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "ddcf6ec7-8584-52d5-82e3-90c277d2b866",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "bb4fb493-f756-5c38-8569-ff122e57913f",
+        "head": "n-channel graphene gas sensor",
+        "tail": "high gas sensitivity",
+        "assertion_ids": [
+          "f3418178-afa3-5239-a967-9228cc616775"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "d036c0ec-51cd-51fb-8156-f82008d9ed64",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "c45d1255-d44e-56b6-96b1-b39fd7364450",
+        "head": "ethylene-amine n-doped graphene",
+        "tail": "ethylene amines",
+        "assertion_ids": [
+          "1e44f336-aacd-588e-95d5-2487c5b1de96"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "d601e76f-9a0c-53da-819c-f0c7e0f30631",
+        "relation_type": "ACTS_ON",
+        "tail_concept_id": "d036c0ec-51cd-51fb-8156-f82008d9ed64",
+        "head": "oxidizing gas exposure",
+        "tail": "ethylene-amine n-doped graphene",
+        "assertion_ids": [
+          "36746737-5d5e-50b0-99cb-d18615d82705"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "d036c0ec-51cd-51fb-8156-f82008d9ed64",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "a0d70883-2ecd-56f0-b760-2dff89acd9fb",
+        "head": "ethylene-amine n-doped graphene",
+        "tail": "current decrease",
+        "assertion_ids": [
+          "e90a93dd-bfd7-518c-8f8f-4cbb4efa2dbc"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "c45d1255-d44e-56b6-96b1-b39fd7364450",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "03b16f2f-1f00-5ae3-9f72-b6ab14d04309",
+        "head": "ethylene amines",
+        "tail": "amine functional-group count",
+        "assertion_ids": [
+          "627909dc-6065-559e-aef1-72e5ebfd4fbf"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "f285cf51-2e87-5b1a-91df-5cde0b39bb03",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "a3d5e1bc-e6a1-5ded-987a-d41947211a32",
+        "head": "DETA-doped graphene",
+        "tail": "diethylenetriamine",
+        "assertion_ids": [
+          "999a2edf-7f4c-5538-91e7-2a931a28a429"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "f285cf51-2e87-5b1a-91df-5cde0b39bb03",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "dad7ab5e-4c60-5bff-92db-a48ba8a3bd24",
+        "head": "DETA-doped graphene",
+        "tail": "response",
+        "assertion_ids": [
+          "f3d32268-e722-5826-a192-752a0f29a4b0"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "f285cf51-2e87-5b1a-91df-5cde0b39bb03",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "92872cc1-4b84-523d-aeb3-ef26ee8bdc4e",
+        "head": "DETA-doped graphene",
+        "tail": "recovery",
+        "assertion_ids": [
+          "330ce590-39a8-5175-a3c2-6b94d89c483f"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "f285cf51-2e87-5b1a-91df-5cde0b39bb03",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "3646f1aa-79d4-55d1-a90e-e7d8219e62fd",
+        "head": "DETA-doped graphene",
+        "tail": "long-term sensing stability",
+        "assertion_ids": [
+          "edc768c6-a8e8-5f3f-9ab0-7093652e2b4d"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "f285cf51-2e87-5b1a-91df-5cde0b39bb03",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "94ea8bad-6187-5fb5-a27d-4acba1dd2280",
+        "head": "DETA-doped graphene",
+        "tail": "nitrogen dioxide",
+        "assertion_ids": [
+          "3d2b7e9b-c343-5035-a706-e0c1a3850765"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "f285cf51-2e87-5b1a-91df-5cde0b39bb03",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "f6320361-1754-539b-b638-f0a51168a1fe",
+        "head": "DETA-doped graphene",
+        "tail": "average detection limit",
+        "assertion_ids": [
+          "cb970dfc-00b5-5ee9-aeef-f91c3310fd4b"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "9869fe5e-e443-5d5c-a7e4-e30cf1366249",
+        "relation_type": "ACTS_ON",
+        "tail_concept_id": "d036c0ec-51cd-51fb-8156-f82008d9ed64",
+        "head": "preferential NO2 adsorption",
+        "tail": "ethylene-amine n-doped graphene",
+        "assertion_ids": [
+          "951873ee-c305-57fd-8a26-a5c0d054aa82"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "5c4f470f-2f06-5d7f-b647-d84bd3554c32",
+        "relation_type": "HAS_MORPHOLOGY",
+        "tail_concept_id": "311fd26a-b826-59f3-92d5-8a85e68f7008",
+        "head": "n-channel graphene",
+        "tail": "charged impurities",
+        "assertion_ids": [
+          "eae62886-f7c7-50b7-aec3-7744ae859d3c"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "5c4f470f-2f06-5d7f-b647-d84bd3554c32",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "dad7ab5e-4c60-5bff-92db-a48ba8a3bd24",
+        "head": "n-channel graphene",
+        "tail": "response",
+        "assertion_ids": [
+          "bcf08144-d9ff-5a78-b822-e6649fc6df6b"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "f285cf51-2e87-5b1a-91df-5cde0b39bb03",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "48fabb31-c539-5676-aa1b-6ae4264a80fd",
+        "head": "DETA-doped graphene",
+        "tail": "NH3 response",
+        "assertion_ids": [
+          "c4757807-3d44-5601-82cc-6eab1ded91c6"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "ddcf6ec7-8584-52d5-82e3-90c277d2b866",
+        "relation_type": "DETECTS",
+        "tail_concept_id": "e0f40d58-cf2d-5341-8cdb-8549896b538f",
+        "head": "n-channel graphene gas sensor",
+        "tail": "ammonia",
+        "assertion_ids": [
+          "2d1dba20-99ad-596c-a379-2a633a1762e0"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "a9ce2b79-05f7-58d0-875f-b97ec4e6b805",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "614465bd-34cf-548e-91c7-f7ab35da0f4f",
+        "head": "flexible gate-free graphene sensor",
+        "tail": "flexibility",
+        "assertion_ids": [
+          "c6055fc4-6def-5acb-a66b-8426b1e534df"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "a9ce2b79-05f7-58d0-875f-b97ec4e6b805",
+        "relation_type": "DETECTS",
+        "tail_concept_id": "94ea8bad-6187-5fb5-a27d-4acba1dd2280",
+        "head": "flexible gate-free graphene sensor",
+        "tail": "nitrogen dioxide",
+        "assertion_ids": [
+          "e32a43ae-9fbe-52fa-b484-b54a59ca513d",
+          "92d220c2-68b0-5454-b778-3735b275b6bb"
+        ],
+        "occurrences": 2
+      },
+      {
+        "head_concept_id": "a9ce2b79-05f7-58d0-875f-b97ec4e6b805",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "4c4f23d5-bf11-59e3-b41a-cd049b001cae",
+        "head": "flexible gate-free graphene sensor",
+        "tail": "plastic substrate",
+        "assertion_ids": [
+          "69f2eb12-a277-57fe-8f35-dbe4306b2eb9"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "a9ce2b79-05f7-58d0-875f-b97ec4e6b805",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "9737e34f-9e3d-53d4-91aa-dbb3d01c271d",
+        "head": "flexible gate-free graphene sensor",
+        "tail": "vertical gate stacks",
+        "assertion_ids": [
+          "34978994-75a8-5a17-b56d-a638cd7b872f"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "a9ce2b79-05f7-58d0-875f-b97ec4e6b805",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "518010fc-71d6-5e0f-bb51-bd537581380a",
+        "head": "flexible gate-free graphene sensor",
+        "tail": "selective subppq NO2 detection",
+        "assertion_ids": [
+          "cd199b85-3dc8-5872-ae7c-546919df2ebc"
+        ],
+        "occurrences": 1
+      }
+    ],
+    "repeated_qualified_groups": [],
+    "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
+    "human_review": "NOT_REVIEWED",
+    "draft_sha256": "f559bd82059d4197b8af40fa3f4db3be9587584dca12d625c30268273ce0813c"
+  },
+  {
+    "document_code": "D092",
+    "revision_id": "19bedd9d-3827-402c-894b-e8ca762ecff7",
+    "assertion_occurrences": 13,
+    "unique_canonical_triples": 13,
+    "repeated_core_triple_occurrences": 0,
+    "unique_qualified_claims": 13,
+    "repeated_qualified_claim_occurrences": 0,
+    "canonical_triples": [
+      {
+        "head_concept_id": "eeaa4f10-7d53-5302-aaaa-f7b976b6b4f6",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "f0cb1174-3a00-51e6-afee-0a089403e5da",
+        "head": "prospective graphene gas sensor",
+        "tail": "pristine graphene",
+        "assertion_ids": [
+          "538bea3f-00a1-5a2e-bb45-f18e2fb8e326"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "eeaa4f10-7d53-5302-aaaa-f7b976b6b4f6",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "58bb7f45-0c9e-5876-a26e-a204d9cf7626",
+        "head": "prospective graphene gas sensor",
+        "tail": "B-doped graphene",
+        "assertion_ids": [
+          "97b648e5-df0b-5491-a2f5-646b71948210"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "eeaa4f10-7d53-5302-aaaa-f7b976b6b4f6",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "75fb9ea2-a510-5ce6-bb27-509c63345fa8",
+        "head": "prospective graphene gas sensor",
+        "tail": "N-doped graphene",
+        "assertion_ids": [
+          "24d25d7e-d78d-5f56-a388-097391da895a"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "eeaa4f10-7d53-5302-aaaa-f7b976b6b4f6",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "8051f584-fb02-5a0f-b4b3-c756b8317039",
+        "head": "prospective graphene gas sensor",
+        "tail": "defective graphene",
+        "assertion_ids": [
+          "e28e0a80-20d8-5d27-a9f4-eec5a44f0828"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "8f3868fe-b3fc-5285-a93c-a1b52c3e706f",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "f8bbbbc7-94b8-50bc-b7ab-034ed7609887",
+        "head": "graphene–molecule adsorption adduct",
+        "tail": "structural properties",
+        "assertion_ids": [
+          "32ac6681-cdde-54f6-b527-4d5ae807fa5b"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "8f3868fe-b3fc-5285-a93c-a1b52c3e706f",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "c93d3e79-eddf-534b-b918-8e3d6eaf64b8",
+        "head": "graphene–molecule adsorption adduct",
+        "tail": "electronic properties",
+        "assertion_ids": [
+          "a8d58466-b814-517d-8dcf-473a61c9a129"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "b5203741-925d-5d70-abea-2a6d2a63f1d1",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "8cfd7435-fa94-5ebd-a3fd-25c57c156697",
+        "head": "doped graphene class",
+        "tail": "adsorption strength",
+        "assertion_ids": [
+          "fdcd0d37-ff05-512a-b803-5cf3434beaef"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "8051f584-fb02-5a0f-b4b3-c756b8317039",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "8cfd7435-fa94-5ebd-a3fd-25c57c156697",
+        "head": "defective graphene",
+        "tail": "adsorption strength",
+        "assertion_ids": [
+          "bfb537f4-4f79-53cc-8eca-a44f2bcb36ce"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "8051f584-fb02-5a0f-b4b3-c756b8317039",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "e6b1fddf-cb48-5995-b346-2352e4b2804b",
+        "head": "defective graphene",
+        "tail": "adsorption energy",
+        "assertion_ids": [
+          "2018438e-1d19-546f-b80e-407f376b30d2"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "58bb7f45-0c9e-5876-a26e-a204d9cf7626",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "9f797672-247e-5b07-baf3-bd387ddcd54c",
+        "head": "B-doped graphene",
+        "tail": "binding strength",
+        "assertion_ids": [
+          "e7eca2f8-6c06-51ab-bc37-538d43d66c48"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "2be18d87-4897-5fa2-90f1-32c1f2a91e2f",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "58bb7f45-0c9e-5876-a26e-a204d9cf7626",
+        "head": "B-doped graphene gas sensor",
+        "tail": "B-doped graphene",
+        "assertion_ids": [
+          "8598c2fa-3d68-5b91-be12-2f75063bc757"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "2be18d87-4897-5fa2-90f1-32c1f2a91e2f",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "44c05e3b-cf6b-5440-b0f9-ccb37ce8e87f",
+        "head": "B-doped graphene gas sensor",
+        "tail": "sensitivity",
+        "assertion_ids": [
+          "bd0ed1cc-3055-5092-92c7-48f7054136a7"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "72478573-cd16-5bac-8429-a98ca54b0894",
+        "relation_type": "IMPROVES",
+        "tail_concept_id": "44c05e3b-cf6b-5440-b0f9-ccb37ce8e87f",
+        "head": "dopant/defect introduction",
+        "tail": "sensitivity",
+        "assertion_ids": [
+          "c0300117-f013-5899-a6f6-bb606becfb42"
+        ],
+        "occurrences": 1
+      }
+    ],
+    "repeated_qualified_groups": [],
+    "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
+    "human_review": "NOT_REVIEWED",
+    "draft_sha256": "0d05466b096d8929727f7c449a116c2884c7d8b3647681c2419587ed8a1cee65"
+  },
+  {
+    "document_code": "D093",
+    "revision_id": "ab07453e-131f-4424-a7d8-787b08f59f40",
+    "assertion_occurrences": 14,
+    "unique_canonical_triples": 14,
+    "repeated_core_triple_occurrences": 0,
+    "unique_qualified_claims": 14,
+    "repeated_qualified_claim_occurrences": 0,
+    "canonical_triples": [
+      {
+        "head_concept_id": "572ae380-e676-51b3-b27b-f7206a0db0c2",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "26028004-ae97-5256-a759-36ddd2debb8d",
+        "head": "graphene",
+        "tail": "photoelectric characteristics",
+        "assertion_ids": [
+          "dacf95ef-4847-5444-b21d-7d74e055edf2"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "572ae380-e676-51b3-b27b-f7206a0db0c2",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "484c2409-2459-5a1f-84ec-0c1b9bc13921",
+        "head": "graphene",
+        "tail": "optoelectronics",
+        "assertion_ids": [
+          "d9c25cde-905a-5a6c-be49-96a33e7e322b"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "572ae380-e676-51b3-b27b-f7206a0db0c2",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "6ba06c66-81c1-50c2-8994-b22d90fbf51b",
+        "head": "graphene",
+        "tail": "mechanics",
+        "assertion_ids": [
+          "f0f6ce93-21d3-5120-9646-91a53d299dfb"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "572ae380-e676-51b3-b27b-f7206a0db0c2",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "260b99f9-b885-5c93-9b32-0df5d9239163",
+        "head": "graphene",
+        "tail": "biochemical sensing",
+        "assertion_ids": [
+          "d83791b5-b145-592e-9369-4fd75736fd7f"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "572ae380-e676-51b3-b27b-f7206a0db0c2",
+        "relation_type": "HAS_MORPHOLOGY",
+        "tail_concept_id": "b003dd11-28b9-536f-8721-78465dac9c20",
+        "head": "graphene",
+        "tail": "two-dimensional morphology",
+        "assertion_ids": [
+          "0f3a582f-b923-5ea5-9851-d44e3ec50465"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "572ae380-e676-51b3-b27b-f7206a0db0c2",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "cfa74e90-052f-53ea-96e2-fb18498daef4",
+        "head": "graphene",
+        "tail": "flexibility",
+        "assertion_ids": [
+          "732785e5-c095-5670-b9b6-6f98c2da2123"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "9ba4d7b2-7aba-5550-b894-69cd17b2d2a6",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "572ae380-e676-51b3-b27b-f7206a0db0c2",
+        "head": "graphene photonic polarizer",
+        "tail": "graphene",
+        "assertion_ids": [
+          "acb38c0c-afae-50f0-a9cc-6d9fb47e4ac4"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "bb1854d7-58e7-5df2-ac58-e9877d94193c",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "572ae380-e676-51b3-b27b-f7206a0db0c2",
+        "head": "graphene photonic laser",
+        "tail": "graphene",
+        "assertion_ids": [
+          "d2ab2156-412b-59c8-8e48-88e179df3714"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "263d5b46-a093-57e7-8874-5a4096d75a63",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "572ae380-e676-51b3-b27b-f7206a0db0c2",
+        "head": "graphene optical sensor",
+        "tail": "graphene",
+        "assertion_ids": [
+          "22fb23be-8680-5a1b-a00e-d11ec3d9283a"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "263d5b46-a093-57e7-8874-5a4096d75a63",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "9129ea0b-cf13-5974-8236-b6b2389366c7",
+        "head": "graphene optical sensor",
+        "tail": "gas sensing",
+        "assertion_ids": [
+          "fc7f6887-0297-5d4d-b7b7-7d1e7b70633d"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "b3eddaa9-35c9-5b03-a116-29051338dd47",
+        "relation_type": "HAS_MECHANISM",
+        "tail_concept_id": "fc67d672-b9b4-5684-a4f1-9c8de4a75f53",
+        "head": "graphene microfiber gas sensor",
+        "tail": "gas sensing principles unspecified",
+        "assertion_ids": [
+          "ca5c9340-8509-546e-8767-c33badaac4fc"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "b3eddaa9-35c9-5b03-a116-29051338dd47",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "36a04830-f3bb-5eb3-8af2-62919975ae00",
+        "head": "graphene microfiber gas sensor",
+        "tail": "sensor properties unspecified",
+        "assertion_ids": [
+          "782a30bb-2d86-5a47-a2ce-5b0ecafd278e"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "b3eddaa9-35c9-5b03-a116-29051338dd47",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "3d67e211-4764-5fe9-b8f5-515b0de1c0ab",
+        "head": "graphene microfiber gas sensor",
+        "tail": "microfiber gas sensor fabrication",
+        "assertion_ids": [
+          "5eeecc0b-525f-5c77-a00f-7d1ffa89746f"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "b3eddaa9-35c9-5b03-a116-29051338dd47",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "5839b140-c5bd-593e-8cd2-1e62fccc350a",
+        "head": "graphene microfiber gas sensor",
+        "tail": "microfiber sensor implementations",
+        "assertion_ids": [
+          "0a39e942-2035-5824-b015-7061f6816f1d"
+        ],
+        "occurrences": 1
+      }
+    ],
+    "repeated_qualified_groups": [],
+    "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
+    "human_review": "NOT_REVIEWED",
+    "draft_sha256": "a8faccb39840218ed400ba8b25442f0dc1638c8a4a61052f38445a1613028127"
+  },
+  {
+    "document_code": "D061",
+    "revision_id": "e32a9243-72d8-4bef-82ee-bed2289e77c0",
+    "assertion_occurrences": 23,
+    "unique_canonical_triples": 23,
+    "repeated_core_triple_occurrences": 0,
+    "unique_qualified_claims": 23,
+    "repeated_qualified_claim_occurrences": 0,
+    "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
+    "human_review": "NOT_REVIEWED",
+    "draft_sha256": "a1857b0e1f95c8ca0dbcf6a052e62e6df5eeee99155f72f9c6749f89781263c2"
+  },
+  {
+    "document_code": "D068",
+    "revision_id": "92e8fd81-3dcc-4b98-a485-c6e98506c30d",
+    "assertion_occurrences": 24,
+    "unique_canonical_triples": 24,
+    "repeated_core_triple_occurrences": 0,
+    "unique_qualified_claims": 24,
+    "repeated_qualified_claim_occurrences": 0,
+    "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
+    "human_review": "NOT_REVIEWED",
+    "draft_sha256": "36056badb5dd26b032b8e1ffaf8418004f42f091b0c19262c50073064ad4f3b4"
+  },
+  {
+    "document_code": "D070",
+    "revision_id": "f7ec54a9-2c0c-49b4-9795-24258524c956",
+    "assertion_occurrences": 21,
+    "unique_canonical_triples": 21,
+    "repeated_core_triple_occurrences": 0,
+    "unique_qualified_claims": 21,
+    "repeated_qualified_claim_occurrences": 0,
+    "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
+    "human_review": "NOT_REVIEWED",
+    "draft_sha256": "1a4c83d34ab18136568ddd02f13f0f5574f01c5926bd72f6c25bc81db6e1ebbb"
+  },
+  {
+    "document_code": "D088",
+    "revision_id": "c7e13140-db25-4e2d-a4ed-0a1c7aa4723c",
+    "assertion_occurrences": 27,
+    "unique_canonical_triples": 24,
+    "repeated_core_triple_occurrences": 3,
+    "unique_qualified_claims": 27,
+    "repeated_qualified_claim_occurrences": 0,
+    "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
+    "human_review": "NOT_REVIEWED",
+    "draft_sha256": "a513d43e8a63294a662ef04922698d8e951ee9fdd14b934b9f24861e153331bd"
+  },
+  {
+    "document_code": "D090",
+    "revision_id": "8b04e3fc-26f8-4689-9764-c9c2826f4825",
+    "assertion_occurrences": 14,
+    "unique_canonical_triples": 14,
+    "repeated_core_triple_occurrences": 0,
+    "unique_qualified_claims": 14,
+    "repeated_qualified_claim_occurrences": 0,
+    "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
+    "human_review": "NOT_REVIEWED",
+    "draft_sha256": "b6b4ea3106f21ed7d3dc3d97e5f58f9035e291939e790d2398cb6fddc12c5f6a"
+  },
+  {
+    "document_code": "D098",
+    "revision_id": "2bcf0c3f-6d14-457e-8665-3d0dd2993393",
+    "assertion_occurrences": 16,
+    "unique_canonical_triples": 16,
+    "repeated_core_triple_occurrences": 0,
+    "unique_qualified_claims": 16,
+    "repeated_qualified_claim_occurrences": 0,
+    "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
+    "human_review": "NOT_REVIEWED",
+    "draft_sha256": "ba0d8878afdc60e6934f5a9c55c34529b2c4069ec24a0823c6f2d178aadf7de9"
   }
 ]
