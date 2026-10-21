@@ -1,0 +1,1 @@
+DEV-only design input. Exactly 12 DEV sources and drafts. Do not read combined questions.md, combined reports, CALIBRATION/HOLDOUT files, private directories, or curation scripts containing evaluation labels. The orchestrator conversation has prior evaluation exposure; this bundle is selected programmatically by split. Prior 0.3 freeze chronology remains a documented limitation.

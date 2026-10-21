@@ -1,0 +1,98 @@
+[
+  {
+    "split": "DEV",
+    "document_code": "D001",
+    "document_id": "00f9cfc7-459f-4c4d-8131-b425d01527dc",
+    "revision_id": "7664effe-8f20-46e8-b694-224b75bea829",
+    "openalex_id": "W2978128942",
+    "cluster": "C02"
+  },
+  {
+    "split": "DEV",
+    "document_code": "D003",
+    "document_id": "06066c66-1454-4813-b7b7-f366b9956035",
+    "revision_id": "7af46631-a38f-430d-a43c-bcfa0dccac9e",
+    "openalex_id": "W4284897849",
+    "cluster": "C02"
+  },
+  {
+    "split": "DEV",
+    "document_code": "D004",
+    "document_id": "08d58bd1-a89e-4b70-b817-821df8428bc7",
+    "revision_id": "5afc0eeb-3c76-40cf-99be-e70f066beb2b",
+    "openalex_id": "W2748866382",
+    "cluster": "C01"
+  },
+  {
+    "split": "DEV",
+    "document_code": "D010",
+    "document_id": "136d5083-0254-4930-a35e-88441bb802a0",
+    "revision_id": "fbd87a44-35d0-4f51-80d6-39abd117d01f",
+    "openalex_id": "W4376618059",
+    "cluster": "C01"
+  },
+  {
+    "split": "DEV",
+    "document_code": "D060",
+    "document_id": "96575fc6-1212-4cb1-889f-179dd9515854",
+    "revision_id": "61ce4e43-1d79-4cee-af6c-43026828532a",
+    "openalex_id": "W2284579279",
+    "cluster": "C03"
+  },
+  {
+    "split": "DEV",
+    "document_code": "D078",
+    "document_id": "c56c60ec-74f3-44d5-83e6-f83d87b921f5",
+    "revision_id": "85c8c16f-76e7-45fb-a9b2-6124974a51e9",
+    "openalex_id": "W4210343955",
+    "cluster": "C03"
+  },
+  {
+    "split": "DEV",
+    "document_code": "D035",
+    "document_id": "5f698fb2-5265-4343-a012-0c0fb3c6e9c4",
+    "revision_id": "6612f9ab-0007-4924-a4da-dc7e0bafdba3",
+    "openalex_id": "W2460838568",
+    "cluster": "C07"
+  },
+  {
+    "split": "DEV",
+    "document_code": "D092",
+    "document_id": "ea87c55e-72ef-439c-aa6b-7285edc49095",
+    "revision_id": "19bedd9d-3827-402c-894b-e8ca762ecff7",
+    "openalex_id": "W1994481181",
+    "cluster": "C07"
+  },
+  {
+    "split": "DEV",
+    "document_code": "D017",
+    "document_id": "2860ed7f-a2a8-4e76-9250-e3558d092f23",
+    "revision_id": "d80633dc-c57a-4253-8754-29c9366084f5",
+    "openalex_id": "W2616686898",
+    "cluster": "C08"
+  },
+  {
+    "split": "DEV",
+    "document_code": "D038",
+    "document_id": "6a675d0d-8256-4c8f-b2ae-7c95c1bcabf8",
+    "revision_id": "b6535766-c337-4abd-9925-8381f0acc7fa",
+    "openalex_id": "W2799657301",
+    "cluster": "C08"
+  },
+  {
+    "split": "DEV",
+    "document_code": "D026",
+    "document_id": "3df9cd7a-940f-400e-b03a-a72459a5558f",
+    "revision_id": "3ed28d1a-4b30-4ea4-bf03-3a69308fb8ba",
+    "openalex_id": "W2785184816",
+    "cluster": "C09"
+  },
+  {
+    "split": "DEV",
+    "document_code": "D024",
+    "document_id": "3a5a587d-5ddf-49b9-aa34-bd081fb0d04b",
+    "revision_id": "95f3f5a0-077c-4f5d-859f-37fc344f12f0",
+    "openalex_id": "W1967752584",
+    "cluster": "C13"
+  }
+]

@@ -1,0 +1,12 @@
+# Changes from the historical 0.3 baseline
+
+Ontology v1.0 is a new DEV-only semantic specification. The old 0.3 files and freeze identity are preserved; they are not retroactively edited.
+
+- Added CAUSES for produced events; EXPLAINS for source attribution; CHANGES_PARAMETER with required signed/unspecified direction; DEPENDS_ON for explicit variable/configuration dependence; MEETS_REQUIREMENT for a joint bundle. Total: 23 directed predicates and the same 12 entity kinds.
+- Mapped INCREASES and observed decreases to CHANGES_PARAMETER; mapped DOMINATES to EXPLAINS+dominant. No standalone DOMINATES/DECREASES/INCREASES is needed. Retained all 18 useful baseline meanings, with repaired UTF-8 directions for OPTIMIZES and FACILITATES.
+- Extended HAS_PROPERTY to structural MORPHOLOGY bearers and HAS_MECHANISM to MATERIAL. Added explicit group/member pairs for joint morphology/mechanism claims and mixed requirements. Declined DEVICE tails for USED_FOR where DEV wording is insufficient.
+- Reannotated all 12 DEV abstracts, preserving old source/evidence offsets, unreviewed status and supported labels. Resolved 18 of 20 historical questions; 2 remain insufficient. Retained 1 additional backward-audit abstention. The historical 19/20 discrepancy is the later D078-Q9 addition, not a lost/duplicated question.
+- Removed the D035 16-edge material/gas grid, the D017 unspecified mechanism linkage, D024 unsupported neutral-tuning optimality, and the inconsistent carbon-sequestration use. Recovered intermediate parameter/event chains, grouped explanation and dependence, signed D078 effects, local modality/polarity and qualifier scope.
+- Added 51 assertions; retired 19; semantically corrected 23 retained assertions. 316 retained assertions have metadata-only changes. Final accepted assertions: 390 (baseline 358); mentions: 589 (baseline 573). Complete identity-level counts are in migration_summary.json.
+- Separated AI design decisions, earlier user design instructions, technical freeze, final human ontology approval and human gold review. No final human approval or human label review is recorded. source_context is an AI interpretation for regressions, not external truth.
+- Added machine-readable rules, full relation/entity definitions, rubric, per-question decisions, sentence coverage audit, consistency self-audit, input hashes, DEV-only source snapshots and deterministic reannotation/patch scripts. Root integration provides the final freeze/hash/commit manifest and repository validation.

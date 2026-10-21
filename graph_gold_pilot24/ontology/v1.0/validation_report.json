@@ -1,0 +1,122 @@
+[
+  {
+    "document_code": "D001",
+    "status": "PASS",
+    "errors": [],
+    "mentions": 61,
+    "assertions": 51,
+    "unresolved": 0,
+    "human_review": "NOT_REVIEWED",
+    "semantic_truth": "NOT_ESTABLISHED_BY_STRUCTURAL_VALIDATION"
+  },
+  {
+    "document_code": "D003",
+    "status": "PASS",
+    "errors": [],
+    "mentions": 69,
+    "assertions": 47,
+    "unresolved": 0,
+    "human_review": "NOT_REVIEWED",
+    "semantic_truth": "NOT_ESTABLISHED_BY_STRUCTURAL_VALIDATION"
+  },
+  {
+    "document_code": "D004",
+    "status": "PASS",
+    "errors": [],
+    "mentions": 47,
+    "assertions": 24,
+    "unresolved": 0,
+    "human_review": "NOT_REVIEWED",
+    "semantic_truth": "NOT_ESTABLISHED_BY_STRUCTURAL_VALIDATION"
+  },
+  {
+    "document_code": "D010",
+    "status": "PASS",
+    "errors": [],
+    "mentions": 105,
+    "assertions": 99,
+    "unresolved": 0,
+    "human_review": "NOT_REVIEWED",
+    "semantic_truth": "NOT_ESTABLISHED_BY_STRUCTURAL_VALIDATION"
+  },
+  {
+    "document_code": "D017",
+    "status": "PASS",
+    "errors": [],
+    "mentions": 37,
+    "assertions": 28,
+    "unresolved": 0,
+    "human_review": "NOT_REVIEWED",
+    "semantic_truth": "NOT_ESTABLISHED_BY_STRUCTURAL_VALIDATION"
+  },
+  {
+    "document_code": "D024",
+    "status": "PASS",
+    "errors": [],
+    "mentions": 40,
+    "assertions": 20,
+    "unresolved": 2,
+    "human_review": "NOT_REVIEWED",
+    "semantic_truth": "NOT_ESTABLISHED_BY_STRUCTURAL_VALIDATION"
+  },
+  {
+    "document_code": "D026",
+    "status": "PASS",
+    "errors": [],
+    "mentions": 31,
+    "assertions": 19,
+    "unresolved": 0,
+    "human_review": "NOT_REVIEWED",
+    "semantic_truth": "NOT_ESTABLISHED_BY_STRUCTURAL_VALIDATION"
+  },
+  {
+    "document_code": "D035",
+    "status": "PASS",
+    "errors": [],
+    "mentions": 34,
+    "assertions": 15,
+    "unresolved": 0,
+    "human_review": "NOT_REVIEWED",
+    "semantic_truth": "NOT_ESTABLISHED_BY_STRUCTURAL_VALIDATION"
+  },
+  {
+    "document_code": "D038",
+    "status": "PASS",
+    "errors": [],
+    "mentions": 27,
+    "assertions": 17,
+    "unresolved": 0,
+    "human_review": "NOT_REVIEWED",
+    "semantic_truth": "NOT_ESTABLISHED_BY_STRUCTURAL_VALIDATION"
+  },
+  {
+    "document_code": "D060",
+    "status": "PASS",
+    "errors": [],
+    "mentions": 23,
+    "assertions": 12,
+    "unresolved": 0,
+    "human_review": "NOT_REVIEWED",
+    "semantic_truth": "NOT_ESTABLISHED_BY_STRUCTURAL_VALIDATION"
+  },
+  {
+    "document_code": "D078",
+    "status": "PASS",
+    "errors": [],
+    "mentions": 72,
+    "assertions": 39,
+    "unresolved": 0,
+    "human_review": "NOT_REVIEWED",
+    "semantic_truth": "NOT_ESTABLISHED_BY_STRUCTURAL_VALIDATION"
+  },
+  {
+    "document_code": "D092",
+    "status": "PASS",
+    "errors": [],
+    "mentions": 43,
+    "assertions": 19,
+    "unresolved": 0,
+    "human_review": "NOT_REVIEWED",
+    "semantic_truth": "NOT_ESTABLISHED_BY_STRUCTURAL_VALIDATION"
+  }
+]

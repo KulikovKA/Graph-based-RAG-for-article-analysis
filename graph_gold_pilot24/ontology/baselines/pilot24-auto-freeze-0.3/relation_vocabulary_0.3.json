@@ -1,0 +1,204 @@
+{
+  "version": "pilot24-rubric-0.3-AUTO-FROZEN",
+  "status": "TEMPORARY_FROZEN_FOR_AUTOMATIC_CALIBRATION_HOLDOUT",
+  "human_approved": true,
+  "relations": {
+    "HAS_PROPERTY": {
+      "direction": "носитель → свойство",
+      "head_kinds": [
+        "DEVICE",
+        "MATERIAL",
+        "PROCESS",
+        "OTHER"
+      ],
+      "tail_kinds": [
+        "PROPERTY"
+      ]
+    },
+    "HAS_PERFORMANCE": {
+      "direction": "носитель → эксплуатационная характеристика",
+      "head_kinds": [
+        "DEVICE",
+        "MATERIAL"
+      ],
+      "tail_kinds": [
+        "PERFORMANCE"
+      ]
+    },
+    "HAS_MORPHOLOGY": {
+      "direction": "объект → структура/форма/схема соединения",
+      "head_kinds": [
+        "DEVICE",
+        "MATERIAL"
+      ],
+      "tail_kinds": [
+        "MORPHOLOGY"
+      ]
+    },
+    "HAS_COMPONENT": {
+      "direction": "составной объект → явно названный физический компонент",
+      "head_kinds": [
+        "DEVICE",
+        "MATERIAL"
+      ],
+      "tail_kinds": [
+        "DEVICE",
+        "MATERIAL"
+      ]
+    },
+    "HAS_MEMBER": {
+      "direction": "явно перечисленная группа → элемент группы",
+      "head_kinds": [
+        "PROPERTY",
+        "PROCESS",
+        "MATERIAL",
+        "ANALYTE"
+      ],
+      "tail_kinds": [
+        "PROPERTY",
+        "PROCESS",
+        "MATERIAL",
+        "ANALYTE"
+      ]
+    },
+    "USES_MATERIAL": {
+      "direction": "устройство → материал с явно указанной ролью",
+      "head_kinds": [
+        "DEVICE"
+      ],
+      "tail_kinds": [
+        "MATERIAL"
+      ]
+    },
+    "FUNCTIONS_AS": {
+      "direction": "материал → явно указанная функция/функциональный компонент",
+      "head_kinds": [
+        "MATERIAL"
+      ],
+      "tail_kinds": [
+        "DEVICE",
+        "OTHER"
+      ]
+    },
+    "DETECTS": {
+      "direction": "датчик → определяемое вещество",
+      "head_kinds": [
+        "DEVICE"
+      ],
+      "tail_kinds": [
+        "ANALYTE"
+      ]
+    },
+    "USED_FOR": {
+      "direction": "объект → применение/процесс/целевое вещество при явно указанном применении материала",
+      "head_kinds": [
+        "DEVICE",
+        "MATERIAL"
+      ],
+      "tail_kinds": [
+        "APPLICATION",
+        "PROCESS",
+        "ANALYTE"
+      ]
+    },
+    "FABRICATED_BY": {
+      "direction": "полученный объект → способ изготовления",
+      "head_kinds": [
+        "DEVICE",
+        "MATERIAL"
+      ],
+      "tail_kinds": [
+        "PROCESS"
+      ]
+    },
+    "IMPROVES": {
+      "direction": "процесс → улучшаемое свойство/характеристика",
+      "head_kinds": [
+        "PROCESS"
+      ],
+      "tail_kinds": [
+        "PROPERTY",
+        "PERFORMANCE"
+      ]
+    },
+    "ACTS_ON": {
+      "direction": "процесс → его явно указанный объект",
+      "head_kinds": [
+        "PROCESS"
+      ],
+      "tail_kinds": [
+        "DEVICE",
+        "MATERIAL"
+      ]
+    },
+    "INTEGRATED_IN": {
+      "direction": "встраиваемый объект → принимающий объект",
+      "head_kinds": [
+        "DEVICE"
+      ],
+      "tail_kinds": [
+        "DEVICE",
+        "OTHER"
+      ]
+    },
+    "HAS_MECHANISM": {
+      "direction": "устройство → объясняющий механизм",
+      "head_kinds": [
+        "DEVICE"
+      ],
+      "tail_kinds": [
+        "MECHANISM"
+      ]
+    },
+    "MECHANISM_INVOLVES": {
+      "direction": "механизм → его явно указанный процесс/структура",
+      "head_kinds": [
+        "MECHANISM"
+      ],
+      "tail_kinds": [
+        "MECHANISM",
+        "PROCESS",
+        "MORPHOLOGY"
+      ]
+    },
+    "LOCATED_IN": {
+      "direction": "слой/структура → материал, в котором они описаны",
+      "head_kinds": [
+        "MORPHOLOGY"
+      ],
+      "tail_kinds": [
+        "MATERIAL"
+      ]
+    },
+    "OPTIMIZES": {
+      "direction": "?????????????? ??????? ? ??????????? ??????",
+      "head_kinds": [
+        "PROCESS"
+      ],
+      "tail_kinds": [
+        "DEVICE",
+        "MATERIAL"
+      ]
+    },
+    "FACILITATES": {
+      "direction": "????????/??????? ? ???????, ???????? ??? ????????????",
+      "head_kinds": [
+        "MATERIAL",
+        "PROCESS"
+      ],
+      "tail_kinds": [
+        "PROCESS"
+      ]
+    }
+  },
+  "approval_scope": "Schema only, DEV working version; not annotation human review",
+  "decision_refs": [
+    "Q1",
+    "Q2",
+    "Q3"
+  ],
+  "frozen": true,
+  "final_human_ontology_approved": false,
+  "freeze_id": "pilot24-auto-freeze-0.3",
+  "freeze_basis": "18 approved types fixed from DEV. First freeze persistence failed on a filesystem write before calibration text was displayed; persistence retried without changing any relation definition. Evaluation text was not used to extend or tune the schema."
+}

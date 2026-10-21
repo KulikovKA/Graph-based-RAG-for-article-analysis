@@ -21,7 +21,7 @@ def read_jsonl(path):
     return [json.loads(s) for s in path.read_text(encoding='utf-8').splitlines() if s.strip()]
 
 
-def validate(d, source, template, vocabulary):
+def validate_legacy(d, source, template, vocabulary,*,enforce_legacy_approval=True):
     errors = ['JSON Schema: '+'.'.join(map(str,e.absolute_path))+': '+e.message for e in SCHEMA.iter_errors(d)]
 
     def check(ok, msg):
@@ -180,7 +180,7 @@ def validate(d, source, template, vocabulary):
         for aid in item.get('assertion_ids', []):
             candidates = [a for a in d['assertions'] if a['assertion_id'] == aid]
             check(bool(candidates) and all(a['support_status'] == 'UNRESOLVED' for a in candidates), 'Unresolved assertion promoted to supported')
-    if not vocabulary['human_approved']:
+    if enforce_legacy_approval and not vocabulary['human_approved']:
         check(any(q['question_id'] == 'Q1' and q['status'] == 'UNRESOLVED' for q in d['unresolved']), 'Missing pending schema decision')
     if d['annotation_status'].startswith('AI_DRAFT'):
         check(d['review']['primary_annotator'] is None and d['review']['secondary_annotator'] is None, 'Fabricated human annotator')
@@ -188,10 +188,24 @@ def validate(d, source, template, vocabulary):
     return errors
 
 
+def validate(d,source,template,vocabulary):
+    if d.get('ontology_id')=='pilot24-ontology-v1.0':
+        from validate_ontology_v1 import validate as validate_v1
+        return validate_v1(d,source,template,vocabulary)
+    if d.get('rubric_version')=='pilot24-rubric-0.3-AUTO-FROZEN' and vocabulary.get('version')!=d['rubric_version']:
+        archived=BASE/'ontology/baselines/pilot24-auto-freeze-0.3/relation_vocabulary_0.3.json'
+        vocabulary=json.loads(archived.read_text(encoding='utf-8'))
+    return validate_legacy(d,source,template,vocabulary)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('paths', nargs='*', type=Path)
+    parser.add_argument('--ontology',choices=['v1.0','legacy-0.3'],default='v1.0')
     args = parser.parse_args()
+    if args.ontology=='v1.0':
+        from validate_ontology_v1 import run
+        raise SystemExit(run(args.paths))
     sources = {d['document_code']: d for d in read_jsonl(BASE / 'pilot24_sources.jsonl')}
     templates = {d['document_code']: d for d in read_jsonl(BASE / 'gold_annotation_template.jsonl')}
     vocab = json.loads((BASE / 'annotations/reviews/relation_vocabulary.json').read_text(encoding='utf-8'))

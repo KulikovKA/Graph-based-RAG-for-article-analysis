@@ -1,0 +1,14 @@
+{
+  "baseline_git_commit": "5cee979805fb5e6aa8980d0371e4f5a789139ec7",
+  "preserved_files": {
+    "annotation_0.3.schema.json": "09306f65313c32302057b97c08e936979f77ce7348810bc14505241f99942ebd",
+    "dev_drafts_0.3.jsonl": "a0867f5cf66450d0a319b56ee0f5cc5bdffcbb0c76508116fc3d3dcca25f9a72",
+    "DEV_ONTOLOGY_FREEZE_0.3.json": "aba4da4b4a7597d63bc62e5b45acbadf3e3aea44389c5216651c4cc154e4517b",
+    "relation_vocabulary_0.3.json": "91b309feb792c31980c7b19c78c0d3a7ddf05d2bd2e49bc8fff0786118300141"
+  },
+  "current_design_input": "12 DEV records only",
+  "limitations": [
+    "Root conversation previously exposed CALIBRATION/HOLDOUT.",
+    "Historical 0.3 persistence failed before calibration text display; no retroactive claim of perfect isolation."
+  ]
+}

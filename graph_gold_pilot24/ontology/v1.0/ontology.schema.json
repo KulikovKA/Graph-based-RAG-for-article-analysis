@@ -1,0 +1,763 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "ontology_id",
+    "version",
+    "status",
+    "approval",
+    "entities",
+    "relations",
+    "qualifiers",
+    "qualifier_schema",
+    "polarity",
+    "modality",
+    "support_policy",
+    "evidence_policy",
+    "canonicalization",
+    "group_policy",
+    "provenance"
+  ],
+  "properties": {
+    "ontology_id": {
+      "const": "pilot24-ontology-v1.0"
+    },
+    "version": {
+      "const": "1.0"
+    },
+    "status": {
+      "const": "TECHNICALLY_FROZEN_PENDING_HUMAN_APPROVAL"
+    },
+    "approval": {
+      "type": "object",
+      "required": [
+        "final_human_ontology_approved",
+        "annotation_human_review_status",
+        "human_gold_documents"
+      ],
+      "properties": {
+        "final_human_ontology_approved": {
+          "const": false
+        },
+        "annotation_human_review_status": {
+          "const": "NOT_REVIEWED"
+        },
+        "human_gold_documents": {
+          "const": 0
+        }
+      }
+    },
+    "entities": {
+      "type": "object",
+      "required": [
+        "MATERIAL",
+        "DEVICE",
+        "PROPERTY",
+        "PERFORMANCE",
+        "ANALYTE",
+        "PROCESS",
+        "MECHANISM",
+        "OPERATING_CONDITION",
+        "MORPHOLOGY",
+        "TECHNOLOGY",
+        "APPLICATION",
+        "OTHER"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "MATERIAL": {
+          "type": "object",
+          "required": [
+            "definition",
+            "examples",
+            "boundary",
+            "canonicalization"
+          ],
+          "properties": {
+            "definition": {
+              "type": "string",
+              "minLength": 1
+            },
+            "examples": {
+              "type": "string",
+              "minLength": 1
+            },
+            "boundary": {
+              "type": "string",
+              "minLength": 1
+            },
+            "canonicalization": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "DEVICE": {
+          "type": "object",
+          "required": [
+            "definition",
+            "examples",
+            "boundary",
+            "canonicalization"
+          ],
+          "properties": {
+            "definition": {
+              "type": "string",
+              "minLength": 1
+            },
+            "examples": {
+              "type": "string",
+              "minLength": 1
+            },
+            "boundary": {
+              "type": "string",
+              "minLength": 1
+            },
+            "canonicalization": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "PROPERTY": {
+          "type": "object",
+          "required": [
+            "definition",
+            "examples",
+            "boundary",
+            "canonicalization"
+          ],
+          "properties": {
+            "definition": {
+              "type": "string",
+              "minLength": 1
+            },
+            "examples": {
+              "type": "string",
+              "minLength": 1
+            },
+            "boundary": {
+              "type": "string",
+              "minLength": 1
+            },
+            "canonicalization": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "PERFORMANCE": {
+          "type": "object",
+          "required": [
+            "definition",
+            "examples",
+            "boundary",
+            "canonicalization"
+          ],
+          "properties": {
+            "definition": {
+              "type": "string",
+              "minLength": 1
+            },
+            "examples": {
+              "type": "string",
+              "minLength": 1
+            },
+            "boundary": {
+              "type": "string",
+              "minLength": 1
+            },
+            "canonicalization": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "ANALYTE": {
+          "type": "object",
+          "required": [
+            "definition",
+            "examples",
+            "boundary",
+            "canonicalization"
+          ],
+          "properties": {
+            "definition": {
+              "type": "string",
+              "minLength": 1
+            },
+            "examples": {
+              "type": "string",
+              "minLength": 1
+            },
+            "boundary": {
+              "type": "string",
+              "minLength": 1
+            },
+            "canonicalization": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "PROCESS": {
+          "type": "object",
+          "required": [
+            "definition",
+            "examples",
+            "boundary",
+            "canonicalization"
+          ],
+          "properties": {
+            "definition": {
+              "type": "string",
+              "minLength": 1
+            },
+            "examples": {
+              "type": "string",
+              "minLength": 1
+            },
+            "boundary": {
+              "type": "string",
+              "minLength": 1
+            },
+            "canonicalization": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "MECHANISM": {
+          "type": "object",
+          "required": [
+            "definition",
+            "examples",
+            "boundary",
+            "canonicalization"
+          ],
+          "properties": {
+            "definition": {
+              "type": "string",
+              "minLength": 1
+            },
+            "examples": {
+              "type": "string",
+              "minLength": 1
+            },
+            "boundary": {
+              "type": "string",
+              "minLength": 1
+            },
+            "canonicalization": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "OPERATING_CONDITION": {
+          "type": "object",
+          "required": [
+            "definition",
+            "examples",
+            "boundary",
+            "canonicalization"
+          ],
+          "properties": {
+            "definition": {
+              "type": "string",
+              "minLength": 1
+            },
+            "examples": {
+              "type": "string",
+              "minLength": 1
+            },
+            "boundary": {
+              "type": "string",
+              "minLength": 1
+            },
+            "canonicalization": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "MORPHOLOGY": {
+          "type": "object",
+          "required": [
+            "definition",
+            "examples",
+            "boundary",
+            "canonicalization"
+          ],
+          "properties": {
+            "definition": {
+              "type": "string",
+              "minLength": 1
+            },
+            "examples": {
+              "type": "string",
+              "minLength": 1
+            },
+            "boundary": {
+              "type": "string",
+              "minLength": 1
+            },
+            "canonicalization": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "TECHNOLOGY": {
+          "type": "object",
+          "required": [
+            "definition",
+            "examples",
+            "boundary",
+            "canonicalization"
+          ],
+          "properties": {
+            "definition": {
+              "type": "string",
+              "minLength": 1
+            },
+            "examples": {
+              "type": "string",
+              "minLength": 1
+            },
+            "boundary": {
+              "type": "string",
+              "minLength": 1
+            },
+            "canonicalization": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "APPLICATION": {
+          "type": "object",
+          "required": [
+            "definition",
+            "examples",
+            "boundary",
+            "canonicalization"
+          ],
+          "properties": {
+            "definition": {
+              "type": "string",
+              "minLength": 1
+            },
+            "examples": {
+              "type": "string",
+              "minLength": 1
+            },
+            "boundary": {
+              "type": "string",
+              "minLength": 1
+            },
+            "canonicalization": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "OTHER": {
+          "type": "object",
+          "required": [
+            "definition",
+            "examples",
+            "boundary",
+            "canonicalization"
+          ],
+          "properties": {
+            "definition": {
+              "type": "string",
+              "minLength": 1
+            },
+            "examples": {
+              "type": "string",
+              "minLength": 1
+            },
+            "boundary": {
+              "type": "string",
+              "minLength": 1
+            },
+            "canonicalization": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    },
+    "relations": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "definition",
+          "direction",
+          "contrast",
+          "nearest_relations",
+          "ambiguity_policy",
+          "group_policy",
+          "head_kinds",
+          "tail_kinds",
+          "required_qualifiers",
+          "optional_qualifiers",
+          "supported_polarities",
+          "supported_modalities",
+          "positive_example"
+        ],
+        "properties": {
+          "definition": {
+            "type": "string",
+            "minLength": 1
+          },
+          "direction": {
+            "type": "string",
+            "minLength": 1
+          },
+          "contrast": {
+            "type": "string",
+            "minLength": 1
+          },
+          "nearest_relations": {
+            "type": "string",
+            "minLength": 1
+          },
+          "ambiguity_policy": {
+            "type": "string",
+            "minLength": 1
+          },
+          "group_policy": {
+            "type": "string",
+            "minLength": 1
+          },
+          "head_kinds": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "MATERIAL",
+                "DEVICE",
+                "PROPERTY",
+                "PERFORMANCE",
+                "ANALYTE",
+                "PROCESS",
+                "MECHANISM",
+                "OPERATING_CONDITION",
+                "MORPHOLOGY",
+                "TECHNOLOGY",
+                "APPLICATION",
+                "OTHER"
+              ]
+            }
+          },
+          "tail_kinds": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "MATERIAL",
+                "DEVICE",
+                "PROPERTY",
+                "PERFORMANCE",
+                "ANALYTE",
+                "PROCESS",
+                "MECHANISM",
+                "OPERATING_CONDITION",
+                "MORPHOLOGY",
+                "TECHNOLOGY",
+                "APPLICATION",
+                "OTHER"
+              ]
+            }
+          },
+          "required_qualifiers": {
+            "type": "object",
+            "propertyNames": {
+              "enum": [
+                "duration",
+                "detection_limit",
+                "estimation_status",
+                "temperature",
+                "bending_cycles",
+                "twisting_cycles",
+                "strain",
+                "layer_position",
+                "parameter_selection",
+                "response_per_concentration",
+                "NO_response_per_concentration",
+                "NO2_response_per_concentration",
+                "NO_detection_limit",
+                "NO2_detection_limit",
+                "stretch",
+                "explained_capability",
+                "isolation_reference",
+                "relative_humidity",
+                "monitoring_times",
+                "equipment",
+                "location",
+                "trend",
+                "associated_change",
+                "response",
+                "analyte_concentration",
+                "temperature_selection",
+                "comparison",
+                "mass_ratio",
+                "optimization_status",
+                "relative_humidity_range",
+                "coefficient_of_determination",
+                "selectivity_comparison",
+                "dopant",
+                "improvement_factor",
+                "doped_detection_limit",
+                "undoped_detection_limit",
+                "support_method",
+                "analyte_scope",
+                "material_configuration",
+                "concentration_regime",
+                "sample_condition",
+                "epistemic_basis",
+                "change",
+                "study_method",
+                "relative_sensitivity",
+                "scope_limit",
+                "process_location",
+                "comparison_direction",
+                "comparison_material",
+                "detection_limit_range",
+                "SNR_ratio",
+                "selectivity_order",
+                "gas_pair",
+                "pore_configuration",
+                "CH4_barrier",
+                "H2_barrier",
+                "fabrication_techniques",
+                "direction",
+                "contribution",
+                "scope",
+                "joint_requirement",
+                "evidence_basis",
+                "strength",
+                "target_parameter",
+                "width",
+                "explanatory_basis",
+                "outcome_scope"
+              ]
+            },
+            "additionalProperties": {
+              "type": "object"
+            }
+          },
+          "optional_qualifiers": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "duration",
+                "detection_limit",
+                "estimation_status",
+                "temperature",
+                "bending_cycles",
+                "twisting_cycles",
+                "strain",
+                "layer_position",
+                "parameter_selection",
+                "response_per_concentration",
+                "NO_response_per_concentration",
+                "NO2_response_per_concentration",
+                "NO_detection_limit",
+                "NO2_detection_limit",
+                "stretch",
+                "explained_capability",
+                "isolation_reference",
+                "relative_humidity",
+                "monitoring_times",
+                "equipment",
+                "location",
+                "trend",
+                "associated_change",
+                "response",
+                "analyte_concentration",
+                "temperature_selection",
+                "comparison",
+                "mass_ratio",
+                "optimization_status",
+                "relative_humidity_range",
+                "coefficient_of_determination",
+                "selectivity_comparison",
+                "dopant",
+                "improvement_factor",
+                "doped_detection_limit",
+                "undoped_detection_limit",
+                "support_method",
+                "analyte_scope",
+                "material_configuration",
+                "concentration_regime",
+                "sample_condition",
+                "epistemic_basis",
+                "change",
+                "study_method",
+                "relative_sensitivity",
+                "scope_limit",
+                "process_location",
+                "comparison_direction",
+                "comparison_material",
+                "detection_limit_range",
+                "SNR_ratio",
+                "selectivity_order",
+                "gas_pair",
+                "pore_configuration",
+                "CH4_barrier",
+                "H2_barrier",
+                "fabrication_techniques",
+                "direction",
+                "contribution",
+                "scope",
+                "joint_requirement",
+                "evidence_basis",
+                "strength",
+                "target_parameter",
+                "width",
+                "explanatory_basis",
+                "outcome_scope"
+              ]
+            }
+          },
+          "supported_polarities": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "enum": [
+                "POSITIVE",
+                "NEGATIVE"
+              ]
+            }
+          },
+          "supported_modalities": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "enum": [
+                "ASSERTED",
+                "PROPOSED",
+                "COMPARED",
+                "HYPOTHETICAL"
+              ]
+            }
+          },
+          "positive_example": {
+            "type": "object",
+            "required": [
+              "document_code",
+              "assertion_id",
+              "head",
+              "tail",
+              "polarity",
+              "modality",
+              "evidence",
+              "qualifiers"
+            ],
+            "properties": {
+              "document_code": {
+                "type": "string",
+                "pattern": "^D[0-9]{3}$"
+              },
+              "evidence": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "span_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "document_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "revision_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "chunk_id": {
+                      "type": "string",
+                      "format": "uuid"
+                    },
+                    "start": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "end": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "text": {
+                      "type": "string"
+                    },
+                    "source_text_sha256": {
+                      "type": "string",
+                      "pattern": "^[0-9a-f]{64}$"
+                    }
+                  },
+                  "required": [
+                    "span_id",
+                    "document_id",
+                    "revision_id",
+                    "chunk_id",
+                    "start",
+                    "end",
+                    "text",
+                    "source_text_sha256"
+                  ],
+                  "additionalProperties": true
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "qualifiers": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "definition",
+          "raw_value_types",
+          "unit_policy",
+          "attachment",
+          "normalization"
+        ],
+        "properties": {
+          "definition": {
+            "type": "string",
+            "minLength": 1
+          },
+          "raw_value_types": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "enum": [
+                "string",
+                "number",
+                "array",
+                "boolean",
+                "null",
+                "object"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}

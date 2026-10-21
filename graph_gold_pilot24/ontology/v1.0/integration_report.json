@@ -1,0 +1,31 @@
+{
+  "status": "PASS",
+  "scope": "DEV-only local publication; no evaluation input is opened",
+  "dev_drafts": {
+    "annotations/drafts/D001.jsonl": "69b418c07858278f183da92683e6719a3cedb8e5e4dda486ee8cda7a79f5d253",
+    "annotations/drafts/D003.jsonl": "ac12867dab8dd211a2e89f5967eeabc941b0c7f42319b14b90803c1231fab347",
+    "annotations/drafts/D004.jsonl": "c8b4be724211f4cc7b18c71d338e351348902685473d8b9aaeb028b7f1d20dac",
+    "annotations/drafts/D010.jsonl": "f7946cfd019e89ea5f933527cc862199ea48d79332885053be1f6c1a51d1e1dd",
+    "annotations/drafts/D060.jsonl": "77672e3e6576594b28f80dc74d3d766a0a3ce76bf6347428cc6e261c4ea05919",
+    "annotations/drafts/D078.jsonl": "1ee5cc7d05da59c5867af49f3f28889c2ee1335d79895cc1b732ab02e5c8d072",
+    "annotations/drafts/D035.jsonl": "ef0b679d5d0513f12264f133a6480b1ba7bd0039ce64aa3dafe0db179637ec9c",
+    "annotations/drafts/D092.jsonl": "86896a8634b905e5e35ab167fb63ef92c45c9db5514a285b02f3febd3a60a747",
+    "annotations/drafts/D017.jsonl": "5cf4d7a2c5d75fa1fd55ae6cf18f72abd7bf23e14bfd8dd30f4312d5c57108be",
+    "annotations/drafts/D038.jsonl": "8a6de9a68c67b775b53d304f210095c7ab40d940a0169f1810fedc8ac2c70bef",
+    "annotations/drafts/D026.jsonl": "cb8471dd635e260de1e2313d5bb3cf6f3155bb3dbce6df89ae786a1a1a7ed174",
+    "annotations/drafts/D024.jsonl": "dbb53cd90d78d2294875ea6210e648ce8175dcb4f99575e4e88bc0a3567b8ccc"
+  },
+  "current_vocabulary_sha256": "1b4c60cfaf80466b27b5e2d5fe0fc5d02eea2759879be7acfe1807b5132b18e3",
+  "ai_decision_records_present": 20,
+  "historical_decision_records_preserved": 4,
+  "baseline_bytes_verified": {
+    "annotation_0.3.schema.json": "09306f65313c32302057b97c08e936979f77ce7348810bc14505241f99942ebd",
+    "dev_drafts_0.3.jsonl": "a0867f5cf66450d0a319b56ee0f5cc5bdffcbb0c76508116fc3d3dcca25f9a72",
+    "DEV_ONTOLOGY_FREEZE_0.3.json": "aba4da4b4a7597d63bc62e5b45acbadf3e3aea44389c5216651c4cc154e4517b",
+    "relation_vocabulary_0.3.json": "91b309feb792c31980c7b19c78c0d3a7ddf05d2bd2e49bc8fff0786118300141"
+  },
+  "historical_schema_sha256": "09306f65313c32302057b97c08e936979f77ce7348810bc14505241f99942ebd",
+  "historical_freeze_sha256": "aba4da4b4a7597d63bc62e5b45acbadf3e3aea44389c5216651c4cc154e4517b",
+  "human_review": "NOT_REVIEWED",
+  "human_gold_documents": 0
+}

@@ -1,0 +1,945 @@
+[
+  {
+    "question_id": "D004-Q4",
+    "status": "UNRESOLVED",
+    "category": "ONTOLOGY_ENDPOINT_OR_PREDICATE_GAP",
+    "proposed_relation_type": "CAUSES",
+    "head_mention_id": "5fcfa747-2a05-5d30-810a-25b228799053",
+    "tail_mention_id": "64121ae1-8ad2-5015-92af-9e2c6c3b37e2",
+    "reason": "Авторы предполагают образование junctions при генерации SnOx; FACILITATES не сохраняет утверждение results in.",
+    "evidence": [
+      {
+        "span_id": "e4753075-93f4-5ca0-8d11-fded24cdfedb",
+        "document_id": "08d58bd1-a89e-4b70-b817-821df8428bc7",
+        "revision_id": "5afc0eeb-3c76-40cf-99be-e70f066beb2b",
+        "chunk_id": "eb47e91a-4c35-4de7-96a3-f141eea0a6cf",
+        "start": 0,
+        "end": 321,
+        "text": "We suggest that the generation of SnO x nanoparticles and the SnO x phase in the matrix results in the formation of SnO 2 /SnO 2 homojunctions, SnO 2 /SnO x ( x < 2) heterojunctions, and SnO 2 /graphene heterojunctions, which are responsible for the excellent sensitivity of the graphene–SnO 2 nanocomposites to NO 2 gas.",
+        "source_text_sha256": "4fb5907a3a82cde6bcf412375e3883c2c52a669235fec58ce11b70619222a212"
+      }
+    ],
+    "candidates": [
+      {
+        "candidate_id": "fda0b6f7-50d4-5329-9479-9586a95ec805",
+        "head_mention_id": "5fcfa747-2a05-5d30-810a-25b228799053",
+        "tail_mention_id": "64121ae1-8ad2-5015-92af-9e2c6c3b37e2",
+        "modality": "PROPOSED",
+        "polarity": "POSITIVE",
+        "support_status": "UNRESOLVED",
+        "qualifiers": []
+      }
+    ],
+    "proposal_status": "PROPOSED_DEV",
+    "options": {
+      "A": "Представить CAUSES после отдельного согласования схемы.",
+      "B": "Сохранить существующую схему и учитывать как непокрытое отношение.",
+      "C": "Оставить UNRESOLVED до содержательной проверки."
+    },
+    "preliminary_recommendation": "A для DEV при подтверждении семантики; B для CALIBRATION/HOLDOUT без изменения схемы.",
+    "document_code": "D004",
+    "document_id": "08d58bd1-a89e-4b70-b817-821df8428bc7",
+    "revision_id": "5afc0eeb-3c76-40cf-99be-e70f066beb2b",
+    "title": "Microwave-Assisted Synthesis of Graphene–SnO2 Nanocomposites and Their Applications in Gas Sensors"
+  },
+  {
+    "question_id": "D004-Q5",
+    "status": "UNRESOLVED",
+    "category": "ONTOLOGY_ENDPOINT_OR_PREDICATE_GAP",
+    "proposed_relation_type": "EXPLAINS",
+    "head_mention_id": "4770c561-28cf-5849-904b-300611ce6fba",
+    "tail_mention_id": "d8f45e48-9a40-5416-b360-eeedfb73a67e",
+    "reason": "Электронный интерфейс объясняет чувствительность; допустимого MORPHOLOGY → PERFORMANCE predicate нет.",
+    "evidence": [
+      {
+        "span_id": "e4753075-93f4-5ca0-8d11-fded24cdfedb",
+        "document_id": "08d58bd1-a89e-4b70-b817-821df8428bc7",
+        "revision_id": "5afc0eeb-3c76-40cf-99be-e70f066beb2b",
+        "chunk_id": "eb47e91a-4c35-4de7-96a3-f141eea0a6cf",
+        "start": 0,
+        "end": 321,
+        "text": "We suggest that the generation of SnO x nanoparticles and the SnO x phase in the matrix results in the formation of SnO 2 /SnO 2 homojunctions, SnO 2 /SnO x ( x < 2) heterojunctions, and SnO 2 /graphene heterojunctions, which are responsible for the excellent sensitivity of the graphene–SnO 2 nanocomposites to NO 2 gas.",
+        "source_text_sha256": "4fb5907a3a82cde6bcf412375e3883c2c52a669235fec58ce11b70619222a212"
+      }
+    ],
+    "candidates": [
+      {
+        "candidate_id": "5429b6bb-6fc1-55ed-9413-2aca036e3617",
+        "head_mention_id": "4770c561-28cf-5849-904b-300611ce6fba",
+        "tail_mention_id": "d8f45e48-9a40-5416-b360-eeedfb73a67e",
+        "modality": "PROPOSED",
+        "polarity": "POSITIVE",
+        "support_status": "UNRESOLVED",
+        "qualifiers": []
+      },
+      {
+        "candidate_id": "6cd06818-0052-51ba-90d5-71f1f8c0ece6",
+        "head_mention_id": "96f4205d-f3a1-56db-b6fb-7835bb550e8d",
+        "tail_mention_id": "d8f45e48-9a40-5416-b360-eeedfb73a67e",
+        "modality": "PROPOSED",
+        "polarity": "POSITIVE",
+        "support_status": "UNRESOLVED",
+        "qualifiers": []
+      },
+      {
+        "candidate_id": "5ff43ec8-eef5-5032-9612-5300c3c627fb",
+        "head_mention_id": "74415c0b-b9a4-548a-86ce-06147d42e23b",
+        "tail_mention_id": "d8f45e48-9a40-5416-b360-eeedfb73a67e",
+        "modality": "PROPOSED",
+        "polarity": "POSITIVE",
+        "support_status": "UNRESOLVED",
+        "qualifiers": []
+      }
+    ],
+    "proposal_status": "PROPOSED_DEV",
+    "options": {
+      "A": "Представить EXPLAINS после отдельного согласования схемы.",
+      "B": "Сохранить существующую схему и учитывать как непокрытое отношение.",
+      "C": "Оставить UNRESOLVED до содержательной проверки."
+    },
+    "preliminary_recommendation": "A для DEV при подтверждении семантики; B для CALIBRATION/HOLDOUT без изменения схемы.",
+    "document_code": "D004",
+    "document_id": "08d58bd1-a89e-4b70-b817-821df8428bc7",
+    "revision_id": "5afc0eeb-3c76-40cf-99be-e70f066beb2b",
+    "title": "Microwave-Assisted Synthesis of Graphene–SnO2 Nanocomposites and Their Applications in Gas Sensors"
+  },
+  {
+    "question_id": "D004-Q6",
+    "status": "UNRESOLVED",
+    "category": "ONTOLOGY_ENDPOINT_OR_PREDICATE_GAP",
+    "proposed_relation_type": "EXPLAINS",
+    "head_mention_id": "f9ddee7e-c3bf-522a-bf21-d63f50353b9a",
+    "tail_mention_id": "53a6730b-88fa-5678-9d85-a4528913310d",
+    "reason": "Частичный вклад дефектов в sensing performance; не равен общему процессу изготовления или измеренному IMPROVES.",
+    "evidence": [
+      {
+        "span_id": "6617ab9b-00a2-5290-abbe-bc5cf9eed310",
+        "document_id": "08d58bd1-a89e-4b70-b817-821df8428bc7",
+        "revision_id": "5afc0eeb-3c76-40cf-99be-e70f066beb2b",
+        "chunk_id": "eb47e91a-4c35-4de7-96a3-f141eea0a6cf",
+        "start": 322,
+        "end": 478,
+        "text": "In addition, the generation of surface Sn interstitial defects is also partly responsible for the excellent NO 2 sensing performance observed in this study.",
+        "source_text_sha256": "4fb5907a3a82cde6bcf412375e3883c2c52a669235fec58ce11b70619222a212"
+      }
+    ],
+    "candidates": [
+      {
+        "candidate_id": "f31d83f7-ee09-59d9-96b9-5f9f0f688391",
+        "head_mention_id": "f9ddee7e-c3bf-522a-bf21-d63f50353b9a",
+        "tail_mention_id": "53a6730b-88fa-5678-9d85-a4528913310d",
+        "modality": "PROPOSED",
+        "polarity": "POSITIVE",
+        "support_status": "UNRESOLVED",
+        "qualifiers": []
+      }
+    ],
+    "proposal_status": "PROPOSED_DEV",
+    "options": {
+      "A": "Представить EXPLAINS после отдельного согласования схемы.",
+      "B": "Сохранить существующую схему и учитывать как непокрытое отношение.",
+      "C": "Оставить UNRESOLVED до содержательной проверки."
+    },
+    "preliminary_recommendation": "A для DEV при подтверждении семантики; B для CALIBRATION/HOLDOUT без изменения схемы.",
+    "document_code": "D004",
+    "document_id": "08d58bd1-a89e-4b70-b817-821df8428bc7",
+    "revision_id": "5afc0eeb-3c76-40cf-99be-e70f066beb2b",
+    "title": "Microwave-Assisted Synthesis of Graphene–SnO2 Nanocomposites and Their Applications in Gas Sensors"
+  },
+  {
+    "question_id": "D060-Q4",
+    "status": "UNRESOLVED",
+    "category": "ONTOLOGY_ENDPOINT_OR_PREDICATE_GAP",
+    "proposed_relation_type": "INCREASES",
+    "head_mention_id": "5637db51-5ae4-5fdc-aaa5-86cf2504c40c",
+    "tail_mention_id": "0a457186-1e3a-5315-88a6-21044fde029c",
+    "reason": "Увеличение концентрации носителей — направление изменения; не тождественно улучшению качества.",
+    "evidence": [
+      {
+        "span_id": "b7acc52e-a60e-526c-9bcf-4965b07fb208",
+        "document_id": "96575fc6-1212-4cb1-889f-179dd9515854",
+        "revision_id": "61ce4e43-1d79-4cee-af6c-43026828532a",
+        "chunk_id": "006deffa-1906-4677-942b-2a29bd47046b",
+        "start": 496,
+        "end": 745,
+        "text": "Electrical characterization and Raman spectroscopy measurements on graphene field-effect transistors show that adsorption of NO2 molecules significantly increases hole concentration in graphene, which results in the observed sensitivity enhancement.",
+        "source_text_sha256": "7e3054e2cb1e788c55f6c5f17b4855b0993823ba82f68f8cf3c012bac4ed1393"
+      }
+    ],
+    "candidates": [
+      {
+        "candidate_id": "3474a0cd-e488-53f9-9dd9-82ace9d3f4ec",
+        "head_mention_id": "5637db51-5ae4-5fdc-aaa5-86cf2504c40c",
+        "tail_mention_id": "0a457186-1e3a-5315-88a6-21044fde029c",
+        "modality": "ASSERTED",
+        "polarity": "POSITIVE",
+        "support_status": "UNRESOLVED",
+        "qualifiers": []
+      }
+    ],
+    "proposal_status": "PROPOSED_DEV",
+    "options": {
+      "A": "Представить INCREASES после отдельного согласования схемы.",
+      "B": "Сохранить существующую схему и учитывать как непокрытое отношение.",
+      "C": "Оставить UNRESOLVED до содержательной проверки."
+    },
+    "preliminary_recommendation": "A для DEV при подтверждении семантики; B для CALIBRATION/HOLDOUT без изменения схемы.",
+    "document_code": "D060",
+    "document_id": "96575fc6-1212-4cb1-889f-179dd9515854",
+    "revision_id": "61ce4e43-1d79-4cee-af6c-43026828532a",
+    "title": "Enhanced sensitivity of graphene ammonia gas sensors using molecular doping"
+  },
+  {
+    "question_id": "D060-Q5",
+    "status": "UNRESOLVED",
+    "category": "ONTOLOGY_ENDPOINT_OR_PREDICATE_GAP",
+    "proposed_relation_type": "EXPLAINS",
+    "head_mention_id": "5637db51-5ae4-5fdc-aaa5-86cf2504c40c",
+    "tail_mention_id": "dca17811-58e3-5df5-80a4-53aec10faeba",
+    "reason": "Адсорбция NO2 через повышение hole concentration объясняет усиление чувствительности; причинный effect не выражается ACTS_ON.",
+    "evidence": [
+      {
+        "span_id": "b7acc52e-a60e-526c-9bcf-4965b07fb208",
+        "document_id": "96575fc6-1212-4cb1-889f-179dd9515854",
+        "revision_id": "61ce4e43-1d79-4cee-af6c-43026828532a",
+        "chunk_id": "006deffa-1906-4677-942b-2a29bd47046b",
+        "start": 496,
+        "end": 745,
+        "text": "Electrical characterization and Raman spectroscopy measurements on graphene field-effect transistors show that adsorption of NO2 molecules significantly increases hole concentration in graphene, which results in the observed sensitivity enhancement.",
+        "source_text_sha256": "7e3054e2cb1e788c55f6c5f17b4855b0993823ba82f68f8cf3c012bac4ed1393"
+      }
+    ],
+    "candidates": [
+      {
+        "candidate_id": "5cb446fe-0bd9-57b0-8629-ac9a4d4885c0",
+        "head_mention_id": "5637db51-5ae4-5fdc-aaa5-86cf2504c40c",
+        "tail_mention_id": "dca17811-58e3-5df5-80a4-53aec10faeba",
+        "modality": "ASSERTED",
+        "polarity": "POSITIVE",
+        "support_status": "UNRESOLVED",
+        "qualifiers": []
+      }
+    ],
+    "proposal_status": "PROPOSED_DEV",
+    "options": {
+      "A": "Представить EXPLAINS после отдельного согласования схемы.",
+      "B": "Сохранить существующую схему и учитывать как непокрытое отношение.",
+      "C": "Оставить UNRESOLVED до содержательной проверки."
+    },
+    "preliminary_recommendation": "A для DEV при подтверждении семантики; B для CALIBRATION/HOLDOUT без изменения схемы.",
+    "document_code": "D060",
+    "document_id": "96575fc6-1212-4cb1-889f-179dd9515854",
+    "revision_id": "61ce4e43-1d79-4cee-af6c-43026828532a",
+    "title": "Enhanced sensitivity of graphene ammonia gas sensors using molecular doping"
+  },
+  {
+    "question_id": "D078-Q4",
+    "status": "UNRESOLVED",
+    "category": "ONTOLOGY_ENDPOINT_OR_PREDICATE_GAP",
+    "proposed_relation_type": "CAUSES",
+    "head_mention_id": "c585de5b-708c-5994-8c6a-d584d2030ffb",
+    "tail_mention_id": "88f80d52-0033-59dd-9d01-478a79b2e294",
+    "reason": "Gas exposure causes a current decrease; PROPERTY endpoint is outside FACILITATES.",
+    "evidence": [
+      {
+        "span_id": "e39657f3-4e0f-5648-8d2f-f836a2156b68",
+        "document_id": "c56c60ec-74f3-44d5-83e6-f83d87b921f5",
+        "revision_id": "85c8c16f-76e7-45fb-a9b2-6124974a51e9",
+        "chunk_id": "8e528f95-22fc-4b9a-8b16-90391b584bc3",
+        "start": 233,
+        "end": 429,
+        "text": "The exposure of the n-doped graphene to oxidizing gases such as NO 2 leads to a current decrease that depends strongly on the number of amine functional groups in various types of ethylene amines.",
+        "source_text_sha256": "b0f5211d8a7b056bc9d7cccb1c371076afd5e4dc80f88e80baf6e7c51c26a088"
+      }
+    ],
+    "candidates": [
+      {
+        "candidate_id": "4f408a6d-fde0-5e98-8d5a-cee46da0a4f8",
+        "head_mention_id": "c585de5b-708c-5994-8c6a-d584d2030ffb",
+        "tail_mention_id": "88f80d52-0033-59dd-9d01-478a79b2e294",
+        "modality": "ASSERTED",
+        "polarity": "POSITIVE",
+        "support_status": "UNRESOLVED",
+        "qualifiers": []
+      }
+    ],
+    "proposal_status": "PROPOSED_DEV",
+    "options": {
+      "A": "Представить CAUSES после отдельного согласования схемы.",
+      "B": "Сохранить существующую схему и учитывать как непокрытое отношение.",
+      "C": "Оставить UNRESOLVED до содержательной проверки."
+    },
+    "preliminary_recommendation": "A для DEV при подтверждении семантики; B для CALIBRATION/HOLDOUT без изменения схемы.",
+    "document_code": "D078",
+    "document_id": "c56c60ec-74f3-44d5-83e6-f83d87b921f5",
+    "revision_id": "85c8c16f-76e7-45fb-a9b2-6124974a51e9",
+    "title": "Ultrasensitive N-Channel Graphene Gas Sensors by Nondestructive Molecular Doping"
+  },
+  {
+    "question_id": "D078-Q5",
+    "status": "UNRESOLVED",
+    "category": "ONTOLOGY_ENDPOINT_OR_PREDICATE_GAP",
+    "proposed_relation_type": "DEPENDS_ON",
+    "head_mention_id": "88f80d52-0033-59dd-9d01-478a79b2e294",
+    "tail_mention_id": "481cbbcc-03f7-5512-b8de-7777d482f9ad",
+    "reason": "Явная зависимость current decrease от числа amine groups; не SAME и не HAS_COMPONENT.",
+    "evidence": [
+      {
+        "span_id": "e39657f3-4e0f-5648-8d2f-f836a2156b68",
+        "document_id": "c56c60ec-74f3-44d5-83e6-f83d87b921f5",
+        "revision_id": "85c8c16f-76e7-45fb-a9b2-6124974a51e9",
+        "chunk_id": "8e528f95-22fc-4b9a-8b16-90391b584bc3",
+        "start": 233,
+        "end": 429,
+        "text": "The exposure of the n-doped graphene to oxidizing gases such as NO 2 leads to a current decrease that depends strongly on the number of amine functional groups in various types of ethylene amines.",
+        "source_text_sha256": "b0f5211d8a7b056bc9d7cccb1c371076afd5e4dc80f88e80baf6e7c51c26a088"
+      }
+    ],
+    "candidates": [
+      {
+        "candidate_id": "943d8572-c7a6-5cd3-b884-76eb38015c23",
+        "head_mention_id": "88f80d52-0033-59dd-9d01-478a79b2e294",
+        "tail_mention_id": "481cbbcc-03f7-5512-b8de-7777d482f9ad",
+        "modality": "ASSERTED",
+        "polarity": "POSITIVE",
+        "support_status": "UNRESOLVED",
+        "qualifiers": []
+      }
+    ],
+    "proposal_status": "PROPOSED_DEV",
+    "options": {
+      "A": "Представить DEPENDS_ON после отдельного согласования схемы.",
+      "B": "Сохранить существующую схему и учитывать как непокрытое отношение.",
+      "C": "Оставить UNRESOLVED до содержательной проверки."
+    },
+    "preliminary_recommendation": "A для DEV при подтверждении семантики; B для CALIBRATION/HOLDOUT без изменения схемы.",
+    "document_code": "D078",
+    "document_id": "c56c60ec-74f3-44d5-83e6-f83d87b921f5",
+    "revision_id": "85c8c16f-76e7-45fb-a9b2-6124974a51e9",
+    "title": "Ultrasensitive N-Channel Graphene Gas Sensors by Nondestructive Molecular Doping"
+  },
+  {
+    "question_id": "D078-Q6",
+    "status": "UNRESOLVED",
+    "category": "ONTOLOGY_ENDPOINT_OR_PREDICATE_GAP",
+    "proposed_relation_type": "HAS_MECHANISM",
+    "head_mention_id": "6ba09456-1d69-5fe3-8025-2852d6857b58",
+    "tail_mention_id": "df2def64-eecb-5567-bf6b-bba547b96eca",
+    "reason": "Материал, а не названный DEVICE, является носителем объяснения. Требуется расширение domain HAS_MECHANISM.",
+    "evidence": [
+      {
+        "span_id": "6bc86077-5e9b-5be5-b86d-d9725303728d",
+        "document_id": "c56c60ec-74f3-44d5-83e6-f83d87b921f5",
+        "revision_id": "85c8c16f-76e7-45fb-a9b2-6124974a51e9",
+        "chunk_id": "8e528f95-22fc-4b9a-8b16-90391b584bc3",
+        "start": 430,
+        "end": 744,
+        "text": "Graphene doped with diethylenetriamine (DETA) exhibits the highest response, recovery, and long-term sensing stability to NO 2, with an average detection limit of 0.83 parts per quadrillion (ppq, 10 –15 ), due to the attractive electrostatic interaction between electron-rich graphene and electron-deficient NO 2 .",
+        "source_text_sha256": "b0f5211d8a7b056bc9d7cccb1c371076afd5e4dc80f88e80baf6e7c51c26a088"
+      }
+    ],
+    "candidates": [
+      {
+        "candidate_id": "655f11c5-b72b-5aff-b49c-21669f45ff63",
+        "head_mention_id": "6ba09456-1d69-5fe3-8025-2852d6857b58",
+        "tail_mention_id": "df2def64-eecb-5567-bf6b-bba547b96eca",
+        "modality": "ASSERTED",
+        "polarity": "POSITIVE",
+        "support_status": "UNRESOLVED",
+        "qualifiers": []
+      }
+    ],
+    "proposal_status": "PROPOSED_DEV",
+    "options": {
+      "A": "Представить HAS_MECHANISM после отдельного согласования схемы.",
+      "B": "Сохранить существующую схему и учитывать как непокрытое отношение.",
+      "C": "Оставить UNRESOLVED до содержательной проверки."
+    },
+    "preliminary_recommendation": "A для DEV при подтверждении семантики; B для CALIBRATION/HOLDOUT без изменения схемы.",
+    "document_code": "D078",
+    "document_id": "c56c60ec-74f3-44d5-83e6-f83d87b921f5",
+    "revision_id": "85c8c16f-76e7-45fb-a9b2-6124974a51e9",
+    "title": "Ultrasensitive N-Channel Graphene Gas Sensors by Nondestructive Molecular Doping"
+  },
+  {
+    "question_id": "D078-Q7",
+    "status": "UNRESOLVED",
+    "category": "ONTOLOGY_ENDPOINT_OR_PREDICATE_GAP",
+    "proposed_relation_type": "INCREASES",
+    "head_mention_id": "156cfa88-8ae3-5d22-a560-ab25ce4e4570",
+    "tail_mention_id": "d93033e6-e027-5f7b-8f65-fb8ffc2da540",
+    "reason": "Charged impurities intensify current decrease; electronic structure → electrical property effect is uncovered.",
+    "evidence": [
+      {
+        "span_id": "3655e5c8-916a-5d23-9618-6396a91a2fc8",
+        "document_id": "c56c60ec-74f3-44d5-83e6-f83d87b921f5",
+        "revision_id": "85c8c16f-76e7-45fb-a9b2-6124974a51e9",
+        "chunk_id": "8e528f95-22fc-4b9a-8b16-90391b584bc3",
+        "start": 843,
+        "end": 1033,
+        "text": "In addition, gas molecules on the n-channel graphene provide charged impurities, thereby intensifying the current decrease for an excellent response to oxidizing gases such as NO 2 or SO 2 .",
+        "source_text_sha256": "b0f5211d8a7b056bc9d7cccb1c371076afd5e4dc80f88e80baf6e7c51c26a088"
+      }
+    ],
+    "candidates": [
+      {
+        "candidate_id": "51bcace7-7f33-56b2-a1e4-a64bfa26698d",
+        "head_mention_id": "156cfa88-8ae3-5d22-a560-ab25ce4e4570",
+        "tail_mention_id": "d93033e6-e027-5f7b-8f65-fb8ffc2da540",
+        "modality": "ASSERTED",
+        "polarity": "POSITIVE",
+        "support_status": "UNRESOLVED",
+        "qualifiers": []
+      }
+    ],
+    "proposal_status": "PROPOSED_DEV",
+    "options": {
+      "A": "Представить INCREASES после отдельного согласования схемы.",
+      "B": "Сохранить существующую схему и учитывать как непокрытое отношение.",
+      "C": "Оставить UNRESOLVED до содержательной проверки."
+    },
+    "preliminary_recommendation": "A для DEV при подтверждении семантики; B для CALIBRATION/HOLDOUT без изменения схемы.",
+    "document_code": "D078",
+    "document_id": "c56c60ec-74f3-44d5-83e6-f83d87b921f5",
+    "revision_id": "85c8c16f-76e7-45fb-a9b2-6124974a51e9",
+    "title": "Ultrasensitive N-Channel Graphene Gas Sensors by Nondestructive Molecular Doping"
+  },
+  {
+    "question_id": "D078-Q8",
+    "status": "UNRESOLVED",
+    "category": "ONTOLOGY_ENDPOINT_OR_PREDICATE_GAP",
+    "proposed_relation_type": "HAS_MECHANISM",
+    "head_mention_id": "0d089c2c-86f6-5c0d-9c9d-070a23201f22",
+    "tail_mention_id": "a9a02ea7-47cd-52c7-ab1d-7f1769cab8a4",
+    "reason": "Absence of strong interaction is explicit; candidate domain extension, polarity retained separately.",
+    "evidence": [
+      {
+        "span_id": "6ea09abb-6aac-5328-899f-4d4efc26f2df",
+        "document_id": "c56c60ec-74f3-44d5-83e6-f83d87b921f5",
+        "revision_id": "85c8c16f-76e7-45fb-a9b2-6124974a51e9",
+        "chunk_id": "509195ce-f818-487d-8196-eb0511b0acaf",
+        "start": 0,
+        "end": 232,
+        "text": "On the contrary, absence of such a strong interaction between NH 3 and DETA-doped graphene and combined effects of current increase by n-doping and mobility decrease by charged impurities result in a completely no response to NH 3 .",
+        "source_text_sha256": "8cf72195f178a68bd7e6a2d2169cfb9fb999fd60e210183af6018a2992bca0e5"
+      }
+    ],
+    "candidates": [
+      {
+        "candidate_id": "beda40e2-e47e-56be-ab5d-84dfe26aca27",
+        "head_mention_id": "0d089c2c-86f6-5c0d-9c9d-070a23201f22",
+        "tail_mention_id": "a9a02ea7-47cd-52c7-ab1d-7f1769cab8a4",
+        "modality": "ASSERTED",
+        "polarity": "NEGATIVE",
+        "support_status": "UNRESOLVED",
+        "qualifiers": []
+      }
+    ],
+    "proposal_status": "PROPOSED_DEV",
+    "options": {
+      "A": "Представить HAS_MECHANISM после отдельного согласования схемы.",
+      "B": "Сохранить существующую схему и учитывать как непокрытое отношение.",
+      "C": "Оставить UNRESOLVED до содержательной проверки."
+    },
+    "preliminary_recommendation": "A для DEV при подтверждении семантики; B для CALIBRATION/HOLDOUT без изменения схемы.",
+    "document_code": "D078",
+    "document_id": "c56c60ec-74f3-44d5-83e6-f83d87b921f5",
+    "revision_id": "85c8c16f-76e7-45fb-a9b2-6124974a51e9",
+    "title": "Ultrasensitive N-Channel Graphene Gas Sensors by Nondestructive Molecular Doping"
+  },
+  {
+    "question_id": "D078-Q9",
+    "status": "UNRESOLVED",
+    "category": "ONTOLOGY_ENDPOINT_OR_PREDICATE_GAP",
+    "proposed_relation_type": "HAS_MECHANISM",
+    "head_mention_id": "0d089c2c-86f6-5c0d-9c9d-070a23201f22",
+    "tail_mention_id": "3bb861dc-780e-58b6-8363-be11fa6006f8",
+    "reason": "The combined current-increase and mobility-decrease effects explain the NH3 nonresponse; frozen MATERIAL-domain gap, not an independently measured quantitative cancellation.",
+    "evidence": [
+      {
+        "span_id": "6ea09abb-6aac-5328-899f-4d4efc26f2df",
+        "document_id": "c56c60ec-74f3-44d5-83e6-f83d87b921f5",
+        "revision_id": "85c8c16f-76e7-45fb-a9b2-6124974a51e9",
+        "chunk_id": "509195ce-f818-487d-8196-eb0511b0acaf",
+        "start": 0,
+        "end": 232,
+        "text": "On the contrary, absence of such a strong interaction between NH 3 and DETA-doped graphene and combined effects of current increase by n-doping and mobility decrease by charged impurities result in a completely no response to NH 3 .",
+        "source_text_sha256": "8cf72195f178a68bd7e6a2d2169cfb9fb999fd60e210183af6018a2992bca0e5"
+      }
+    ],
+    "candidates": [
+      {
+        "candidate_id": "4000ae68-924b-5424-964f-ce95c52c62b8",
+        "head_mention_id": "0d089c2c-86f6-5c0d-9c9d-070a23201f22",
+        "tail_mention_id": "3bb861dc-780e-58b6-8363-be11fa6006f8",
+        "modality": "ASSERTED",
+        "polarity": "POSITIVE",
+        "support_status": "UNRESOLVED",
+        "qualifiers": []
+      }
+    ],
+    "proposal_status": "PROPOSED_DEV",
+    "options": {
+      "A": "Представить HAS_MECHANISM после отдельного согласования схемы.",
+      "B": "Сохранить существующую схему и учитывать как непокрытое отношение.",
+      "C": "Оставить UNRESOLVED до содержательной проверки."
+    },
+    "preliminary_recommendation": "A для DEV при подтверждении семантики; B для CALIBRATION/HOLDOUT без изменения схемы.",
+    "document_code": "D078",
+    "document_id": "c56c60ec-74f3-44d5-83e6-f83d87b921f5",
+    "revision_id": "85c8c16f-76e7-45fb-a9b2-6124974a51e9",
+    "title": "Ultrasensitive N-Channel Graphene Gas Sensors by Nondestructive Molecular Doping"
+  },
+  {
+    "question_id": "D092-Q4",
+    "status": "UNRESOLVED",
+    "category": "ONTOLOGY_ENDPOINT_OR_PREDICATE_GAP",
+    "proposed_relation_type": "DEPENDS_ON",
+    "head_mention_id": "06ed2809-1f54-54ff-b3dc-4f70ba731d64",
+    "tail_mention_id": "15728493-367a-58d9-bf25-9c2e74505afd",
+    "reason": "Явная зависимость свойств adduct от структуры и конфигурации; текущие predicates не выражают зависимость.",
+    "evidence": [
+      {
+        "span_id": "71ceb744-39f5-59c1-9f5f-902e6b61ef0d",
+        "document_id": "ea87c55e-72ef-439c-aa6b-7285edc49095",
+        "revision_id": "19bedd9d-3827-402c-894b-e8ca762ecff7",
+        "chunk_id": "8c72db49-9f37-4151-a3be-46a88d5af916",
+        "start": 275,
+        "end": 452,
+        "text": "The structural and electronic properties of the graphene-molecule adsorption adducts are strongly dependent on the graphene structure and the molecular adsorption configuration.",
+        "source_text_sha256": "3cd403a29f08ece6f4d4437796b82391cb5783184abead4225be5fad86bc9f15"
+      }
+    ],
+    "candidates": [
+      {
+        "candidate_id": "47c71199-9ff3-5168-b7e7-6f53d397b35e",
+        "head_mention_id": "06ed2809-1f54-54ff-b3dc-4f70ba731d64",
+        "tail_mention_id": "15728493-367a-58d9-bf25-9c2e74505afd",
+        "modality": "ASSERTED",
+        "polarity": "POSITIVE",
+        "support_status": "UNRESOLVED",
+        "qualifiers": []
+      },
+      {
+        "candidate_id": "f4006790-5d34-5252-9877-bde6d71b1a5d",
+        "head_mention_id": "06ed2809-1f54-54ff-b3dc-4f70ba731d64",
+        "tail_mention_id": "fd0d1f6e-9617-530e-9493-266763687375",
+        "modality": "ASSERTED",
+        "polarity": "POSITIVE",
+        "support_status": "UNRESOLVED",
+        "qualifiers": []
+      },
+      {
+        "candidate_id": "8ead1e1c-2023-5a16-983c-6922908324ae",
+        "head_mention_id": "f8597e58-7c8e-596c-aeae-95a60b2977e6",
+        "tail_mention_id": "15728493-367a-58d9-bf25-9c2e74505afd",
+        "modality": "ASSERTED",
+        "polarity": "POSITIVE",
+        "support_status": "UNRESOLVED",
+        "qualifiers": []
+      },
+      {
+        "candidate_id": "0df7553f-34cc-5de1-94de-cca1f9ccdcb7",
+        "head_mention_id": "f8597e58-7c8e-596c-aeae-95a60b2977e6",
+        "tail_mention_id": "fd0d1f6e-9617-530e-9493-266763687375",
+        "modality": "ASSERTED",
+        "polarity": "POSITIVE",
+        "support_status": "UNRESOLVED",
+        "qualifiers": []
+      }
+    ],
+    "proposal_status": "PROPOSED_DEV",
+    "options": {
+      "A": "Представить DEPENDS_ON после отдельного согласования схемы.",
+      "B": "Сохранить существующую схему и учитывать как непокрытое отношение.",
+      "C": "Оставить UNRESOLVED до содержательной проверки."
+    },
+    "preliminary_recommendation": "A для DEV при подтверждении семантики; B для CALIBRATION/HOLDOUT без изменения схемы.",
+    "document_code": "D092",
+    "document_id": "ea87c55e-72ef-439c-aa6b-7285edc49095",
+    "revision_id": "19bedd9d-3827-402c-894b-e8ca762ecff7",
+    "title": "Improving gas sensing properties of graphene by introducing dopants and defects: a first-principles study"
+  },
+  {
+    "question_id": "D092-Q5",
+    "status": "UNRESOLVED",
+    "category": "ONTOLOGY_ENDPOINT_OR_PREDICATE_GAP",
+    "proposed_relation_type": "CAUSES",
+    "head_mention_id": "5aa67d41-b60c-5e7a-b13b-67dc3c24205b",
+    "tail_mention_id": "86bb3b34-4182-5cb3-bc13-ccb64ee5f3d4",
+    "reason": "Source says interactions induce electronic changes; causal structure is not HAS_PROPERTY.",
+    "evidence": [
+      {
+        "span_id": "538ca056-7d89-55ac-831e-d27e1abf05cd",
+        "document_id": "ea87c55e-72ef-439c-aa6b-7285edc49095",
+        "revision_id": "19bedd9d-3827-402c-894b-e8ca762ecff7",
+        "chunk_id": "8c72db49-9f37-4151-a3be-46a88d5af916",
+        "start": 736,
+        "end": 889,
+        "text": "Meanwhile, the strong interactions between the adsorbed molecules and the modified graphenes induce dramatic changes to graphene's electronic properties.",
+        "source_text_sha256": "3cd403a29f08ece6f4d4437796b82391cb5783184abead4225be5fad86bc9f15"
+      }
+    ],
+    "candidates": [
+      {
+        "candidate_id": "310627ec-9ac3-5259-bc1c-9c37afc244aa",
+        "head_mention_id": "5aa67d41-b60c-5e7a-b13b-67dc3c24205b",
+        "tail_mention_id": "86bb3b34-4182-5cb3-bc13-ccb64ee5f3d4",
+        "modality": "ASSERTED",
+        "polarity": "POSITIVE",
+        "support_status": "UNRESOLVED",
+        "qualifiers": []
+      }
+    ],
+    "proposal_status": "PROPOSED_DEV",
+    "options": {
+      "A": "Представить CAUSES после отдельного согласования схемы.",
+      "B": "Сохранить существующую схему и учитывать как непокрытое отношение.",
+      "C": "Оставить UNRESOLVED до содержательной проверки."
+    },
+    "preliminary_recommendation": "A для DEV при подтверждении семантики; B для CALIBRATION/HOLDOUT без изменения схемы.",
+    "document_code": "D092",
+    "document_id": "ea87c55e-72ef-439c-aa6b-7285edc49095",
+    "revision_id": "19bedd9d-3827-402c-894b-e8ca762ecff7",
+    "title": "Improving gas sensing properties of graphene by introducing dopants and defects: a first-principles study"
+  },
+  {
+    "question_id": "D038-Q4",
+    "status": "UNRESOLVED",
+    "category": "ONTOLOGY_ENDPOINT_OR_PREDICATE_GAP",
+    "proposed_relation_type": "HAS_MECHANISM",
+    "head_mention_id": "434b98db-9e49-58ae-b2c6-65deef57ebd4",
+    "tail_mention_id": "c0892a7a-485c-5336-8841-61e27680bd98",
+    "reason": "Материал является носителем заявленной synergy; HAS_MECHANISM domain сейчас DEVICE.",
+    "evidence": [
+      {
+        "span_id": "0b22767d-2d0c-5e45-8362-bff0eea5475e",
+        "document_id": "6a675d0d-8256-4c8f-b2ae-7c95c1bcabf8",
+        "revision_id": "b6535766-c337-4abd-9925-8381f0acc7fa",
+        "chunk_id": "fb767df1-8f61-4334-89e7-29c1cdcf5364",
+        "start": 0,
+        "end": 198,
+        "text": "Graphene/metal oxide-based materials have been demonstrated as promising candidates for gas sensing applications due to the enhanced sensing performance and synergetic effects of the two components.",
+        "source_text_sha256": "6d06ae3b6c61d47994638233f63c8c06319dd0eb8a5ec0b5203b72e47f6e2da4"
+      }
+    ],
+    "candidates": [
+      {
+        "candidate_id": "75296514-e08f-5f00-a2c5-ec5dd1e337d9",
+        "head_mention_id": "434b98db-9e49-58ae-b2c6-65deef57ebd4",
+        "tail_mention_id": "c0892a7a-485c-5336-8841-61e27680bd98",
+        "modality": "ASSERTED",
+        "polarity": "POSITIVE",
+        "support_status": "UNRESOLVED",
+        "qualifiers": []
+      }
+    ],
+    "proposal_status": "PROPOSED_DEV",
+    "options": {
+      "A": "Представить HAS_MECHANISM после отдельного согласования схемы.",
+      "B": "Сохранить существующую схему и учитывать как непокрытое отношение.",
+      "C": "Оставить UNRESOLVED до содержательной проверки."
+    },
+    "preliminary_recommendation": "A для DEV при подтверждении семантики; B для CALIBRATION/HOLDOUT без изменения схемы.",
+    "document_code": "D038",
+    "document_id": "6a675d0d-8256-4c8f-b2ae-7c95c1bcabf8",
+    "revision_id": "b6535766-c337-4abd-9925-8381f0acc7fa",
+    "title": "3D Architectured Graphene/Metal Oxide Hybrids for Gas Sensors: A Review"
+  },
+  {
+    "question_id": "D026-Q4",
+    "status": "UNRESOLVED",
+    "category": "ONTOLOGY_ENDPOINT_OR_PREDICATE_GAP",
+    "proposed_relation_type": "MEETS_REQUIREMENT",
+    "head_mention_id": "aae68f80-1316-5805-be88-e5d2826c19e4",
+    "tail_mention_id": "82e2d723-bb79-54ac-90a6-1101a52287d8",
+    "reason": "Cannot simultaneously meet low noise and strong signal: group negation must not become two independent failures.",
+    "evidence": [
+      {
+        "span_id": "a3842179-8d56-5cfa-83bd-a77205b9eb4b",
+        "document_id": "3df9cd7a-940f-400e-b03a-a72459a5558f",
+        "revision_id": "3ed28d1a-4b30-4ea4-bf03-3a69308fb8ba",
+        "chunk_id": "5a1139f9-9bf1-4665-96e1-c15a6477ded6",
+        "start": 263,
+        "end": 438,
+        "text": "To obtain high sensitivity, two requirements need to be simultaneously satisfied: (i) low electrical noise and (ii) strong signal, which existing sensor materials cannot meet.",
+        "source_text_sha256": "bedd2a7ed1ad17c747634824457042b37b609d742e51ee38b9ffc4f8c0f23907"
+      }
+    ],
+    "candidates": [
+      {
+        "candidate_id": "353bda66-bf30-57b4-8b2b-9cee1eff65a0",
+        "head_mention_id": "aae68f80-1316-5805-be88-e5d2826c19e4",
+        "tail_mention_id": "82e2d723-bb79-54ac-90a6-1101a52287d8",
+        "modality": "ASSERTED",
+        "polarity": "NEGATIVE",
+        "support_status": "UNRESOLVED",
+        "qualifiers": [],
+        "joint_scope": "low electrical noise AND strong signal; not independent negations"
+      }
+    ],
+    "proposal_status": "PROPOSED_DEV",
+    "options": {
+      "A": "Представить MEETS_REQUIREMENT после отдельного согласования схемы.",
+      "B": "Сохранить существующую схему и учитывать как непокрытое отношение.",
+      "C": "Оставить UNRESOLVED до содержательной проверки."
+    },
+    "preliminary_recommendation": "A для DEV при подтверждении семантики; B для CALIBRATION/HOLDOUT без изменения схемы.",
+    "document_code": "D026",
+    "document_id": "3df9cd7a-940f-400e-b03a-a72459a5558f",
+    "revision_id": "3ed28d1a-4b30-4ea4-bf03-3a69308fb8ba",
+    "title": "Metallic Ti3C2T x MXene Gas Sensors with Ultrahigh Signal-to-Noise Ratio"
+  },
+  {
+    "question_id": "D026-Q5",
+    "status": "UNRESOLVED",
+    "category": "ONTOLOGY_ENDPOINT_OR_PREDICATE_GAP",
+    "proposed_relation_type": "EXPLAINS",
+    "head_mention_id": "e70000db-9748-56f5-972c-1dc427438e03",
+    "tail_mention_id": "cb9a4548-326d-5e7c-b63a-791637c56ade",
+    "reason": "Low noise led to SNR advantage; PROPERTY → PERFORMANCE causal effect cannot be replaced by HAS_PROPERTY.",
+    "evidence": [
+      {
+        "span_id": "1e963b81-9c81-52fa-b2f5-e8b4976942b1",
+        "document_id": "3df9cd7a-940f-400e-b03a-a72459a5558f",
+        "revision_id": "3ed28d1a-4b30-4ea4-bf03-3a69308fb8ba",
+        "chunk_id": "5a1139f9-9bf1-4665-96e1-c15a6477ded6",
+        "start": 800,
+        "end": 957,
+        "text": "Also, the extremely low noise led to a signal-to-noise ratio 2 orders of magnitude higher than that of other 2D materials, surpassing the best sensors known.",
+        "source_text_sha256": "bedd2a7ed1ad17c747634824457042b37b609d742e51ee38b9ffc4f8c0f23907"
+      }
+    ],
+    "candidates": [
+      {
+        "candidate_id": "7bc87ce6-4274-5866-be12-cdca561d6f83",
+        "head_mention_id": "e70000db-9748-56f5-972c-1dc427438e03",
+        "tail_mention_id": "cb9a4548-326d-5e7c-b63a-791637c56ade",
+        "modality": "ASSERTED",
+        "polarity": "POSITIVE",
+        "support_status": "UNRESOLVED",
+        "qualifiers": []
+      }
+    ],
+    "proposal_status": "PROPOSED_DEV",
+    "options": {
+      "A": "Представить EXPLAINS после отдельного согласования схемы.",
+      "B": "Сохранить существующую схему и учитывать как непокрытое отношение.",
+      "C": "Оставить UNRESOLVED до содержательной проверки."
+    },
+    "preliminary_recommendation": "A для DEV при подтверждении семантики; B для CALIBRATION/HOLDOUT без изменения схемы.",
+    "document_code": "D026",
+    "document_id": "3df9cd7a-940f-400e-b03a-a72459a5558f",
+    "revision_id": "3ed28d1a-4b30-4ea4-bf03-3a69308fb8ba",
+    "title": "Metallic Ti3C2T x MXene Gas Sensors with Ultrahigh Signal-to-Noise Ratio"
+  },
+  {
+    "question_id": "D024-Q4",
+    "status": "UNRESOLVED",
+    "category": "ONTOLOGY_ENDPOINT_OR_PREDICATE_GAP",
+    "proposed_relation_type": "HAS_PROPERTY",
+    "head_mention_id": "b75ae326-bf7e-51e0-87da-504511262e6d",
+    "tail_mention_id": "d2898801-ca65-5af8-a146-ca24ed96fb43",
+    "reason": "MORPHOLOGY → PROPERTY endpoint gap; keep source unit A without silent Angstrom normalization.",
+    "evidence": [
+      {
+        "span_id": "63b5b21a-0358-52b7-b055-aa4a3100a2f4",
+        "document_id": "3a5a587d-5ddf-49b9-aa34-bd081fb0d04b",
+        "revision_id": "95f3f5a0-077c-4f5d-859f-37fc344f12f0",
+        "chunk_id": "8c66a2f4-bc1a-4135-b4ed-059f62c24390",
+        "start": 288,
+        "end": 518,
+        "text": "We find extremely high selectivity on the order of 10(23) for H(2)/CH(4) for an all-hydrogen passivated pore whose small width (at 2.5 A) presents a formidable barrier (1.6 eV) for CH(4) but easily surmountable for H(2) (0.22 eV).",
+        "source_text_sha256": "c8eb765f52f0ff76bff16cd80f39ce601f551a617e79388c49bedca77cac4058"
+      }
+    ],
+    "candidates": [
+      {
+        "candidate_id": "2b152c54-af03-58e1-bc64-be5181217d74",
+        "head_mention_id": "b75ae326-bf7e-51e0-87da-504511262e6d",
+        "tail_mention_id": "d2898801-ca65-5af8-a146-ca24ed96fb43",
+        "modality": "ASSERTED",
+        "polarity": "POSITIVE",
+        "support_status": "UNRESOLVED",
+        "qualifiers": [
+          {
+            "sentence_id": "S3",
+            "raw_text": "2.5 A",
+            "qualifier_type": "pore_width",
+            "raw_value": 2.5,
+            "unit": "A"
+          }
+        ]
+      }
+    ],
+    "proposal_status": "PROPOSED_DEV",
+    "options": {
+      "A": "Представить HAS_PROPERTY после отдельного согласования схемы.",
+      "B": "Сохранить существующую схему и учитывать как непокрытое отношение.",
+      "C": "Оставить UNRESOLVED до содержательной проверки."
+    },
+    "preliminary_recommendation": "A для DEV при подтверждении семантики; B для CALIBRATION/HOLDOUT без изменения схемы.",
+    "document_code": "D024",
+    "document_id": "3a5a587d-5ddf-49b9-aa34-bd081fb0d04b",
+    "revision_id": "95f3f5a0-077c-4f5d-859f-37fc344f12f0",
+    "title": "Porous Graphene as the Ultimate Membrane for Gas Separation"
+  },
+  {
+    "question_id": "D024-Q5",
+    "status": "UNRESOLVED",
+    "category": "ONTOLOGY_ENDPOINT_OR_PREDICATE_GAP",
+    "proposed_relation_type": "DOMINATES",
+    "head_mention_id": "d7df5386-02d4-5593-98fb-759f1d9f2a5e",
+    "tail_mention_id": "f3cfaaf8-be5d-53d1-9033-5049824ded2f",
+    "reason": "Transport dominated by bulk solubility/diffusivity; PROPERTY → PROCESS dominance is not FACILITATES.",
+    "evidence": [
+      {
+        "span_id": "37e97ed0-3812-5ce6-bca9-5efa203d16ce",
+        "document_id": "3a5a587d-5ddf-49b9-aa34-bd081fb0d04b",
+        "revision_id": "95f3f5a0-077c-4f5d-859f-37fc344f12f0",
+        "chunk_id": "8c66a2f4-bc1a-4135-b4ed-059f62c24390",
+        "start": 519,
+        "end": 719,
+        "text": "These results suggest that these pores are far superior to traditional polymer and silica membranes, where bulk solubility and diffusivity dominate the transport of gas molecules through the material.",
+        "source_text_sha256": "c8eb765f52f0ff76bff16cd80f39ce601f551a617e79388c49bedca77cac4058"
+      }
+    ],
+    "candidates": [
+      {
+        "candidate_id": "541f400b-e5db-5288-833d-1541fb4ef51b",
+        "head_mention_id": "d7df5386-02d4-5593-98fb-759f1d9f2a5e",
+        "tail_mention_id": "f3cfaaf8-be5d-53d1-9033-5049824ded2f",
+        "modality": "ASSERTED",
+        "polarity": "POSITIVE",
+        "support_status": "UNRESOLVED",
+        "qualifiers": []
+      },
+      {
+        "candidate_id": "1a715f9e-771c-579e-9921-87ef735c53d6",
+        "head_mention_id": "483d9b1e-2073-5678-af65-7828df2d6d00",
+        "tail_mention_id": "f3cfaaf8-be5d-53d1-9033-5049824ded2f",
+        "modality": "ASSERTED",
+        "polarity": "POSITIVE",
+        "support_status": "UNRESOLVED",
+        "qualifiers": []
+      }
+    ],
+    "proposal_status": "PROPOSED_DEV",
+    "options": {
+      "A": "Представить DOMINATES после отдельного согласования схемы.",
+      "B": "Сохранить существующую схему и учитывать как непокрытое отношение.",
+      "C": "Оставить UNRESOLVED до содержательной проверки."
+    },
+    "preliminary_recommendation": "A для DEV при подтверждении семантики; B для CALIBRATION/HOLDOUT без изменения схемы.",
+    "document_code": "D024",
+    "document_id": "3a5a587d-5ddf-49b9-aa34-bd081fb0d04b",
+    "revision_id": "95f3f5a0-077c-4f5d-859f-37fc344f12f0",
+    "title": "Porous Graphene as the Ultimate Membrane for Gas Separation"
+  },
+  {
+    "question_id": "D024-Q6",
+    "status": "UNRESOLVED",
+    "category": "ONTOLOGY_ENDPOINT_OR_PREDICATE_GAP",
+    "proposed_relation_type": "USED_FOR",
+    "head_mention_id": "5129150b-9c0b-5915-91b9-9203ba01a9ed",
+    "tail_mention_id": "d5b951fd-1f2c-52fb-a092-2fffa013bc58",
+    "reason": "Prospective application to fuel cells; material-to-device use is outside allowed USED_FOR tails, and a physical component relation is not explicitly asserted.",
+    "evidence": [
+      {
+        "span_id": "540929a9-d14a-5016-9e32-3f45ce56b68d",
+        "document_id": "3a5a587d-5ddf-49b9-aa34-bd081fb0d04b",
+        "revision_id": "95f3f5a0-077c-4f5d-859f-37fc344f12f0",
+        "chunk_id": "8c66a2f4-bc1a-4135-b4ed-059f62c24390",
+        "start": 988,
+        "end": 1121,
+        "text": "Hence, we propose using porous graphene sheets as one-atom-thin, highly efficient, and highly selective membranes for gas separation.",
+        "source_text_sha256": "c8eb765f52f0ff76bff16cd80f39ce601f551a617e79388c49bedca77cac4058"
+      },
+      {
+        "span_id": "25d69469-bb2a-5909-916c-f1d3421accf3",
+        "document_id": "3a5a587d-5ddf-49b9-aa34-bd081fb0d04b",
+        "revision_id": "95f3f5a0-077c-4f5d-859f-37fc344f12f0",
+        "chunk_id": "6a14ebc5-5021-4e98-9eda-0b99d7267b5c",
+        "start": 0,
+        "end": 152,
+        "text": "Such a pore could have widespread impact on numerous energy and technological applications; including carbon sequestration, fuel cells, and gas sensors.",
+        "source_text_sha256": "fe0a7132f2db425be78db46f877f70719cc94fd42d2865431beaf449cb9580e9"
+      }
+    ],
+    "candidates": [
+      {
+        "candidate_id": "dd69b6eb-2e3f-5f03-8c95-e89e926e61fa",
+        "head_mention_id": "5129150b-9c0b-5915-91b9-9203ba01a9ed",
+        "tail_mention_id": "d5b951fd-1f2c-52fb-a092-2fffa013bc58",
+        "modality": "HYPOTHETICAL",
+        "polarity": "POSITIVE",
+        "support_status": "UNRESOLVED",
+        "qualifiers": []
+      }
+    ],
+    "proposal_status": "PROPOSED_DEV",
+    "options": {
+      "A": "Представить USED_FOR после отдельного согласования схемы.",
+      "B": "Сохранить существующую схему и учитывать как непокрытое отношение.",
+      "C": "Оставить UNRESOLVED до содержательной проверки."
+    },
+    "preliminary_recommendation": "A для DEV при подтверждении семантики; B для CALIBRATION/HOLDOUT без изменения схемы.",
+    "document_code": "D024",
+    "document_id": "3a5a587d-5ddf-49b9-aa34-bd081fb0d04b",
+    "revision_id": "95f3f5a0-077c-4f5d-859f-37fc344f12f0",
+    "title": "Porous Graphene as the Ultimate Membrane for Gas Separation"
+  },
+  {
+    "question_id": "D024-Q7",
+    "status": "UNRESOLVED",
+    "category": "ONTOLOGY_ENDPOINT_OR_PREDICATE_GAP",
+    "proposed_relation_type": "USED_FOR",
+    "head_mention_id": "5129150b-9c0b-5915-91b9-9203ba01a9ed",
+    "tail_mention_id": "c3096a09-2d5e-57aa-812a-f547ad067d40",
+    "reason": "Prospective application to gas sensors; no separately fabricated component is asserted.",
+    "evidence": [
+      {
+        "span_id": "540929a9-d14a-5016-9e32-3f45ce56b68d",
+        "document_id": "3a5a587d-5ddf-49b9-aa34-bd081fb0d04b",
+        "revision_id": "95f3f5a0-077c-4f5d-859f-37fc344f12f0",
+        "chunk_id": "8c66a2f4-bc1a-4135-b4ed-059f62c24390",
+        "start": 988,
+        "end": 1121,
+        "text": "Hence, we propose using porous graphene sheets as one-atom-thin, highly efficient, and highly selective membranes for gas separation.",
+        "source_text_sha256": "c8eb765f52f0ff76bff16cd80f39ce601f551a617e79388c49bedca77cac4058"
+      },
+      {
+        "span_id": "25d69469-bb2a-5909-916c-f1d3421accf3",
+        "document_id": "3a5a587d-5ddf-49b9-aa34-bd081fb0d04b",
+        "revision_id": "95f3f5a0-077c-4f5d-859f-37fc344f12f0",
+        "chunk_id": "6a14ebc5-5021-4e98-9eda-0b99d7267b5c",
+        "start": 0,
+        "end": 152,
+        "text": "Such a pore could have widespread impact on numerous energy and technological applications; including carbon sequestration, fuel cells, and gas sensors.",
+        "source_text_sha256": "fe0a7132f2db425be78db46f877f70719cc94fd42d2865431beaf449cb9580e9"
+      }
+    ],
+    "candidates": [
+      {
+        "candidate_id": "4eef7510-4b15-54b6-b8b3-98d6b1f80b0f",
+        "head_mention_id": "5129150b-9c0b-5915-91b9-9203ba01a9ed",
+        "tail_mention_id": "c3096a09-2d5e-57aa-812a-f547ad067d40",
+        "modality": "HYPOTHETICAL",
+        "polarity": "POSITIVE",
+        "support_status": "UNRESOLVED",
+        "qualifiers": []
+      }
+    ],
+    "proposal_status": "PROPOSED_DEV",
+    "options": {
+      "A": "Представить USED_FOR после отдельного согласования схемы.",
+      "B": "Сохранить существующую схему и учитывать как непокрытое отношение.",
+      "C": "Оставить UNRESOLVED до содержательной проверки."
+    },
+    "preliminary_recommendation": "A для DEV при подтверждении семантики; B для CALIBRATION/HOLDOUT без изменения схемы.",
+    "document_code": "D024",
+    "document_id": "3a5a587d-5ddf-49b9-aa34-bd081fb0d04b",
+    "revision_id": "95f3f5a0-077c-4f5d-859f-37fc344f12f0",
+    "title": "Porous Graphene as the Ultimate Membrane for Gas Separation"
+  }
+]

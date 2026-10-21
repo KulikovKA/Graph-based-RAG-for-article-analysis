@@ -1,0 +1,2768 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "graph-gold-pilot-v0"
+    },
+    "document_code": {
+      "type": "string",
+      "pattern": "^D[0-9]{3}$"
+    },
+    "document_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "revision_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "split": {
+      "enum": [
+        "DEV",
+        "CALIBRATION",
+        "HOLDOUT"
+      ]
+    },
+    "annotation_status": {
+      "const": "AI_DRAFT"
+    },
+    "annotation_scope": {
+      "type": "string"
+    },
+    "exhaustive_entities": {
+      "type": "boolean"
+    },
+    "exhaustive_relations": {
+      "type": "boolean"
+    },
+    "rubric_version": {
+      "const": "pilot24-ontology-v1.0"
+    },
+    "mentions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "mention_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "chunk_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "start": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "end": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "surface_text": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "MATERIAL",
+              "DEVICE",
+              "PROPERTY",
+              "PERFORMANCE",
+              "ANALYTE",
+              "PROCESS",
+              "MECHANISM",
+              "OPERATING_CONDITION",
+              "MORPHOLOGY",
+              "TECHNOLOGY",
+              "APPLICATION",
+              "OTHER"
+            ]
+          },
+          "contextual_role": {
+            "type": "string"
+          },
+          "canonical_concept": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "coreference_group": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "evidence_span_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "minItems": 1
+          },
+          "annotation_status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "mention_id",
+          "chunk_id",
+          "start",
+          "end",
+          "surface_text",
+          "kind",
+          "contextual_role",
+          "canonical_concept",
+          "coreference_group",
+          "evidence_span_ids",
+          "annotation_status"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "assertions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "assertion_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "head_mention_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "tail_mention_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "relation_type": {
+            "enum": [
+              "HAS_PROPERTY",
+              "HAS_PERFORMANCE",
+              "HAS_MORPHOLOGY",
+              "HAS_COMPONENT",
+              "HAS_MEMBER",
+              "USES_MATERIAL",
+              "FUNCTIONS_AS",
+              "DETECTS",
+              "USED_FOR",
+              "FABRICATED_BY",
+              "IMPROVES",
+              "ACTS_ON",
+              "INTEGRATED_IN",
+              "HAS_MECHANISM",
+              "MECHANISM_INVOLVES",
+              "LOCATED_IN",
+              "OPTIMIZES",
+              "FACILITATES",
+              "CAUSES",
+              "EXPLAINS",
+              "CHANGES_PARAMETER",
+              "DEPENDS_ON",
+              "MEETS_REQUIREMENT"
+            ]
+          },
+          "polarity": {
+            "enum": [
+              "POSITIVE",
+              "NEGATIVE"
+            ]
+          },
+          "modality": {
+            "enum": [
+              "ASSERTED",
+              "PROPOSED",
+              "COMPARED",
+              "HYPOTHETICAL"
+            ]
+          },
+          "support_status": {
+            "const": "SUPPORTED"
+          },
+          "qualifiers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "qualifier_type": {
+                  "enum": [
+                    "duration",
+                    "detection_limit",
+                    "estimation_status",
+                    "temperature",
+                    "bending_cycles",
+                    "twisting_cycles",
+                    "strain",
+                    "layer_position",
+                    "parameter_selection",
+                    "response_per_concentration",
+                    "NO_response_per_concentration",
+                    "NO2_response_per_concentration",
+                    "NO_detection_limit",
+                    "NO2_detection_limit",
+                    "stretch",
+                    "explained_capability",
+                    "isolation_reference",
+                    "relative_humidity",
+                    "monitoring_times",
+                    "equipment",
+                    "location",
+                    "trend",
+                    "associated_change",
+                    "response",
+                    "analyte_concentration",
+                    "temperature_selection",
+                    "comparison",
+                    "mass_ratio",
+                    "optimization_status",
+                    "relative_humidity_range",
+                    "coefficient_of_determination",
+                    "selectivity_comparison",
+                    "dopant",
+                    "improvement_factor",
+                    "doped_detection_limit",
+                    "undoped_detection_limit",
+                    "support_method",
+                    "analyte_scope",
+                    "material_configuration",
+                    "concentration_regime",
+                    "sample_condition",
+                    "epistemic_basis",
+                    "change",
+                    "study_method",
+                    "relative_sensitivity",
+                    "scope_limit",
+                    "process_location",
+                    "comparison_direction",
+                    "comparison_material",
+                    "detection_limit_range",
+                    "SNR_ratio",
+                    "selectivity_order",
+                    "gas_pair",
+                    "pore_configuration",
+                    "CH4_barrier",
+                    "H2_barrier",
+                    "fabrication_techniques",
+                    "direction",
+                    "contribution",
+                    "scope",
+                    "joint_requirement",
+                    "evidence_basis",
+                    "strength",
+                    "target_parameter",
+                    "width",
+                    "explanatory_basis",
+                    "outcome_scope"
+                  ]
+                },
+                "raw_text": {
+                  "type": "string"
+                },
+                "raw_value": {},
+                "unit": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "applies_to_assertion_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "evidence_refs": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "minItems": 1
+                }
+              },
+              "required": [
+                "qualifier_type",
+                "raw_text",
+                "raw_value",
+                "unit",
+                "applies_to_assertion_id",
+                "evidence_refs"
+              ],
+              "additionalProperties": true,
+              "allOf": [
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "duration"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "number"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "detection_limit"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "number"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "estimation_status"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "temperature"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "number",
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "bending_cycles"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "number"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "twisting_cycles"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "number"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "strain"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "number"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "layer_position"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "parameter_selection"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "response_per_concentration"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "number"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "NO_response_per_concentration"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "number"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "NO2_response_per_concentration"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "number"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "NO_detection_limit"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "number"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "NO2_detection_limit"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "number"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "stretch"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "number"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "explained_capability"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "isolation_reference"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "relative_humidity"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "number"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "monitoring_times"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "equipment"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "location"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "trend"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "associated_change"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "response"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "number"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "analyte_concentration"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "number"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "temperature_selection"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "comparison"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "mass_ratio"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "optimization_status"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "relative_humidity_range"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "array"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "coefficient_of_determination"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "number"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "selectivity_comparison"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "dopant"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "improvement_factor"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "doped_detection_limit"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "number"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "undoped_detection_limit"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "number"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "support_method"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "analyte_scope"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "material_configuration"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "concentration_regime"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "sample_condition"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "epistemic_basis"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "change"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "study_method"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "relative_sensitivity"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "scope_limit"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "process_location"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "comparison_direction"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "comparison_material"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "detection_limit_range"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "array"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "SNR_ratio"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "selectivity_order"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "gas_pair"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "pore_configuration"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "CH4_barrier"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "number"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "H2_barrier"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "number"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "fabrication_techniques"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "direction"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ],
+                        "enum": [
+                          "increase",
+                          "decrease",
+                          "unchanged",
+                          "unspecified"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "contribution"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ],
+                        "enum": [
+                          "partial",
+                          "dominant",
+                          "joint"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "scope"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ],
+                        "enum": [
+                          "collective",
+                          "individual"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "joint_requirement"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ],
+                        "enum": [
+                          "all"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "evidence_basis"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ],
+                        "enum": [
+                          "calculation",
+                          "experiment",
+                          "review"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "strength"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "target_parameter"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "width"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "number"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "explanatory_basis"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                },
+                {
+                  "if": {
+                    "properties": {
+                      "qualifier_type": {
+                        "const": "outcome_scope"
+                      }
+                    }
+                  },
+                  "then": {
+                    "properties": {
+                      "raw_value": {
+                        "type": [
+                          "string"
+                        ]
+                      }
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "span_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "document_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "revision_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "chunk_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "start": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "end": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "text": {
+                  "type": "string"
+                },
+                "source_text_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "span_id",
+                "document_id",
+                "revision_id",
+                "chunk_id",
+                "start",
+                "end",
+                "text",
+                "source_text_sha256"
+              ],
+              "additionalProperties": true
+            },
+            "minItems": 1
+          },
+          "support_kind": {
+            "const": "DIRECT_SOURCE"
+          },
+          "source_context": {
+            "type": "object",
+            "properties": {
+              "source_relation_type": {
+                "enum": [
+                  "HAS_PROPERTY",
+                  "HAS_PERFORMANCE",
+                  "HAS_MORPHOLOGY",
+                  "HAS_COMPONENT",
+                  "HAS_MEMBER",
+                  "USES_MATERIAL",
+                  "FUNCTIONS_AS",
+                  "DETECTS",
+                  "USED_FOR",
+                  "FABRICATED_BY",
+                  "IMPROVES",
+                  "ACTS_ON",
+                  "INTEGRATED_IN",
+                  "HAS_MECHANISM",
+                  "MECHANISM_INVOLVES",
+                  "LOCATED_IN",
+                  "OPTIMIZES",
+                  "FACILITATES",
+                  "CAUSES",
+                  "EXPLAINS",
+                  "CHANGES_PARAMETER",
+                  "DEPENDS_ON",
+                  "MEETS_REQUIREMENT"
+                ]
+              },
+              "source_modality": {
+                "enum": [
+                  "ASSERTED",
+                  "PROPOSED",
+                  "COMPARED",
+                  "HYPOTHETICAL"
+                ]
+              },
+              "source_polarity": {
+                "enum": [
+                  "POSITIVE",
+                  "NEGATIVE"
+                ]
+              },
+              "interpretation_basis": {
+                "const": "AI_DEV_SOURCE_REVIEW"
+              },
+              "evidence_span_ids": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "required": [
+              "source_relation_type",
+              "source_modality",
+              "source_polarity",
+              "interpretation_basis",
+              "evidence_span_ids"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "assertion_id",
+          "head_mention_id",
+          "tail_mention_id",
+          "relation_type",
+          "polarity",
+          "modality",
+          "support_status",
+          "qualifiers",
+          "evidence",
+          "support_kind",
+          "source_context"
+        ],
+        "additionalProperties": true,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "relation_type": {
+                  "const": "HAS_PROPERTY"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "qualifiers": {
+                  "allOf": [
+                    {
+                      "items": {
+                        "properties": {
+                          "qualifier_type": {
+                            "enum": [
+                              "CH4_barrier",
+                              "H2_barrier",
+                              "analyte_scope",
+                              "associated_change",
+                              "change",
+                              "comparison",
+                              "evidence_basis",
+                              "mass_ratio",
+                              "material_configuration",
+                              "optimization_status",
+                              "pore_configuration",
+                              "relative_humidity",
+                              "scope",
+                              "scope_limit",
+                              "trend",
+                              "width"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "relation_type": {
+                  "const": "HAS_PERFORMANCE"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "qualifiers": {
+                  "allOf": [
+                    {
+                      "items": {
+                        "properties": {
+                          "qualifier_type": {
+                            "enum": [
+                              "NO2_detection_limit",
+                              "NO2_response_per_concentration",
+                              "NO_detection_limit",
+                              "NO_response_per_concentration",
+                              "SNR_ratio",
+                              "analyte_concentration",
+                              "analyte_scope",
+                              "bending_cycles",
+                              "coefficient_of_determination",
+                              "comparison",
+                              "comparison_direction",
+                              "comparison_material",
+                              "detection_limit",
+                              "detection_limit_range",
+                              "doped_detection_limit",
+                              "duration",
+                              "estimation_status",
+                              "evidence_basis",
+                              "gas_pair",
+                              "material_configuration",
+                              "pore_configuration",
+                              "relative_humidity_range",
+                              "relative_sensitivity",
+                              "response",
+                              "scope",
+                              "scope_limit",
+                              "selectivity_comparison",
+                              "selectivity_order",
+                              "strain",
+                              "stretch",
+                              "temperature",
+                              "temperature_selection",
+                              "twisting_cycles",
+                              "undoped_detection_limit"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "relation_type": {
+                  "const": "HAS_MORPHOLOGY"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "qualifiers": {
+                  "allOf": [
+                    {
+                      "items": {
+                        "properties": {
+                          "qualifier_type": {
+                            "enum": [
+                              "analyte_scope",
+                              "evidence_basis",
+                              "material_configuration",
+                              "scope",
+                              "scope_limit"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "relation_type": {
+                  "const": "HAS_COMPONENT"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "qualifiers": {
+                  "allOf": [
+                    {
+                      "items": {
+                        "properties": {
+                          "qualifier_type": {
+                            "enum": [
+                              "analyte_scope",
+                              "evidence_basis",
+                              "layer_position",
+                              "location",
+                              "material_configuration",
+                              "scope",
+                              "scope_limit"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "relation_type": {
+                  "const": "HAS_MEMBER"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "qualifiers": {
+                  "allOf": [
+                    {
+                      "items": {
+                        "properties": {
+                          "qualifier_type": {
+                            "enum": [
+                              "analyte_scope",
+                              "evidence_basis",
+                              "material_configuration",
+                              "scope",
+                              "scope_limit"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "relation_type": {
+                  "const": "USES_MATERIAL"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "qualifiers": {
+                  "allOf": [
+                    {
+                      "items": {
+                        "properties": {
+                          "qualifier_type": {
+                            "enum": [
+                              "analyte_scope",
+                              "evidence_basis",
+                              "material_configuration",
+                              "scope",
+                              "scope_limit"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "relation_type": {
+                  "const": "FUNCTIONS_AS"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "qualifiers": {
+                  "allOf": [
+                    {
+                      "items": {
+                        "properties": {
+                          "qualifier_type": {
+                            "enum": [
+                              "analyte_scope",
+                              "evidence_basis",
+                              "material_configuration",
+                              "scope",
+                              "scope_limit"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "relation_type": {
+                  "const": "DETECTS"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "qualifiers": {
+                  "allOf": [
+                    {
+                      "items": {
+                        "properties": {
+                          "qualifier_type": {
+                            "enum": [
+                              "analyte_concentration",
+                              "analyte_scope",
+                              "concentration_regime",
+                              "evidence_basis",
+                              "material_configuration",
+                              "response_per_concentration",
+                              "scope",
+                              "scope_limit",
+                              "temperature"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "relation_type": {
+                  "const": "USED_FOR"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "qualifiers": {
+                  "allOf": [
+                    {
+                      "items": {
+                        "properties": {
+                          "qualifier_type": {
+                            "enum": [
+                              "analyte_scope",
+                              "concentration_regime",
+                              "evidence_basis",
+                              "material_configuration",
+                              "monitoring_times",
+                              "sample_condition",
+                              "scope",
+                              "scope_limit",
+                              "temperature"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "relation_type": {
+                  "const": "FABRICATED_BY"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "qualifiers": {
+                  "allOf": [
+                    {
+                      "items": {
+                        "properties": {
+                          "qualifier_type": {
+                            "enum": [
+                              "analyte_scope",
+                              "equipment",
+                              "evidence_basis",
+                              "material_configuration",
+                              "parameter_selection",
+                              "scope",
+                              "scope_limit"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "relation_type": {
+                  "const": "IMPROVES"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "qualifiers": {
+                  "allOf": [
+                    {
+                      "items": {
+                        "properties": {
+                          "qualifier_type": {
+                            "enum": [
+                              "analyte_scope",
+                              "epistemic_basis",
+                              "evidence_basis",
+                              "improvement_factor",
+                              "material_configuration",
+                              "scope",
+                              "scope_limit"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "relation_type": {
+                  "const": "ACTS_ON"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "qualifiers": {
+                  "allOf": [
+                    {
+                      "items": {
+                        "properties": {
+                          "qualifier_type": {
+                            "enum": [
+                              "analyte_scope",
+                              "dopant",
+                              "evidence_basis",
+                              "fabrication_techniques",
+                              "material_configuration",
+                              "scope",
+                              "scope_limit",
+                              "support_method"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "relation_type": {
+                  "const": "INTEGRATED_IN"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "qualifiers": {
+                  "allOf": [
+                    {
+                      "items": {
+                        "properties": {
+                          "qualifier_type": {
+                            "enum": [
+                              "analyte_scope",
+                              "evidence_basis",
+                              "material_configuration",
+                              "scope",
+                              "scope_limit"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "relation_type": {
+                  "const": "HAS_MECHANISM"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "qualifiers": {
+                  "allOf": [
+                    {
+                      "items": {
+                        "properties": {
+                          "qualifier_type": {
+                            "enum": [
+                              "analyte_scope",
+                              "contribution",
+                              "evidence_basis",
+                              "explained_capability",
+                              "material_configuration",
+                              "outcome_scope",
+                              "scope",
+                              "scope_limit"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "relation_type": {
+                  "const": "MECHANISM_INVOLVES"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "qualifiers": {
+                  "allOf": [
+                    {
+                      "items": {
+                        "properties": {
+                          "qualifier_type": {
+                            "enum": [
+                              "analyte_scope",
+                              "evidence_basis",
+                              "isolation_reference",
+                              "material_configuration",
+                              "scope",
+                              "scope_limit"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "relation_type": {
+                  "const": "LOCATED_IN"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "qualifiers": {
+                  "allOf": [
+                    {
+                      "items": {
+                        "properties": {
+                          "qualifier_type": {
+                            "enum": [
+                              "analyte_scope",
+                              "evidence_basis",
+                              "material_configuration",
+                              "scope",
+                              "scope_limit"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "relation_type": {
+                  "const": "OPTIMIZES"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "qualifiers": {
+                  "allOf": [
+                    {
+                      "items": {
+                        "properties": {
+                          "qualifier_type": {
+                            "enum": [
+                              "analyte_scope",
+                              "evidence_basis",
+                              "material_configuration",
+                              "scope",
+                              "scope_limit"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "relation_type": {
+                  "const": "FACILITATES"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "qualifiers": {
+                  "allOf": [
+                    {
+                      "items": {
+                        "properties": {
+                          "qualifier_type": {
+                            "enum": [
+                              "analyte_scope",
+                              "evidence_basis",
+                              "explanatory_basis",
+                              "material_configuration",
+                              "process_location",
+                              "scope",
+                              "scope_limit"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "relation_type": {
+                  "const": "CAUSES"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "qualifiers": {
+                  "allOf": [
+                    {
+                      "items": {
+                        "properties": {
+                          "qualifier_type": {
+                            "enum": [
+                              "analyte_scope",
+                              "comparison",
+                              "contribution",
+                              "direction",
+                              "evidence_basis",
+                              "material_configuration",
+                              "outcome_scope",
+                              "scope",
+                              "scope_limit",
+                              "strength",
+                              "target_parameter"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "relation_type": {
+                  "const": "EXPLAINS"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "qualifiers": {
+                  "allOf": [
+                    {
+                      "items": {
+                        "properties": {
+                          "qualifier_type": {
+                            "enum": [
+                              "analyte_scope",
+                              "comparison",
+                              "contribution",
+                              "direction",
+                              "evidence_basis",
+                              "material_configuration",
+                              "outcome_scope",
+                              "pore_configuration",
+                              "scope",
+                              "scope_limit",
+                              "strength",
+                              "target_parameter"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "relation_type": {
+                  "const": "CHANGES_PARAMETER"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "qualifiers": {
+                  "allOf": [
+                    {
+                      "items": {
+                        "properties": {
+                          "qualifier_type": {
+                            "enum": [
+                              "direction",
+                              "analyte_scope",
+                              "comparison",
+                              "contribution",
+                              "evidence_basis",
+                              "material_configuration",
+                              "outcome_scope",
+                              "scope",
+                              "scope_limit",
+                              "strength",
+                              "target_parameter"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "contains": {
+                        "type": "object",
+                        "properties": {
+                          "qualifier_type": {
+                            "const": "direction"
+                          },
+                          "raw_value": {
+                            "enum": [
+                              "increase",
+                              "decrease",
+                              "unchanged",
+                              "unspecified"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "qualifier_type",
+                          "raw_value"
+                        ]
+                      },
+                      "minContains": 1
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "relation_type": {
+                  "const": "DEPENDS_ON"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "qualifiers": {
+                  "allOf": [
+                    {
+                      "items": {
+                        "properties": {
+                          "qualifier_type": {
+                            "enum": [
+                              "analyte_scope",
+                              "comparison",
+                              "contribution",
+                              "direction",
+                              "evidence_basis",
+                              "material_configuration",
+                              "outcome_scope",
+                              "scope",
+                              "scope_limit",
+                              "strength",
+                              "target_parameter"
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "relation_type": {
+                  "const": "MEETS_REQUIREMENT"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "qualifiers": {
+                  "allOf": [
+                    {
+                      "items": {
+                        "properties": {
+                          "qualifier_type": {
+                            "enum": [
+                              "joint_requirement",
+                              "scope",
+                              "analyte_scope",
+                              "evidence_basis",
+                              "material_configuration",
+                              "scope_limit"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "contains": {
+                        "type": "object",
+                        "properties": {
+                          "qualifier_type": {
+                            "const": "joint_requirement"
+                          },
+                          "raw_value": {
+                            "enum": [
+                              "all"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "qualifier_type",
+                          "raw_value"
+                        ]
+                      },
+                      "minContains": 1
+                    },
+                    {
+                      "contains": {
+                        "type": "object",
+                        "properties": {
+                          "qualifier_type": {
+                            "const": "scope"
+                          },
+                          "raw_value": {
+                            "enum": [
+                              "collective"
+                            ]
+                          }
+                        },
+                        "required": [
+                          "qualifier_type",
+                          "raw_value"
+                        ]
+                      },
+                      "minContains": 1
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "identity_decisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "decision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "left_mention_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "right_mention_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "label": {
+            "enum": [
+              "SAME",
+              "RELATED",
+              "BROADER",
+              "NARROWER",
+              "DIFFERENT",
+              "UNCERTAIN"
+            ]
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "span_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "document_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "revision_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "chunk_id": {
+                  "type": "string",
+                  "format": "uuid"
+                },
+                "start": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "end": {
+                  "type": "integer",
+                  "minimum": 1
+                },
+                "text": {
+                  "type": "string"
+                },
+                "source_text_sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "span_id",
+                "document_id",
+                "revision_id",
+                "chunk_id",
+                "start",
+                "end",
+                "text",
+                "source_text_sha256"
+              ],
+              "additionalProperties": true
+            }
+          }
+        },
+        "required": [
+          "decision_id",
+          "left_mention_id",
+          "right_mention_id",
+          "label",
+          "evidence"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "unresolved": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "evidence_spans": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "span_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "document_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "chunk_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "start": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "end": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "text": {
+            "type": "string"
+          },
+          "source_text_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "span_id",
+          "document_id",
+          "revision_id",
+          "chunk_id",
+          "start",
+          "end",
+          "text",
+          "source_text_sha256"
+        ],
+        "additionalProperties": true
+      }
+    },
+    "canonical_concepts": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "review": {
+      "type": "object",
+      "properties": {
+        "primary_annotator": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "secondary_annotator": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "human_review_status": {
+          "const": "NOT_REVIEWED"
+        }
+      },
+      "required": [
+        "primary_annotator",
+        "secondary_annotator",
+        "human_review_status"
+      ],
+      "additionalProperties": true
+    },
+    "ontology_id": {
+      "const": "pilot24-ontology-v1.0"
+    },
+    "ontology_version": {
+      "const": "1.0"
+    },
+    "schema_freeze_id": {
+      "const": "pilot24-ontology-v1.0"
+    },
+    "ontology_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "schema_version",
+    "document_code",
+    "document_id",
+    "revision_id",
+    "split",
+    "annotation_status",
+    "annotation_scope",
+    "exhaustive_entities",
+    "exhaustive_relations",
+    "rubric_version",
+    "mentions",
+    "assertions",
+    "identity_decisions",
+    "unresolved",
+    "review",
+    "evidence_spans",
+    "canonical_concepts",
+    "ontology_id",
+    "ontology_version",
+    "schema_freeze_id",
+    "ontology_hash"
+  ],
+  "additionalProperties": true,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Pilot24 annotation envelope constrained by ontology v1.0"
+}

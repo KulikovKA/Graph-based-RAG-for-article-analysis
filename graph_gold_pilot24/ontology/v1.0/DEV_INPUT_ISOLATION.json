@@ -1,0 +1,37 @@
+{
+  "task": "GRAPH-ONTOLOGY-FINAL-001",
+  "semantic_design_context": "fresh DEV-only worker; fork_turns=none",
+  "root_context_prior_evaluation_exposure": true,
+  "active_semantic_inputs": {
+    "annotation_0.3.schema.json": "09306f65313c32302057b97c08e936979f77ce7348810bc14505241f99942ebd",
+    "ANNOTATION_GUIDE.md": "9f7da6ee668babc106b6df13f23e3f66d6abebd3657602339f260cc50ff0b9a7",
+    "dev_drafts_0.3.jsonl": "a0867f5cf66450d0a319b56ee0f5cc5bdffcbb0c76508116fc3d3dcca25f9a72",
+    "dev_manifest.json": "7bfe06e6bbd631523a8e6fe6c78f576151d107887cf5c396bea566f802fc8d1d",
+    "DEV_ONTOLOGY_FREEZE_0.3.json": "aba4da4b4a7597d63bc62e5b45acbadf3e3aea44389c5216651c4cc154e4517b",
+    "dev_questions.json": "b35c5b29c24f5c3f1260e098727ddbe2bd9aea5b6849a39b223e617557c32d34",
+    "dev_sources.jsonl": "ee18aea0e0eb5e768e7d457e26c636fd82b10509ae11a1201d0ca3c056778a31",
+    "README.md": "e70b6fde00066375e75647385596a11140cbc3a985a8045ab21b9b9c9156e5bc",
+    "relation_vocabulary_0.3.json": "91b309feb792c31980c7b19c78c0d3a7ddf05d2bd2e49bc8fff0786118300141",
+    "RUBRIC_0.2_WORKING.md": "3347646c08cd232ae08919dd4a5f86830f28467396a7d381dfdf1250aa547900"
+  },
+  "documents": [
+    "D001",
+    "D003",
+    "D004",
+    "D010",
+    "D017",
+    "D024",
+    "D026",
+    "D035",
+    "D038",
+    "D060",
+    "D078",
+    "D092"
+  ],
+  "source_documents": 12,
+  "source_chunks": 19,
+  "calibration_holdout_payloads_provided_to_design_context": false,
+  "prior_baseline_potential_contamination_not_reversible": true,
+  "historical_chronology": "Previous 0.3 freeze write failed before calibration text display. Preserved as limitation, not retroactively repaired.",
+  "human_review": "NOT_REVIEWED"
+}

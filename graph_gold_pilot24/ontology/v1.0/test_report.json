@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "test_cases": 23,
+  "run": 23,
+  "failures": 0,
+  "errors": 0,
+  "scope": "DEV-only structural, provenance, inventory and negative regression checks",
+  "semantic_truth": "NOT_ESTABLISHED_BY_TESTS",
+  "human_review": "NOT_REVIEWED"
+}

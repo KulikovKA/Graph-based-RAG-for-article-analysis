@@ -1,0 +1,132 @@
+{
+  "scope": "DEV_ONLY",
+  "ontology_id": "pilot24-ontology-v1.0",
+  "files": [
+    {
+      "path": "dev_sources.jsonl",
+      "sha256": "ee18aea0e0eb5e768e7d457e26c636fd82b10509ae11a1201d0ca3c056778a31",
+      "bytes": 26208
+    },
+    {
+      "path": "dev_drafts_0.3.jsonl",
+      "sha256": "a0867f5cf66450d0a319b56ee0f5cc5bdffcbb0c76508116fc3d3dcca25f9a72",
+      "bytes": 1431153
+    },
+    {
+      "path": "dev_manifest.json",
+      "sha256": "7bfe06e6bbd631523a8e6fe6c78f576151d107887cf5c396bea566f802fc8d1d",
+      "bytes": 2873
+    },
+    {
+      "path": "dev_questions.json",
+      "sha256": "b35c5b29c24f5c3f1260e098727ddbe2bd9aea5b6849a39b223e617557c32d34",
+      "bytes": 50341
+    },
+    {
+      "path": "relation_vocabulary_0.3.json",
+      "sha256": "91b309feb792c31980c7b19c78c0d3a7ddf05d2bd2e49bc8fff0786118300141",
+      "bytes": 5482
+    },
+    {
+      "path": "annotation_0.3.schema.json",
+      "sha256": "09306f65313c32302057b97c08e936979f77ce7348810bc14505241f99942ebd",
+      "bytes": 11622
+    },
+    {
+      "path": "ANNOTATION_GUIDE.md",
+      "sha256": "9f7da6ee668babc106b6df13f23e3f66d6abebd3657602339f260cc50ff0b9a7",
+      "bytes": 5732
+    },
+    {
+      "path": "RUBRIC_0.2_WORKING.md",
+      "sha256": "3347646c08cd232ae08919dd4a5f86830f28467396a7d381dfdf1250aa547900",
+      "bytes": 4749
+    },
+    {
+      "path": "DEV_ONTOLOGY_FREEZE_0.3.json",
+      "sha256": "aba4da4b4a7597d63bc62e5b45acbadf3e3aea44389c5216651c4cc154e4517b",
+      "bytes": 1428
+    },
+    {
+      "path": "README.md",
+      "sha256": "e70b6fde00066375e75647385596a11140cbc3a985a8045ab21b9b9c9156e5bc",
+      "bytes": 383
+    }
+  ],
+  "documents": [
+    {
+      "document_code": "D001",
+      "document_id": "00f9cfc7-459f-4c4d-8131-b425d01527dc",
+      "revision_id": "7664effe-8f20-46e8-b694-224b75bea829",
+      "revision_content_hash": "e4ec6ae32f4171ae3f43a12a86f7ebf1c40b945a8411d66f3ece83eac253c101"
+    },
+    {
+      "document_code": "D003",
+      "document_id": "06066c66-1454-4813-b7b7-f366b9956035",
+      "revision_id": "7af46631-a38f-430d-a43c-bcfa0dccac9e",
+      "revision_content_hash": "550077c868600da15dc0345d3891f9b03c3cc2352db6b3e008f716a00b39705b"
+    },
+    {
+      "document_code": "D004",
+      "document_id": "08d58bd1-a89e-4b70-b817-821df8428bc7",
+      "revision_id": "5afc0eeb-3c76-40cf-99be-e70f066beb2b",
+      "revision_content_hash": "3f74a026de372b786df17e76d80233ebcc20fedaac46c1e75f6202ef4a7af87f"
+    },
+    {
+      "document_code": "D010",
+      "document_id": "136d5083-0254-4930-a35e-88441bb802a0",
+      "revision_id": "fbd87a44-35d0-4f51-80d6-39abd117d01f",
+      "revision_content_hash": "2cfab050f85a098d6552dd793ca39bf2a83734f1ce37b7c66265a28fe23a8daf"
+    },
+    {
+      "document_code": "D060",
+      "document_id": "96575fc6-1212-4cb1-889f-179dd9515854",
+      "revision_id": "61ce4e43-1d79-4cee-af6c-43026828532a",
+      "revision_content_hash": "21bd9bd7f4b3c7e6e3debc8539183ecabbce31f32c03af8cfa64a1f84ad72fc7"
+    },
+    {
+      "document_code": "D078",
+      "document_id": "c56c60ec-74f3-44d5-83e6-f83d87b921f5",
+      "revision_id": "85c8c16f-76e7-45fb-a9b2-6124974a51e9",
+      "revision_content_hash": "dc49a8fa0e21f8d0a41a4bdd68bcb7ea74cebbb9d298a42097d44284b6f3458b"
+    },
+    {
+      "document_code": "D035",
+      "document_id": "5f698fb2-5265-4343-a012-0c0fb3c6e9c4",
+      "revision_id": "6612f9ab-0007-4924-a4da-dc7e0bafdba3",
+      "revision_content_hash": "e6eff4a200148cc00ac285b158370c2683bbceda122cbb359fcdb0765a14aa10"
+    },
+    {
+      "document_code": "D092",
+      "document_id": "ea87c55e-72ef-439c-aa6b-7285edc49095",
+      "revision_id": "19bedd9d-3827-402c-894b-e8ca762ecff7",
+      "revision_content_hash": "ac3743e58b7e2914a666aab319daffb36125068c8b2fa96cd8035f4657fbb5d0"
+    },
+    {
+      "document_code": "D017",
+      "document_id": "2860ed7f-a2a8-4e76-9250-e3558d092f23",
+      "revision_id": "d80633dc-c57a-4253-8754-29c9366084f5",
+      "revision_content_hash": "56bb63182bd0f9359366aa4712c343a59318c09d27b22ef6a77e2098b2a4868d"
+    },
+    {
+      "document_code": "D038",
+      "document_id": "6a675d0d-8256-4c8f-b2ae-7c95c1bcabf8",
+      "revision_id": "b6535766-c337-4abd-9925-8381f0acc7fa",
+      "revision_content_hash": "b8eb65107d68109a5db1a57f89d87096e343cb3227f02ffb1ee1bfc04c476b5b"
+    },
+    {
+      "document_code": "D026",
+      "document_id": "3df9cd7a-940f-400e-b03a-a72459a5558f",
+      "revision_id": "3ed28d1a-4b30-4ea4-bf03-3a69308fb8ba",
+      "revision_content_hash": "eece3075bca641c8c9cb80cd6b48d02488b5a744cf9cd861575232ae6d850869"
+    },
+    {
+      "document_code": "D024",
+      "document_id": "3a5a587d-5ddf-49b9-aa34-bd081fb0d04b",
+      "revision_id": "95f3f5a0-077c-4f5d-859f-37fc344f12f0",
+      "revision_content_hash": "2a7a7b1fb4d43fe931e630844721a494f039d1adfb6e2e6bcd24404091d169b1"
+    }
+  ],
+  "bundle_source": "Isolated .cache/ontology-v1-dev-only export prepared by parent; only the enumerated files were read.",
+  "contamination_limitation": "This semantic-design context received no evaluation content. Parent history had evaluation exposure and 0.3 freeze retry happened after calibration display; complete end-to-end independence cannot be established."
+}

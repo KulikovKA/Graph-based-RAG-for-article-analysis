@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "checks": "Local build: exact spans, unchanged original offsets/evidence, domains, required qualifier values, qualifier evidence/attachment and AI-only review status. Repository validator/freeze checks are separate.",
+  "counts": {
+    "assertions": 390,
+    "documents": 12,
+    "sentences": 78
+  },
+  "errors": []
+}
