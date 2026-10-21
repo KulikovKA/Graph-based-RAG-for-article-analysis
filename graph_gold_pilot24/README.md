@@ -1,6 +1,14 @@
-# GRAPH GOLD PILOT 24 — подготовительный пакет
+# GRAPH GOLD PILOT 24 — текущий Gold Dataset и исторический подготовительный пакет
 
-**Не содержит золотой разметки:** полный исходный текст 24 статей ещё отсутствует в текущем чате. Содержит обоснованную исследовательскую выборку и read-only скрипт для получения ровно этих frozen revisions из PostgreSQL оригинального проекта.
+Актуальный релиз: **pilot24-owner-reviewed-gold-v1-20261021**. Владелец проекта подтвердил в чате личную ручную проверку всех 24 документов. Статусы: `HUMAN_REVIEWED`, `human_review_status=APPROVED`; разметчик `project_owner`, дата `2026-10-21`, метод `manual_owner_review`. Второго разметчика не было (`secondary_annotator=null`). Это ручная проверка владельцем AI-generated разметки, без независимой двойной аннотации.
+
+Текущее состояние: `annotations/CURRENT_DATASET.json`; отчёт по всем документам: `owner_review_v1/REPORT.md`. В `annotations/gold/` находятся 18 DEV/CALIBRATION документов. Шесть HOLDOUT Gold-файлов, их labels и evidence остаются в закрытом локальном хранилище вне Git. Все 23 abstentions и содержание аннотаций сохранены. Ontology v1.0 и hashes её заморозки неизменны. Предыдущие AI drafts и отчёты сохранены как история; их прежний статус NOT_REVIEWED относится к моменту выпуска соответствующего AI-релиза.
+
+Стандарт текущих данных — `HUMAN_REVIEWED_GOLD_STANDARD`, допуск — `OWNER_APPROVED_FOR_EVALUATION`. Подробности происхождения и проверки: `owner_review_v1/README.md`. Эксперименты A/B/F/C/D этой публикацией не запускаются.
+
+Далее сохранено описание первоначального подготовительного пакета; оно отражает исторический этап до получения source chunks и разметки.
+
+**Первоначальный подготовительный пакет не содержал золотой разметки:** на том этапе тексты EvidenceChunks ещё не были получены. Он включал исследовательскую выборку и read-only скрипт для получения ровно этих frozen revisions из PostgreSQL оригинального проекта.
 
 - `pilot24_manifest.csv` — 24 фиксированных документа из GitHub-аудита `GRAPH_CORPUS_AUDIT`, 12/6/6, OpenAlex IDs и точные document/revision UUID.
 - `export_pilot24.py` — только SELECT из PostgreSQL, сохраняет текст chunks, IDs, offsets, hashes и метаданные в JSONL. Запускать в оригинальном репозитории с установленными Python-зависимостями и `DATABASE_URL`; без Ollama.

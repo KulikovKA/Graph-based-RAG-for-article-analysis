@@ -28,3 +28,4 @@ frontend/test-results/
 frontend/playwright-report/
 graph_gold_pilot24/annotations/private_holdout_location.json
 /graph_gold_pilot24/evaluation_v1/holdout/
+/graph_gold_pilot24/owner_review_v1/holdout/

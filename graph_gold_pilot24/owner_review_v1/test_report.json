@@ -1,0 +1,24 @@
+{
+  "status": "PASS",
+  "annotation_tests": 48,
+  "tests_run": 48,
+  "failures": 0,
+  "errors": 0,
+  "backend": {
+    "passed": 343,
+    "skipped": 49,
+    "failed": 0,
+    "skip_reason": "Optional integration settings not configured"
+  },
+  "frontend_unit": {
+    "passed": 7,
+    "failed": 0
+  },
+  "frontend_browser": {
+    "passed": 23,
+    "skipped": 3,
+    "failed": 0
+  },
+  "human_review_confirmation": "PROJECT_OWNER_CHAT_ATTESTATION",
+  "independent_second_annotator": false
+}

@@ -1,0 +1,2 @@
+# Preserve exact source snapshots and release hashes on Windows.
+* -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

@@ -65,7 +65,10 @@ class EvaluationTests(unittest.TestCase):
     def test_no_fabricated_human_labels(self):
         d=copy.deepcopy(self.docs['D018']);d['review']['human_review_status']='APPROVED'
         self.reject(d,'Evaluation envelope')
-        self.assertFalse(any((BASE/'annotations/gold').iterdir()))
+        # This suite checks the historical AI release; a later owner-approved
+        # Gold release must not invalidate its unsigned-review rejection test.
+        historical=json.loads((BASE/'evaluation_v1/REPORT.json').read_text(encoding='utf-8'))
+        self.assertEqual(historical['human_gold_documents'],0)
 
     def test_third_dev_abstention_and_evidence_are_preserved(self):
         self.assertEqual(sum(len(d['unresolved'])+len(d.get('audit_abstentions',[])) for d in self.docs.values() if d['split']=='DEV'),3)

@@ -1,0 +1,114 @@
+{
+  "decision_id": "OWNER-MANUAL-REVIEW-24-20261021",
+  "actor": "project_owner",
+  "confirmation_source": "USER_CHAT_ATTESTATION",
+  "recorded_at_utc": "2026-10-21T17:55:27Z",
+  "review_date": "2026-10-21",
+  "review_method": "manual_owner_review",
+  "primary_annotator": "project_owner",
+  "secondary_annotator": null,
+  "human_review_confirmed_by_owner": true,
+  "human_review_status": "APPROVED",
+  "annotation_status": "HUMAN_REVIEWED",
+  "independent_secondary_review": false,
+  "approval_scope": "All 24 current annotations, preserving all 23 abstentions and unchanged ontology v1.0",
+  "documents": [
+    {
+      "document_code": "D001",
+      "split": "DEV"
+    },
+    {
+      "document_code": "D003",
+      "split": "DEV"
+    },
+    {
+      "document_code": "D004",
+      "split": "DEV"
+    },
+    {
+      "document_code": "D010",
+      "split": "DEV"
+    },
+    {
+      "document_code": "D060",
+      "split": "DEV"
+    },
+    {
+      "document_code": "D078",
+      "split": "DEV"
+    },
+    {
+      "document_code": "D035",
+      "split": "DEV"
+    },
+    {
+      "document_code": "D092",
+      "split": "DEV"
+    },
+    {
+      "document_code": "D017",
+      "split": "DEV"
+    },
+    {
+      "document_code": "D038",
+      "split": "DEV"
+    },
+    {
+      "document_code": "D026",
+      "split": "DEV"
+    },
+    {
+      "document_code": "D024",
+      "split": "DEV"
+    },
+    {
+      "document_code": "D018",
+      "split": "CALIBRATION"
+    },
+    {
+      "document_code": "D050",
+      "split": "CALIBRATION"
+    },
+    {
+      "document_code": "D029",
+      "split": "CALIBRATION"
+    },
+    {
+      "document_code": "D042",
+      "split": "CALIBRATION"
+    },
+    {
+      "document_code": "D021",
+      "split": "CALIBRATION"
+    },
+    {
+      "document_code": "D093",
+      "split": "CALIBRATION"
+    },
+    {
+      "document_code": "D068",
+      "split": "HOLDOUT"
+    },
+    {
+      "document_code": "D070",
+      "split": "HOLDOUT"
+    },
+    {
+      "document_code": "D098",
+      "split": "HOLDOUT"
+    },
+    {
+      "document_code": "D088",
+      "split": "HOLDOUT"
+    },
+    {
+      "document_code": "D061",
+      "split": "HOLDOUT"
+    },
+    {
+      "document_code": "D090",
+      "split": "HOLDOUT"
+    }
+  ],
+  "user_statement": "Я как владелец проекта лично просмотрел и одобряю разметку всех 24 документов."
+}
