@@ -1,0 +1,32 @@
+{
+  "status": "PASS",
+  "mode": "VERIFIED_ARCHIVED_READ_ONLY_EXPORT",
+  "source_archive": "docs\\analysis\\GRAPH_CORPUS_AUDIT\\corpus_export.json",
+  "archive_sha256": "92764e8e947974ef4dc40e46c76764e6a4d4d9ee3dce8a08d5d4ef13c242878b",
+  "archive_exported_at_utc": "2026-10-02T12:34:50.953159+00:00",
+  "snapshot_file": "data\\checkpoints\\graph002-live-20261002.snapshot.json",
+  "snapshot_hash_expected": "5b80378fa2d8312951446fcbb3ada7994d775f13d452ff08fd415377a5fcade0",
+  "snapshot_hash_recomputed": "5b80378fa2d8312951446fcbb3ada7994d775f13d452ff08fd415377a5fcade0",
+  "snapshot_verification": "Local snapshot independently rehashed; original file unchanged.",
+  "live_database_verification": "NOT_PERFORMED: Docker Desktop engine pipe missing; Docker service stopped.",
+  "documents": 24,
+  "chunks": 35,
+  "split_counts": {
+    "DEV": 12,
+    "CALIBRATION": 6,
+    "HOLDOUT": 6
+  },
+  "manifest_ids": "PASS",
+  "template_ids": "PASS",
+  "openalex_ids": "PASS",
+  "revision_hashes": "PASS",
+  "chunk_hashes": "PASS",
+  "original_section_spans": "PASS",
+  "abstract_nonwhitespace_coverage": "PASS",
+  "source_output_sha256": "c823beec159704998eeac8d1b18cebcfce1a567d408a9bfacd6d29d75c053116",
+  "limitations": [
+    "No current PostgreSQL comparison; this is the archived 2026-10-02 state.",
+    "Snapshot integrity is not human validation of annotation semantics.",
+    "Publication/author/family leakage review remains pending before HOLDOUT closure."
+  ]
+}

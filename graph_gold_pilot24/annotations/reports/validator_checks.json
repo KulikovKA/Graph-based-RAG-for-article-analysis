@@ -1,0 +1,43 @@
+{
+  "baseline": "PASS",
+  "negative_validation_cases": {
+    "wrong_unicode_offset": {
+      "status": "REJECTED_AS_EXPECTED",
+      "detected_errors": 2
+    },
+    "missing_endpoint": {
+      "status": "REJECTED_AS_EXPECTED",
+      "detected_errors": 1
+    },
+    "reversed_direction": {
+      "status": "REJECTED_AS_EXPECTED",
+      "detected_errors": 1
+    },
+    "wrong_qualifier_attachment": {
+      "status": "REJECTED_AS_EXPECTED",
+      "detected_errors": 1
+    },
+    "wrong_numeric_value": {
+      "status": "REJECTED_AS_EXPECTED",
+      "detected_errors": 1
+    },
+    "invalid_modality": {
+      "status": "REJECTED_AS_EXPECTED",
+      "detected_errors": 1
+    },
+    "lost_pending_question": {
+      "status": "REJECTED_AS_EXPECTED",
+      "detected_errors": 1
+    },
+    "fabricated_human_review": {
+      "status": "REJECTED_AS_EXPECTED",
+      "detected_errors": 1
+    },
+    "incomplete_sentence_coverage": {
+      "status": "REJECTED_AS_EXPECTED",
+      "detected_errors": 1
+    }
+  },
+  "preparation_archive_files_unchanged": true,
+  "gold_directory_empty": true
+}

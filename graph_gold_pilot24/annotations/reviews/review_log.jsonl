@@ -1,0 +1,4 @@
+{"event":"SOURCE_INTEGRITY_REVIEW","date":"2026-10-21","actor":"AI_ASSISTANT","human_decision":false,"result":"24 documents, 35 chunks verified against archive hashes and live PostgreSQL source rows; global snapshot hash recomputed","report":"../reports/live_source_verification.json"}
+{"event":"D001_SOURCE_ONLY_FIRST_PASS","date":"2026-10-21","actor":"AI_ASSISTANT","human_decision":false,"sentences":6,"mentions":61,"assertions":51,"status":"AI_DRAFT_PENDING_REVIEW","review_packet":"D001_review.md"}
+{"event":"D010_SOURCE_ONLY_FIRST_PASS","date":"2026-10-21","actor":"AI_ASSISTANT","human_decision":false,"sentences":7,"mentions":105,"assertions":99,"status":"AI_DRAFT_PENDING_REVIEW","review_packet":"D010_review.md"}
+{"event":"SCHEMA_QUESTION_PREPARED","date":"2026-10-21","actor":"AI_ASSISTANT","human_decision":false,"question_id":"Q1","status":"UNRESOLVED","question_file":"questions.md","decision":null,"required_before":"remaining DEV annotation"}

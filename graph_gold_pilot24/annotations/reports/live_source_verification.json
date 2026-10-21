@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "counts": {
+    "documents": 24,
+    "revisions": 24,
+    "chunks": 35
+  },
+  "access": "postgres container local Unix socket",
+  "transaction": "REPEATABLE READ READ ONLY",
+  "comparison": "All selected source fields exactly match archived export, including normalized revisions and full chunk rows.",
+  "tcp_exporter": "Attempted with supplied exporter and correctly encoded .env credentials; PostgreSQL rejected password for article_app.",
+  "credentials_modified": false,
+  "predictions_selected": false,
+  "pilot24_sources_sha256": "c823beec159704998eeac8d1b18cebcfce1a567d408a9bfacd6d29d75c053116"
+}
