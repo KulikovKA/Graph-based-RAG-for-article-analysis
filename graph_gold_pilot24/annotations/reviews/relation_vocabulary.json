@@ -2,16 +2,18 @@
   "version": "pilot24-ontology-v1.0",
   "ontology_id": "pilot24-ontology-v1.0",
   "ontology_sha256": "c3c0186ce492560fb27be400194596f70fae66a89daf4b7844636264cd3e3692",
-  "status": "TECHNICALLY_FROZEN_PENDING_HUMAN_APPROVAL",
+  "status": "HUMAN_APPROVED_FOR_PILOT_V1",
   "authoritative_specification": "ontology/v1.0/ontology.json",
   "legacy_baseline": "ontology/baselines/pilot24-auto-freeze-0.3/relation_vocabulary_0.3.json",
   "approval": {
-    "final_human_ontology_approved": false,
+    "final_human_ontology_approved": true,
     "annotation_human_review_status": "NOT_REVIEWED",
     "human_gold_documents": 0,
     "ai_adjudication_actor": "AI",
     "user_decision_scope": "Earlier individual Q1-Q6 constraints, where recorded, are design instructions; they do not approve labels or the final ontology.",
-    "technical_freeze_is_human_approval": false
+    "technical_freeze_is_human_approval": false,
+    "approval_scope": "ONTOLOGY_SCHEMA_ONLY",
+    "decision_date": "2026-10-21"
   },
   "relations": {
     "HAS_PROPERTY": {
@@ -1572,5 +1574,7 @@
         "requirement_bundle"
       ]
     }
-  }
+  },
+  "technical_freeze_status": "TECHNICALLY_FROZEN_PENDING_HUMAN_APPROVAL",
+  "approval_record": "ontology/approvals/pilot24-ontology-v1.0.json"
 }

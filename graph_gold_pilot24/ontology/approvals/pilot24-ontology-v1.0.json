@@ -1,0 +1,21 @@
+{
+  "decision_id": "USER-ONTOLOGY-V1-APPROVAL-20261021",
+  "ontology_id": "pilot24-ontology-v1.0",
+  "status": "HUMAN_APPROVED_FOR_PILOT_V1",
+  "actor": "USER",
+  "decision_date": "2026-10-21",
+  "recorded_at_utc": "2026-10-21T17:24:54Z",
+  "recorded_timezone": "Europe/Moscow",
+  "scope": "Ontology schema only, current pilot-24 benchmark",
+  "user_decision": "Решение: утверждаем pilot24-ontology-v1.0 как окончательную онтологию для текущего pilot-24 benchmark. Принимаю состав из 23 типов отношений, разделение CAUSES/EXPLAINS, CHANGES_PARAMETER с обязательным direction, DEPENDS_ON, MEETS_REQUIREMENT и остальные зафиксированные решения. Три документированных abstention допустимы. Это утверждение только схемы, а не отдельных AI-аннотаций и не Gold Dataset.",
+  "ontology_sha256": "c3c0186ce492560fb27be400194596f70fae66a89daf4b7844636264cd3e3692",
+  "schema_sha256": "b1207120ed8b58d3092e408d1a37c1fd721d2f859c6859141e31a1abaf5d64dc",
+  "freeze_manifest_sha256": "75384eb2a8de0b240d7bb1904dff84214a8fc0f10992ebe1336b2c4a711ae124",
+  "content_commit_sha": "390c4318a6e0a348d1a430bd38c51a3645a7809d",
+  "freeze_commit_sha": "df0d6f1266c6c3a9480e8d40ca2f0b394a4559eb",
+  "individual_annotation_approval": false,
+  "gold_dataset_approval": false,
+  "human_review_status": "NOT_REVIEWED",
+  "human_gold_documents": 0,
+  "policy": "Approval is an append-only sidecar to the immutable technical freeze. Historical pending status remains an accurate statement of the freeze moment. Effective current schema status is HUMAN_APPROVED_FOR_PILOT_V1. No CALIBRATION/HOLDOUT-driven ontology changes are authorized."
+}

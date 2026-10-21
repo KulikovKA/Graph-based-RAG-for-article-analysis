@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "frozen_dev_tests": 23,
+  "evaluation_adapter_tests": 14,
+  "tests_run": 37,
+  "failures": 0,
+  "errors": 0,
+  "human_review": "NOT_REVIEWED",
+  "semantic_truth": "NOT_ESTABLISHED_BY_TESTS"
+}

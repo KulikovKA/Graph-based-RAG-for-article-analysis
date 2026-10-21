@@ -1,0 +1,21 @@
+{
+  "document_code": "D050",
+  "split": "CALIBRATION",
+  "status": "PASS",
+  "mentions": 30,
+  "assertions": 19,
+  "unique_canonical_triples": 19,
+  "abstentions": 2,
+  "sentences": 5,
+  "added_assertions": 3,
+  "retired_assertions": 0,
+  "corrected_existing_assertions": 3,
+  "baseline_sha256": "a1c07383961e41ea49a3a34c0b4f27fc7cea431c4c2d23d3bd9a3e89d8108be7",
+  "annotation_sha256": "09977d5d31e2ba12ff6f3227374f9531e128948cef4ce7252345290629519354",
+  "lossless_patch_replay": "PASS",
+  "ontology_id": "pilot24-ontology-v1.0",
+  "ontology_hash": "c3c0186ce492560fb27be400194596f70fae66a89daf4b7844636264cd3e3692",
+  "envelope": "pilot24-evaluation-envelope-1.0",
+  "human_review": "NOT_REVIEWED",
+  "human_gold": false
+}

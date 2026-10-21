@@ -1,0 +1,24 @@
+{
+  "split": "CALIBRATION",
+  "document_code": "D029",
+  "document_id": "4a17444d-09e0-4cad-becb-0ad9e9a95b73",
+  "revision_id": "94abe07d-65fd-4ac6-96c3-0c65e777ed09",
+  "openalex_id": "W2965196630",
+  "cluster": "C03",
+  "source": "openalex",
+  "title": "NO2 and NH3 Sensing Characteristics of Inkjet Printing Graphene Gas Sensors",
+  "revision_content_hash": "da9b32eeeb4d648b14d08b248e6d8c67e29b80ee29f62e4a7e1d463cdf693162",
+  "chunks": [
+    {
+      "chunk_id": "28d1c15e-e2d5-41b9-96f3-dfb222eb27f1",
+      "section": "abstract",
+      "ordinal": 0,
+      "section_start": 0,
+      "section_end": 988,
+      "language": "en",
+      "stored_chunk_hash": "1b03dbb818cbfa9687373be6d034d98968ed06e5e12d54386847f91cb999477b",
+      "text_sha256": "1b03dbb818cbfa9687373be6d034d98968ed06e5e12d54386847f91cb999477b",
+      "text": "Graphene is a good candidate for filling the market requirements for cheap, high sensitivity, robust towards contamination, low noise, and low power consumption gas sensors, thanks to its unique properties, i.e., large surface, high mobility, and long-term stability. Inkjet printing is a cheap additive manufacturing method allowing fast, relatively precise and contactless deposition of a wide range of materials; it can be considered therefore the ideal technique for fast deposition of graphene films on thin substrates. In this paper, the sensitivity of graphene-based chemiresistor gas sensors, fabricated through inkjet printing, is investigated using different concentrations of graphene in the inks. Samples have been produced and characterized in terms of response towards humidity, nitrogen dioxide, and ammonia. The presented results highlight the importance of tuning the layer thickness and achieving good film homogeneity in order to maximize the sensitivity of the sensor."
+    }
+  ]
+}

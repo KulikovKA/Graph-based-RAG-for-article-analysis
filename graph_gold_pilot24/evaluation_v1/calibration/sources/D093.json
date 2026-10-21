@@ -1,0 +1,24 @@
+{
+  "split": "CALIBRATION",
+  "document_code": "D093",
+  "document_id": "ed63ad4b-96aa-4ba5-a8fa-581f76e5723d",
+  "revision_id": "ab07453e-131f-4424-a7d8-787b08f59f40",
+  "openalex_id": "W2790839816",
+  "cluster": "C08",
+  "source": "openalex",
+  "title": "Optical Graphene Gas Sensors Based on Microfibers: A Review",
+  "revision_content_hash": "f9f81f6ab606e42f8b1bf59aad7a4db5ef16efe1c999a1d9584b71748e913385",
+  "chunks": [
+    {
+      "chunk_id": "9887bde2-5015-49ba-adb3-6f399019dc00",
+      "section": "abstract",
+      "ordinal": 0,
+      "section_start": 0,
+      "section_end": 803,
+      "language": "en",
+      "stored_chunk_hash": "3b1e5ae3d6efecffb8eca2de86bc292ed2346e162866ef5e7a13eac4684574c0",
+      "text_sha256": "3b1e5ae3d6efecffb8eca2de86bc292ed2346e162866ef5e7a13eac4684574c0",
+      "text": "Graphene has become a bridge across optoelectronics, mechanics, and bio-chemical sensing due to its unique photoelectric characteristics. Moreover, benefiting from its two-dimensional nature, this atomically thick film with full flexibility has been widely incorporated with optical waveguides such as fibers, realizing novel photonic devices including polarizers, lasers, and sensors. Among the graphene-based optical devices, sensor is one of the most important branch, especially for gas sensing, as rapid progress has been made in both sensing structures and devices in recent years. This article presents a comprehensive and systematic overview of graphene-based microfiber gas sensors regarding many aspects including sensing principles, properties, fabrication, interrogating and implementations."
+    }
+  ]
+}

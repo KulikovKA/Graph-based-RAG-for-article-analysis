@@ -1,0 +1,24 @@
+{
+  "split": "CALIBRATION",
+  "document_code": "D050",
+  "document_id": "87775318-a9f1-457c-891c-6d910ac56175",
+  "revision_id": "f3937e44-f446-490b-8c4e-7b95768fca8a",
+  "openalex_id": "W2088861830",
+  "cluster": "C02",
+  "source": "openalex",
+  "title": "Flexible room-temperature NO2 gas sensors based on carbon nanotubes/reduced graphene hybrid films",
+  "revision_content_hash": "aa5138b9463ba8efaf17295a7c386bcd3c0348d70b790471282f3f74b2f90b2c",
+  "chunks": [
+    {
+      "chunk_id": "468da37d-6e9a-4912-a13a-b5a50250ead3",
+      "section": "abstract",
+      "ordinal": 0,
+      "section_start": 0,
+      "section_end": 746,
+      "language": "en",
+      "stored_chunk_hash": "2de59fbd005627ed7c07a8349b727b986790fcc57bdc7ed5b15dd1d1604b67a4",
+      "text_sha256": "2de59fbd005627ed7c07a8349b727b986790fcc57bdc7ed5b15dd1d1604b67a4",
+      "text": "We present a flexible room temperature NO2 gas sensor consisting of vertical carbon nanotubes (CNTs)/reduced graphene hybrid film supported by a polyimide substrate. The reduced graphene film alone showed a negligible sensor response, exhibiting abnormal N–P transitions during the initial NO2 injection. A hybrid film, formed by the growth of a vertically aligned CNT array (with CNTs 20 μm in length) on the reduced graphene film surface, exhibited remarkably enhanced sensitivities with weak N–P transitions. The increase in sensitivity was mainly attributed to the high sensitivity of the CNT arrays. The outstanding flexibility of the reduced graphene films ensured stable sensing performances in devices submitted to extreme bending stress."
+    }
+  ]
+}

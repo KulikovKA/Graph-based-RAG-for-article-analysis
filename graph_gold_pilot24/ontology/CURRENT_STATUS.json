@@ -1,0 +1,10 @@
+{
+  "ontology_id": "pilot24-ontology-v1.0",
+  "status": "HUMAN_APPROVED_FOR_PILOT_V1",
+  "decision_date": "2026-10-21",
+  "approval_record": "approvals/pilot24-ontology-v1.0.json",
+  "immutable_specification": "v1.0/ontology.json",
+  "immutable_freeze_manifest": "v1.0/FREEZE_MANIFEST.json",
+  "human_annotation_review": "NOT_REVIEWED",
+  "human_gold_documents": 0
+}

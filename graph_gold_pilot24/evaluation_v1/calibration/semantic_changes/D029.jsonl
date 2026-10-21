@@ -1,0 +1,2 @@
+{"action":"ADD_ASSERTION","assertion_id":"f205b56a-945a-5dee-a758-ce6e8398eb0d","reason":"The source identifies a design factor for the goal of maximizing sensitivity; no numerical realized gain is asserted."}
+{"action":"ADD_ASSERTION","assertion_id":"6c89d3d0-bb24-58e7-b10c-0b47656fc322","reason":"Allowing explicitly describes the deposition enabled by inkjet printing."}

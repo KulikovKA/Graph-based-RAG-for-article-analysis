@@ -1,0 +1,9 @@
+{
+  "status": "PASS",
+  "method": "Rebuilt CALIBRATION from original baselines, then HOLDOUT separately from its private baselines. Every generated/snapshot artifact was byte-identical. All 12 lossless patches are replay-checked by validate_all.py.",
+  "compared_files": 97,
+  "calibration_documents": 6,
+  "holdout_documents": 6,
+  "ontology_sha256": "c3c0186ce492560fb27be400194596f70fae66a89daf4b7844636264cd3e3692",
+  "human_review": "NOT_REVIEWED"
+}

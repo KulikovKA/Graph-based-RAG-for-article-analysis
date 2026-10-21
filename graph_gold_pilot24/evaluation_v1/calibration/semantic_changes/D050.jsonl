@@ -1,0 +1,3 @@
+{"action":"ADD_ASSERTION","assertion_id":"7d6891aa-cc9f-5d0c-a215-1c2db096fcef","reason":"Observed material N-P behavior is permitted by the fixed material mechanism domain."}
+{"action":"ADD_ASSERTION","assertion_id":"6e7ffe32-2ab4-5335-920a-9547a3fd3597","reason":"Observed material N-P behavior is permitted by the fixed material mechanism domain."}
+{"action":"ADD_ASSERTION","assertion_id":"e11f729c-5633-513c-bd86-521d26ba3087","reason":"Flexibility explicitly ensures stability under bending; PROPERTY -> PERFORMANCE is permitted."}

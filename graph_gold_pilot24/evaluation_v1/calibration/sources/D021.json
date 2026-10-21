@@ -1,0 +1,24 @@
+{
+  "split": "CALIBRATION",
+  "document_code": "D021",
+  "document_id": "2f7fb8d1-42b1-433b-9091-7d13fc6493b1",
+  "revision_id": "48ba5b53-f32b-43a8-ae85-ea7232a2975d",
+  "openalex_id": "W2936896595",
+  "cluster": "C10",
+  "source": "openalex",
+  "title": "Synthesis, properties, and applications of graphene oxide/reduced graphene oxide and their nanocomposites",
+  "revision_content_hash": "6ba8295be828412ba3e186650481eb0313a10b12dcbe0aafd0a89a3cdae3b84f",
+  "chunks": [
+    {
+      "chunk_id": "e378bcd8-f914-452b-9322-618de37cb28c",
+      "section": "abstract",
+      "ordinal": 0,
+      "section_start": 0,
+      "section_end": 954,
+      "language": "en",
+      "stored_chunk_hash": "6fa39b440dcdde29a8cdbb7d5590327e839e6a86d980e21e1de225edaa2c4244",
+      "text_sha256": "6fa39b440dcdde29a8cdbb7d5590327e839e6a86d980e21e1de225edaa2c4244",
+      "text": "Thanks to their remarkable mechanical, electrical, thermal, and barrier properties, graphene-based nanocomposites have been a hot area of research in the past decade. Because of their simple top-down synthesis, graphene oxide (GO) and reduced graphene oxide (rGO) have opened new possibilities for gas barrier, membrane separation, and stimuli-response characteristics in nanocomposites. Herein, we review the synthesis techniques most commonly used to produce these graphene derivatives, discuss how synthesis affects their key material properties, and highlight some examples of nanocomposites with unique and impressive properties. We specifically highlight their performances in separation applications, stimuli-responsive materials, anti-corrosion coatings, and energy storage. Finally, we discuss the outlook and remaining challenges in the field of practical industrial-scale production and use of graphene-derivative-based polymer nanocomposites."
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "split": "CALIBRATION",
+  "document_code": "D018",
+  "document_id": "298b9ec6-547c-4544-ad9b-1d7796ef32c1",
+  "revision_id": "c3e96320-21ac-4704-a4fb-19af06571af0",
+  "openalex_id": "W2164878199",
+  "cluster": "C01",
+  "source": "openalex",
+  "title": "Reduced Graphene Oxide Conjugated Cu2O Nanowire Mesocrystals for High-Performance NO2 Gas Sensor",
+  "revision_content_hash": "a50fe2e71c4fa0415c5d3c4ef1ecc06fac5bdf3ff4e14d03251b36c7cbe41d24",
+  "chunks": [
+    {
+      "chunk_id": "6b6b66f9-d41f-4669-95f2-f8ed58d4693b",
+      "section": "abstract",
+      "ordinal": 0,
+      "section_start": 0,
+      "section_end": 1191,
+      "language": "en",
+      "stored_chunk_hash": "71fb06d8719f4977cde44efea8717cffa98001b25e550eb3677255280e72c79b",
+      "text_sha256": "71fb06d8719f4977cde44efea8717cffa98001b25e550eb3677255280e72c79b",
+      "text": "Reduced graphene oxide (rGO)-conjugated Cu(2)O nanowire mesocrystals were formed by nonclassical crystallization in the presence of GO and o-anisidine under hydrothermal conditions. The resultant mesocrystals are comprised of highly anisotropic nanowires as building blocks and possess a distinct octahedral morphology with eight {111} equivalent crystal faces. The mechanisms underlying the sequential formation of the mesocrystals are as follows: first, GO-promoted agglomeration of amorphous spherical Cu(2)O nanoparticles at the initial stage, leading to the transition of growth mechanism from conventional ion-by-ion growth to particle-mediated crystallization; second, the evolution of the amorphous microspheres into hierarchical structure, and finally to nanowire mesocrystals through mesoscale transformation, where Ostwald ripening is responsible for the growth of the nanowire building blocks; third, large-scale self-organization of the mesocrystals and the reduction of GO (at high GO concentration) occur simultaneously, resulting in an integrated hybrid architecture where porous three-dimensional (3D) framework structures interspersed among two-dimensional (2D) rGO sheets."
+    },
+    {
+      "chunk_id": "2f4dc259-06bf-47d1-b373-54df2cb8b173",
+      "section": "abstract",
+      "ordinal": 1,
+      "section_start": 1192,
+      "section_end": 1871,
+      "language": "en",
+      "stored_chunk_hash": "6ca07e20b362ed66b0856ca8a6f39ed7c25ed74190f1b63a5dfc49f9d49ff6b8",
+      "text_sha256": "6ca07e20b362ed66b0856ca8a6f39ed7c25ed74190f1b63a5dfc49f9d49ff6b8",
+      "text": "Interestingly, \"super-mesocrystals\" formed by 3D oriented attachment of mesocrystals are also formed judging from the voided Sierpinski polyhedrons observed. Furthermore, the interior nanowire architecture of these mesocrystals can be kinetically controlled by careful variation of growth conditions. Owing to high specific surface area and improved conductivity, the rGO-Cu(2)O mesocrystals achieved a higher sensitivity toward NO(2) at room temperature, surpassing the performance of standalone systems of Cu(2)O nanowires networks and rGO sheets. The unique characteristics of rGO-Cu(2)O mesocrystal point to its promising applications in ultrasensitive environmental sensors."
+    }
+  ]
+}

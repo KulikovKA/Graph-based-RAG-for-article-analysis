@@ -1,0 +1,2 @@
+# Preserve byte-hashed original drafts, including historical CRLF snapshots.
+* -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
