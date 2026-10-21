@@ -1,6 +1,6 @@
 # GRAPH-GOLD-PILOT24 — checkpoint 2026-10-21
 
-**Работа не завершена: первичный проход 2/24, human gold 0/24.**
+**Работа не завершена: AI drafts 3/24; полный первичный проход без открытых вопросов 2/24; human gold 0/24.**
 
 ## Источники
 
@@ -19,17 +19,20 @@ Ollama, LightRAG, worker и extraction pipelines не запускались. Mo
 | Document | Chunks | Sentences | Mentions | Assertions | Concepts | Identity | Validation | Human review |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | D001 | 2 | 6 | 61 | 51 | 54 | 9 | PASS | NOT_REVIEWED |
+| D003 | 2 | 7 | 69 | 45 | 51 | 22 | PASS | NOT_REVIEWED |
 | D010 | 2 | 7 | 105 | 99 | 46 | 76 | PASS | NOT_REVIEWED |
 
-Все 13 предложений прочитаны в source-only AI-проходе. Spans включают повторные и вложенные упоминания; численные qualifiers сохраняют source evidence и attachment. Неизвестные параметры не дополнены догадками.
+В сохранённых drafts прочитаны все 20 предложений. Spans включают повторные и вложенные упоминания; qualifiers сохраняют source evidence и attachment. D003 содержит открытый кандидат отношения: exhaustive_relations=false.
 
-Общий вопрос Q1 — согласование словаря 16 predicates и границ rubric. Он отмечен UNRESOLVED в обеих карточках, но это **один** вопрос, не два разных технических спора. Нерешённых assertion candidates нет: явно неподтверждённые отношения не создавались.
+Q1 решён пользователем: рабочая DEV-рубрика 0.2, 16 predicates, frozen=false. Решение и уточнения записаны в adjudication_decisions.jsonl. Дополнительный аудит пары: Q1_FOLLOWUP_AUDIT.md; unique canonical triples: D001=50, D010=77. Температура не назначается washing durability; best остаётся качественным с неизвестной метрикой сравнения.
+
+Q2 (D003): оптимизация слоя настройкой лазерных параметров; pending predicate/domain decision. Q3 (D004): содействие физическим процессам; только source candidates, полный draft D004 не выполнен. Предложения predicates не внесены в принятый словарь. Источники, переводы и варианты: reviews/questions_Q2_Q3.md.
 
 Заявленная exhaustive-разметка — результат AI-прохода, а не измеренная полнота gold. Синтаксическая валидация не подтверждает семантику. Независимый primary/secondary human review не проводился, подписи null. Каталог gold пуст.
 
 ## Следующий шаг
 
-Согласовать Q1 в reviews/questions.md, записать фактический ответ в adjudication_decisions.jsonl и применить необходимые изменения. Только затем переходить к остальным 10 DEV. После DEV заморозить rubric; CALIBRATION и HOLDOUT размечать отдельно. Проверка publication/author/family duplicates до закрытия HOLDOUT ещё не выполнена. HOLDOUT не использован для настройки правил.
+Получить решения Q2/Q3, записать фактические ответы, завершить D003 и продолжить остальные DEV. После всех 12 DEV подготовить аудит покрытия и предложить окончательный словарь для утверждения перед CALIBRATION/HOLDOUT. Проверка publication/author/family duplicates до закрытия HOLDOUT ещё не выполнена. HOLDOUT не использован для настройки правил.
 
 ## Воспроизведение
 
@@ -39,6 +42,7 @@ Ollama, LightRAG, worker и extraction pipelines не запускались. Mo
 .\.venv\Scripts\python.exe graph_gold_pilot24/prepare_archived_sources.py
 .\.venv\Scripts\python.exe graph_gold_pilot24/verify_live_socket.py
 .\.venv\Scripts\python.exe graph_gold_pilot24/validate_annotations.py
+.\.venv\Scripts\python.exe graph_gold_pilot24/audit_canonical_claims.py
 .\.venv\Scripts\python.exe graph_gold_pilot24/write_review_packets.py
 ```
 

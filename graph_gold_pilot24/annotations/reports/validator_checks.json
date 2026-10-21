@@ -1,43 +1,49 @@
 {
-  "baseline": "PASS",
+  "rubric_version": "pilot24-dev-rubric-0.2-WORKING",
+  "baseline_documents": {
+    "D001": "PASS",
+    "D003": "PASS",
+    "D010": "PASS"
+  },
   "negative_validation_cases": {
-    "wrong_unicode_offset": {
+    "wrong_offset": {
       "status": "REJECTED_AS_EXPECTED",
-      "detected_errors": 2
+      "errors_detected": 2
     },
     "missing_endpoint": {
       "status": "REJECTED_AS_EXPECTED",
-      "detected_errors": 1
+      "errors_detected": 1
     },
-    "reversed_direction": {
+    "unknown_predicate": {
       "status": "REJECTED_AS_EXPECTED",
-      "detected_errors": 1
+      "errors_detected": 1
     },
-    "wrong_qualifier_attachment": {
+    "human_review_fabrication": {
       "status": "REJECTED_AS_EXPECTED",
-      "detected_errors": 1
+      "errors_detected": 1
     },
-    "wrong_numeric_value": {
+    "missing_sentence_coverage": {
       "status": "REJECTED_AS_EXPECTED",
-      "detected_errors": 1
+      "errors_detected": 1
     },
-    "invalid_modality": {
+    "pending_relation_claims_exhaustive": {
       "status": "REJECTED_AS_EXPECTED",
-      "detected_errors": 1
+      "errors_detected": 1
     },
-    "lost_pending_question": {
+    "invalid_candidate_endpoint": {
       "status": "REJECTED_AS_EXPECTED",
-      "detected_errors": 1
+      "errors_detected": 1
     },
-    "fabricated_human_review": {
+    "corrupt_candidate_evidence": {
       "status": "REJECTED_AS_EXPECTED",
-      "detected_errors": 1
-    },
-    "incomplete_sentence_coverage": {
-      "status": "REJECTED_AS_EXPECTED",
-      "detected_errors": 1
+      "errors_detected": 2
     }
   },
-  "preparation_archive_files_unchanged": true,
-  "gold_directory_empty": true
+  "Q1_roles_and_proposed_modality": "PASS",
+  "D001_temperature_attachment": "PASS",
+  "D010_best_no_invented_numeric_metric": "PASS",
+  "Q3_source_candidate_spans": "PASS",
+  "sources_and_preparation_package_unchanged": true,
+  "gold_empty": true,
+  "test_scope": "Structural rejection and preservation of recorded decisions; not independent human semantic validation"
 }

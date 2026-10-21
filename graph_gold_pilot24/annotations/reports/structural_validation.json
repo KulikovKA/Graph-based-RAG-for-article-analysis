@@ -9,8 +9,11 @@
     "assertions": 51,
     "canonical_concepts": 54,
     "identity_decisions": 9,
-    "unresolved_questions": 1,
+    "unresolved_questions": 0,
     "unresolved_assertions": 0,
+    "unresolved_relation_candidates": 0,
+    "exhaustive_entities": true,
+    "exhaustive_relations": true,
     "polarity_counts": {
       "POSITIVE": 51
     },
@@ -18,7 +21,33 @@
       "ASSERTED": 47,
       "HYPOTHETICAL": 4
     },
-    "annotation_sha256": "ab7e7e7fb24a28d0c5518cb33f0da5a94ee7369b3b32472852f0a994a5e4a6f0",
+    "annotation_sha256": "343363dadc941d370b5e3bd28fa202b98a5068431ce46308399fe989798587df",
+    "human_review": "NOT_REVIEWED",
+    "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
+  },
+  {
+    "document_code": "D003",
+    "status": "PASS",
+    "errors": [],
+    "chunks": 2,
+    "sentences": 7,
+    "mentions": 69,
+    "assertions": 45,
+    "canonical_concepts": 51,
+    "identity_decisions": 22,
+    "unresolved_questions": 1,
+    "unresolved_assertions": 0,
+    "unresolved_relation_candidates": 1,
+    "exhaustive_entities": true,
+    "exhaustive_relations": false,
+    "polarity_counts": {
+      "POSITIVE": 45
+    },
+    "modality_counts": {
+      "ASSERTED": 43,
+      "HYPOTHETICAL": 2
+    },
+    "annotation_sha256": "50866b44ea59ae392e6332425feab1dd70032c59d70e800477e66be5c517f96a",
     "human_review": "NOT_REVIEWED",
     "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
   },
@@ -32,17 +61,20 @@
     "assertions": 99,
     "canonical_concepts": 46,
     "identity_decisions": 76,
-    "unresolved_questions": 1,
+    "unresolved_questions": 0,
     "unresolved_assertions": 0,
+    "unresolved_relation_candidates": 0,
+    "exhaustive_entities": true,
+    "exhaustive_relations": true,
     "polarity_counts": {
       "POSITIVE": 99
     },
     "modality_counts": {
-      "ASSERTED": 88,
+      "ASSERTED": 85,
       "COMPARED": 2,
-      "PROPOSED": 9
+      "PROPOSED": 12
     },
-    "annotation_sha256": "adffbe3a7beff24c410f5841bf288a88709ec7063d886739dd0dc1da4664125f",
+    "annotation_sha256": "66b6fa533d19736754dfaacc7b3871f2f98194567df9152e4ea518ef7808f0cb",
     "human_review": "NOT_REVIEWED",
     "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
   }

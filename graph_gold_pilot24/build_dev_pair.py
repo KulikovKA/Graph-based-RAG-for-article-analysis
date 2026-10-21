@@ -10,7 +10,7 @@ from pathlib import Path
 from uuid import NAMESPACE_URL, uuid5
 
 BASE = Path(__file__).resolve().parent
-VERSION = 'pilot24-dev-pair-rubric-0.1-PROPOSED'
+VERSION = 'pilot24-dev-rubric-0.2-WORKING'
 SOURCES = {d['document_code']: d for d in map(json.loads, (BASE / 'pilot24_sources.jsonl').read_text(encoding='utf-8').splitlines())}
 TEMPLATES = {d['document_code']: d for d in map(json.loads, (BASE / 'gold_annotation_template.jsonl').read_text(encoding='utf-8').splitlines())}
 
@@ -32,7 +32,8 @@ class Draft:
                          completeness_status='AI_FIRST_PASS_ALL_SENTENCES; HUMAN_RECALL_REVIEW_PENDING')
         self.data['review'].update(human_review_status='NOT_REVIEWED',
                                    ai_assistance='Codex source-only curated draft',
-                                   adjudication_status='PENDING_SCHEMA_APPROVAL')
+                                   adjudication_status='SCHEMA_Q1_RESOLVED_ANNOTATIONS_NOT_REVIEWED',
+                                   schema_decision_refs=['Q1'])
         self.sentences, self.mentions, self.concepts = {}, {}, {}
         self.current = None
         n = 0
@@ -115,7 +116,7 @@ class Draft:
         a = dict(assertion_id=assertion_id, head_mention_id=h['mention_id'], tail_mention_id=t['mention_id'],
                  relation_type=relation, polarity='POSITIVE', modality=modality,
                  qualifiers=qs, evidence=[self.sentences[s] for s in ss], support_status='SUPPORTED',
-                 assertion_scope=scope, annotation_status='AI_DRAFT', relation_vocabulary_status='PROPOSED')
+                 assertion_scope=scope, annotation_status='AI_DRAFT', relation_vocabulary_status='DEV_WORKING_APPROVED')
         if note:
             a['semantic_note'] = note
         self.data['assertions'].append(a)
@@ -133,7 +134,7 @@ class Draft:
             for key in keys:
                 self.mentions[key]['coreference_group'] = uid(f'{self.code}/coreference/{keys[0]}')
 
-    def component_mentions(self, outer_key, components):
+    def component_mentions(self, outer_key, components, modality='ASSERTED'):
         outer = self.mentions[outer_key]
         for alias_key, surface in components:
             key = outer_key + '_' + alias_key
@@ -150,7 +151,7 @@ class Draft:
             self.mentions[key] = m
             self.data['mentions'].append(m)
             self.identity(alias_key, key, 'SAME', 'Local full-name/formula definition and explicitly named constituent; no equivalence of whole composite and constituent.')
-            self.rel(outer_key, 'HAS_COMPONENT', key)
+            self.rel(outer_key, 'HAS_COMPONENT', key, modality=modality)
 
     def identity(self, left, right, label, reason):
         l, r = self.mentions[left], self.mentions[right]
@@ -166,10 +167,6 @@ class Draft:
 
     def save(self):
         self.data['canonical_concepts'] = list(self.concepts.values())
-        self.data['unresolved'].append(dict(question_id='Q1', status='UNRESOLVED',
-            category='RELATION_VOCABULARY_AND_RUBRIC_APPROVAL',
-            reason='Research schema does not enumerate predicates. Proposed vocabulary requires user approval before remaining DEV.',
-            affects='Schema approval; not an unsupported source assertion.'))
         path = BASE / 'annotations/drafts' / (self.code + '.jsonl')
         path.write_text(json.dumps(self.data, ensure_ascii=False) + '\n', encoding='utf-8')
         print(self.code, len(self.data['mentions']), 'mentions', len(self.data['assertions']), 'assertions', len(self.concepts), 'concepts')
@@ -237,13 +234,13 @@ wash|washing durability|PERFORMANCE|washing durability
 temp|room-temperature|OPERATING_CONDITION|room temperature
 detection|gas detection|PROCESS|gas detection''')
     rt = ('S4', 'room-temperature', 'temperature', 'room temperature', None)
-    d.rel('fiber4', 'HAS_PERFORMANCE', 'response', qualifiers=[rt])
-    d.rel('fiber4', 'HAS_PERFORMANCE', 'stability', qualifiers=[('S4', '84 days', 'duration', 84, 'days'), rt])
-    d.rel('fiber4', 'HAS_PERFORMANCE', 'lod', qualifiers=[('S4', '43.5 ppb NO 2', 'detection_limit', 43.5, 'ppb'), ('S4', 'theoretical', 'estimation_status', 'theoretical', None), rt])
+    d.rel('fiber4', 'HAS_PERFORMANCE', 'response')
+    d.rel('fiber4', 'HAS_PERFORMANCE', 'stability', qualifiers=[('S4', '84 days', 'duration', 84, 'days')])
+    d.rel('fiber4', 'HAS_PERFORMANCE', 'lod', qualifiers=[('S4', '43.5 ppb NO 2', 'detection_limit', 43.5, 'ppb'), ('S4', 'theoretical', 'estimation_status', 'theoretical', None)])
     d.rel('fiber4', 'DETECTS', 'no2', qualifiers=[rt], note='NO2 is explicitly attached to the theoretical detection limit; do not substitute an unspecified gas.')
     d.rel('fiber4', 'HAS_PERFORMANCE', 'tolerance', qualifiers=[('S4', '3000 bending cycles', 'bending_cycles', 3000, 'cycles'), ('S4', '1000 twisting cycles', 'twisting_cycles', 1000, 'cycles'), ('S4', '65% strain strength', 'strain', 65, '%')])
     d.rel('fiber4', 'HAS_PERFORMANCE', 'strain', qualifiers=[('S4', '65% strain strength', 'strain', 65, '%')], note='Retain unusual source wording strain strength; no conversion to tensile stress or failure strain.')
-    d.rel('fiber4', 'HAS_PERFORMANCE', 'wash', qualifiers=[rt])
+    d.rel('fiber4', 'HAS_PERFORMANCE', 'wash', note='Room-temperature modifies gas detection; no washing-test temperature is specified. Do not attach it to washing durability.')
     d.rel('fiber4', 'USED_FOR', 'detection', qualifiers=[rt])
     d.ms('S5', '''wearable_characteristics|repairability, reliability, stability, and practicability|PROPERTY|wearable characteristic bundle
 repair|repairability|PROPERTY
@@ -288,6 +285,7 @@ hmi|human–machine interactions|APPLICATION''')
     d.identity('rgo', 'zno', 'DIFFERENT', 'Explicitly named distinct constituents of the sensing layer.')
     d.identity('textiles', 'sensor', 'BROADER', 'E-textiles is the background device class; the described fiber gas sensor is a specific e-textile platform, not the class itself.')
     d.note('S4', '84 days attaches to stability, 43.5 ppb to theoretical NO2 LOD, bending/twisting/strain values to mechanical tolerance. No numerical room-temperature value is inferred.')
+    d.note('S4', 'Q1 follow-up audit: removed room-temperature from individual performance assertions (response, stability, LOD, washing durability). It remains on gas detection only; the trailing modifier does not explicitly specify separate test conditions.')
     d.save()
 
 
@@ -384,11 +382,11 @@ ace|acetone|ANALYTE|acetone|comparison_analyte''')
     d.ms('S7', '''nh3_7|NH 3|ANALYTE|ammonia|target_analyte
 mechanism|NH 3 -sensing mechanism|MECHANISM|proposed NH3 sensing mechanism
 modulation|modulation of complex p–n heterojunctions|MECHANISM|p–n heterojunction modulation
-junction|complex p–n heterojunctions|MORPHOLOGY|complex p–n heterojunction structure
-acc|electron accumulation layer|MORPHOLOGY|electron accumulation layer
+junction|complex p–n heterojunctions|MORPHOLOGY|complex p–n heterojunction structure|electronic_interface
+acc|electron accumulation layer|MORPHOLOGY|electron accumulation layer|electronic_charge_region
 ntype|n-type|PROPERTY|n-type conductivity
 gcz|GO/CuO/ZnO|MATERIAL|GO/CuO/ZnO subcomposite
-dep|electron depletion layer|MORPHOLOGY|electron depletion layer
+dep|electron depletion layer|MORPHOLOGY|electron depletion layer|electronic_charge_region
 ptype|p-type|PROPERTY|p-type conductivity
 mxene7|Ti 3 C 2 Tx Mxene|MATERIAL|Ti3C2Tx MXene''')
     d.rel('sensor6', 'HAS_MECHANISM', 'mechanism', sentences=['S6', 'S7'], modality='PROPOSED')
@@ -419,7 +417,7 @@ mxene7|Ti 3 C 2 Tx Mxene|MATERIAL|Ti3C2Tx MXene''')
         d.component_mentions(outer, components)
     for outer in ('material4', 'mat5a', 'mat5b', 'mat6'):
         d.component_mentions(outer, [('mxene', 'Ti 3 C 2 Tx MXene'), ('go', 'GO'), ('cuo', 'CuO'), ('zno', 'ZnO')])
-    d.component_mentions('gcz', [('go', 'GO'), ('cuo', 'CuO'), ('zno', 'ZnO')])
+    d.component_mentions('gcz', [('go', 'GO'), ('cuo', 'CuO'), ('zno', 'ZnO')], modality='PROPOSED')
     # Room temperature is stated for the whole tested sensor series in S3.
     # Carry that contextual condition with its original evidence, never 25 C.
     for a in d.data['assertions']:

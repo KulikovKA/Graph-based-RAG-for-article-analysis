@@ -10,7 +10,11 @@ Chunks: 2; sentences: 6; mentions: 61; assertions: 51; concepts: 54; identity de
 
 Структурная проверка: PASS. Семантическая проверка выполнена AI; независимой человеческой проверки не было.
 
-Один общий нерешённый вопрос Q1: утверждение словаря/рубрик. UNRESOLVED assertions: 0; это не означает утверждения схемы или gold.
+Рубрика `pilot24-dev-rubric-0.2-WORKING`. Q1 решён для рабочей схемы DEV; human review не предоставлен. Открытые вопросы: нет.
+
+Полнота AI-прохода: entities=True, relations=True. UNRESOLVED candidates: 0; UNRESOLVED accepted assertions: 0.
+
+Unique canonical triples: 50; qualified groups: 51. Source mentions/assertions не удалялись.
 
 ## Полный доступный исходный текст
 
@@ -45,6 +49,8 @@ The proposed gas sensor is built using commercially available cotton/elastic thr
 The as-prepared fiber demonstrates sensitive sensing response, excellent long-term stability (84 days), low theoretical detection limit (43.5 ppb NO 2 ), great mechanical deformation tolerance (3000 bending cycles, 1000 twisting cycles and 65% strain strength), and washing durability in room-temperature gas detection.
 
 84 days attaches to stability, 43.5 ppb to theoretical NO2 LOD, bending/twisting/strain values to mechanical tolerance. No numerical room-temperature value is inferred.
+
+Q1 follow-up audit: removed room-temperature from individual performance assertions (response, stability, LOD, washing durability). It remains on gas detection only; the trailing modifier does not explicitly specify separate test conditions.
 
 ### S5: [0, 320)
 
@@ -152,13 +158,13 @@ The good sensing properties, superior flexibility, and scalable applications of 
 | 22 | zno | HAS_MORPHOLOGY | sheets | ASSERTED / STUDY_RESULT |  | S3 |  |
 | 23 | layer_material | FUNCTIONS_AS | layers | ASSERTED / STUDY_RESULT |  | S3 |  |
 | 24 | sensor3 | HAS_COMPONENT | layers | ASSERTED / STUDY_RESULT |  | S3 |  |
-| 25 | fiber4 | HAS_PERFORMANCE | response | ASSERTED / STUDY_RESULT | temperature: room-temperature | S4 |  |
-| 26 | fiber4 | HAS_PERFORMANCE | stability | ASSERTED / STUDY_RESULT | duration: 84 days; temperature: room-temperature | S4 |  |
-| 27 | fiber4 | HAS_PERFORMANCE | lod | ASSERTED / STUDY_RESULT | detection_limit: 43.5 ppb NO 2; estimation_status: theoretical; temperature: room-temperature | S4 |  |
+| 25 | fiber4 | HAS_PERFORMANCE | response | ASSERTED / STUDY_RESULT |  | S4 |  |
+| 26 | fiber4 | HAS_PERFORMANCE | stability | ASSERTED / STUDY_RESULT | duration: 84 days | S4 |  |
+| 27 | fiber4 | HAS_PERFORMANCE | lod | ASSERTED / STUDY_RESULT | detection_limit: 43.5 ppb NO 2; estimation_status: theoretical | S4 |  |
 | 28 | fiber4 | DETECTS | no2 | ASSERTED / STUDY_RESULT | temperature: room-temperature | S4 | NO2 is explicitly attached to the theoretical detection limit; do not substitute an unspecified gas. |
 | 29 | fiber4 | HAS_PERFORMANCE | tolerance | ASSERTED / STUDY_RESULT | bending_cycles: 3000 bending cycles; twisting_cycles: 1000 twisting cycles; strain: 65% strain strength | S4 |  |
 | 30 | fiber4 | HAS_PERFORMANCE | strain | ASSERTED / STUDY_RESULT | strain: 65% strain strength | S4 | Retain unusual source wording strain strength; no conversion to tensile stress or failure strain. |
-| 31 | fiber4 | HAS_PERFORMANCE | wash | ASSERTED / STUDY_RESULT | temperature: room-temperature | S4 |  |
+| 31 | fiber4 | HAS_PERFORMANCE | wash | ASSERTED / STUDY_RESULT |  | S4 | Room-temperature modifies gas detection; no washing-test temperature is specified. Do not attach it to washing durability. |
 | 32 | fiber4 | USED_FOR | detection | ASSERTED / STUDY_RESULT | temperature: room-temperature | S4 |  |
 | 33 | methods | IMPROVES | wearable_characteristics | ASSERTED / STUDY_RESULT |  | S5 | Collective claim only. The text does not give a one-to-one mapping of three methods to four characteristics. |
 | 34 | wearable_characteristics | HAS_MEMBER | repair | ASSERTED / STUDY_RESULT |  | S5 |  |

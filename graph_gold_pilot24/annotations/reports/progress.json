@@ -4,48 +4,66 @@
     "document_id": "00f9cfc7-459f-4c4d-8131-b425d01527dc",
     "revision_id": "7664effe-8f20-46e8-b694-224b75bea829",
     "split": "DEV",
-    "annotation_status": "AI_DRAFT_PENDING_SCHEMA_APPROVAL",
+    "annotation_status": "AI_DRAFT_PENDING_HUMAN_REVIEW",
     "human_review": "NOT_REVIEWED",
     "source_chunks": 2,
     "mentions": 61,
     "assertions": 51,
-    "counts_status": "DRAFT_COUNTS"
+    "counts_status": "DRAFT_COUNTS",
+    "exhaustive_entities": true,
+    "exhaustive_relations": true,
+    "unique_canonical_triples": 50,
+    "source_case_question_ids": []
   },
   {
     "document_code": "D003",
     "document_id": "06066c66-1454-4813-b7b7-f366b9956035",
     "revision_id": "7af46631-a38f-430d-a43c-bcfa0dccac9e",
     "split": "DEV",
-    "annotation_status": "NOT_STARTED",
+    "annotation_status": "AI_DRAFT_PENDING_ONTOLOGY_QUESTION",
     "human_review": "NOT_REVIEWED",
     "source_chunks": 2,
-    "mentions": null,
-    "assertions": null,
-    "counts_status": "NOT_MEASURED"
+    "mentions": 69,
+    "assertions": 45,
+    "counts_status": "DRAFT_COUNTS",
+    "exhaustive_entities": true,
+    "exhaustive_relations": false,
+    "unique_canonical_triples": 42,
+    "source_case_question_ids": []
   },
   {
     "document_code": "D004",
     "document_id": "08d58bd1-a89e-4b70-b817-821df8428bc7",
     "revision_id": "5afc0eeb-3c76-40cf-99be-e70f066beb2b",
     "split": "DEV",
-    "annotation_status": "NOT_STARTED",
+    "annotation_status": "SOURCE_CANDIDATE_PENDING_DECISION",
     "human_review": "NOT_REVIEWED",
     "source_chunks": 2,
     "mentions": null,
     "assertions": null,
-    "counts_status": "NOT_MEASURED"
+    "counts_status": "NOT_MEASURED",
+    "exhaustive_entities": false,
+    "exhaustive_relations": false,
+    "unique_canonical_triples": null,
+    "source_case_question_ids": [
+      "Q3"
+    ]
   },
   {
     "document_code": "D010",
     "document_id": "136d5083-0254-4930-a35e-88441bb802a0",
     "revision_id": "fbd87a44-35d0-4f51-80d6-39abd117d01f",
     "split": "DEV",
-    "annotation_status": "AI_DRAFT_PENDING_SCHEMA_APPROVAL",
+    "annotation_status": "AI_DRAFT_PENDING_HUMAN_REVIEW",
     "human_review": "NOT_REVIEWED",
     "source_chunks": 2,
     "mentions": 105,
     "assertions": 99,
-    "counts_status": "DRAFT_COUNTS"
+    "counts_status": "DRAFT_COUNTS",
+    "exhaustive_entities": true,
+    "exhaustive_relations": true,
+    "unique_canonical_triples": 77,
+    "source_case_question_ids": []
   },
   {
     "document_code": "D060",
@@ -57,7 +75,11 @@
     "source_chunks": 1,
     "mentions": null,
     "assertions": null,
-    "counts_status": "NOT_MEASURED"
+    "counts_status": "NOT_MEASURED",
+    "exhaustive_entities": false,
+    "exhaustive_relations": false,
+    "unique_canonical_triples": null,
+    "source_case_question_ids": []
   },
   {
     "document_code": "D078",
@@ -69,7 +91,11 @@
     "source_chunks": 2,
     "mentions": null,
     "assertions": null,
-    "counts_status": "NOT_MEASURED"
+    "counts_status": "NOT_MEASURED",
+    "exhaustive_entities": false,
+    "exhaustive_relations": false,
+    "unique_canonical_triples": null,
+    "source_case_question_ids": []
   },
   {
     "document_code": "D035",
@@ -81,7 +107,11 @@
     "source_chunks": 1,
     "mentions": null,
     "assertions": null,
-    "counts_status": "NOT_MEASURED"
+    "counts_status": "NOT_MEASURED",
+    "exhaustive_entities": false,
+    "exhaustive_relations": false,
+    "unique_canonical_triples": null,
+    "source_case_question_ids": []
   },
   {
     "document_code": "D092",
@@ -93,7 +123,11 @@
     "source_chunks": 1,
     "mentions": null,
     "assertions": null,
-    "counts_status": "NOT_MEASURED"
+    "counts_status": "NOT_MEASURED",
+    "exhaustive_entities": false,
+    "exhaustive_relations": false,
+    "unique_canonical_triples": null,
+    "source_case_question_ids": []
   },
   {
     "document_code": "D017",
@@ -105,7 +139,11 @@
     "source_chunks": 2,
     "mentions": null,
     "assertions": null,
-    "counts_status": "NOT_MEASURED"
+    "counts_status": "NOT_MEASURED",
+    "exhaustive_entities": false,
+    "exhaustive_relations": false,
+    "unique_canonical_triples": null,
+    "source_case_question_ids": []
   },
   {
     "document_code": "D038",
@@ -117,7 +155,11 @@
     "source_chunks": 1,
     "mentions": null,
     "assertions": null,
-    "counts_status": "NOT_MEASURED"
+    "counts_status": "NOT_MEASURED",
+    "exhaustive_entities": false,
+    "exhaustive_relations": false,
+    "unique_canonical_triples": null,
+    "source_case_question_ids": []
   },
   {
     "document_code": "D026",
@@ -129,7 +171,11 @@
     "source_chunks": 1,
     "mentions": null,
     "assertions": null,
-    "counts_status": "NOT_MEASURED"
+    "counts_status": "NOT_MEASURED",
+    "exhaustive_entities": false,
+    "exhaustive_relations": false,
+    "unique_canonical_triples": null,
+    "source_case_question_ids": []
   },
   {
     "document_code": "D024",
@@ -141,7 +187,11 @@
     "source_chunks": 2,
     "mentions": null,
     "assertions": null,
-    "counts_status": "NOT_MEASURED"
+    "counts_status": "NOT_MEASURED",
+    "exhaustive_entities": false,
+    "exhaustive_relations": false,
+    "unique_canonical_triples": null,
+    "source_case_question_ids": []
   },
   {
     "document_code": "D018",
@@ -153,7 +203,11 @@
     "source_chunks": 2,
     "mentions": null,
     "assertions": null,
-    "counts_status": "NOT_MEASURED"
+    "counts_status": "NOT_MEASURED",
+    "exhaustive_entities": false,
+    "exhaustive_relations": false,
+    "unique_canonical_triples": null,
+    "source_case_question_ids": []
   },
   {
     "document_code": "D050",
@@ -165,7 +219,11 @@
     "source_chunks": 1,
     "mentions": null,
     "assertions": null,
-    "counts_status": "NOT_MEASURED"
+    "counts_status": "NOT_MEASURED",
+    "exhaustive_entities": false,
+    "exhaustive_relations": false,
+    "unique_canonical_triples": null,
+    "source_case_question_ids": []
   },
   {
     "document_code": "D029",
@@ -177,7 +235,11 @@
     "source_chunks": 1,
     "mentions": null,
     "assertions": null,
-    "counts_status": "NOT_MEASURED"
+    "counts_status": "NOT_MEASURED",
+    "exhaustive_entities": false,
+    "exhaustive_relations": false,
+    "unique_canonical_triples": null,
+    "source_case_question_ids": []
   },
   {
     "document_code": "D042",
@@ -189,7 +251,11 @@
     "source_chunks": 2,
     "mentions": null,
     "assertions": null,
-    "counts_status": "NOT_MEASURED"
+    "counts_status": "NOT_MEASURED",
+    "exhaustive_entities": false,
+    "exhaustive_relations": false,
+    "unique_canonical_triples": null,
+    "source_case_question_ids": []
   },
   {
     "document_code": "D021",
@@ -201,7 +267,11 @@
     "source_chunks": 1,
     "mentions": null,
     "assertions": null,
-    "counts_status": "NOT_MEASURED"
+    "counts_status": "NOT_MEASURED",
+    "exhaustive_entities": false,
+    "exhaustive_relations": false,
+    "unique_canonical_triples": null,
+    "source_case_question_ids": []
   },
   {
     "document_code": "D093",
@@ -213,7 +283,11 @@
     "source_chunks": 1,
     "mentions": null,
     "assertions": null,
-    "counts_status": "NOT_MEASURED"
+    "counts_status": "NOT_MEASURED",
+    "exhaustive_entities": false,
+    "exhaustive_relations": false,
+    "unique_canonical_triples": null,
+    "source_case_question_ids": []
   },
   {
     "document_code": "D068",
@@ -225,7 +299,11 @@
     "source_chunks": 2,
     "mentions": null,
     "assertions": null,
-    "counts_status": "NOT_MEASURED"
+    "counts_status": "NOT_MEASURED",
+    "exhaustive_entities": false,
+    "exhaustive_relations": false,
+    "unique_canonical_triples": null,
+    "source_case_question_ids": []
   },
   {
     "document_code": "D070",
@@ -237,7 +315,11 @@
     "source_chunks": 1,
     "mentions": null,
     "assertions": null,
-    "counts_status": "NOT_MEASURED"
+    "counts_status": "NOT_MEASURED",
+    "exhaustive_entities": false,
+    "exhaustive_relations": false,
+    "unique_canonical_triples": null,
+    "source_case_question_ids": []
   },
   {
     "document_code": "D098",
@@ -249,7 +331,11 @@
     "source_chunks": 1,
     "mentions": null,
     "assertions": null,
-    "counts_status": "NOT_MEASURED"
+    "counts_status": "NOT_MEASURED",
+    "exhaustive_entities": false,
+    "exhaustive_relations": false,
+    "unique_canonical_triples": null,
+    "source_case_question_ids": []
   },
   {
     "document_code": "D088",
@@ -261,7 +347,11 @@
     "source_chunks": 2,
     "mentions": null,
     "assertions": null,
-    "counts_status": "NOT_MEASURED"
+    "counts_status": "NOT_MEASURED",
+    "exhaustive_entities": false,
+    "exhaustive_relations": false,
+    "unique_canonical_triples": null,
+    "source_case_question_ids": []
   },
   {
     "document_code": "D061",
@@ -273,7 +363,11 @@
     "source_chunks": 1,
     "mentions": null,
     "assertions": null,
-    "counts_status": "NOT_MEASURED"
+    "counts_status": "NOT_MEASURED",
+    "exhaustive_entities": false,
+    "exhaustive_relations": false,
+    "unique_canonical_triples": null,
+    "source_case_question_ids": []
   },
   {
     "document_code": "D090",
@@ -285,6 +379,10 @@
     "source_chunks": 1,
     "mentions": null,
     "assertions": null,
-    "counts_status": "NOT_MEASURED"
+    "counts_status": "NOT_MEASURED",
+    "exhaustive_entities": false,
+    "exhaustive_relations": false,
+    "unique_canonical_triples": null,
+    "source_case_question_ids": []
   }
 ]

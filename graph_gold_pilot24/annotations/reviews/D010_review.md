@@ -10,7 +10,11 @@ Chunks: 2; sentences: 7; mentions: 105; assertions: 99; concepts: 46; identity d
 
 Структурная проверка: PASS. Семантическая проверка выполнена AI; независимой человеческой проверки не было.
 
-Один общий нерешённый вопрос Q1: утверждение словаря/рубрик. UNRESOLVED assertions: 0; это не означает утверждения схемы или gold.
+Рубрика `pilot24-dev-rubric-0.2-WORKING`. Q1 решён для рабочей схемы DEV; human review не предоставлен. Открытые вопросы: нет.
+
+Полнота AI-прохода: entities=True, relations=True. UNRESOLVED candidates: 0; UNRESOLVED accepted assertions: 0.
+
+Unique canonical triples: 77; qualified groups: 78. Source mentions/assertions не удалялись.
 
 ## Полный доступный исходный текст
 
@@ -124,11 +128,11 @@ Preserves author-proposed mechanism and author-stated n/p assignments. No claim 
 | nh3_7 | S7 | [367, 371) | NH 3 | ANALYTE / target_analyte | ammonia |
 | mechanism | S7 | [367, 390) | NH 3 -sensing mechanism | MECHANISM / technical_mechanism | proposed NH3 sensing mechanism |
 | modulation | S7 | [417, 458) | modulation of complex p–n heterojunctions | MECHANISM / technical_mechanism | p–n heterojunction modulation |
-| junction | S7 | [431, 458) | complex p–n heterojunctions | MORPHOLOGY / technical_morphology | complex p–n heterojunction structure |
-| acc | S7 | [467, 494) | electron accumulation layer | MORPHOLOGY / technical_morphology | electron accumulation layer |
+| junction | S7 | [431, 458) | complex p–n heterojunctions | MORPHOLOGY / electronic_interface | complex p–n heterojunction structure |
+| acc | S7 | [467, 494) | electron accumulation layer | MORPHOLOGY / electronic_charge_region | electron accumulation layer |
 | ntype | S7 | [502, 508) | n-type | PROPERTY / technical_property | n-type conductivity |
 | gcz | S7 | [512, 522) | GO/CuO/ZnO | MATERIAL / technical_material | GO/CuO/ZnO subcomposite |
-| dep | S7 | [531, 555) | electron depletion layer | MORPHOLOGY / technical_morphology | electron depletion layer |
+| dep | S7 | [531, 555) | electron depletion layer | MORPHOLOGY / electronic_charge_region | electron depletion layer |
 | ptype | S7 | [563, 569) | p-type | PROPERTY / technical_property | p-type conductivity |
 | mxene7 | S7 | [570, 587) | Ti 3 C 2 Tx Mxene | MATERIAL / technical_material | Ti3C2Tx MXene |
 | mg_mxene | S3 | [422, 427) | Mxene | MATERIAL / named_composite_constituent | Ti3C2Tx MXene |
@@ -272,9 +276,9 @@ Preserves author-proposed mechanism and author-stated n/p assignments. No claim 
 | 94 | mat6 | HAS_COMPONENT | mat6_go | ASSERTED / STUDY_RESULT |  | S6 |  |
 | 95 | mat6 | HAS_COMPONENT | mat6_cuo | ASSERTED / STUDY_RESULT |  | S6 |  |
 | 96 | mat6 | HAS_COMPONENT | mat6_zno | ASSERTED / STUDY_RESULT |  | S6 |  |
-| 97 | gcz | HAS_COMPONENT | gcz_go | ASSERTED / STUDY_RESULT |  | S7 |  |
-| 98 | gcz | HAS_COMPONENT | gcz_cuo | ASSERTED / STUDY_RESULT |  | S7 |  |
-| 99 | gcz | HAS_COMPONENT | gcz_zno | ASSERTED / STUDY_RESULT |  | S7 |  |
+| 97 | gcz | HAS_COMPONENT | gcz_go | PROPOSED / STUDY_RESULT |  | S7 |  |
+| 98 | gcz | HAS_COMPONENT | gcz_cuo | PROPOSED / STUDY_RESULT |  | S7 |  |
+| 99 | gcz | HAS_COMPONENT | gcz_zno | PROPOSED / STUDY_RESULT |  | S7 |  |
 
 ## Все identity decisions
 

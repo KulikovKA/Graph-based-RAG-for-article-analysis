@@ -1,0 +1,2064 @@
+[
+  {
+    "document_code": "D001",
+    "revision_id": "7664effe-8f20-46e8-b694-224b75bea829",
+    "assertion_occurrences": 51,
+    "unique_canonical_triples": 50,
+    "repeated_core_triple_occurrences": 1,
+    "unique_qualified_claims": 51,
+    "repeated_qualified_claim_occurrences": 0,
+    "canonical_triples": [
+      {
+        "head_concept_id": "f8667902-441c-5ace-96ad-209b823b93b6",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "633af5d7-508c-5867-b0c0-8a61c65e14ae",
+        "head": "e-textile",
+        "tail": "low cost",
+        "assertion_ids": [
+          "f50ea985-9822-55e7-8fe1-c81b67a01955"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "f8667902-441c-5ace-96ad-209b823b93b6",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "413eb189-980f-51c5-b560-bdf1aaa573c1",
+        "head": "e-textile",
+        "tail": "light weight",
+        "assertion_ids": [
+          "b1c5fd55-a2b3-5b4b-b7ee-00a147dee504"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "f8667902-441c-5ace-96ad-209b823b93b6",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "bc64c527-6f34-5952-83a4-431ce1e456a8",
+        "head": "e-textile",
+        "tail": "conformable compatibility with clothes",
+        "assertion_ids": [
+          "9b916e51-27e3-5ca5-ba4e-a58cd7d0832e"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "f8667902-441c-5ace-96ad-209b823b93b6",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "ff4f2318-cb92-5c4f-9cd5-d2f133523937",
+        "head": "e-textile",
+        "tail": "wearable and portable smart electronics",
+        "assertion_ids": [
+          "2461a1dd-08a1-55c0-9478-5fd7c0a1df0a"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "bcb444d2-9aca-5bd6-8938-d6703f430773",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "31728ef3-756e-5845-b314-a230bdb0bc25",
+        "head": "study fiber gas sensor",
+        "tail": "fabricating strategy",
+        "assertion_ids": [
+          "98de89d5-d9f3-5ff2-9808-cb326e4cab9f"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "31728ef3-756e-5845-b314-a230bdb0bc25",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "fdc8227a-51ca-5424-99bd-cc5c76127d32",
+        "head": "fabricating strategy",
+        "tail": "easy-handing",
+        "assertion_ids": [
+          "cb2c886b-3e86-55e7-814b-920f0153327d"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "31728ef3-756e-5845-b314-a230bdb0bc25",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "633af5d7-508c-5867-b0c0-8a61c65e14ae",
+        "head": "fabricating strategy",
+        "tail": "low cost",
+        "assertion_ids": [
+          "1cd45ec4-429e-50c4-b56a-2b8f88ca374e"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "31728ef3-756e-5845-b314-a230bdb0bc25",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "daf9b49e-2bf8-511a-ac6b-de03f2a22037",
+        "head": "fabricating strategy",
+        "tail": "scalability",
+        "assertion_ids": [
+          "708bc21e-7b3b-5812-a326-cb44b1b21fa9"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "bcb444d2-9aca-5bd6-8938-d6703f430773",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "2847e4bb-af4e-5d25-9bca-48620f78aa4d",
+        "head": "study fiber gas sensor",
+        "tail": "electrical conductivity",
+        "assertion_ids": [
+          "3aa8b14b-0a9a-5129-b193-3f3d923ae42f"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "bcb444d2-9aca-5bd6-8938-d6703f430773",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "57909fdd-0605-534b-9371-0643cb576d9b",
+        "head": "study fiber gas sensor",
+        "tail": "flexibility",
+        "assertion_ids": [
+          "853298c9-dfde-5887-8a8f-d12be9b9bea2",
+          "322d72b8-3ba4-5c65-8273-6506f7e5a529"
+        ],
+        "occurrences": 2
+      },
+      {
+        "head_concept_id": "bcb444d2-9aca-5bd6-8938-d6703f430773",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "7ac5d254-a266-54ee-94f2-4c4747bff6e7",
+        "head": "study fiber gas sensor",
+        "tail": "mechanical stretchability and twistability",
+        "assertion_ids": [
+          "53e2ab39-d6e3-5c8c-b28b-584cff4d2949"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "bcb444d2-9aca-5bd6-8938-d6703f430773",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "155f3a1e-e86d-5f1f-adfe-a87a66105ea6",
+        "head": "study fiber gas sensor",
+        "tail": "wearability",
+        "assertion_ids": [
+          "edcf7efa-8d9f-5b25-88cb-f34a2af3d739"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "bcb444d2-9aca-5bd6-8938-d6703f430773",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "02a47570-1564-5395-a832-45c0402f0e32",
+        "head": "study fiber gas sensor",
+        "tail": "knittability",
+        "assertion_ids": [
+          "91ba375d-be14-5d0b-a35c-7f01beaec2da"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "bcb444d2-9aca-5bd6-8938-d6703f430773",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "39c66827-496e-58e4-96d9-5b3f5ed107b4",
+        "head": "study fiber gas sensor",
+        "tail": "cotton/elastic threads",
+        "assertion_ids": [
+          "0f2427bf-8600-58a4-8a0e-c16f7bba1b25"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "39c66827-496e-58e4-96d9-5b3f5ed107b4",
+        "relation_type": "FUNCTIONS_AS",
+        "tail_concept_id": "b0aa9419-ac56-51e1-8e3f-9d678938de9e",
+        "head": "cotton/elastic threads",
+        "tail": "flexible/stretchable templates",
+        "assertion_ids": [
+          "c98893f2-5b7e-5193-b822-9924c7effa53"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "39c66827-496e-58e4-96d9-5b3f5ed107b4",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "75f81e24-7a28-534d-b520-aba07cbbeb63",
+        "head": "cotton/elastic threads",
+        "tail": "commercial availability",
+        "assertion_ids": [
+          "b50951ec-dadf-5537-86db-1e569730de27"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "b0aa9419-ac56-51e1-8e3f-9d678938de9e",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "77a7f51e-c92a-506c-b334-b0a0229b20cc",
+        "head": "flexible/stretchable templates",
+        "tail": "template flexibility/stretchability",
+        "assertion_ids": [
+          "624ebd6b-74e9-50de-9d10-dd9a89be3e08"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "bcb444d2-9aca-5bd6-8938-d6703f430773",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "5373ee83-5882-5435-ba9d-52b01082222e",
+        "head": "study fiber gas sensor",
+        "tail": "reduced graphene oxide/mesoporous zinc oxide nanosheets",
+        "assertion_ids": [
+          "b711a468-c27e-5f44-9c14-7e27f05d8fc6"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "5373ee83-5882-5435-ba9d-52b01082222e",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "8825e801-900e-591f-95a2-87135e86ee38",
+        "head": "reduced graphene oxide/mesoporous zinc oxide nanosheets",
+        "tail": "reduced graphene oxide",
+        "assertion_ids": [
+          "98421599-20f7-50ca-926f-0c6075107254"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "5373ee83-5882-5435-ba9d-52b01082222e",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "eaf9d6c2-3f0d-5bf6-8f18-a4ba3590f901",
+        "head": "reduced graphene oxide/mesoporous zinc oxide nanosheets",
+        "tail": "mesoporous zinc oxide nanosheets",
+        "assertion_ids": [
+          "9df4094a-6315-55ee-9c13-188a167a95a4"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "eaf9d6c2-3f0d-5bf6-8f18-a4ba3590f901",
+        "relation_type": "HAS_MORPHOLOGY",
+        "tail_concept_id": "97ef73c9-b554-56b3-8ba2-da362e3ddc54",
+        "head": "mesoporous zinc oxide nanosheets",
+        "tail": "mesoporosity",
+        "assertion_ids": [
+          "8a663f4c-0033-5681-8006-4e061a927f7d"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "eaf9d6c2-3f0d-5bf6-8f18-a4ba3590f901",
+        "relation_type": "HAS_MORPHOLOGY",
+        "tail_concept_id": "ff0014d6-e5bc-5e95-8dd7-89e0338e8f63",
+        "head": "mesoporous zinc oxide nanosheets",
+        "tail": "nanosheet morphology",
+        "assertion_ids": [
+          "6050ca8c-2fc5-5acd-a888-119854143ff1"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "5373ee83-5882-5435-ba9d-52b01082222e",
+        "relation_type": "FUNCTIONS_AS",
+        "tail_concept_id": "736320cc-ae75-5c15-80e8-a532237b9c5c",
+        "head": "reduced graphene oxide/mesoporous zinc oxide nanosheets",
+        "tail": "sensing layer",
+        "assertion_ids": [
+          "1d5f3f27-5780-5e93-b213-d88366378282"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "bcb444d2-9aca-5bd6-8938-d6703f430773",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "736320cc-ae75-5c15-80e8-a532237b9c5c",
+        "head": "study fiber gas sensor",
+        "tail": "sensing layer",
+        "assertion_ids": [
+          "fae8aec7-66d9-5e1f-8f85-af5a7a9b3d17"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "bcb444d2-9aca-5bd6-8938-d6703f430773",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "c227cd3a-45ae-525d-a095-cc59f8bdfd14",
+        "head": "study fiber gas sensor",
+        "tail": "sensing response",
+        "assertion_ids": [
+          "8e57c346-291c-5859-804e-9e7a7a3fa816"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "bcb444d2-9aca-5bd6-8938-d6703f430773",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "39c29d69-2922-54c1-b822-4f56b387a7ed",
+        "head": "study fiber gas sensor",
+        "tail": "long-term stability",
+        "assertion_ids": [
+          "f621ca3f-17bf-502b-9417-07465020676e"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "bcb444d2-9aca-5bd6-8938-d6703f430773",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "761a8f86-3735-5c3b-ac4b-a70ac8e61ff6",
+        "head": "study fiber gas sensor",
+        "tail": "theoretical detection limit",
+        "assertion_ids": [
+          "577c4519-e00d-5f5b-9d74-42489df9da7c"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "bcb444d2-9aca-5bd6-8938-d6703f430773",
+        "relation_type": "DETECTS",
+        "tail_concept_id": "61c55bc8-0c8f-5456-9a30-d09109c3a560",
+        "head": "study fiber gas sensor",
+        "tail": "nitrogen dioxide",
+        "assertion_ids": [
+          "6c739cd3-4e69-547f-8bfe-ffc34ed99d07"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "bcb444d2-9aca-5bd6-8938-d6703f430773",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "5667371f-4d4b-5a77-b353-0376bcce477e",
+        "head": "study fiber gas sensor",
+        "tail": "mechanical deformation tolerance",
+        "assertion_ids": [
+          "9b0b42e1-16fd-521c-b896-ad179208cd04"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "bcb444d2-9aca-5bd6-8938-d6703f430773",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "d65c9da2-e30e-5bca-a144-1cd9e1f3efce",
+        "head": "study fiber gas sensor",
+        "tail": "strain strength (source wording)",
+        "assertion_ids": [
+          "8be093f2-b1c0-530f-8f2b-d2e6b4233589"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "bcb444d2-9aca-5bd6-8938-d6703f430773",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "a4bd0285-ee08-540f-a6d4-0d723dc79fb6",
+        "head": "study fiber gas sensor",
+        "tail": "washing durability",
+        "assertion_ids": [
+          "3b393c1f-b64d-5507-be91-51d1917c8e49"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "bcb444d2-9aca-5bd6-8938-d6703f430773",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "72f59ee0-3336-5db4-ab27-61375b0c57fe",
+        "head": "study fiber gas sensor",
+        "tail": "gas detection",
+        "assertion_ids": [
+          "842b8ffa-a9c1-52bc-90c4-51f3021c15e4"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "ce7fe71f-fa50-5b93-8ec7-6d5e2a9bc372",
+        "relation_type": "IMPROVES",
+        "tail_concept_id": "20805f64-4e9f-51cb-9a59-5889f18978d9",
+        "head": "wearable improvement procedure bundle",
+        "tail": "wearable characteristic bundle",
+        "assertion_ids": [
+          "dbc6e834-cfce-5e44-97eb-ca7af1388265"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "20805f64-4e9f-51cb-9a59-5889f18978d9",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "2baaaa51-38b2-5b3e-b745-7bac30b5b4a4",
+        "head": "wearable characteristic bundle",
+        "tail": "repairability",
+        "assertion_ids": [
+          "cd7b7344-98d3-5924-877e-e75d8d9e3053"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "20805f64-4e9f-51cb-9a59-5889f18978d9",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "616140cf-f945-5de5-99d7-d9bcc3d13d7d",
+        "head": "wearable characteristic bundle",
+        "tail": "reliability",
+        "assertion_ids": [
+          "deeef8c5-6098-522c-b272-925e847906fa"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "20805f64-4e9f-51cb-9a59-5889f18978d9",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "043161bd-7c29-599b-937f-8d6f1ee970c0",
+        "head": "wearable characteristic bundle",
+        "tail": "wearable stability",
+        "assertion_ids": [
+          "c93f6272-babc-51f9-a697-401755600154"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "20805f64-4e9f-51cb-9a59-5889f18978d9",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "5d983b39-ad54-5fe7-b2d3-a40ed96cc584",
+        "head": "wearable characteristic bundle",
+        "tail": "practicability",
+        "assertion_ids": [
+          "c254be09-398d-547c-ae35-a1de70ba1ee3"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "ce7fe71f-fa50-5b93-8ec7-6d5e2a9bc372",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "746a9bb7-cb93-5efa-8ef0-5aa873fb80a4",
+        "head": "wearable improvement procedure bundle",
+        "tail": "knotting fractured fibers",
+        "assertion_ids": [
+          "fe6ce7ab-1fcc-5e4c-9276-97ba1ed78ac0"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "ce7fe71f-fa50-5b93-8ec7-6d5e2a9bc372",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "8c680ca3-b2fe-5113-baf1-21d33c01b0ce",
+        "head": "wearable improvement procedure bundle",
+        "tail": "series/parallel sensor incorporation",
+        "assertion_ids": [
+          "c2b7976a-a235-54ee-a378-4015b07c1591"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "ce7fe71f-fa50-5b93-8ec7-6d5e2a9bc372",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "90cb4078-79ae-5963-9574-dd9e61e0c0f6",
+        "head": "wearable improvement procedure bundle",
+        "tail": "weaving sensor networks into clothes",
+        "assertion_ids": [
+          "a5d0cfb0-fc8a-5a67-825d-c0a74066a61a"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "746a9bb7-cb93-5efa-8ef0-5aa873fb80a4",
+        "relation_type": "ACTS_ON",
+        "tail_concept_id": "7f836948-5ce9-5962-bef8-e52653482846",
+        "head": "knotting fractured fibers",
+        "tail": "fractured sensing fibers",
+        "assertion_ids": [
+          "7065f46d-83cf-5816-90ff-f106128ba135"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "8c680ca3-b2fe-5113-baf1-21d33c01b0ce",
+        "relation_type": "ACTS_ON",
+        "tail_concept_id": "34bd0a08-a2db-585e-8632-a01db092dce2",
+        "head": "series/parallel sensor incorporation",
+        "tail": "multiple sensing devices",
+        "assertion_ids": [
+          "daabf40f-d041-5a68-a47b-4376125eed63"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "90cb4078-79ae-5963-9574-dd9e61e0c0f6",
+        "relation_type": "ACTS_ON",
+        "tail_concept_id": "39d6a68e-c792-5558-a435-e9216fc711b1",
+        "head": "weaving sensor networks into clothes",
+        "tail": "multisensor array network",
+        "assertion_ids": [
+          "555654ab-4d4c-598b-ab5f-b16a7e9462f5"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "34bd0a08-a2db-585e-8632-a01db092dce2",
+        "relation_type": "HAS_MORPHOLOGY",
+        "tail_concept_id": "b3d7b2aa-dbe6-5053-b1cb-7791d3788d2b",
+        "head": "multiple sensing devices",
+        "tail": "series/parallel sensor arrangement",
+        "assertion_ids": [
+          "219edf86-dbf8-5f94-974b-458d9fb81113"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "39d6a68e-c792-5558-a435-e9216fc711b1",
+        "relation_type": "INTEGRATED_IN",
+        "tail_concept_id": "94e3536e-b153-5f31-9010-c4183d498eb9",
+        "head": "multisensor array network",
+        "tail": "clothes",
+        "assertion_ids": [
+          "2455c001-da04-5095-bd51-df7e6bd35ab7"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "bcb444d2-9aca-5bd6-8938-d6703f430773",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "45a150e4-d444-5ed5-8530-6cd0eab1ff59",
+        "head": "study fiber gas sensor",
+        "tail": "sensing performance",
+        "assertion_ids": [
+          "2b0f7c1b-2dd2-58c3-a913-e54953aba5c8"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "bcb444d2-9aca-5bd6-8938-d6703f430773",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "14d5a896-4b75-5630-a817-6f0b3cca5271",
+        "head": "study fiber gas sensor",
+        "tail": "scalable wearable fiber applications",
+        "assertion_ids": [
+          "9f498d8e-7779-5985-806e-0e9d6afe81d0"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "bcb444d2-9aca-5bd6-8938-d6703f430773",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "3d7f245b-7203-5db7-918b-f136b469c64d",
+        "head": "study fiber gas sensor",
+        "tail": "human activity monitoring",
+        "assertion_ids": [
+          "9d2d2d6d-d338-5420-907a-6ce8e9eb587d"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "bcb444d2-9aca-5bd6-8938-d6703f430773",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "6ffbe70d-df0f-52b5-82a6-934ef9016c0d",
+        "head": "study fiber gas sensor",
+        "tail": "personal mobile electronics",
+        "assertion_ids": [
+          "4f2b1752-a600-5379-ac4b-a09b3d88bdbd"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "bcb444d2-9aca-5bd6-8938-d6703f430773",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "f0ca7cea-56ad-50f7-abf2-d2702cbe89b8",
+        "head": "study fiber gas sensor",
+        "tail": "human–machine interactions",
+        "assertion_ids": [
+          "08398a10-2776-54fd-bbd6-6fe92956b773"
+        ],
+        "occurrences": 1
+      }
+    ],
+    "repeated_qualified_groups": [],
+    "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
+    "human_review": "NOT_REVIEWED",
+    "draft_sha256": "343363dadc941d370b5e3bd28fa202b98a5068431ce46308399fe989798587df"
+  },
+  {
+    "document_code": "D003",
+    "revision_id": "7af46631-a38f-430d-a43c-bcfa0dccac9e",
+    "assertion_occurrences": 45,
+    "unique_canonical_triples": 42,
+    "repeated_core_triple_occurrences": 3,
+    "unique_qualified_claims": 44,
+    "repeated_qualified_claim_occurrences": 1,
+    "canonical_triples": [
+      {
+        "head_concept_id": "5b2f6358-7a18-57ea-8507-c8f93977f3af",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "77d70883-9435-5f85-8f4d-5fa9c4165afe",
+        "head": "background low-cost stretchable gas sensors",
+        "tail": "low cost",
+        "assertion_ids": [
+          "bcda4ee2-f25f-5035-a39c-b40cb4d95d8b"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "5b2f6358-7a18-57ea-8507-c8f93977f3af",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "6e6c7bb5-116b-5833-b3d1-4ba682000772",
+        "head": "background low-cost stretchable gas sensors",
+        "tail": "stretchability",
+        "assertion_ids": [
+          "de6f3c32-c9d3-5847-ab58-3d9bbaa73bb3"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e52f26eb-d06d-5954-a127-4bc4800a1591",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "b454c0fa-3878-5c4f-9ad1-69bc09ae4fc9",
+        "head": "study stretchable LIG NOx sensor",
+        "tail": "moisture resistance",
+        "assertion_ids": [
+          "cf7745fd-f594-5ad3-a218-3ca658567631",
+          "7752548f-d493-5d49-8ace-206c1bdd3560",
+          "ff8389ef-86fc-589e-b72a-575d7839f2b1"
+        ],
+        "occurrences": 3
+      },
+      {
+        "head_concept_id": "e52f26eb-d06d-5954-a127-4bc4800a1591",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "6e6c7bb5-116b-5833-b3d1-4ba682000772",
+        "head": "study stretchable LIG NOx sensor",
+        "tail": "stretchability",
+        "assertion_ids": [
+          "c01cfaf5-6558-5069-8b04-9215cca723b1",
+          "ebd4c1ef-c27c-5f45-ae3a-ad469d762579"
+        ],
+        "occurrences": 2
+      },
+      {
+        "head_concept_id": "e52f26eb-d06d-5954-a127-4bc4800a1591",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "42a7efee-b227-5667-ac9c-b4ce94a3d490",
+        "head": "study stretchable LIG NOx sensor",
+        "tail": "laser-induced graphene",
+        "assertion_ids": [
+          "1d206e6b-4bf7-5ed4-922f-10f89d405c09"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e52f26eb-d06d-5954-a127-4bc4800a1591",
+        "relation_type": "DETECTS",
+        "tail_concept_id": "f91bbd8c-b19f-5fca-886d-b84d85dd8b5a",
+        "head": "study stretchable LIG NOx sensor",
+        "tail": "nitrogen oxides",
+        "assertion_ids": [
+          "3a07fe92-3d7f-5c81-8718-f621968b414a"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "a324a52e-f040-5637-9968-793951d9c27f",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "9c080d96-fdaf-560a-9b8b-e3b22d17aec3",
+        "head": "elastomeric substrate",
+        "tail": "softness",
+        "assertion_ids": [
+          "001579b8-5a10-51cc-aed4-79153476ff3e"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "a324a52e-f040-5637-9968-793951d9c27f",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "cc6cf6d2-0b7f-52eb-a159-ce63cb3f11c7",
+        "head": "elastomeric substrate",
+        "tail": "elastomer (unspecified)",
+        "assertion_ids": [
+          "28135e45-c56e-5b9f-9625-c942e2499ad1"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "add4b809-281c-59ff-8851-ee603d6746be",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "b454c0fa-3878-5c4f-9ad1-69bc09ae4fc9",
+        "head": "semipermeable encapsulant",
+        "tail": "moisture resistance",
+        "assertion_ids": [
+          "33aea9ff-7148-5b4e-a3c9-d1b5855704dc"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "add4b809-281c-59ff-8851-ee603d6746be",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "685c3af5-87c8-520b-b7a1-7e4d85de812d",
+        "head": "semipermeable encapsulant",
+        "tail": "semipermeability",
+        "assertion_ids": [
+          "d4a79b51-7ba7-515e-8549-5ec01ecdc932"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "4fdc09cd-5563-5ee5-b201-a6d04f7c4320",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "42a7efee-b227-5667-ac9c-b4ce94a3d490",
+        "head": "LIG sensing/electrode layer",
+        "tail": "laser-induced graphene",
+        "assertion_ids": [
+          "3fa3a026-1c57-5da4-9203-313b0d43efdd"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e52f26eb-d06d-5954-a127-4bc4800a1591",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "a324a52e-f040-5637-9968-793951d9c27f",
+        "head": "study stretchable LIG NOx sensor",
+        "tail": "elastomeric substrate",
+        "assertion_ids": [
+          "4d3bcebf-125a-513d-8d07-28735b5313af"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e52f26eb-d06d-5954-a127-4bc4800a1591",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "add4b809-281c-59ff-8851-ee603d6746be",
+        "head": "study stretchable LIG NOx sensor",
+        "tail": "semipermeable encapsulant",
+        "assertion_ids": [
+          "47621f68-b17e-586e-a8dc-c05d6b7533d9"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e52f26eb-d06d-5954-a127-4bc4800a1591",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "4fdc09cd-5563-5ee5-b201-a6d04f7c4320",
+        "head": "study stretchable LIG NOx sensor",
+        "tail": "LIG sensing/electrode layer",
+        "assertion_ids": [
+          "ac3bae5a-57c6-5750-b9eb-3b7e97cd4569"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "db2cb14e-09a1-5c7f-990d-3a5a3f43cf3c",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "0017a923-5a60-5b44-9208-d60e0e2fc163",
+        "head": "laser processing parameter group",
+        "tail": "laser power",
+        "assertion_ids": [
+          "03382488-2f90-58be-a7f6-cc8f36c99133"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "5f66a48e-5cc0-5749-8a87-5dd69c5a098f",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "0017a923-5a60-5b44-9208-d60e0e2fc163",
+        "head": "laser processing",
+        "tail": "laser power",
+        "assertion_ids": [
+          "39bb3938-8126-560b-b7db-dc02c5aa1a45"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "db2cb14e-09a1-5c7f-990d-3a5a3f43cf3c",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "218b85df-0299-522c-a04f-a97164fab406",
+        "head": "laser processing parameter group",
+        "tail": "laser image density",
+        "assertion_ids": [
+          "53557b0e-2b6d-57b8-ace4-23eaf8ae7d32"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "5f66a48e-5cc0-5749-8a87-5dd69c5a098f",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "218b85df-0299-522c-a04f-a97164fab406",
+        "head": "laser processing",
+        "tail": "laser image density",
+        "assertion_ids": [
+          "728f5369-9930-5f6f-b4e5-c1d65c821119"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "db2cb14e-09a1-5c7f-990d-3a5a3f43cf3c",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "18fed9c6-2c16-5b29-a896-a64abf861c1c",
+        "head": "laser processing parameter group",
+        "tail": "laser defocus distance",
+        "assertion_ids": [
+          "e633b99a-60e6-564d-8fbb-20eed405cb29"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "5f66a48e-5cc0-5749-8a87-5dd69c5a098f",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "18fed9c6-2c16-5b29-a896-a64abf861c1c",
+        "head": "laser processing",
+        "tail": "laser defocus distance",
+        "assertion_ids": [
+          "f4576d7e-126d-5272-9432-0556aa294d3a"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e52f26eb-d06d-5954-a127-4bc4800a1591",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "90823051-e0cf-503c-bcdb-e07b6feebc48",
+        "head": "study stretchable LIG NOx sensor",
+        "tail": "needlelike laser-induced graphene",
+        "assertion_ids": [
+          "3a394195-246f-5616-a9c0-34c66cd7d354"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "90823051-e0cf-503c-bcdb-e07b6feebc48",
+        "relation_type": "HAS_MORPHOLOGY",
+        "tail_concept_id": "638bdf49-f09a-5f12-a353-dc40fa5aa8f5",
+        "head": "needlelike laser-induced graphene",
+        "tail": "needlelike morphology",
+        "assertion_ids": [
+          "7ea43759-5bd4-5856-99db-7e0778c1a211"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "90823051-e0cf-503c-bcdb-e07b6feebc48",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "5f66a48e-5cc0-5749-8a87-5dd69c5a098f",
+        "head": "needlelike laser-induced graphene",
+        "tail": "laser processing",
+        "assertion_ids": [
+          "856f1768-0447-504f-997c-13503dedfa69"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e52f26eb-d06d-5954-a127-4bc4800a1591",
+        "relation_type": "DETECTS",
+        "tail_concept_id": "814d8f1a-808a-5251-9a6d-ab419f3514df",
+        "head": "study stretchable LIG NOx sensor",
+        "tail": "nitric oxide",
+        "assertion_ids": [
+          "fe806ec3-24b2-55b6-b80e-75f4de9e36e4"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e52f26eb-d06d-5954-a127-4bc4800a1591",
+        "relation_type": "DETECTS",
+        "tail_concept_id": "a952dfce-2567-51e0-b6a7-1e8e0120e3c0",
+        "head": "study stretchable LIG NOx sensor",
+        "tail": "nitrogen dioxide",
+        "assertion_ids": [
+          "207c554e-e222-5c07-9551-6e5cfe12adff"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e52f26eb-d06d-5954-a127-4bc4800a1591",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "3d389a9f-3f89-5f93-bc04-d149406d84bd",
+        "head": "study stretchable LIG NOx sensor",
+        "tail": "gas response per concentration",
+        "assertion_ids": [
+          "69bb4c82-e801-5a58-8715-47c6fa7b2f67"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e52f26eb-d06d-5954-a127-4bc4800a1591",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "b6274d94-330f-53fe-ba63-4463c0abdc7f",
+        "head": "study stretchable LIG NOx sensor",
+        "tail": "detection limit",
+        "assertion_ids": [
+          "7d04d501-7210-5ff6-82ac-f6309b1c7df6"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e52f26eb-d06d-5954-a127-4bc4800a1591",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "6886e4ee-0cc5-5d03-bd66-e862048bc056",
+        "head": "study stretchable LIG NOx sensor",
+        "tail": "response/recovery speed",
+        "assertion_ids": [
+          "7e0ac5ed-52ed-5626-a855-d33db429df3e"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e52f26eb-d06d-5954-a127-4bc4800a1591",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "d0839bf9-be99-5bb5-8236-465fd43c7bcc",
+        "head": "study stretchable LIG NOx sensor",
+        "tail": "selectivity",
+        "assertion_ids": [
+          "c25e2fb6-ffaf-5f26-bbaa-35e7769e4e4c"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "30c30d7c-2ad1-5f4e-9350-5d56d08488f4",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "42a7efee-b227-5667-ac9c-b4ce94a3d490",
+        "head": "LIG electrode",
+        "tail": "laser-induced graphene",
+        "assertion_ids": [
+          "140c6a4e-91dd-5bb3-a52a-a26930b4de31"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "30c30d7c-2ad1-5f4e-9350-5d56d08488f4",
+        "relation_type": "HAS_MORPHOLOGY",
+        "tail_concept_id": "ab45392c-808b-5d6a-88ff-b21f1a0580ec",
+        "head": "LIG electrode",
+        "tail": "stretchable serpentine structure",
+        "assertion_ids": [
+          "cfa9e0bf-78b5-5c75-b032-d7f6d37cd24d"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "cbb53937-be52-5942-97e8-a102d55b25ea",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "33ad0fbb-5603-551a-a210-e55164c93614",
+        "head": "stiff island",
+        "tail": "stiffness",
+        "assertion_ids": [
+          "08def593-1c52-5447-9f76-b6a16be30c69"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e52f26eb-d06d-5954-a127-4bc4800a1591",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "2a3e29ab-8c05-59c9-b712-1d4207ba313d",
+        "head": "study stretchable LIG NOx sensor",
+        "tail": "demonstrated stretching capability",
+        "assertion_ids": [
+          "204fc23e-fdb7-53b1-b04b-ad04652c1de0"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e52f26eb-d06d-5954-a127-4bc4800a1591",
+        "relation_type": "HAS_MECHANISM",
+        "tail_concept_id": "89ccb702-6155-568b-a7e2-ef616180f5ac",
+        "head": "study stretchable LIG NOx sensor",
+        "tail": "combined serpentine design and strain isolation",
+        "assertion_ids": [
+          "d65ad610-3c52-5bf0-b838-9979bbde1caf"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "89ccb702-6155-568b-a7e2-ef616180f5ac",
+        "relation_type": "MECHANISM_INVOLVES",
+        "tail_concept_id": "2f65bff3-f4a3-5a0d-8bd3-3f47eda823fc",
+        "head": "combined serpentine design and strain isolation",
+        "tail": "serpentine structure design",
+        "assertion_ids": [
+          "3fcfd6a9-2d61-5932-a80e-61ba8d224f3e"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "89ccb702-6155-568b-a7e2-ef616180f5ac",
+        "relation_type": "MECHANISM_INVOLVES",
+        "tail_concept_id": "ab45392c-808b-5d6a-88ff-b21f1a0580ec",
+        "head": "combined serpentine design and strain isolation",
+        "tail": "stretchable serpentine structure",
+        "assertion_ids": [
+          "e642784f-62db-54ac-b76f-f024e62a2fd8"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "89ccb702-6155-568b-a7e2-ef616180f5ac",
+        "relation_type": "MECHANISM_INVOLVES",
+        "tail_concept_id": "154de11f-6f60-564d-b5e4-953b1bcad6ed",
+        "head": "combined serpentine design and strain isolation",
+        "tail": "strain isolation",
+        "assertion_ids": [
+          "f85cbc48-d59a-54da-a0a5-49bcd4fb30bd"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e52f26eb-d06d-5954-a127-4bc4800a1591",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "feb0cbda-c831-54fa-845c-27cccdfe213f",
+        "head": "study stretchable LIG NOx sensor",
+        "tail": "personal local environmental monitoring",
+        "assertion_ids": [
+          "68ee0aac-9dc8-517c-84b3-851684087223"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e52f26eb-d06d-5954-a127-4bc4800a1591",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "d3774db7-2452-5d28-b3e6-61ada1c153d8",
+        "head": "study stretchable LIG NOx sensor",
+        "tail": "human breath analysis",
+        "assertion_ids": [
+          "41bd10ee-d43e-5d67-b402-5685fa3f15a9"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e52f26eb-d06d-5954-a127-4bc4800a1591",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "361dd030-8dac-56c2-8a9a-b5e88e17b664",
+        "head": "study stretchable LIG NOx sensor",
+        "tail": "classification of respiratory-disease patients versus healthy volunteers",
+        "assertion_ids": [
+          "1004c326-811a-50c5-b876-e0ef29909b44"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "e52f26eb-d06d-5954-a127-4bc4800a1591",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "0dfa9fd3-a3a4-566a-ba79-a057a8514847",
+        "head": "study stretchable LIG NOx sensor",
+        "tail": "early disease diagnostics",
+        "assertion_ids": [
+          "b87a303d-dc44-5ad6-b646-eb33cc6bc7b4"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "ae18ac14-95a3-5877-8f50-102ab2839a80",
+        "relation_type": "DETECTS",
+        "tail_concept_id": "31b76936-8962-529f-8953-cce1801a8032",
+        "head": "wearable devices",
+        "tail": "biomarkers (unspecified)",
+        "assertion_ids": [
+          "16753397-6a7f-5c7e-9268-bae9a469dba6"
+        ],
+        "occurrences": 1
+      }
+    ],
+    "repeated_qualified_groups": [
+      {
+        "signature": [
+          [
+            "e52f26eb-d06d-5954-a127-4bc4800a1591",
+            "HAS_PROPERTY",
+            "6e6c7bb5-116b-5833-b3d1-4ba682000772"
+          ],
+          "POSITIVE",
+          "ASSERTED",
+          "STUDY_RESULT",
+          "SUPPORTED",
+          [],
+          "stretchable"
+        ],
+        "assertion_ids": [
+          "c01cfaf5-6558-5069-8b04-9215cca723b1",
+          "ebd4c1ef-c27c-5f45-ae3a-ad469d762579"
+        ]
+      }
+    ],
+    "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
+    "human_review": "NOT_REVIEWED",
+    "draft_sha256": "50866b44ea59ae392e6332425feab1dd70032c59d70e800477e66be5c517f96a"
+  },
+  {
+    "document_code": "D010",
+    "revision_id": "fbd87a44-35d0-4f51-80d6-39abd117d01f",
+    "assertion_occurrences": 99,
+    "unique_canonical_triples": 77,
+    "repeated_core_triple_occurrences": 22,
+    "unique_qualified_claims": 78,
+    "repeated_qualified_claim_occurrences": 21,
+    "canonical_triples": [
+      {
+        "head_concept_id": "a407918d-c17a-5534-b60d-37df68a33dc8",
+        "relation_type": "HAS_MORPHOLOGY",
+        "tail_concept_id": "6ac91818-cfee-566f-80a6-b3439d257d21",
+        "head": "Ti3C2Tx MXene",
+        "tail": "two-dimensional morphology",
+        "assertion_ids": [
+          "a251fcd1-09bc-535e-88d1-1ab8e75b7b0a"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "a407918d-c17a-5534-b60d-37df68a33dc8",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "13eca4c3-ddb7-5e1c-8d9b-a1cf540faeb1",
+        "head": "Ti3C2Tx MXene",
+        "tail": "gas sensing",
+        "assertion_ids": [
+          "dd345b2c-266a-58a2-b229-3036775598ed"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "a407918d-c17a-5534-b60d-37df68a33dc8",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "bd2dc2e3-19db-5ad2-8e55-7467ae39022d",
+        "head": "Ti3C2Tx MXene",
+        "tail": "signal-to-noise ratio",
+        "assertion_ids": [
+          "80ded4a2-63a8-5d93-8eaf-e33acd0a175c"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "fa4d013a-4f23-5f0c-8208-d79c005384ef",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "90ed9335-92d6-5099-a33a-812db411c266",
+        "head": "Ti3C2Tx MXene/GO/CuO/ZnO nanocomposite",
+        "tail": "graphene oxide",
+        "assertion_ids": [
+          "84482504-2319-5b90-a9a1-21dcf71c5a8d",
+          "2150fd0c-6e3b-5a0f-bc6c-146433649d1a",
+          "46505739-e231-5aaf-a2be-85b96d241da8",
+          "f42190ef-e439-57e3-ae8b-9f6423ab5845",
+          "28113f74-e2be-5e9c-ba31-5eed4f1f4e6b",
+          "a8ae13d0-50a9-51ba-adcf-71e616348169"
+        ],
+        "occurrences": 6
+      },
+      {
+        "head_concept_id": "fa4d013a-4f23-5f0c-8208-d79c005384ef",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "382ec1ed-0b13-5c68-919e-dad75a0ab5f6",
+        "head": "Ti3C2Tx MXene/GO/CuO/ZnO nanocomposite",
+        "tail": "copper oxide (CuO)",
+        "assertion_ids": [
+          "4bdf3686-2f76-5d57-b669-28ca58fc35a0",
+          "41aa213f-3557-5c72-a5c5-b0050d047198",
+          "731e9853-aee4-54fb-b033-55e2a1c0eb87",
+          "7de06a07-568e-5e0a-81d8-2399e28044c0",
+          "cdec5e2d-8620-5b9e-a135-2cae1f352c83",
+          "a3da2c3f-6fee-5e55-8dee-3ec8e69a3f4c"
+        ],
+        "occurrences": 6
+      },
+      {
+        "head_concept_id": "fa4d013a-4f23-5f0c-8208-d79c005384ef",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "59fe65fb-bd0d-5bb3-9152-c39908efe147",
+        "head": "Ti3C2Tx MXene/GO/CuO/ZnO nanocomposite",
+        "tail": "zinc oxide",
+        "assertion_ids": [
+          "d54e48fd-8417-581e-a3b8-78bce0b98e97",
+          "b78a2ad8-4259-513f-9896-26c305b476e0",
+          "e51663ad-f5a3-589b-9a56-ee3cdd0f7acf",
+          "547c73c8-84d7-565f-ae7c-45129919f73e",
+          "6976eac8-fb93-536a-84e0-c01fd3290306",
+          "963d3496-f04c-58a4-bf65-c0df5d079700"
+        ],
+        "occurrences": 6
+      },
+      {
+        "head_concept_id": "fa4d013a-4f23-5f0c-8208-d79c005384ef",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "a407918d-c17a-5534-b60d-37df68a33dc8",
+        "head": "Ti3C2Tx MXene/GO/CuO/ZnO nanocomposite",
+        "tail": "Ti3C2Tx MXene",
+        "assertion_ids": [
+          "51fbe6be-8c5f-5753-98bc-69b163cf8bff",
+          "6c0950c0-6c2b-5283-bbe9-b675527496f2",
+          "dee48d65-039a-52cb-9833-b2ab7cd0600b",
+          "eb66a444-f0b3-5bf9-a6c4-b43e0ab6633c",
+          "f6d468e9-a389-5dec-8570-8574b6cf1f7e",
+          "e1893d85-37a8-51a8-a03f-f3c3e887a051"
+        ],
+        "occurrences": 6
+      },
+      {
+        "head_concept_id": "86e47951-5e56-55d5-8d13-cff6be35ce64",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "fa4d013a-4f23-5f0c-8208-d79c005384ef",
+        "head": "study four-component nanocomposite gas sensor",
+        "tail": "Ti3C2Tx MXene/GO/CuO/ZnO nanocomposite",
+        "assertion_ids": [
+          "d92ae1b4-b3b6-52a0-a2c5-0d4007fd1483",
+          "6a361cc2-9637-54c6-a9be-720eb50670af"
+        ],
+        "occurrences": 2
+      },
+      {
+        "head_concept_id": "86e47951-5e56-55d5-8d13-cff6be35ce64",
+        "relation_type": "DETECTS",
+        "tail_concept_id": "92a740f2-2be5-5b30-857c-e7e8f212194f",
+        "head": "study four-component nanocomposite gas sensor",
+        "tail": "ammonia",
+        "assertion_ids": [
+          "a2560343-0e5a-563e-abf6-19166e2e64d7",
+          "8ba44e6e-9710-52e1-811f-1488303cdc7f"
+        ],
+        "occurrences": 2
+      },
+      {
+        "head_concept_id": "86e47951-5e56-55d5-8d13-cff6be35ce64",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "cbb1c5a3-489d-55a6-a638-0992b465416d",
+        "head": "study four-component nanocomposite gas sensor",
+        "tail": "high sensing performance",
+        "assertion_ids": [
+          "b4b8bf40-230a-5ded-8ce3-78a8efd26738"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "90ed9335-92d6-5099-a33a-812db411c266",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "92a740f2-2be5-5b30-857c-e7e8f212194f",
+        "head": "graphene oxide",
+        "tail": "ammonia",
+        "assertion_ids": [
+          "2fad0c29-e677-5820-bc63-4d63a5b98cba"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "382ec1ed-0b13-5c68-919e-dad75a0ab5f6",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "92a740f2-2be5-5b30-857c-e7e8f212194f",
+        "head": "copper oxide (CuO)",
+        "tail": "ammonia",
+        "assertion_ids": [
+          "8d64b197-faec-5964-af68-3827a88a96d0"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "59fe65fb-bd0d-5bb3-9152-c39908efe147",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "92a740f2-2be5-5b30-857c-e7e8f212194f",
+        "head": "zinc oxide",
+        "tail": "ammonia",
+        "assertion_ids": [
+          "99ae895c-cd15-5b9c-b91b-0ea3e6aedec2"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "3c5b190e-52c8-55ed-9e80-379fbee0d4a6",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "4814ecb8-80cd-599c-859a-acf76b090740",
+        "head": "investigated nanocomposite collection",
+        "tail": "MXene/GO",
+        "assertion_ids": [
+          "295ce3bb-d654-5139-80e6-e6cf4d728e79"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "4814ecb8-80cd-599c-859a-acf76b090740",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "a284a129-6b88-5f7b-a14d-ab2c69ac9aaa",
+        "head": "MXene/GO",
+        "tail": "hydrothermal synthesis",
+        "assertion_ids": [
+          "8d555959-db74-59eb-9804-f532fae3ec45"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "4814ecb8-80cd-599c-859a-acf76b090740",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "92a740f2-2be5-5b30-857c-e7e8f212194f",
+        "head": "MXene/GO",
+        "tail": "ammonia",
+        "assertion_ids": [
+          "6aa007cc-5258-5db5-99d2-87424c5d24a3"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "3c5b190e-52c8-55ed-9e80-379fbee0d4a6",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "59f9a2e5-667b-53f2-b0e8-3e4bc2d6dbbf",
+        "head": "investigated nanocomposite collection",
+        "tail": "MXene/ZnO",
+        "assertion_ids": [
+          "d41db457-b662-5a6b-bc52-ba7f02da069d"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "59f9a2e5-667b-53f2-b0e8-3e4bc2d6dbbf",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "a284a129-6b88-5f7b-a14d-ab2c69ac9aaa",
+        "head": "MXene/ZnO",
+        "tail": "hydrothermal synthesis",
+        "assertion_ids": [
+          "161a8a96-ea2c-5c42-b2d8-da51647ebc5f"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "59f9a2e5-667b-53f2-b0e8-3e4bc2d6dbbf",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "92a740f2-2be5-5b30-857c-e7e8f212194f",
+        "head": "MXene/ZnO",
+        "tail": "ammonia",
+        "assertion_ids": [
+          "54ed024c-c772-55df-b81e-935789ff3808"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "3c5b190e-52c8-55ed-9e80-379fbee0d4a6",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "b2d0c4de-e2cd-53dc-9dcc-491c078e9ede",
+        "head": "investigated nanocomposite collection",
+        "tail": "MXene/CuO",
+        "assertion_ids": [
+          "4bfc336e-0ede-5d53-b42f-95eee62fc09c"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "b2d0c4de-e2cd-53dc-9dcc-491c078e9ede",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "a284a129-6b88-5f7b-a14d-ab2c69ac9aaa",
+        "head": "MXene/CuO",
+        "tail": "hydrothermal synthesis",
+        "assertion_ids": [
+          "c9c9b742-6287-55a3-a923-e932c2bf6522"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "b2d0c4de-e2cd-53dc-9dcc-491c078e9ede",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "92a740f2-2be5-5b30-857c-e7e8f212194f",
+        "head": "MXene/CuO",
+        "tail": "ammonia",
+        "assertion_ids": [
+          "9f6e798c-0313-5edf-b3e6-053af5da058c"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "3c5b190e-52c8-55ed-9e80-379fbee0d4a6",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "303f40d3-6f2d-5c53-8ee2-1d3c7dbc8507",
+        "head": "investigated nanocomposite collection",
+        "tail": "MXene/GO/ZnO",
+        "assertion_ids": [
+          "fdb5a746-2c76-51ef-9573-8fdb436acfe4"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "303f40d3-6f2d-5c53-8ee2-1d3c7dbc8507",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "a284a129-6b88-5f7b-a14d-ab2c69ac9aaa",
+        "head": "MXene/GO/ZnO",
+        "tail": "hydrothermal synthesis",
+        "assertion_ids": [
+          "e1059f26-149e-564a-b972-c227384cca49"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "303f40d3-6f2d-5c53-8ee2-1d3c7dbc8507",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "92a740f2-2be5-5b30-857c-e7e8f212194f",
+        "head": "MXene/GO/ZnO",
+        "tail": "ammonia",
+        "assertion_ids": [
+          "2afde3a1-44bd-524b-b0f3-fd0f173d2776"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "3c5b190e-52c8-55ed-9e80-379fbee0d4a6",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "6a63eea3-59b0-594a-8880-0d83b85e8833",
+        "head": "investigated nanocomposite collection",
+        "tail": "MXene/GO/CuO",
+        "assertion_ids": [
+          "406ae15c-e3b3-559c-8751-870acce0454a"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "6a63eea3-59b0-594a-8880-0d83b85e8833",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "a284a129-6b88-5f7b-a14d-ab2c69ac9aaa",
+        "head": "MXene/GO/CuO",
+        "tail": "hydrothermal synthesis",
+        "assertion_ids": [
+          "5c04233e-4114-5182-99d7-f85dcb354ae9"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "6a63eea3-59b0-594a-8880-0d83b85e8833",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "92a740f2-2be5-5b30-857c-e7e8f212194f",
+        "head": "MXene/GO/CuO",
+        "tail": "ammonia",
+        "assertion_ids": [
+          "526874f6-e2e1-5436-8320-1e3cd7ded885"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "3c5b190e-52c8-55ed-9e80-379fbee0d4a6",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "9ae0f8f8-29e9-5784-9e58-65119765d7cb",
+        "head": "investigated nanocomposite collection",
+        "tail": "MXene/ZnO/CuO",
+        "assertion_ids": [
+          "26f373f0-f419-5d29-b9ab-b70722143493"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "9ae0f8f8-29e9-5784-9e58-65119765d7cb",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "a284a129-6b88-5f7b-a14d-ab2c69ac9aaa",
+        "head": "MXene/ZnO/CuO",
+        "tail": "hydrothermal synthesis",
+        "assertion_ids": [
+          "0c6ff369-5daa-50af-8f40-9127e2af5f21"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "9ae0f8f8-29e9-5784-9e58-65119765d7cb",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "92a740f2-2be5-5b30-857c-e7e8f212194f",
+        "head": "MXene/ZnO/CuO",
+        "tail": "ammonia",
+        "assertion_ids": [
+          "7e49705b-4507-5ef9-9caa-515ba02f99fe"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "3c5b190e-52c8-55ed-9e80-379fbee0d4a6",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "fa4d013a-4f23-5f0c-8208-d79c005384ef",
+        "head": "investigated nanocomposite collection",
+        "tail": "Ti3C2Tx MXene/GO/CuO/ZnO nanocomposite",
+        "assertion_ids": [
+          "02566674-e5f8-5f57-8f93-b969ba43f2e4"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "fa4d013a-4f23-5f0c-8208-d79c005384ef",
+        "relation_type": "FABRICATED_BY",
+        "tail_concept_id": "a284a129-6b88-5f7b-a14d-ab2c69ac9aaa",
+        "head": "Ti3C2Tx MXene/GO/CuO/ZnO nanocomposite",
+        "tail": "hydrothermal synthesis",
+        "assertion_ids": [
+          "e7556d83-086a-53dd-9d29-333eb7d9ade0"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "fa4d013a-4f23-5f0c-8208-d79c005384ef",
+        "relation_type": "USED_FOR",
+        "tail_concept_id": "92a740f2-2be5-5b30-857c-e7e8f212194f",
+        "head": "Ti3C2Tx MXene/GO/CuO/ZnO nanocomposite",
+        "tail": "ammonia",
+        "assertion_ids": [
+          "a80c5dc3-704a-5db4-a6e4-cd4c87b6f4ee"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "fbcd2b92-7574-5e87-93a9-54ff45d61e8d",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "3c5b190e-52c8-55ed-9e80-379fbee0d4a6",
+        "head": "investigated room-temperature gas sensors",
+        "tail": "investigated nanocomposite collection",
+        "assertion_ids": [
+          "642814ef-7263-583e-b1a3-242dcc6cef95"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "86e47951-5e56-55d5-8d13-cff6be35ce64",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "fc90b33c-2f4f-5317-be2d-a8d70ec8ac96",
+        "head": "study four-component nanocomposite gas sensor",
+        "tail": "best NH3 sensor (unspecified comparison metric)",
+        "assertion_ids": [
+          "23554239-1d0f-556c-85a7-e9cca5751dba"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "fa4d013a-4f23-5f0c-8208-d79c005384ef",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "334ef82a-d846-5d60-ae7c-49aaf12bcd6a",
+        "head": "Ti3C2Tx MXene/GO/CuO/ZnO nanocomposite",
+        "tail": "component weight ratio",
+        "assertion_ids": [
+          "562f8491-6bd9-5a8e-a835-b2eea59712af"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "d6319c37-404f-50c2-8d7a-61808dbb75f5",
+        "relation_type": "USES_MATERIAL",
+        "tail_concept_id": "fa4d013a-4f23-5f0c-8208-d79c005384ef",
+        "head": "optimal four-component nanocomposite gas sensor",
+        "tail": "Ti3C2Tx MXene/GO/CuO/ZnO nanocomposite",
+        "assertion_ids": [
+          "65bcd14a-e379-5bc2-8f60-6cf396e87756"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "d6319c37-404f-50c2-8d7a-61808dbb75f5",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "b35353b8-5588-5909-a065-66a1f3f9e049",
+        "head": "optimal four-component nanocomposite gas sensor",
+        "tail": "sensor response",
+        "assertion_ids": [
+          "7c276914-6d27-5360-b92f-027489a77bd8"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "d6319c37-404f-50c2-8d7a-61808dbb75f5",
+        "relation_type": "DETECTS",
+        "tail_concept_id": "92a740f2-2be5-5b30-857c-e7e8f212194f",
+        "head": "optimal four-component nanocomposite gas sensor",
+        "tail": "ammonia",
+        "assertion_ids": [
+          "9c0453a2-ad48-533a-a74f-6253e2241836"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "d6319c37-404f-50c2-8d7a-61808dbb75f5",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "6fdd52cb-c29a-54e5-9779-8b284f338f21",
+        "head": "optimal four-component nanocomposite gas sensor",
+        "tail": "humidity independence",
+        "assertion_ids": [
+          "84611071-ca81-52a9-b636-7e108f43c567"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "d6319c37-404f-50c2-8d7a-61808dbb75f5",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "ec0113be-4d8e-5980-8233-afa16893f2da",
+        "head": "optimal four-component nanocomposite gas sensor",
+        "tail": "linear calibration relationship (variables unspecified)",
+        "assertion_ids": [
+          "e0132c03-d8d8-5c5c-abb5-4561f266a6a6"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "d6319c37-404f-50c2-8d7a-61808dbb75f5",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "a4a4cfa3-8d31-53db-92b3-481034c069ef",
+        "head": "optimal four-component nanocomposite gas sensor",
+        "tail": "detection limit",
+        "assertion_ids": [
+          "5172b73a-91db-5243-988d-f333657448e4"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "d6319c37-404f-50c2-8d7a-61808dbb75f5",
+        "relation_type": "HAS_PERFORMANCE",
+        "tail_concept_id": "4fc09ac7-42e7-50b3-b266-2409bee3cca6",
+        "head": "optimal four-component nanocomposite gas sensor",
+        "tail": "NH3 selectivity",
+        "assertion_ids": [
+          "20630615-d59d-58e7-ad5f-43e7ac003aed"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "ae4f3e83-0099-593b-99c6-48a51f097ce2",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "8b3a2eca-80c3-54ee-b17c-654e574d68c3",
+        "head": "comparison gases/VOCs",
+        "tail": "formaldehyde",
+        "assertion_ids": [
+          "a248e3db-7345-5c75-be20-778eecf15bef"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "ae4f3e83-0099-593b-99c6-48a51f097ce2",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "358d98da-13ca-5c47-995c-89be152c510e",
+        "head": "comparison gases/VOCs",
+        "tail": "ethanol",
+        "assertion_ids": [
+          "2c0f95fd-b906-5654-905e-e715e42c430d"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "ae4f3e83-0099-593b-99c6-48a51f097ce2",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "2c8ca940-ac98-5182-b094-f9e43f1f2bb7",
+        "head": "comparison gases/VOCs",
+        "tail": "methanol",
+        "assertion_ids": [
+          "c5292718-303c-5649-a994-0d60f50be93d"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "ae4f3e83-0099-593b-99c6-48a51f097ce2",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "dca3499f-4f38-59f1-9010-b4e891b8ad44",
+        "head": "comparison gases/VOCs",
+        "tail": "isopropanol",
+        "assertion_ids": [
+          "d6843e62-7198-5239-b048-d3a4dd93260a"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "ae4f3e83-0099-593b-99c6-48a51f097ce2",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "3086a290-565a-542b-a764-32f4da09392b",
+        "head": "comparison gases/VOCs",
+        "tail": "toluene",
+        "assertion_ids": [
+          "9889f544-3338-5218-ae48-e71f1f404056"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "ae4f3e83-0099-593b-99c6-48a51f097ce2",
+        "relation_type": "HAS_MEMBER",
+        "tail_concept_id": "9a94a996-09e5-53fa-9460-2c6d43c502ea",
+        "head": "comparison gases/VOCs",
+        "tail": "acetone",
+        "assertion_ids": [
+          "5acb8648-87db-5d5f-a41f-b2be2bde93e6"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "d6319c37-404f-50c2-8d7a-61808dbb75f5",
+        "relation_type": "HAS_MECHANISM",
+        "tail_concept_id": "cdd2a85a-4191-5cb2-ac04-7119d2d00075",
+        "head": "optimal four-component nanocomposite gas sensor",
+        "tail": "proposed NH3 sensing mechanism",
+        "assertion_ids": [
+          "166b607f-2092-5fed-800d-f72802b40323"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "cdd2a85a-4191-5cb2-ac04-7119d2d00075",
+        "relation_type": "MECHANISM_INVOLVES",
+        "tail_concept_id": "1191aceb-ca4c-5952-98da-238f2411d505",
+        "head": "proposed NH3 sensing mechanism",
+        "tail": "p–n heterojunction modulation",
+        "assertion_ids": [
+          "f044a0c4-6264-5408-9bea-8eedb24ae2c5"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "cdd2a85a-4191-5cb2-ac04-7119d2d00075",
+        "relation_type": "MECHANISM_INVOLVES",
+        "tail_concept_id": "a97417f8-a63e-56e7-a87c-2b2445e424b6",
+        "head": "proposed NH3 sensing mechanism",
+        "tail": "electron accumulation layer",
+        "assertion_ids": [
+          "7f482aa4-b9e4-5cef-ad20-94aede719d03"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "cdd2a85a-4191-5cb2-ac04-7119d2d00075",
+        "relation_type": "MECHANISM_INVOLVES",
+        "tail_concept_id": "97228aec-7ee5-57d1-9b1c-413d71661bc8",
+        "head": "proposed NH3 sensing mechanism",
+        "tail": "electron depletion layer",
+        "assertion_ids": [
+          "0743ec78-1017-5026-ab5b-c659be01d912"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "1191aceb-ca4c-5952-98da-238f2411d505",
+        "relation_type": "MECHANISM_INVOLVES",
+        "tail_concept_id": "71ec57cb-5b51-5f6f-a312-cd7744cd70a4",
+        "head": "p–n heterojunction modulation",
+        "tail": "complex p–n heterojunction structure",
+        "assertion_ids": [
+          "4ee9f965-55d1-5ee8-be6e-ec7631e31601"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "a97417f8-a63e-56e7-a87c-2b2445e424b6",
+        "relation_type": "LOCATED_IN",
+        "tail_concept_id": "a3794d37-5d1f-56b4-aba3-51f15f5b2b70",
+        "head": "electron accumulation layer",
+        "tail": "GO/CuO/ZnO subcomposite",
+        "assertion_ids": [
+          "e6ea4dae-f0cc-5ddd-aafb-72b3281d8134"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "97228aec-7ee5-57d1-9b1c-413d71661bc8",
+        "relation_type": "LOCATED_IN",
+        "tail_concept_id": "a407918d-c17a-5534-b60d-37df68a33dc8",
+        "head": "electron depletion layer",
+        "tail": "Ti3C2Tx MXene",
+        "assertion_ids": [
+          "49b57c8b-eb29-5d98-8205-7b71d7ac6f34"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "a3794d37-5d1f-56b4-aba3-51f15f5b2b70",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "23521538-712d-57d4-9ea7-9a76c520830f",
+        "head": "GO/CuO/ZnO subcomposite",
+        "tail": "n-type conductivity",
+        "assertion_ids": [
+          "8458d91a-87d6-55b5-b176-76e84c889792"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "a407918d-c17a-5534-b60d-37df68a33dc8",
+        "relation_type": "HAS_PROPERTY",
+        "tail_concept_id": "f7c30527-e899-5425-8eb9-19688e581a27",
+        "head": "Ti3C2Tx MXene",
+        "tail": "p-type conductivity",
+        "assertion_ids": [
+          "8c817d26-8c01-5952-8145-312347b947d9"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "4814ecb8-80cd-599c-859a-acf76b090740",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "a407918d-c17a-5534-b60d-37df68a33dc8",
+        "head": "MXene/GO",
+        "tail": "Ti3C2Tx MXene",
+        "assertion_ids": [
+          "21f4838c-4927-5371-b0b8-716b5be2d501"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "4814ecb8-80cd-599c-859a-acf76b090740",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "90ed9335-92d6-5099-a33a-812db411c266",
+        "head": "MXene/GO",
+        "tail": "graphene oxide",
+        "assertion_ids": [
+          "ff89b613-27e8-5082-aa32-2dd2da7ead7a"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "59f9a2e5-667b-53f2-b0e8-3e4bc2d6dbbf",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "a407918d-c17a-5534-b60d-37df68a33dc8",
+        "head": "MXene/ZnO",
+        "tail": "Ti3C2Tx MXene",
+        "assertion_ids": [
+          "b686605e-6dcf-5b8e-9cdc-0c7bf521cc58"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "59f9a2e5-667b-53f2-b0e8-3e4bc2d6dbbf",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "59fe65fb-bd0d-5bb3-9152-c39908efe147",
+        "head": "MXene/ZnO",
+        "tail": "zinc oxide",
+        "assertion_ids": [
+          "f5392572-d054-5ad1-9be0-9d14c83869ba"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "b2d0c4de-e2cd-53dc-9dcc-491c078e9ede",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "a407918d-c17a-5534-b60d-37df68a33dc8",
+        "head": "MXene/CuO",
+        "tail": "Ti3C2Tx MXene",
+        "assertion_ids": [
+          "150c4f9f-29f2-59bb-a20c-f4836adcbb40"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "b2d0c4de-e2cd-53dc-9dcc-491c078e9ede",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "382ec1ed-0b13-5c68-919e-dad75a0ab5f6",
+        "head": "MXene/CuO",
+        "tail": "copper oxide (CuO)",
+        "assertion_ids": [
+          "6dd4d2c7-9808-5aae-8032-4b23dece8c71"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "303f40d3-6f2d-5c53-8ee2-1d3c7dbc8507",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "a407918d-c17a-5534-b60d-37df68a33dc8",
+        "head": "MXene/GO/ZnO",
+        "tail": "Ti3C2Tx MXene",
+        "assertion_ids": [
+          "24599645-d9bf-5ded-a4ca-bb11fb93bf48"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "303f40d3-6f2d-5c53-8ee2-1d3c7dbc8507",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "90ed9335-92d6-5099-a33a-812db411c266",
+        "head": "MXene/GO/ZnO",
+        "tail": "graphene oxide",
+        "assertion_ids": [
+          "6d05c07a-7f69-5efe-8319-de5380426462"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "303f40d3-6f2d-5c53-8ee2-1d3c7dbc8507",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "59fe65fb-bd0d-5bb3-9152-c39908efe147",
+        "head": "MXene/GO/ZnO",
+        "tail": "zinc oxide",
+        "assertion_ids": [
+          "b86739a1-82fe-56c1-8b39-231c6f9a5f6c"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "6a63eea3-59b0-594a-8880-0d83b85e8833",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "a407918d-c17a-5534-b60d-37df68a33dc8",
+        "head": "MXene/GO/CuO",
+        "tail": "Ti3C2Tx MXene",
+        "assertion_ids": [
+          "7b7875c7-3344-58ca-bc22-f691443387c0"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "6a63eea3-59b0-594a-8880-0d83b85e8833",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "90ed9335-92d6-5099-a33a-812db411c266",
+        "head": "MXene/GO/CuO",
+        "tail": "graphene oxide",
+        "assertion_ids": [
+          "2bfab38d-f834-5184-8b08-fe8640d33b46"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "6a63eea3-59b0-594a-8880-0d83b85e8833",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "382ec1ed-0b13-5c68-919e-dad75a0ab5f6",
+        "head": "MXene/GO/CuO",
+        "tail": "copper oxide (CuO)",
+        "assertion_ids": [
+          "73426d1d-2bdd-5411-9bf4-fa409e6bbbf1"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "9ae0f8f8-29e9-5784-9e58-65119765d7cb",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "a407918d-c17a-5534-b60d-37df68a33dc8",
+        "head": "MXene/ZnO/CuO",
+        "tail": "Ti3C2Tx MXene",
+        "assertion_ids": [
+          "dda7d619-7174-5073-8ea1-27feb74e8ac8"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "9ae0f8f8-29e9-5784-9e58-65119765d7cb",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "382ec1ed-0b13-5c68-919e-dad75a0ab5f6",
+        "head": "MXene/ZnO/CuO",
+        "tail": "copper oxide (CuO)",
+        "assertion_ids": [
+          "8b0b41a8-74cb-50eb-a72a-8529ac5fd6d9"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "9ae0f8f8-29e9-5784-9e58-65119765d7cb",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "59fe65fb-bd0d-5bb3-9152-c39908efe147",
+        "head": "MXene/ZnO/CuO",
+        "tail": "zinc oxide",
+        "assertion_ids": [
+          "9e636e4a-1ba3-53e1-b428-94f925dcd26c"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "a3794d37-5d1f-56b4-aba3-51f15f5b2b70",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "90ed9335-92d6-5099-a33a-812db411c266",
+        "head": "GO/CuO/ZnO subcomposite",
+        "tail": "graphene oxide",
+        "assertion_ids": [
+          "a7887636-4a7d-531e-9472-8ce9c070a919"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "a3794d37-5d1f-56b4-aba3-51f15f5b2b70",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "382ec1ed-0b13-5c68-919e-dad75a0ab5f6",
+        "head": "GO/CuO/ZnO subcomposite",
+        "tail": "copper oxide (CuO)",
+        "assertion_ids": [
+          "fec85d14-9180-5975-9cf6-e6c578bb2273"
+        ],
+        "occurrences": 1
+      },
+      {
+        "head_concept_id": "a3794d37-5d1f-56b4-aba3-51f15f5b2b70",
+        "relation_type": "HAS_COMPONENT",
+        "tail_concept_id": "59fe65fb-bd0d-5bb3-9152-c39908efe147",
+        "head": "GO/CuO/ZnO subcomposite",
+        "tail": "zinc oxide",
+        "assertion_ids": [
+          "d661ea20-c972-5dc8-bdc0-9193296d69f1"
+        ],
+        "occurrences": 1
+      }
+    ],
+    "repeated_qualified_groups": [
+      {
+        "signature": [
+          [
+            "fa4d013a-4f23-5f0c-8208-d79c005384ef",
+            "HAS_COMPONENT",
+            "90ed9335-92d6-5099-a33a-812db411c266"
+          ],
+          "POSITIVE",
+          "ASSERTED",
+          "STUDY_RESULT",
+          "SUPPORTED",
+          [],
+          null
+        ],
+        "assertion_ids": [
+          "84482504-2319-5b90-a9a1-21dcf71c5a8d",
+          "2150fd0c-6e3b-5a0f-bc6c-146433649d1a",
+          "46505739-e231-5aaf-a2be-85b96d241da8",
+          "f42190ef-e439-57e3-ae8b-9f6423ab5845",
+          "28113f74-e2be-5e9c-ba31-5eed4f1f4e6b",
+          "a8ae13d0-50a9-51ba-adcf-71e616348169"
+        ]
+      },
+      {
+        "signature": [
+          [
+            "fa4d013a-4f23-5f0c-8208-d79c005384ef",
+            "HAS_COMPONENT",
+            "382ec1ed-0b13-5c68-919e-dad75a0ab5f6"
+          ],
+          "POSITIVE",
+          "ASSERTED",
+          "STUDY_RESULT",
+          "SUPPORTED",
+          [],
+          null
+        ],
+        "assertion_ids": [
+          "4bdf3686-2f76-5d57-b669-28ca58fc35a0",
+          "41aa213f-3557-5c72-a5c5-b0050d047198",
+          "731e9853-aee4-54fb-b033-55e2a1c0eb87",
+          "7de06a07-568e-5e0a-81d8-2399e28044c0",
+          "cdec5e2d-8620-5b9e-a135-2cae1f352c83",
+          "a3da2c3f-6fee-5e55-8dee-3ec8e69a3f4c"
+        ]
+      },
+      {
+        "signature": [
+          [
+            "fa4d013a-4f23-5f0c-8208-d79c005384ef",
+            "HAS_COMPONENT",
+            "59fe65fb-bd0d-5bb3-9152-c39908efe147"
+          ],
+          "POSITIVE",
+          "ASSERTED",
+          "STUDY_RESULT",
+          "SUPPORTED",
+          [],
+          null
+        ],
+        "assertion_ids": [
+          "d54e48fd-8417-581e-a3b8-78bce0b98e97",
+          "b78a2ad8-4259-513f-9896-26c305b476e0",
+          "e51663ad-f5a3-589b-9a56-ee3cdd0f7acf",
+          "547c73c8-84d7-565f-ae7c-45129919f73e",
+          "6976eac8-fb93-536a-84e0-c01fd3290306",
+          "963d3496-f04c-58a4-bf65-c0df5d079700"
+        ]
+      },
+      {
+        "signature": [
+          [
+            "fa4d013a-4f23-5f0c-8208-d79c005384ef",
+            "HAS_COMPONENT",
+            "a407918d-c17a-5534-b60d-37df68a33dc8"
+          ],
+          "POSITIVE",
+          "ASSERTED",
+          "STUDY_RESULT",
+          "SUPPORTED",
+          [],
+          null
+        ],
+        "assertion_ids": [
+          "51fbe6be-8c5f-5753-98bc-69b163cf8bff",
+          "6c0950c0-6c2b-5283-bbe9-b675527496f2",
+          "dee48d65-039a-52cb-9833-b2ab7cd0600b",
+          "eb66a444-f0b3-5bf9-a6c4-b43e0ab6633c",
+          "f6d468e9-a389-5dec-8570-8574b6cf1f7e",
+          "e1893d85-37a8-51a8-a03f-f3c3e887a051"
+        ]
+      },
+      {
+        "signature": [
+          [
+            "86e47951-5e56-55d5-8d13-cff6be35ce64",
+            "USES_MATERIAL",
+            "fa4d013a-4f23-5f0c-8208-d79c005384ef"
+          ],
+          "POSITIVE",
+          "ASSERTED",
+          "STUDY_RESULT",
+          "SUPPORTED",
+          [],
+          null
+        ],
+        "assertion_ids": [
+          "d92ae1b4-b3b6-52a0-a2c5-0d4007fd1483",
+          "6a361cc2-9637-54c6-a9be-720eb50670af"
+        ]
+      }
+    ],
+    "policy": "Source-local diagnostic counts, not scored gold. No mentions/assertions deleted. Core triples do not equate measurement instances.",
+    "human_review": "NOT_REVIEWED",
+    "draft_sha256": "66b6fa533d19736754dfaacc7b3871f2f98194567df9152e4ea518ef7808f0cb"
+  }
+]

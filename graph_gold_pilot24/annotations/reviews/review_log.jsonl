@@ -2,3 +2,7 @@
 {"event":"D001_SOURCE_ONLY_FIRST_PASS","date":"2026-10-21","actor":"AI_ASSISTANT","human_decision":false,"sentences":6,"mentions":61,"assertions":51,"status":"AI_DRAFT_PENDING_REVIEW","review_packet":"D001_review.md"}
 {"event":"D010_SOURCE_ONLY_FIRST_PASS","date":"2026-10-21","actor":"AI_ASSISTANT","human_decision":false,"sentences":7,"mentions":105,"assertions":99,"status":"AI_DRAFT_PENDING_REVIEW","review_packet":"D010_review.md"}
 {"event":"SCHEMA_QUESTION_PREPARED","date":"2026-10-21","actor":"AI_ASSISTANT","human_decision":false,"question_id":"Q1","status":"UNRESOLVED","question_file":"questions.md","decision":null,"required_before":"remaining DEV annotation"}
+{"event": "Q1_USER_DECISION_APPLIED", "date": "2026-10-21", "actor": "AI_ASSISTANT", "decision_ref": "Q1-2026-10-21", "rubric_version": "pilot24-dev-rubric-0.2-WORKING", "human_document_review": false}
+{"event": "Q1_FOLLOWUP_AUDIT_COMPLETED", "date": "2026-10-21", "actor": "AI_ASSISTANT", "report": "../reports/Q1_FOLLOWUP_AUDIT.md", "validation": "PASS"}
+{"event": "D003_SOURCE_PASS_WITH_PENDING_Q2", "date": "2026-10-21", "actor": "AI_ASSISTANT", "mentions": 69, "assertions": 45, "exhaustive_relations": false, "human_document_review": false}
+{"event": "Q2_Q3_PREPARED_FOR_USER", "date": "2026-10-21", "actor": "AI_ASSISTANT", "questions": ["Q2", "Q3"], "status": "UNRESOLVED", "new_predicates_applied": false, "human_decision": false}

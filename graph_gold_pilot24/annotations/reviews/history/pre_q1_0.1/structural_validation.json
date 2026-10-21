@@ -1,0 +1,49 @@
+[
+  {
+    "document_code": "D001",
+    "status": "PASS",
+    "errors": [],
+    "chunks": 2,
+    "sentences": 6,
+    "mentions": 61,
+    "assertions": 51,
+    "canonical_concepts": 54,
+    "identity_decisions": 9,
+    "unresolved_questions": 1,
+    "unresolved_assertions": 0,
+    "polarity_counts": {
+      "POSITIVE": 51
+    },
+    "modality_counts": {
+      "ASSERTED": 47,
+      "HYPOTHETICAL": 4
+    },
+    "annotation_sha256": "ab7e7e7fb24a28d0c5518cb33f0da5a94ee7369b3b32472852f0a994a5e4a6f0",
+    "human_review": "NOT_REVIEWED",
+    "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
+  },
+  {
+    "document_code": "D010",
+    "status": "PASS",
+    "errors": [],
+    "chunks": 2,
+    "sentences": 7,
+    "mentions": 105,
+    "assertions": 99,
+    "canonical_concepts": 46,
+    "identity_decisions": 76,
+    "unresolved_questions": 1,
+    "unresolved_assertions": 0,
+    "polarity_counts": {
+      "POSITIVE": 99
+    },
+    "modality_counts": {
+      "ASSERTED": 88,
+      "COMPARED": 2,
+      "PROPOSED": 9
+    },
+    "annotation_sha256": "adffbe3a7beff24c410f5841bf288a88709ec7063d886739dd0dc1da4664125f",
+    "human_review": "NOT_REVIEWED",
+    "semantic_validation": "NOT_ESTABLISHED_BY_THIS_SCRIPT"
+  }
+]

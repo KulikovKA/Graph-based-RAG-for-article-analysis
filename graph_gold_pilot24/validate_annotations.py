@@ -163,6 +163,18 @@ def validate(d, source, template, vocabulary):
         check(all(i in covered or ch.isspace() for i, ch in enumerate(c['text'])), 'Unreviewed source characters')
     for item in d.get('unresolved', []):
         check(item['status'] == 'UNRESOLVED', 'Pending question silently resolved')
+        if 'evidence' in item:
+            evidence(item['evidence'])
+        for field in ('head_mention_id', 'tail_mention_id'):
+            if field in item:
+                check(item[field] in mentions, 'Unknown unresolved-candidate endpoint')
+        if item.get('category') == 'ONTOLOGY_ENDPOINT_OR_PREDICATE_GAP':
+            check(d['exhaustive_relations'] is False, 'Pending relation gap claims exhaustive relations')
+            check(not any(a['head_mention_id'] == item['head_mention_id'] and
+                          a['tail_mention_id'] == item['tail_mention_id'] and
+                          a['relation_type'] == item['proposed_relation_type'] and
+                          a['support_status'] == 'SUPPORTED' for a in d['assertions']),
+                  'Pending predicate candidate silently accepted')
         for aid in item.get('assertion_ids', []):
             candidates = [a for a in d['assertions'] if a['assertion_id'] == aid]
             check(bool(candidates) and all(a['support_status'] == 'UNRESOLVED' for a in candidates), 'Unresolved assertion promoted to supported')
@@ -194,6 +206,8 @@ def main():
                 canonical_concepts=len(d['canonical_concepts']), identity_decisions=len(d['identity_decisions']),
                 unresolved_questions=len(d['unresolved']),
                 unresolved_assertions=sum(a['support_status'] == 'UNRESOLVED' for a in d['assertions']),
+                unresolved_relation_candidates=sum(q.get('category') == 'ONTOLOGY_ENDPOINT_OR_PREDICATE_GAP' for q in d['unresolved']),
+                exhaustive_entities=d['exhaustive_entities'], exhaustive_relations=d['exhaustive_relations'],
                 polarity_counts=dict(Counter(a['polarity'] for a in d['assertions'])),
                 modality_counts=dict(Counter(a['modality'] for a in d['assertions'])),
                 annotation_sha256=hashlib.sha256(path.read_bytes()).hexdigest(),
