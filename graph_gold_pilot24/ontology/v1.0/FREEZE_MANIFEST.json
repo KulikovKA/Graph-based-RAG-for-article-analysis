@@ -1,0 +1,213 @@
+{
+  "ontology_id": "pilot24-ontology-v1.0",
+  "status": "TECHNICALLY_FROZEN_PENDING_HUMAN_APPROVAL",
+  "content_commit_sha": "390c4318a6e0a348d1a430bd38c51a3645a7809d",
+  "baseline_commit_sha": "5cee979805fb5e6aa8980d0371e4f5a789139ec7",
+  "git_identity_policy": "The content commit is pinned. This manifest is committed next, avoiding a self-referential SHA.",
+  "ontology_sha256": "c3c0186ce492560fb27be400194596f70fae66a89daf4b7844636264cd3e3692",
+  "schema_sha256": "b1207120ed8b58d3092e408d1a37c1fd721d2f859c6859141e31a1abaf5d64dc",
+  "artifact_sha256": {
+    "adjudication_decisions.jsonl": "1014afd9e662e1be434754b72271f29db059654b379cf06552555726fda5ea10",
+    "annotation.schema.json": "b1207120ed8b58d3092e408d1a37c1fd721d2f859c6859141e31a1abaf5d64dc",
+    "ANNOTATION_RUBRIC.md": "83176ce9552c64481942aafa26526e0a44bb30da4db3373ad69ee75a7dd5a737",
+    "build_ontology.py": "116d2518a6873f7eb7091d75583c67b3ed98c181552adc2f91f260aca5d0a0f0",
+    "build_schemas.py": "5af1babd49561515f225f9e5ce69bb63208d0b73724d1596572d7a8751773742",
+    "CHANGELOG.md": "670c16543cedb0d6e7212317071280967147a184f896d6a3b306af5a8de1fabb",
+    "CONSISTENCY_AUDIT.md": "20812865add456cd355cd5495f0028560d73984e8a5dee5a102abc8beaa7502b",
+    "COVERAGE_REPORT.md": "bb73c3f06515dad4b1673e665e206b3e8a8efec82d880369b40177e7a386abac",
+    "DECISION_LOG.md": "2b66655fcdce461d738ff45fb3356c8e5d86fcbeac9da9c687d87446e13791f4",
+    "dev_drafts/D001.jsonl": "69b418c07858278f183da92683e6719a3cedb8e5e4dda486ee8cda7a79f5d253",
+    "dev_drafts/D003.jsonl": "ac12867dab8dd211a2e89f5967eeabc941b0c7f42319b14b90803c1231fab347",
+    "dev_drafts/D004.jsonl": "c8b4be724211f4cc7b18c71d338e351348902685473d8b9aaeb028b7f1d20dac",
+    "dev_drafts/D010.jsonl": "f7946cfd019e89ea5f933527cc862199ea48d79332885053be1f6c1a51d1e1dd",
+    "dev_drafts/D017.jsonl": "5cf4d7a2c5d75fa1fd55ae6cf18f72abd7bf23e14bfd8dd30f4312d5c57108be",
+    "dev_drafts/D024.jsonl": "dbb53cd90d78d2294875ea6210e648ce8175dcb4f99575e4e88bc0a3567b8ccc",
+    "dev_drafts/D026.jsonl": "cb8471dd635e260de1e2313d5bb3cf6f3155bb3dbce6df89ae786a1a1a7ed174",
+    "dev_drafts/D035.jsonl": "ef0b679d5d0513f12264f133a6480b1ba7bd0039ce64aa3dafe0db179637ec9c",
+    "dev_drafts/D038.jsonl": "8a6de9a68c67b775b53d304f210095c7ab40d940a0169f1810fedc8ac2c70bef",
+    "dev_drafts/D060.jsonl": "77672e3e6576594b28f80dc74d3d766a0a3ce76bf6347428cc6e261c4ea05919",
+    "dev_drafts/D078.jsonl": "1ee5cc7d05da59c5867af49f3f28889c2ee1335d79895cc1b732ab02e5c8d072",
+    "dev_drafts/D092.jsonl": "86896a8634b905e5e35ab167fb63ef92c45c9db5514a285b02f3febd3a60a747",
+    "DEV_INPUT_ISOLATION.json": "f916c2f2e89eeb236fd8b46ca2334004c5303934e4bdc9a3e82ef0ebdcf9a8ae",
+    "dev_manifest.json": "7bfe06e6bbd631523a8e6fe6c78f576151d107887cf5c396bea566f802fc8d1d",
+    "dev_migration_patch.jsonl": "e1246b0fd90e235ad6245f0deccbeeef0816bbdaaba3e630d7d347eeaab81dbc",
+    "dev_sources.jsonl": "ee18aea0e0eb5e768e7d457e26c636fd82b10509ae11a1201d0ca3c056778a31",
+    "ENTITY_DEFINITIONS.md": "c91ea624b7be2e0e98cfa41d4563d0bfc55db74d65b0240d543a62035e1e194c",
+    "INPUT_MANIFEST.json": "1c8f8349e6e9c22a78bcb47015e5a4702fd7e5259b641b71e91a66903377f261",
+    "integrate_dev.py": "91fe056ed73e8281f24c2183df99b57683ee5175b66f8b487db69a7e8f4f374f",
+    "INTEGRATION.md": "b2f4417a3fc1ad0c286fc25c1e7f6b479168006f2dea4cc0f33dbad0f65d4921",
+    "integration_report.json": "4d24bf377423390af94c041b7ea84c9bd3f3b215fdfdc803bb73db1a045957a0",
+    "migrate_dev.py": "a0727b3444c3e0a84c2ad0b39e18abd4fb35f6883d68240a5ccc6ca0beaf9864",
+    "migration_summary.json": "da0329283e646ca7a6acc4b905c8f3c1a833206c5a0ddb5fdff3093ded8c6214",
+    "ontology.json": "c3c0186ce492560fb27be400194596f70fae66a89daf4b7844636264cd3e3692",
+    "ontology.schema.json": "eda68e1f3ddaece1e90c9850aa8ab18451acb8080f90a89a56eda5550fc15f75",
+    "RELATION_DEFINITIONS.md": "834cd8fde365b0743da0404bcbefea5f1c988b0e933b63c580fc7a984719141b",
+    "REPRODUCIBILITY_CHECK.json": "a053a645ec0606c9ec7f9f17fbd2202d2e584241d07870712db383803db0390b",
+    "semantic_build_checks.json": "257c7110abe6b8ec704c29910d0171af8dddcb0119e127fec194e200e87f14ae",
+    "semantic_changes.jsonl": "4377817f2d1bb9cc215d9dc2b89630e086432ec35c010708eabc119fd6bb9ccf",
+    "sentence_audit.jsonl": "60474f067c0cded97c26f87a1ca60b73eefa7557df9d29b7a561b8ef8f651dd7",
+    "source_snapshot/annotation_0.3.schema.json": "09306f65313c32302057b97c08e936979f77ce7348810bc14505241f99942ebd",
+    "source_snapshot/ANNOTATION_GUIDE.md": "9f7da6ee668babc106b6df13f23e3f66d6abebd3657602339f260cc50ff0b9a7",
+    "source_snapshot/dev_drafts_0.3.jsonl": "a0867f5cf66450d0a319b56ee0f5cc5bdffcbb0c76508116fc3d3dcca25f9a72",
+    "source_snapshot/dev_manifest.json": "7bfe06e6bbd631523a8e6fe6c78f576151d107887cf5c396bea566f802fc8d1d",
+    "source_snapshot/DEV_ONTOLOGY_FREEZE_0.3.json": "aba4da4b4a7597d63bc62e5b45acbadf3e3aea44389c5216651c4cc154e4517b",
+    "source_snapshot/dev_questions.json": "b35c5b29c24f5c3f1260e098727ddbe2bd9aea5b6849a39b223e617557c32d34",
+    "source_snapshot/dev_sources.jsonl": "ee18aea0e0eb5e768e7d457e26c636fd82b10509ae11a1201d0ca3c056778a31",
+    "source_snapshot/README.md": "e70b6fde00066375e75647385596a11140cbc3a985a8045ab21b9b9c9156e5bc",
+    "source_snapshot/relation_vocabulary_0.3.json": "91b309feb792c31980c7b19c78c0d3a7ddf05d2bd2e49bc8fff0786118300141",
+    "source_snapshot/RUBRIC_0.2_WORKING.md": "3347646c08cd232ae08919dd4a5f86830f28467396a7d381dfdf1250aa547900",
+    "test_report.json": "7e2234d33bcdaefce578ebfc175f9fb0cb397cdca9c90791da832c5a1cffde08",
+    "validation_report.json": "cbedd2130532d22d366b4e56c805333e86ee48429fb216728df9ec0cf4eccbc0"
+  },
+  "tooling_sha256": {
+    "validate_annotations.py": "a19d2e000a41c281af24c7170adc93afb1fa8be12ede927ee844034ca2631998",
+    "validate_ontology_v1.py": "dd53a2904df78529157b3fda0964b60444010c2356be48796111513d2137a0c6",
+    "test_ontology_v1.py": "5a0a3cd109c516a12d1326847c25e4ce4365e773d3ee5cb54133aaceadebd6a1",
+    "freeze_ontology_v1.py": "d0ccf680d0e099ef39c660f2b71c6511c8b0b05a72c9bdff03c278e2982e8898"
+  },
+  "dev_source_snapshot": {
+    "source_jsonl_sha256": "ee18aea0e0eb5e768e7d457e26c636fd82b10509ae11a1201d0ca3c056778a31",
+    "documents": [
+      {
+        "document_code": "D001",
+        "document_id": "00f9cfc7-459f-4c4d-8131-b425d01527dc",
+        "revision_id": "7664effe-8f20-46e8-b694-224b75bea829",
+        "revision_content_hash": "e4ec6ae32f4171ae3f43a12a86f7ebf1c40b945a8411d66f3ece83eac253c101",
+        "chunk_text_sha256": {
+          "6319af2d-0fe1-4daa-87c6-131c379a75c9": "51d6b3595cc1b465fba348487a2c2784ee54f3ce01e850c9bea6eb5d424b0831",
+          "e9796bf6-68c8-440f-a814-ca185157cce3": "272bcd1547345d4fa14705d9e0af1c56a2d5692244e2bb2b8f3b8b04b12da3a3"
+        }
+      },
+      {
+        "document_code": "D003",
+        "document_id": "06066c66-1454-4813-b7b7-f366b9956035",
+        "revision_id": "7af46631-a38f-430d-a43c-bcfa0dccac9e",
+        "revision_content_hash": "550077c868600da15dc0345d3891f9b03c3cc2352db6b3e008f716a00b39705b",
+        "chunk_text_sha256": {
+          "0ad16539-951a-4c6a-95df-0d92179b23eb": "93b3b8cd46f210f24559ada46e4094b348260a9b1c0be1b96965d77ac32e55ae",
+          "45f36916-7688-4edb-8dd1-2ac50ea13339": "93b20b0f39df3ee410854241c279ea62bb58bb7097cf578d2413e403427c1a88"
+        }
+      },
+      {
+        "document_code": "D004",
+        "document_id": "08d58bd1-a89e-4b70-b817-821df8428bc7",
+        "revision_id": "5afc0eeb-3c76-40cf-99be-e70f066beb2b",
+        "revision_content_hash": "3f74a026de372b786df17e76d80233ebcc20fedaac46c1e75f6202ef4a7af87f",
+        "chunk_text_sha256": {
+          "1314b88d-a703-48b5-bb03-e426d5474034": "5ab47cc03efc60802c5c6bece098307c9084b5e327212580366207ab757116c9",
+          "eb47e91a-4c35-4de7-96a3-f141eea0a6cf": "4fb5907a3a82cde6bcf412375e3883c2c52a669235fec58ce11b70619222a212"
+        }
+      },
+      {
+        "document_code": "D010",
+        "document_id": "136d5083-0254-4930-a35e-88441bb802a0",
+        "revision_id": "fbd87a44-35d0-4f51-80d6-39abd117d01f",
+        "revision_content_hash": "2cfab050f85a098d6552dd793ca39bf2a83734f1ce37b7c66265a28fe23a8daf",
+        "chunk_text_sha256": {
+          "510e3540-e579-4536-a4ea-dae9b47eb024": "64d799ca2abc5b0e0227acb9ed7866ea179d19a4e47cc2aaaebd797fdd0de985",
+          "761f757f-5005-4417-bf90-f2c5200f7600": "c96d836b51f3c30b23d69406198bde211107fed455cd9631385c370269084ab3"
+        }
+      },
+      {
+        "document_code": "D060",
+        "document_id": "96575fc6-1212-4cb1-889f-179dd9515854",
+        "revision_id": "61ce4e43-1d79-4cee-af6c-43026828532a",
+        "revision_content_hash": "21bd9bd7f4b3c7e6e3debc8539183ecabbce31f32c03af8cfa64a1f84ad72fc7",
+        "chunk_text_sha256": {
+          "006deffa-1906-4677-942b-2a29bd47046b": "7e3054e2cb1e788c55f6c5f17b4855b0993823ba82f68f8cf3c012bac4ed1393"
+        }
+      },
+      {
+        "document_code": "D078",
+        "document_id": "c56c60ec-74f3-44d5-83e6-f83d87b921f5",
+        "revision_id": "85c8c16f-76e7-45fb-a9b2-6124974a51e9",
+        "revision_content_hash": "dc49a8fa0e21f8d0a41a4bdd68bcb7ea74cebbb9d298a42097d44284b6f3458b",
+        "chunk_text_sha256": {
+          "8e528f95-22fc-4b9a-8b16-90391b584bc3": "b0f5211d8a7b056bc9d7cccb1c371076afd5e4dc80f88e80baf6e7c51c26a088",
+          "509195ce-f818-487d-8196-eb0511b0acaf": "8cf72195f178a68bd7e6a2d2169cfb9fb999fd60e210183af6018a2992bca0e5"
+        }
+      },
+      {
+        "document_code": "D035",
+        "document_id": "5f698fb2-5265-4343-a012-0c0fb3c6e9c4",
+        "revision_id": "6612f9ab-0007-4924-a4da-dc7e0bafdba3",
+        "revision_content_hash": "e6eff4a200148cc00ac285b158370c2683bbceda122cbb359fcdb0765a14aa10",
+        "chunk_text_sha256": {
+          "4f0f0e24-163f-4d49-a509-72a2393efd6a": "dc77ce8cc6bc90047c157e3478fef185677252383873f9ccd1db64ae3daab659"
+        }
+      },
+      {
+        "document_code": "D092",
+        "document_id": "ea87c55e-72ef-439c-aa6b-7285edc49095",
+        "revision_id": "19bedd9d-3827-402c-894b-e8ca762ecff7",
+        "revision_content_hash": "ac3743e58b7e2914a666aab319daffb36125068c8b2fa96cd8035f4657fbb5d0",
+        "chunk_text_sha256": {
+          "8c72db49-9f37-4151-a3be-46a88d5af916": "3cd403a29f08ece6f4d4437796b82391cb5783184abead4225be5fad86bc9f15"
+        }
+      },
+      {
+        "document_code": "D017",
+        "document_id": "2860ed7f-a2a8-4e76-9250-e3558d092f23",
+        "revision_id": "d80633dc-c57a-4253-8754-29c9366084f5",
+        "revision_content_hash": "56bb63182bd0f9359366aa4712c343a59318c09d27b22ef6a77e2098b2a4868d",
+        "chunk_text_sha256": {
+          "52c7bac2-feff-4316-934f-2726c4842540": "651d394d86153236deeb8d70507215a9e8b8d77ab04eec43518a0daabf9003e2",
+          "60c46884-0b00-408c-a0d7-693eeae8beca": "e52aca9b25835eb15b142479046e050ec9f21ae5aedcd22b3e2294c658206c41"
+        }
+      },
+      {
+        "document_code": "D038",
+        "document_id": "6a675d0d-8256-4c8f-b2ae-7c95c1bcabf8",
+        "revision_id": "b6535766-c337-4abd-9925-8381f0acc7fa",
+        "revision_content_hash": "b8eb65107d68109a5db1a57f89d87096e343cb3227f02ffb1ee1bfc04c476b5b",
+        "chunk_text_sha256": {
+          "fb767df1-8f61-4334-89e7-29c1cdcf5364": "6d06ae3b6c61d47994638233f63c8c06319dd0eb8a5ec0b5203b72e47f6e2da4"
+        }
+      },
+      {
+        "document_code": "D026",
+        "document_id": "3df9cd7a-940f-400e-b03a-a72459a5558f",
+        "revision_id": "3ed28d1a-4b30-4ea4-bf03-3a69308fb8ba",
+        "revision_content_hash": "eece3075bca641c8c9cb80cd6b48d02488b5a744cf9cd861575232ae6d850869",
+        "chunk_text_sha256": {
+          "5a1139f9-9bf1-4665-96e1-c15a6477ded6": "bedd2a7ed1ad17c747634824457042b37b609d742e51ee38b9ffc4f8c0f23907"
+        }
+      },
+      {
+        "document_code": "D024",
+        "document_id": "3a5a587d-5ddf-49b9-aa34-bd081fb0d04b",
+        "revision_id": "95f3f5a0-077c-4f5d-859f-37fc344f12f0",
+        "revision_content_hash": "2a7a7b1fb4d43fe931e630844721a494f039d1adfb6e2e6bcd24404091d169b1",
+        "chunk_text_sha256": {
+          "8c66a2f4-bc1a-4135-b4ed-059f62c24390": "c8eb765f52f0ff76bff16cd80f39ce601f551a617e79388c49bedca77cac4058",
+          "6a14ebc5-5021-4e98-9eda-0b99d7267b5c": "fe0a7132f2db425be78db46f877f70719cc94fd42d2865431beaf449cb9580e9"
+        }
+      }
+    ]
+  },
+  "approval_states": {
+    "individual_user_decisions": "Recorded as schema constraints; not label human review.",
+    "remaining_dev_adjudication": {
+      "actor": "AI",
+      "file": "adjudication_decisions.jsonl",
+      "records": 20
+    },
+    "technical_freeze": {
+      "actor": "AI",
+      "status": "FROZEN"
+    },
+    "final_human_ontology_approval": {
+      "status": "PENDING",
+      "decision_ref": null
+    },
+    "gold_labels": {
+      "human_review": "NOT_REVIEWED",
+      "approved_documents": 0
+    }
+  },
+  "isolation_limitations": [
+    "Root conversation previously exposed CALIBRATION/HOLDOUT.",
+    "Semantic v1.0 design delegated to a fresh DEV-only context; inherited baseline annotations may retain prior-context influence.",
+    "Historical 0.3 freeze first write failed before calibration text display; no retroactive independence claim."
+  ]
+}
