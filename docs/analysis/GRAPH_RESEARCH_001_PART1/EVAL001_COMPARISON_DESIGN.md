@@ -151,3 +151,17 @@ Structured judge reuse возможен для итоговой rubric 0–4. Д
 8. Existing privacy contract сохраняется: validated evidence и allowlisted metadata; raw reasoning/provider bodies/rejected source dumps не публикуются. Gold хранит разрешённый source evidence, rejected diagnostics — counts/reason codes. Детальная forensic review требует отдельного согласованного retention design, а не тайного изменения логирования.
 
 Порядок реализации/запуска — только после будущего разрешения, по [EXPERIMENT_ROADMAP](EXPERIMENT_ROADMAP.md).
+
+## 10. Дополнение 2026-10-21: tracking, safety и язык
+
+Контракт дополняется [архитектурой MLflow, guards и LanguageView](OBSERVABILITY_SECURITY_LANGUAGE_ARCHITECTURE.md); это спецификация будущего расширения, без новых модулей или запусков.
+
+- **Один scorer:** EVAL-001 формирует authoritative report; MLflow хранит его безопасную проекцию, manifest hashes, versions, scalar metrics и denominators. Независимый MLflow judge не добавляется. Пересчёт старых predictions новым scorer получает новый evaluation run, а не перезаписывает результат.
+- **Разные profiles:** `graph_extraction`, `crosslingual_retrieval`, `security_regression`; существующий fixture profile сохраняется. Graph comparison фиксирует language/guard policy; language comparison фиксирует graph snapshot; security comparison использует отдельные clean/attack fixtures. Совпадение campaign ID не делает profiles сравнимыми.
+- **Manifest:** дополнительно effective model inventory, language/translator/glossary identity, guard policy, telemetry policy, split grouping и human annotation provenance. Несогласованные версии docs/config/runtime — readiness failure до эксперимента.
+- **Языковые метрики:** term/number/unit/negation preservation и human semantic adequacy; paired retrieval delta к human EN reference; end-to-end RU answer support, ambiguity, fallback и latency. Отдельный aligned RU/EN query gold; exact evidence spans остаются английскими.
+- **Safety метрики:** forbidden-effect rate на attempted cases с reached/completed counts; clean utility/false-block rate; утечка synthetic canary в logs/artifacts/error paths. Quarantine и translation failure учитываются в coverage, не исчезают из выборки. Успешная валидация JSON не считается успешной защитой или доказанной faithfulness.
+- **Неизмеренные поля:** отсутствующие значения не экспортируются в MLflow как нули. Status/denominator/CI хранятся явно; пустые accepted outputs не выигрывают по precision. `TRACKING_PENDING` отделён от execution status; потеря обязательных данных даёт `INCOMPLETE`.
+- **Privacy:** private query/translation text хранится только в контролируемом application/annotation store; в MLflow — IDs и разрешённые агрегаты. Raw reasoning/provider/rejected bodies запрещены и в trace attributes, previews, exception paths, и в локальном export buffer.
+
+Начальный объём дополнительного gold и порядок совместной разметки указаны в Phase 0B roadmap. До разметки все новые quality/security показатели остаются `NOT_MEASURED`; целевые пределы benign degradation и retrieval non-inferiority — `UNSET` до preregistration на development.

@@ -10,6 +10,16 @@
 
 ## Phase 0 — Eval readiness и gold
 
+Дополнение от **2026-10-21**: [архитектура MLflow, guards и RU → EN](OBSERVABILITY_SECURITY_LANGUAGE_ARCHITECTURE.md). Текущая задача ограничена Phase 0A; разметка и реализация сейчас не выполняются.
+
+| Подэтап | Результат | Когда |
+|---|---|---|
+| 0A — Architecture | Контракты GraphExtractionResult/LanguageView/telemetry, trust boundaries, схемы сравнения и список открытых gates | Сейчас: только документы |
+| 0B — Совместная разметка | Сначала два dev abstracts и несколько RU intents; затем ontology/rubric/glossary, grouped splits и human gold графа/языка/защит | Следующая отдельная совместная задача |
+| 0C — Evaluation foundation | После перехода к реализации: EVAL profile/scorer, безопасный MLflow adapter, общие guards и проверка failure/leak paths | До первого model pilot; сейчас не реализуется |
+
+MLflow не вычисляет альтернативный gold score: он хранит метрики существующего EVAL, версии и manifests. Состав параметров/метрик/артефактов и правила сравнения заданы в архитектурном дополнении. До будущего запуска устранить расхождение кандидатов моделей в LLM_CONTRACTS и YAML посредством единого effective manifest; не менять модели молча между arms.
+
 **Гипотеза:** существующий EVAL-001 можно расширить отдельным graph profile без изменения fixture baseline и без подмены semantic качества structural checks.
 
 **Фиксировано:** HEAD/source manifest/revisions, EVAL-000 cases, старые baseline/current artifacts, raw/Hybrid historical results. **Меняется:** только будущий research contract/annotation protocol; production graph schema не требуется.
@@ -21,6 +31,10 @@
 **Успех:** фиксированы source/ontology/gold/matching/calibration identities; нулевые unresolved provenance mappings в pilot; независимая semantic rubric; compatibility policy отделяет source snapshot от treatment graph. **Остановка:** отсутствует exact source, лицензия выбранного checkpoint не позволяет planned use, неизвестно значение необходимого qualifier, невозможно independent gold, или adapter подменяет смысл native output.
 
 **Ресурсы:** чтение/разметка и adapter design; inference не нужен для первого contract review. Human hours `UNKNOWN`, оценивать после аннотации двух development документов, не заимствовать 8–16 часов из online EVAL-002 как стоимость exhaustive graph gold.
+
+**Дополнительные наборы Phase 0B:** proposed 30 RU query intents с human EN reference (12/6/12) и 24 clean/attack пары (12/6/6), с группировкой по intent/source family/attack template. Это бюджет pilot, не доказательство достаточного sample size. Gold не создаётся в текущей работе. Security fixtures изолированы от frozen corpus; downstream dev queries не раскрывают gold 76 untouched graph документов.
+
+**Readiness Phase 0C:** manifest и версии обязательны; отсутствие MLflow допускает безопасное сохранение отчёта с `TRACKING_PENDING`, потеря обязательного manifest означает `INCOMPLETE`. Ноль наблюдаемых критичных нарушений доступа/действий и утечек synthetic canary на guard cases; benign false-block/coverage показывать отдельно. Одинаковые guards и telemetry у A–F, стоимость включать в измерения. Raw prompts, private ideas, rejected payload и reasoning не логировать.
 
 ## Phase 1 — Small offline pilot
 
@@ -78,9 +92,13 @@
 
 ## Phase 5 — Downstream EVAL
 
+**Предварительный отдельный этап L — языковой pilot.** На одном фиксированном graph сравнить T0 (RU multilingual search), T1 (validated EN query view), Tref (human EN equivalent); T2 (RU+EN) добавить при обоснованной необходимости. Тот же source/relevance gold, reranker, final K и evidence budget; у T2 ограничить суммарные unique candidates и учитывать обе ветви. Измерять semantic preservation терминов/чисел/единиц/отрицаний, relevance, clarification/fallback, качество RU ответа и полную стоимость. Предварительно предпочтён T1, победитель `NOT_MEASURED`. Если language gate не пройден, Phase 5 для целевого RU сценария не объявляется готовой; offline Phases 1–4 могут продолжаться независимо.
+
+Перед Phase 5 freeze language/glossary/guard policy и effective model inventory. Перевод не редактирует source, graph assertions или пользовательскую idea version; финальный ответ строится русским deterministic renderer с точными EN evidence. Подробнее — [языковая архитектура и gates](OBSERVABILITY_SECURITY_LANGUAGE_ARCHITECTURE.md).
+
 **Гипотеза:** более точный graph повышает качество анализа technical ideas при неизменной остальной системе.
 
-**Фиксировано:** queries, source/vector indexes, retrieval/analyst versions и settings, evidence budget, judge/human rubric. **Меняется:** только graph knowledge provider/snapshot через общий adapter. Не разрабатывать новый online retrieval algorithm в рамках этого сравнения.
+**Фиксировано:** RU queries, source/vector indexes, выбранная language/glossary policy, guard/telemetry policy, retrieval/analyst versions и settings, evidence budget, judge/human rubric. **Меняется:** только graph knowledge provider/snapshot через общий adapter. Языковое сравнение L проводится отдельно; не менять online retrieval algorithm в рамках graph comparison.
 
 **Данные:** заранее размеченные query/source relevance и feature matching cases, supporting claims, graph-consumer bridge с одинаковым поведением для arms. Existing 10 synthetic cases остаются structural regression suite; не становятся scientific effectiveness benchmark.
 
@@ -113,5 +131,10 @@
 | X9 | 4096 vs larger effective context | Контекст или format ограничивает extraction | Тот же source, prompt/output policy; actual truncation metadata |
 | X10 | FP32 vs INT8 / batch sizes | Реальная CPU экономия без quality loss | Same inputs и calibrated outputs; all stages included |
 | X11 | Same consumer, different frozen graph | Полезен ли граф для дипломной задачи | EVAL-001 research capture, unchanged online pipeline |
+| X12 | T0 vs T1 vs Tref; T2 при необходимости | Нужен ли RU → EN перевод и окупается ли bilingual retrieval | Один frozen graph, query gold, общий candidate/evidence budget; language policy — единственный фактор |
+| X13 | Clean/attack пары и варианты guard policy | Какие нарушения блокируются и насколько страдает полезная задача | Изолированные fixtures, fixed language/model policy, forbidden-effect и false-block metrics |
+| X14 | Telemetry export/recovery и измерение overhead | Можно ли воспроизводимо сравнивать runs без утечки текста | Synthetic canaries, одинаковые outputs, безопасный manifest и replay экспорта без повторного inference |
+
+X12–X14 — будущие отдельные проверки общих компонентов; их результаты не подменяют ranking extractors. Обязательные guards не отключаются на production данных ради ablation. Минимальная readiness X13/X14 предшествует model pilot; performance overhead уточняется при реальных измерениях Phase 3.
 
 Окончательное решение принимается по X1–X8 и Phase 4/5, а не по topology, framework completeness или рекламе model card. При отсутствии убедимого преимущества сохраняется текущий baseline с явно описанными ограничениями; результаты отрицательного эксперимента тоже исследовательски значимы.

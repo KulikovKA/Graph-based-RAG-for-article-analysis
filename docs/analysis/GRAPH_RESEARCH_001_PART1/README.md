@@ -1,6 +1,6 @@
 # GRAPH-RESEARCH-001 — часть 1
 
-Исследование offline построения технического графа знаний. Дата: **2026-10-19**, Europe/Moscow. Исследованный HEAD: `868bccc` (полный SHA фиксируется в аудите). Режим: **RESEARCH ONLY**. Новые inference, tests, benchmarks, загрузки весов и обращения к базам не выполнялись. Созданы только девять Markdown-документов в этом каталоге; production, конфигурация, старые checkpoints, Git commits и remote не изменялись.
+Исследование offline построения технического графа знаний. Дата исходного исследования: **2026-10-19**, Europe/Moscow. Исследованный HEAD: `868bccc` (полный SHA фиксируется в аудите). Режим: **RESEARCH ONLY**. Дополнение архитектуры от **2026-10-21** включает MLflow, минимальные защиты и RU → EN language adapter; его точечная сверка выполнена на HEAD `946f232`. Новые inference, tests, benchmarks, загрузки весов и обращения к базам не выполнялись. Изменялись только Markdown-документы в этом каталоге; production, конфигурация, старые checkpoints, Git commits и remote не изменялись.
 
 ## Основной ответ
 
@@ -28,12 +28,15 @@
 
 ## Состав исследования
 
+**Дополнение по запросу пользователя:** [архитектура MLflow, защит и RU → EN](OBSERVABILITY_SECURITY_LANGUAGE_ARCHITECTURE.md). Здесь определены состав логов, границы доверия, перевод технических признаков, отдельные сравнения языка и протокол будущей совместной разметки. Все компоненты пока проектируются; реализации нет.
+
 | Документ | Содержание |
 |---|---|
 | [CURRENT_PIPELINE_AUDIT.md](CURRENT_PIPELINE_AUDIT.md) | Код, исторические метрики, последние изменения, версии, диагностика и ограничения |
 | [LITERATURE_REVIEW.md](LITERATURE_REVIEW.md) | Graph-RAG, scientific/patent IE, joint/span methods, правила, calibration, первоисточники |
 | [SMALL_CLASSIFIERS_REVIEW.md](SMALL_CLASSIFIERS_REVIEW.md) | Конкретные checkpoints, лицензии, языки, обучение, ONNX, RAM, выбор исполнителя по задаче |
 | [ARCHITECTURE_CANDIDATES.md](ARCHITECTURE_CANDIDATES.md) | Шесть различных pipelines A–F, ontology, provenance, примеры, риски |
+| [OBSERVABILITY_SECURITY_LANGUAGE_ARCHITECTURE.md](OBSERVABILITY_SECURITY_LANGUAGE_ARCHITECTURE.md) | Общая архитектура MLflow/guards/language adapter, схема логов, T0–T2/Tref, будущая разметка |
 | [PERFORMANCE_ANALYSIS.md](PERFORMANCE_ANALYSIS.md) | Исторические затраты, асимптотика, break-even каскада, CPU/RAM и план измерений |
 | [EVAL001_COMPARISON_DESIGN.md](EVAL001_COMPARISON_DESIGN.md) | GraphExtractionResult, adapters A–F, метрики, gold и совместимое расширение harness |
 | [EXPERIMENT_ROADMAP.md](EXPERIMENT_ROADMAP.md) | Phases 0–6, контролируемые переменные, критерии отбора и остановки |
@@ -47,4 +50,4 @@
 
 ## Чего не хватает
 
-Нет независимого human gold для entities/relations/roles/qualifiers на frozen corpus; нет patent holdout, измерений A–F, калибровки classifiers на данном домене, peak RAM альтернатив и подтверждения semantic precision текущего полного v1.4 corpus. Старые AI annotations полезны для поиска сложных случаев, но не заменяют gold. Первым будущим шагом после разрешения должен быть **Phase 0: ontology/rubric и gold**, затем короткий screening. Полную реализацию всех шести вариантов заранее планировать не требуется.
+Нет независимого human gold для entities/relations/roles/qualifiers на frozen corpus; нет patent holdout, измерений A–F, калибровки classifiers на данном домене, peak RAM альтернатив и подтверждения semantic precision текущего полного v1.4 corpus. Нет также RU–EN query gold и guard regression gold. Старые AI annotations полезны для поиска сложных случаев, но не заменяют gold. Следующий отдельный этап — **совместная разметка development примеров и уточнение rubric/glossary в Phase 0B**. Реализация EVAL/MLflow/guards начинается позднее в Phase 0C, до первых model experiments. Полную реализацию всех шести вариантов заранее планировать не требуется.

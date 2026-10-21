@@ -4,6 +4,8 @@
 
 ## 1. Общий предметный контракт
 
+Дополнение от 2026-10-21: все A–F используют общий [контур наблюдаемости и защит](OBSERVABILITY_SECURITY_LANGUAGE_ARCHITECTURE.md). MLflow получает только разрешённые metrics/metadata; guard policy фиксируется для сравнения. RU → EN language adapter находится в контуре запроса и не меняет английские source spans или offline ontology. Он выбирается отдельным экспериментом при фиксированном графе, затем фиксируется для downstream сравнения A–F. Это проект архитектуры, без реализации.
+
 Сравниваются разные алгоритмы, но одинаковое значение выходных данных. Общий контракт не требует одинакового внутреннего graph database.
 
 - **Source/Revision/Chunk**: immutable evidence, hashes, section и язык; Python Unicode codepoint offsets `[start,end)`. Tokenizer offsets и UTF-16 browser offsets не смешиваются с ними.

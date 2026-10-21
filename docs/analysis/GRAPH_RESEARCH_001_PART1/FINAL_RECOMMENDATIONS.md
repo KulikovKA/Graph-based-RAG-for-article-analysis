@@ -132,6 +132,18 @@ B/C/D как три независимые гипотезы; F может зам
 
 ## 6. Первое последующее действие
 
-После отдельного разрешения начать **Phase 0**, зафиксировать ontology, GraphExtractionResult и human gold, затем минимальный screening B/C/F и native A capability. Не увеличивать generative model как основной способ улучшения, не делать новый full backfill и не менять production graph до quality gates. Полный порядок и критерии остановки: [EXPERIMENT_ROADMAP](EXPERIMENT_ROADMAP.md).
+После текущей доработки архитектуры следующий отдельный этап — **Phase 0B: совместная разметка development примеров**, уточнение ontology, GraphExtractionResult, RU–EN glossary/rubric и human gold. Затем Phase 0C с EVAL/MLflow/guards и минимальный screening B/C/F и native A capability. Не увеличивать generative model как основной способ улучшения, не делать новый full backfill и не менять production graph до quality gates. Полный порядок и критерии остановки: [EXPERIMENT_ROADMAP](EXPERIMENT_ROADMAP.md).
+
+## 7. Архитектурное дополнение от 2026-10-21
+
+Принять как проект общие компоненты из [MLflow, guards и RU → EN](OBSERVABILITY_SECURITY_LANGUAGE_ARCHITECTURE.md):
+
+1. **MLflow:** версии данных/моделей/правил, параметры, quality/coverage, stage timings/CPU/RAM, отказы и безопасные артефакты EVAL. Явное логирование без автоматического захвата prompts/responses/reasoning; MLflow не заменяет scorer.
+2. **Минимальные guards:** границы system/data, ограниченные полномочия моделей, schema/provenance/output validation, source quarantine по policy, bounded repair и безопасная телеметрия. Detector — дополнительный сигнал; гарантия устранения prompt injection не заявляется.
+3. **RU → EN:** отдельный validated search view русских признаков с protected terms/numbers/units/negation. Английские source spans неизменны; русский ответ — через deterministic renderer с EN цитатами. T1 (перевод) — предварительный кандидат, T0 (прямой multilingual search) — обязательный контроль, Tref — human reference.
+4. **Независимые сравнения:** сначала выбрать language policy на одном graph; затем фиксировать её при graph downstream evaluation. Guard policy также фиксирована. Стоимость translator/guards/logging входит в end-to-end измерение.
+5. **Следующая разметка:** graph assertions, aligned RU/EN queries и clean/attack пары, с независимыми grouped splits. Сейчас определён только протокол, сами данные ещё не размечены.
+
+Перед будущим запуском требуется согласовать effective model inventory: текущие LLM_CONTRACTS и YAML называют разные кандидаты Planner/Analyst. Это обнаруженное расхождение документации и конфигурации; runtime в этой работе не проверялся и не изменялся. Эффективность всех новых компонентов — `NOT_MEASURED`.
 
 Исследование завершено на уровне документов. Commit/push, inference, tests, benchmarks, скачивание weights/datasets и изменения runtime не выполнялись.
