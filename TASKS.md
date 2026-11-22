@@ -4,33 +4,105 @@
 
 ## Активная сводка и зависимости
 
-Столбец «После» задаёт направленные зависимости к задаче строки. Ссылки на выполненные задачи из прежнего baseline обозначают существующую основу.
+Столбец «Hard» содержит только незавершённых предшественников, обязательных для начала соответствующей работы. Выполненные опоры уже доступны. Совместимость готовых компонентов проверяется на **integration gates**, а пригодность общего результата к MVP и финальному выпуску — на **release gates**. Эти проверки не добавляют предшественников для разработки на контрактах и fixtures. Оптимизация сохраняет приёмку каждой карточки и правила [task.md](task.md). [Аудит исходных зависимостей](docs/DEPENDENCY_OPTIMIZATION.md)
 
-| ID | Направление | Приоритет | После | Статус |
+| ID | Направление | Приоритет | Hard | Статус |
 | --- | --- | --- | --- | --- |
-| RES-EVAL-001 | RESEARCH | P0 | EVAL-001 | ожидает |
-| RES-KG-001 | RESEARCH | P0 | RES-EVAL-001 | ожидает |
-| RES-AGENT-001 | RESEARCH | P0 | RES-KG-001 | ожидает |
-| INT-KG-001 | INTEGRATION | P0 | RES-KG-001, GRAPH-001 | ожидает |
-| INT-RET-001 | INTEGRATION | P0 | INT-KG-001, RET-001, RANK-001 | ожидает |
-| INT-GROQ-001 | INTEGRATION | P0 | LLM-001, ANALYST-001 | ожидает |
-| INT-LR-001 | INTEGRATION | P1 | INT-RET-001, LR-001 | ожидает |
-| CORPUS-001 | INTEGRATION | P0 | ING-001, INT-KG-001, INT-GROQ-001 | в работе |
-| APP-CHAT-001 | APPLICATION | P0 | API-001, UI-001, AUTH-001 | ожидает |
-| APP-GUARD-001 | APPLICATION | P0 | INT-GROQ-001, AUTH-001 | ожидает |
-| APP-AIR-001 | APPLICATION | P0 | CORPUS-001, APP-GUARD-001 | ожидает |
-| APP-MEM-001 | APPLICATION | P0 | STATE-001, APP-CHAT-001, APP-GUARD-001, INT-RET-001 | ожидает |
-| APP-AGENT-001 | APPLICATION | P0 | RES-AGENT-001, APP-MEM-001, INT-GROQ-001, APP-GUARD-001, INT-RET-001 | ожидает |
-| APP-GRAPH-001 | APPLICATION | P0 | INT-RET-001, APP-GUARD-001, GRAPHUI-001 | ожидает |
-| APP-UI-001 | APPLICATION | P0 | APP-AGENT-001, APP-GRAPH-001, APP-CHAT-001 | ожидает |
-| APP-EXPORT-001 | APPLICATION | P0 | APP-UI-001 | ожидает |
-| OBS-001 | APPLICATION | P0 | APP-AGENT-001, APP-AIR-001, APP-GRAPH-001 | ожидает |
-| EVAL-002 | APPLICATION | P0 | RES-EVAL-001, APP-AGENT-001, APP-UI-001, CORPUS-001 | ожидает |
-| AUTH-002 | APPLICATION | P1 | APP-GUARD-001, APP-UI-001, APP-AIR-001 | ожидает внешнего доступа |
-| TEST-001 | APPLICATION | P1 | EVAL-002, OBS-001, APP-EXPORT-001, APP-AIR-001, INT-LR-001 | ожидает |
-| REL-001 | APPLICATION | P1 | TEST-001, AUTH-002 | ожидает |
+| RES-EVAL-001 | RESEARCH | P0 | — | ожидает |
+| RES-KG-001 | RESEARCH | P0 | — | ожидает |
+| RES-AGENT-001 | RESEARCH | P0 | — | ожидает |
+| INT-KG-001 | INTEGRATION | P0 | RES-KG-001 | ожидает |
+| INT-RET-001 | INTEGRATION | P0 | INT-KG-001 | ожидает |
+| INT-GROQ-001 | INTEGRATION | P0 | — | ожидает |
+| INT-LR-001 | INTEGRATION | P1 | — | ожидает |
+| CORPUS-001 | INTEGRATION | P0 | — | в работе |
+| APP-CHAT-001 | APPLICATION | P0 | — | ожидает |
+| APP-GUARD-001 | APPLICATION | P0 | — | ожидает |
+| APP-AIR-001 | APPLICATION | P0 | — | ожидает |
+| APP-MEM-001 | APPLICATION | P0 | — | ожидает |
+| APP-AGENT-001 | APPLICATION | P0 | — | ожидает |
+| APP-GRAPH-001 | APPLICATION | P0 | — | ожидает |
+| APP-UI-001 | APPLICATION | P0 | — | ожидает |
+| APP-EXPORT-001 | APPLICATION | P0 | — | ожидает |
+| OBS-001 | APPLICATION | P0 | — | ожидает |
+| EVAL-002 | APPLICATION | P0 | — | ожидает |
+| AUTH-002 | APPLICATION | P1 | — | ожидает внешнего доступа |
+| TEST-001 | APPLICATION | P1 | — | ожидает |
+| REL-001 | APPLICATION | P1 | — | ожидает |
 
-Всего **21 активная задача**: 15 новых и 6 перенесённых. По направлениям: 3 RESEARCH, 5 INTEGRATION, 13 APPLICATION.
+Список по-прежнему включает **21 активную задачу**. По направлениям: 3 RESEARCH, 5 INTEGRATION, 13 APPLICATION. Новых ID нет.
+
+### DAG начала разработки
+
+```mermaid
+flowchart LR
+  subgraph R["RESEARCH"]
+    RES_EVAL_001["RES-EVAL-001"]
+    RES_KG_001["RES-KG-001"]
+    RES_AGENT_001["RES-AGENT-001"]
+  end
+  subgraph K["Перенос графа и retrieval"]
+    INT_KG_001["INT-KG-001"]
+    INT_RET_001["INT-RET-001"]
+    INT_LR_001["INT-LR-001"]
+  end
+  subgraph B["Groq, агент, память и чаты"]
+    INT_GROQ_001["INT-GROQ-001"]
+    APP_AGENT_001["APP-AGENT-001"]
+    APP_GUARD_001["APP-GUARD-001"]
+    APP_MEM_001["APP-MEM-001"]
+    APP_CHAT_001["APP-CHAT-001"]
+  end
+  subgraph D["Данные и Airflow"]
+    CORPUS_001["CORPUS-001"]
+    APP_AIR_001["APP-AIR-001"]
+  end
+  subgraph U["API графа, интерфейс и экспорт"]
+    APP_GRAPH_001["APP-GRAPH-001"]
+    APP_UI_001["APP-UI-001"]
+    APP_EXPORT_001["APP-EXPORT-001"]
+  end
+  subgraph V["Оценка, наблюдаемость и подготовка выпуска"]
+    EVAL_002["EVAL-002"]
+    OBS_001["OBS-001"]
+    AUTH_002["AUTH-002"]
+    TEST_001["TEST-001"]
+    REL_001["REL-001"]
+  end
+  RES_KG_001 --> INT_KG_001
+  INT_KG_001 --> INT_RET_001
+```
+
+INT-KG-001 получает из RES-KG-001 утверждённый профиль с версиями, манифестом и допустимыми примерами. INT-RET-001 переносит семантику поиска по сопоставленным ключам, направлениям рёбер и provenance, проверенным INT-KG-001 в отдельной проекции. Подготовка общих API, тестовых DTO и shell-логики не ждёт этой цепочки. Для 19 остальных карточек нет незавершённых предшественников в DAG. AUTH-002 остаётся ограничен доступностью внешнего стенда.
+
+### Integration gates
+
+Входом в проверку служат зафиксированные результаты компонентной разработки и тестов. Для каждой стороны фиксируются версия контракта, набор fixtures и ограничения. Совместный прогон подтверждает оставшиеся критерии, требующие реальных компонентов. Mock-проверка сама по себе их не закрывает. Приёмка узких задач INT-KG-001 и RES-KG-001, открывающая hard-цепочку, выполняется в их собственном объёме. Следующие проверки используют их результаты без обратной зависимости.
+
+| Проверка | Что соединяется и когда | Приёмка совместимости |
+| --- | --- | --- |
+| I-RES — исследовательская воспроизводимость | RES-EVAL-001 + RES-KG-001 + RES-AGENT-001. Первые прогоны KG и агента используют существующий baseline и общий manifest; публикация сравнения идёт после сверки профилей и tracking | Одинаковые snapshot, split, query budgets и provenance. Парное сравнение агента с закреплённым профилем, ручная калибровка и безопасные метрики/артефакты в MLflow. Временный сбой tracking сохраняет локальный отчёт и статус ожидания загрузки |
+| I-KG — общая поисковая цепочка | INT-KG-001 + INT-RET-001 после двух hard-переходов | Совместная проверка vector-hit → revision → graph seed, linking, ограниченного обхода, fusion, reranking и точного evidence. Ошибка сопоставления исключает факт, исторический run и откат продолжают работать |
+| I-CORPUS — подключение подготовленных данных | CORPUS-001 + INT-KG-001; INT-GROQ-001 нужен при проверке выбранного LLM-экстрактора | Импорт или повторное подключение проверенного снимка с теми же ID, ревизиями и хешами. Чанки, provenance, две проекции, идемпотентность и восстановление после одного ACK. Подтвердить EPO/OpenAlex на доступном разрешённом входе, явно отразить непроверенное покрытие |
+| I-AIR — обновление опубликованного поколения | APP-AIR-001 + I-CORPUS | На обоих source adapters проверить инкремент, повтор интервала, replay/outbox и частичный сбой. Защищённые учётные данные, allowlist источников, пределы внешних вызовов, проверка нормализации и provenance, два ACK и безопасность офлайн-извлечения. Онлайн-защиты агента не блокируют разработку и тест DAG на fixtures |
+| I-SEC — граница Groq и инструментов | APP-GUARD-001 + INT-GROQ-001, до использования реального пользовательского контекста | Согласие и минимизация, redaction, strict args, allowlist/ownership, version scoping и единый бюджет с retries. Негативные тесты injection, SSRF, произвольных запросов к БД, утечек, timeouts и запоздалых ответов |
+| I-AGENT — рабочий маршрут ассистента | APP-AGENT-001 + I-RES + I-KG + I-SEC | Подключить утверждённую стратегию, live-совместимые Groq, guards и retrieval. Проверить bounded tools, evidence/provenance, безопасный fallback, cancel/lease fencing и SSE. Базовый follow-up использует существующий snapshot |
+| I-MEM — память и кэши | APP-MEM-001 + APP-CHAT-001 + APP-AGENT-001 + APP-GRAPH-001 + I-KG + I-SEC | History/context/summary после перезапуска; подключить retrieval/rerank/graph caches и агентную память. Проверить старые версии, пересчёт при смене признака, chat/tenant isolation, удаление, cache invalidation и недоступность Redis |
+| I-UI — Explorer, ассистент и экспорт | APP-GRAPH-001 + APP-UI-001 + APP-CHAT-001 + APP-EXPORT-001 + I-AGENT + I-MEM | Сверить Graph/Run/Source DTO, scoped cursors, evidence и передачу контекста. Подключить UI-кнопку к авторизованному backend-экспорту и проверить desktop/mobile. Приёмка MVP и финала различается по [FINAL_PROJECT_PLAN](docs/FINAL_PROJECT_PLAN.md#этапы-и-приёмка) |
+| I-EVAL — оценка рабочих pipeline | EVAL-002 + I-AGENT + I-CORPUS | Четыре режима на одном snapshot и cases, воспроизводимый manifest, Groq Judge с ручной проверкой, citations/faithfulness, follow-up, latency, usage и стоимость. Пилот для MVP, закрытый split и полный отчёт для финала. Браузерные измерения относятся к I-UI и G-TEST |
+| I-OBS — реальные источники метрик | OBS-001 + INT-GROQ-001 + APP-AGENT-001 + APP-AIR-001 + APP-GRAPH-001 + APP-MEM-001 | Вызовы, usage/стоимость, неизвестные значения, latency, graph/retrieval/rerank cache hit/miss, ошибки и Airflow jobs. Сверить фактические события и отсутствие приватных payloads |
+| I-LR — выход из legacy контекста | INT-LR-001 + INT-RET-001 после отдельного аудита адаптера | Целевой pipeline без LightRAG extra, чтение старых записей/snapshots и обратимый переход. Удаление адаптера и wiring только после проверки нового retrieval |
+
+### Release gates
+
+| Проверка | Зависимости приёмки | Условие |
+| --- | --- | --- |
+| G-MVP | I-RES, I-KG, I-CORPUS, I-AIR, I-SEC, I-AGENT, I-MEM, I-UI, I-EVAL и I-OBS в объёме MVP | Оба режима на общем retrieval, сохранённые чаты и версии, проверенные выводы и базовый экспорт. Реальный инкрементальный пилот Airflow с восстановлением, пилот оценки четырёх режимов, ручная проверка Judge, охват защит и эксплуатационная телеметрия |
+| G-TEST — финальные регрессии | TEST-001 + G-MVP + I-LR + финальные прогоны I-UI, I-EVAL и I-OBS | Реальные Compose и браузер, полный Explorer и PDF, расширенная оценка с holdout, security/red-team, historical replay, cancel/late reply, отказ зависимостей и backup/restore. Закрыть критичные дефекты |
+| G-EXTERNAL — внешний доступ | AUTH-002 + I-SEC + I-UI + I-AIR на проверяемой топологии | Доступ с внешнего узла, доверенный HTTPS, изоляция двух аккаунтов и отсутствие публичных портов внутренних служб. До подтверждения внешний показ закрыт |
+| G-FINAL — публикация релиза | REL-001 + G-TEST + G-EXTERNAL | Версионированные настройки и manifests, clean install, принятое качество и бюджеты, демонстрация обоих режимов и офлайн-обновления, проверенный restore и сверка опубликованного тега |
+
+G-TEST, G-EXTERNAL и G-FINAL задают приёмку, пока подготовка регрессий, проверок периметра и инструкций выпуска идёт независимо.
 
 ## RESEARCH — эксперименты и допуск
 
@@ -39,6 +111,7 @@
 - **Цель.** Сопоставлять качество, время, токены и ресурсы на фиксированном наборе. Переиспользовать harness и утверждённую разметку в пределах её назначения.
 - **Файлы.** В RESEARCH — `reports/retrieval/benchmark_3a5_8/`, `contracts/`, test modules и адаптер tracking в `src/cgraph/`. Основа — [EVAL-001](docs/validation/EVAL-001/README.md) и [проект наблюдаемости](docs/analysis/GRAPH_RESEARCH_001_PART1/OBSERVABILITY_SECURITY_LANGUAGE_ARCHITECTURE.md).
 - **Приёмка и тесты.** MLflow получает версии кода, моделей, данных, конфигурации, metrics и безопасные артефакты. Протестировать повтор записи, отказ tracking, отсутствие приватного текста и сохранение `null` с причиной. Зафиксировать split и ручную калибровку Judge.
+- **Независимый старт.** Версия схемы входов и результатов фиксируется в начале работ по существующим manifests и harness. Адаптер MLflow проверяется на fixtures; запуск заверенного baseline KG и прототипа агента использует локальные манифесты, а I-RES сверяет результаты и tracking.
 
 ### RES-KG-001 — Допуск KG и графового поиска
 
@@ -51,6 +124,7 @@
 - **Цель.** Проверить, помогает ли агент находить дополнительные подтверждённые решения и отвечать на уточнения в пределах бюджета.
 - **Файлы.** В RESEARCH — агентный модуль в `src/cgraph/`, конфигурация Groq в `config/`, сценарии/контракты в `contracts/`, тесты в `tests/` и отчёт эксперимента в `reports/`.
 - **Приёмка и тесты.** Сравнить Hybrid с агентным расширением на одном snapshot. Передать проверенный контракт инструментов, лимиты, правила остановки, результаты по уточнениям, расходам, injection, русскоязычным запросам и деградации.
+- **Независимый старт.** Для прототипа и первых тестов использовать закреплённый исследовательский baseline и typed tool fixtures. Сравнение для передачи в приложение выполняется с утверждённым профилем на I-RES.
 
 ## INTEGRATION — перенос и совместимость
 
@@ -77,10 +151,11 @@
 - **Цель.** Вывести legacy канал из приложения с сохранением прошлых свидетельств.
 - **Файлы.** `src/app/integrations/lightrag_adapter.py`, `src/app/services/retrieval.py`, `pyproject.toml`, `compose.yaml`, `tests/integration/test_lightrag.py`, контракт coverage API.
 - **Приёмка и тесты.** Перепись imports, extra, consumers, namespaces и исторических payloads. Проверить основной pipeline при отключении, чтение старых snapshots и чистый запуск без extra. Затем удалить adapter и wiring. ADR, отчёты, история и путь отката сохраняются.
+- **Независимый старт.** Начать с аудита wiring и тестов отключённого канала на существующем retrieval. Фактическое удаление после проверки I-LR с INT-RET-001. Согласовать изменения общих модулей с веткой retrieval.
 
 ### Уточнение CORPUS-001
 
-Статус «в работе» и [отчёт backfill](docs/validation/CORPUS-001/README.md) сохранены. Оставшийся объём — малый прогон обоих источников на согласованной проекции и модельной конфигурации. Затрагивает адаптеры, `scripts/corpus_backfill.py`, ingestion и тесты. Приёмка: доступ и квоты, идемпотентный повтор, изменение одной revision, restart, оба ACK и сохранность предыдущего поколения при частичной записи. Расписание и DAG принадлежат APP-AIR-001. [Micro10](docs/validation/CORPUS-001/micro10/README.md)
+Статус «в работе» сохранён для **интеграции подготовленного корпуса**. Существующий замороженный снимок и контрольные хеши позволяют разрабатывать адаптацию и проверку импорта сейчас. Целевой прогон проверяет доступ, квоты и покрытие подготовленных данных по EPO/OpenAlex, идемпотентный повтор, изменение одной revision, restart, оба ACK и сохранность предыдущего поколения при частичной записи. Используются имеющиеся адаптеры, `scripts/corpus_backfill.py` и тесты. Обработка ограничивается требуемыми для совместимости ревизиями и проверками. Повторное создание корпуса с нуля исключено. Принятие новой проекции и LLM-экстрактора при необходимости проверяется на I-CORPUS; расписание и DAG принадлежат APP-AIR-001. [Снимок корпуса](docs/analysis/GRAPH_CORPUS_AUDIT/corpus_composition.md) · [Отчёт backfill](docs/validation/CORPUS-001/README.md) · [Micro10](docs/validation/CORPUS-001/micro10/README.md)
 
 ## APPLICATION — пользовательские функции и приёмка
 
@@ -95,58 +170,65 @@
 - **Цель.** Обнаруживать prompt injection, защищать контекст, инструменты и передачу в Groq.
 - **Файлы.** `src/app/api/`, `src/app/services/`, `src/app/integrations/`, `frontend/src/`, `docs/SECURITY.md`, `tests/security/`.
 - **Приёмка и тесты.** Типизация, allowlist, запрет произвольного Cypher/SQL, лимиты, безопасный рендеринг и проверка evidence. Тесты прямой и косвенной injection, SSRF, выхода за budget, межпользовательского доступа и утечки canary. Уведомление и отказ передачи проверяются до первого вызова Groq.
+- **Независимый старт.** Использовать существующий ownership и fake provider/tool dispatcher. Встроить общий закрытый контракт инструментов до запуска пользовательского маршрута; I-SEC проверяет реальный адаптер.
 
 ### APP-AIR-001 — Инкрементальный Airflow ingestion
 
 - **Цель.** Держать EPO/OpenAlex, граф и векторы актуальными с независимым восстановлением стадий.
 - **Файлы.** Планируемые `airflow/dags/`, `compose.yaml`, `src/app/workers/ingest.py`, адаптеры/outbox, `docs/DEPLOYMENT.md`, `tests/integration/test_ingestion.py` и тесты DAG.
 - **Приёмка и тесты.** Discovery, загрузка, дедуп, chunks, сущности/факты, embeddings, две проекции, контроль и публикация, журнал ошибок. Прогнать повтор интервала и сбой между ACK. Неизменные документы не переиндексируются, онлайн-чат и предыдущее поколение доступны.
+- **Независимый старт.** Использовать EPO/OpenAlex fixtures, ING/outbox и подставные проекторы. Офлайн-защита источников, документов, credentials и стадий ingestion проверяется внутри задачи; публикация из целевого снимка проверяется на I-AIR.
 
 ### APP-MEM-001 — Длинный диалог и кэши стадий
 
 - **Цель.** Продолжать исследование после restart и использовать старые сообщения и snapshots.
 - **Файлы.** `src/app/services/analysis_run.py`, `src/app/services/conversations.py`, `src/app/services/idea_state.py`, `src/app/integrations/redis_cache.py`, миграции при необходимости, `tests/unit/test_memory_cache.py`, `tests/integration/test_idea_state.py`.
 - **Приёмка и тесты.** Версионированная summary, исторический follow-up после обновления графа, новый поиск при изменении признака. Подключить retrieval/rerank/graph cache и проверить hit/miss, инвалидацию, scope пользователя и чата, недоступность Redis.
+- **Независимый старт.** На текущих PostgreSQL repositories и Redis-адаптере отдельно проверить durable history, выбор релевантного контекста и summary с watermark. Кэши retrieval, rerank и graph queries разрабатывать как отдельные scoped слои с версионными fixtures. Wireup к агенту, реальным поисковым стадиям и отзыву доступа при удалении чата проверяется на I-MEM.
 
 ### APP-AGENT-001 — Patent Research Assistant
 
 - **Цель.** Встроить принятую агентную стратегию в существующие Planner, Analyst и jobs.
 - **Файлы.** `src/app/services/analysis_run.py`, `src/app/services/analyst.py`, tool contracts, `src/app/workers/`, `prompts/`, unit/contract tests.
 - **Приёмка и тесты.** Идея → признаки и запросы → Hybrid → ограниченное расширение → отчёт. Вопрос о сохранённом патенте использует snapshot. Проверить лимиты, отмену, lease fencing, fallback и атомарный replay.
+- **Независимый старт.** Использовать текущие Planner, чаты, версии идеи и evidence snapshots. Тестовые provider/retrieval/tool ports позволяют проверять orchestration и replay. Tool dispatcher с первого теста проверяет аргументы, allowlist, scope и budgets; рабочий профиль проверяется на I-SEC, I-AGENT и I-MEM. Переименование и удаление чатов проверяются в совместимых сценариях, когда доступны обе стороны.
 
 ### APP-GRAPH-001 — API самостоятельного Explorer
 
 - **Цель.** Дать поиск сущностей и документов, сведения о вершине, соседей, пути и доказательства.
 - **Файлы.** `src/app/api/routes/graph.py`, `src/app/api/routes/sources.py`, DTO/ports, retrieval, `tests/contract/test_graph_api.py` и security tests.
 - **Приёмка и тесты.** Лимиты hops/visits/results/time, курсор по scope/version/filters. Проверить старую generation, чужой run, недоступность графа, разные типы рёбер и точные цитаты. Переданный агенту узел проходит повторную авторизацию.
+- **Независимый старт.** На существующем run-scoped API и тестовом graph port согласовать DTO и fixtures для published/historical scope, путей, соседей и context refs. Контрактные тесты владельца, версий и пагинации идут параллельно реализации UI.
 
 ### APP-UI-001 — Два режима и навигация
 
 - **Цель.** Расширить GRAPHUI-001 до связки документ–граф–диалог.
 - **Файлы.** `frontend/src/App.tsx`, `frontend/src/features/graph/`, `frontend/src/features/sources/`, `frontend/src/api/`, `frontend/tests/browser/`.
 - **Приёмка и тесты.** MVP проверяет обе точки входа, поиск и открытие документа, ограниченных соседей и evidence. Финал добавляет desktop с тремя изменяемыми панелями и разворачиванием графа, mobile с сохранением выбора, фильтры, пути между произвольными допустимыми вершинами, историю, zoom/pan, переходы между документами, различимые типы рёбер и передачу контекста агенту.
+- **Независимый старт.** Панели графа, чата и документа, навигация и отправка context ref используют согласованные Graph/Run/Source DTO и HTTP/SSE fixtures. Использовать существующий Playwright mock API. На I-UI проверить те же сценарии с реальным backend и авторизацией.
 
 ### APP-EXPORT-001 — Экспорт исследования
 
 - **Цель.** Передавать проверяемый отчёт со сравнением, источниками и границами поиска.
 - **Файлы.** `src/app/api/routes/runs.py`, сервис экспорта, `frontend/src/features/`, API/browser/security tests.
 - **Приёмка и тесты.** Базовый переносимый формат для MVP, PDF и визуализация подграфа для финала. Проверить совпадение со старым snapshot, доступ только владельцу, безопасный рендеринг и отсутствие нового inference.
+- **Независимый старт.** Backend-экспорт опирается на существующий completed run и его evidence snapshot. Endpoint доступен для контрактных тестов без UI. Кнопка, загрузка файла и браузерный E2E относятся к I-UI.
 
 ### Уточнение незакрытых карточек
 
 | ID | Оставшийся объём и зоны изменений | Приёмка |
 | --- | --- | --- |
-| OBS-001 | `src/app/api/health.py`, телеметрия API/worker/Airflow. Groq calls, usage, стоимость, latency, cache hit/miss, ошибки и jobs | Fake-provider и failure tests подтверждают null с причиной, redaction, readiness и degraded |
-| EVAL-002 | Расширить `eval/` до четырёх режимов. Пилот для MVP, около 100 кейсов и 70/15/15 для финала, отдельная ручная разметка | Frozen snapshot, повторяемый manifest, per-case результаты, калибровка Judge и метрики стоимости. Бюджеты согласованы до holdout |
+| OBS-001 | `src/app/api/health.py`, общая схема событий API/worker/Airflow и тестовые источники метрик. Groq calls, usage, стоимость, latency, cache hit/miss, ошибки и jobs | Fake-provider и failure tests подтверждают null с причиной, redaction, readiness и degraded. Подключение реальных источников проверяется на I-OBS |
+| EVAL-002 | На существующем `eval/` отдельно готовить кейсы и ручную разметку, метрики и Judge fixtures. Retrieval и агент сравнивать по зафиксированным наблюдениям либо через API/CLI. Пилот для MVP, около 100 кейсов и 70/15/15 для финала | Frozen snapshot, повторяемый manifest, per-case результаты, ручная калибровка живого Groq Judge и метрики стоимости на I-EVAL. Бюджеты согласованы до holdout. Браузерные проверки и UI latency выполняются на I-UI/G-TEST |
 | AUTH-002 | Завершить внешний gate действующей топологии. `Caddyfile`, perimeter checks, `docs/DEPLOYMENT.md`, `tests/security/` | Независимые HTTPS, два аккаунта и только разрешённые порты |
 | TEST-001 | Сквозная проверка в `tests/`, `frontend/tests/browser/`, eval и validation report | Isolation, red-team, restart, invalid evidence, stale cursor, cancel/late reply, regression и restore. Критичные дефекты закрыты |
 | REL-001 | Версии, clean install/backup и demo. `README.md`, `docs/DEPLOYMENT.md`, Compose и release notes | Воспроизводимый показ обоих режимов, Airflow, истории и отчёта. Метрики, restore и внешний gate пройдены. Тег сверяется с удалённым commit |
 
 ## Этапы и последовательность
 
-1. **F1 — допуск и интеграция.** RES-EVAL → RES-KG; затем агентный эксперимент и INT-KG → INT-RET. INT-GROQ и чаты стартуют параллельно. CORPUS-001 продолжает на утверждённых контрактах.
-2. **F2 — MVP.** Свести guards, память и агент с API графа и UI. Параллельно провести обновление Airflow, подключить телеметрию, базовый экспорт и пилот оценки четырёх режимов. [Критерии MVP](docs/FINAL_PROJECT_PLAN.md#этапы-и-приёмка)
-3. **F3 — финальная версия.** Полный Explorer, PDF, расширенный evaluation, вывод LightRAG, регрессии, restore и внешний периметр. TEST-001 и AUTH-002 предшествуют REL-001.
+1. **F1 — параллельная разработка и допуск.** Одновременно начать три исследовательские работы, Groq, агент, guards, память и чаты, интеграцию подготовленных данных и Airflow, API графа и UI, оценку, наблюдаемость и экспорт. Проверки legacy-адаптера, регрессионные fixtures, локальная часть периметра и инструкции релиза тоже доступны независимо. Обязательная последовательность переноса — RES-KG-001 → INT-KG-001 → INT-RET-001. F1 завершается проверкой исследовательского обмена и общей поисковой цепочки.
+2. **F2 — интеграция и MVP.** Соединить общий поиск, Groq и guards с агентом, памятью, чатом и Explorer. Параллельно проверить инкремент Airflow на подготовленном корпусе, telemetry, baseline export и четыре режима оценки. Offline evaluation использует API/CLI и не ждёт UI. G-MVP подтверждает все условия MVP. [Критерии MVP](docs/FINAL_PROJECT_PLAN.md#этапы-и-приёмка)
+3. **F3 — финальная версия.** Завершить Explorer, PDF, расширенный evaluation и безопасный вывод LightRAG. Провести сквозные регрессии и restore на G-TEST, проверить внешний периметр на G-EXTERNAL и выполнить публикацию после обеих проверок на G-FINAL. Локальный прогон периметра возможен раньше; внешний доступ остаётся особым условием.
 
 После каждой задачи действуют [правила приёмки и публикации](task.md).
 
