@@ -2,6 +2,8 @@
 
 Формат: статус, контекст, решение, последствия. Изменения фиксировать новой записью, старые решения не переписывать без следа.
 
+Целевой дипломный профиль описан в ADR-013–017 и [окончательном плане](FINAL_PROJECT_PLAN.md). Отметки superseded указывают область замены. Тексты прежних решений, результаты и ссылки служат историческими свидетельствами.
+
 ## ADR-001 — Модульный монолит, 2026-09-28, accepted
 
 Один FastAPI пакет и worker с общей кодовой базой; инфраструктура через Compose. Малое число пользователей и один ПК не оправдывают микросервисы. Последствие: нужны чёткие Python интерфейсы и запрет прямых зависимостей domain от API adapters.
@@ -11,6 +13,8 @@
 Versions/runs/evidence живут в транзакционном хранилище. Redis только cache, Neo4j/Qdrant — производные индексы. Последствие: outbox, идемпотентная переиндексация, backup PostgreSQL.
 
 ## ADR-003 — LightRAG context adapter, 2026-09-28, conditional
+
+**Историческое решение. Статус для целевой архитектуры — superseded by ADR-013.**
 
 Использовать подтверждённые query/context и custom-KG интерфейсы LightRAG после integration spike. Доменная типизация и ownership принадлежат приложению. Последствие: дополнительные storage namespace и версия зависимости; если custom KG не соблюдает provenance, ограничить LightRAG контекстным поиском. См. [REPO_MAP.md](REPO_MAP.md).
 
@@ -30,6 +34,8 @@ Vite/React/TypeScript даёт достаточно интерактивност
 
 ## ADR-005 — SSE и PostgreSQL job queue, 2026-09-28, accepted
 
+**Уточнение статуса.** SSE и очередь действуют. Расчёт на одного worker для локальной генерации относится к прежнему профилю, целевые provider budgets описаны в ADR-014.
+
 Поток статуса/ответа односторонний; SSE проще WebSocket. `run_events` обеспечивает reconnect. Одного worker достаточно для CPU inference; Redis не становится обязательной очередью. Последствие: нужно ограничить retention event deltas и вводить backpressure.
 
 ## ADR-006 — Проверяемый вывод, 2026-09-28, accepted
@@ -37,6 +43,8 @@ Vite/React/TypeScript даёт достаточно интерактивност
 Каждое существенное утверждение содержит evidence ID из immutable snapshot; ответ формулируется в пределах найденного корпуса, без вывода о юридической новизне. Сбой/пробел источника явно показывается пользователю.
 
 ## ADR-007 — Замена prior-art reference donor, 2026-09-29, accepted
+
+**Уточнение статуса.** Указание на optional LightRAG заменено ADR-013. Решение о reference-доноре и правила reuse действуют.
 
 `nimajz/Prior-Art-Engine` был проверен и оказался недоступен через GitHub; его код и LICENSE не подтверждены, поэтому зависимость от него исключена. Найден доступный replacement `ABHIJEET-MUNESHWAR/PriorArtRAG`, pinned commit `fcaad8482c7df5d8106d4041c45d732f18d8c295`, LICENSE MIT. Используем только проверенные retrieval/decomposition/fusion/grounding/citation/evaluation patterns из путей, перечисленных в [REPO_MAP.md](REPO_MAP.md). Он не является основой приложения. Не переносить его BM25/HNSW/sharding, GraphQL/Kafka/Prometheus/Grafana/CQRS; сохранять upstream copyright/license при буквальном копировании. Наша архитектура остаётся Qdrant + Neo4j + optional LightRAG context.
 
@@ -52,13 +60,19 @@ ARCH-002 выявил конфликт failed/fallback и streaming до вал�
 
 ## ADR-009 — Evidence, historical scope и восстанавливаемый граф, 2026-09-29, accepted
 
+**Уточнение статуса.** Ссылки на LightRAG исторические по ADR-013. Инварианты evidence и восстановления действуют.
+
 R05–R08/R12: chunk UUID указывает на revision, evidence UUID — на выбранный span конкретного snapshot. Единый AnswerV1 использует ClaimV1 без API-переименования полей. Snapshot rows с FK удерживают старые chunks; source_run_id той же conversation разрешает historical follow-up. Public metadata endpoint не раскрывает private evidence IDs. Graph facts сначала сохраняются в PG; Neo4j — projection с revision-specific document keys. Optional LightRAG не участвует в обязательном activation barrier Qdrant+domain graph. Generation membership фиксируется на retrieval и проверяется в PG после чтения индексов. UI graph ограничен evidence того же run. Это уточняет ADR-002/003/006, не меняя состав системы.
 
 ## ADR-010 — План зависимостей и scope freeze, 2026-09-29, accepted
 
+**Уточнение статуса.** Целевой scope и активный порядок заменены ADR-017. Историческая проверка DAG и инварианты ownership/idempotency сохраняют силу.
+
 R09–R14: auth/session gate перенесён до API; embedding/graph/rerank получают явную dependency на provider/CPU gate. Введён ранний 10-case dev fixture, полный 100-case evaluation отделён от harness и экспертной разметки. DB schema/repositories, provider/веса, jobs/events и sessions/внешний периметр разбиты на отдельно проверяемые deliverables. Mermaid и сводка генерируются из одинаковых Depends карточек и проверяются на циклы. Cache keys учитывают owner/query/generation/config/cursor. Bootstrap Compose до весов работает локально; минимальные health/redaction входят в ранние задачи. Детальный список дефектов, оценка моделей/стоимости и проверка — [ARCH_REVIEW](ARCH_REVIEW.md). Freeze относится к контрактам planning package; production readiness требует оставшихся implementation gates.
 
 ## ADR-011 — Reasoning Analyst и validated streaming, 2026-09-29, accepted (planning)
+
+**Уточнение статуса.** Локальная генерация, закреплённые веса и lifecycle загрузки заменены ADR-014 для будущего релиза. Контракт проверенного результата, отсутствие raw reasoning и durable SSE действуют.
 
 **Контекст.** CPU reasoning требует понятного длительного UX; прямой provider-token → browser нарушает ADR-008. Этот ADR явно изменяет freeze ADR-010 только в части inference/Analyst/public projections/SSE и будущей приёмки. ADR-001–010 сохранены как история; validation-before-publication, PostgreSQL source of truth, evidence и lifecycle invariants продолжают действовать. Реализация и CPU gate остаются будущими задачами.
 
@@ -81,3 +95,43 @@ Raw thinking/chain-of-thought/analysis tokens остаются внутри prov
 Neo4j получает только дополнительный `CanonicalTechnicalFeature` и `DISCLOSES_CANONICAL_FEATURE`; на документ/canonical entity создаётся одно ребро с `evidence_count`. `TechnicalFeature`, `DISCLOSES_FEATURE`, Qdrant article chunks, extractor, активные ревизии, production retrieval и baseline metrics не переключаются. Перед завершением run сравниваются пороги 0.90 и 0.95 на одном snapshot.
 
 **Последствия и review gate.** Run можно возобновить из checkpoint; несовпадение snapshot/model/config запрещает resume. GRAPH-002 остаётся экспериментальным до ручного review quality samples. Ни авто-миграции production schema, ни автоматического переключения retrieval нет.
+
+## ADR-013 — Собственный Graph-RAG и перенос из RESEARCH
+
+**Статус:** принято для целевой архитектуры, интеграция запланирована. **Контекст:** ARCH-001 и LR-001 подтвердили доступность адаптера и ограничения provenance, повторного использования текста и восстановления. Для диплома важны контролируемые онтология, графовое извлечение и измеримость качества.
+
+**Решение.** Полностью исключить LightRAG из целевого runtime и обязательных зависимостей. Оба режима используют собственный Hybrid Retrieval. Исследования и проверка агента проходят в RESEARCH, основной репозиторий принимает утверждённые компоненты после сопоставления онтологий и provenance. Сохраняются PostgreSQL, Qdrant и Neo4j с барьером двух ACK.
+
+**Последствия.** ADR-003 superseded целиком; дополнения про LightRAG в ADR-007/009 исторические. Legacy код, старые edge/coverage payloads и результаты сохраняются на этапе планирования. INT-LR-001 проверяет зависимости и историю, отключает и удаляет адаптер поэтапно. INT-KG-001 и INT-RET-001 проверяют отдельный namespace, offsets, версии и возможность отката. [Схема графа](GRAPH_SCHEMA.md)
+
+## ADR-014 — Groq для генеративных ролей
+
+**Статус:** принято для цели, перенос запланирован. **Контекст:** локальные модели и SystemOne измерялись на своём hardware/runtime и дали исторические результаты.
+
+**Решение.** Генерация для Planner, агента, Analyst, LLM-извлечения графа и Judge выполняется через Groq за `InferenceProvider`. Локальные NER, embeddings и специализированные rerankers разрешены. Настройки ролей версионируются. Модели и budgets утверждаются после проверки structured outputs, качества, расходов и доступности.
+
+**Последствия.** Локальный генеративный профиль ADR-005/011 и решения LLM-002–006 остаются историческим runtime и свидетельствами. INT-GROQ-001 отделяет локальный ML transport, проверяет cancel/retry/rate limits, usage и безопасный fallback. APP-GUARD-001 закрывает уведомление и правила передачи приватного контекста до пользовательского запуска. [LLM-контракт](LLM_CONTRACTS.md)
+
+## ADR-015 — Airflow для обновления корпуса
+
+**Статус:** принято, реализация запланирована. **Контекст:** ingestion workers и backfill уже выполняют обработку ревизий и две проекции; нужен инкрементальный запуск с восстановлением.
+
+**Решение.** Airflow управляет расписанием, курсорами источников, обработкой изменённых документов, проверкой и публикацией новых поколений. Общие ingestion-сервисы и durable ACK в PostgreSQL переиспользуются. Онлайн analysis queue и SSE остаются в приложении.
+
+**Последствия.** Retry восстанавливает незавершённые стадии, старые поколения остаются доступными, watermark и идемпотентность проверяются до релиза. APP-AIR-001 не вводит второй конвейер обработки документов. [Развёртывание](DEPLOYMENT.md)
+
+## ADR-016 — Два режима, память и ограниченные инструменты
+
+**Статус:** принято, расширение запланировано. **Контекст:** есть чаты, версии идеи, evidence snapshots и граф конкретного run.
+
+**Решение.** Выделить самостоятельный Explorer и ассистент с общими retrieval/индексами. Сохранить versioned private memory в PostgreSQL и использовать Redis как восстановимый кэш. Добавить управление чатами, релевантный контекст, промежуточные budgets, allowlist действий, injection guards и проверку передачи в Groq. Экспорт опирается на проверенное сохранённое исследование.
+
+**Последствия.** Run-scoped API сохраняет историю; Explorer получает собственный scope с bounded pagination. В публичном графе хранятся разрешённые источники, приватная идея остаётся в хранилище пользователя. [Память](MEMORY_AND_CACHE.md) · [Безопасность](SECURITY.md)
+
+## ADR-017 — Раздельная оценка исследований и приложения
+
+**Статус:** принято, измерения конечного продукта запланированы. **Контекст:** прежние fixtures и RESEARCH benchmarks покрывают отдельные стадии и корпуса.
+
+**Решение.** Стандартизировать четыре режима evaluation на общем наборе, Judge через Groq и ручной аудит. MLflow хранит безопасные манифесты и метрики в RESEARCH. В основном приложении наблюдаемость покрывает обычные запросы и Airflow без приватного текста.
+
+**Последствия.** Окончательный план и рабочий [backlog](../TASKS.md) заменяют scope раннего baseline. Публикация требует фактических результатов, откалиброванных метрик и проверок security/recovery. [Evaluation](EVALUATION.md)

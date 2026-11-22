@@ -2,7 +2,11 @@
 
 Срез проверки ARCH-001: 2026-09-29. Все upstream file links закреплены на commit. Версии, tree SHA, MIT notices и SHA-256 проверенных файлов: [donors.lock.json](donors.lock.json). Фактический LightRAG smoke на Neo4j/Qdrant, ограничения provenance, разбор PriorArtRAG и сравнение EPO adapter: [отчёт ARCH-001](validation/ARCH-001/README.md).
 
-## LightRAG — основной Graph-RAG кандидат
+Утверждённые компоненты собственного KG, retrieval и агента поступают из [RESEARCH](https://github.com/KulikovKA/Graph-RAG-news-analytics-system-RESEARCH) по [процедуре переноса](ARCHITECTURE.md#перенос-из-research). Донорские материалы ниже остаются ссылками на исследования и проверенные паттерны.
+
+## LightRAG — исторический кандидат
+
+Этот раздел сохраняет результаты ARCH-001/LR-001. Решение об использовании адаптера для будущего профиля заменено [ADR-013](DECISIONS.md#adr-013--собственный-graph-rag-и-перенос-из-research).
 
 Источник: [HKUDS/LightRAG](https://github.com/HKUDS/LightRAG), pinned commit `453dce83d6d0354a06e46c8d4029a0895c4e054b`, package 1.5.8. [Лицензия MIT](https://github.com/HKUDS/LightRAG/blob/453dce83d6d0354a06e46c8d4029a0895c4e054b/LICENSE). На этом commit выполнены custom KG insert, context-only `aquery` и structured `aquery_data` с реальными Neo4j/Qdrant.
 
@@ -17,9 +21,9 @@
 | [lightrag/rerank.py](https://github.com/HKUDS/LightRAG/blob/453dce83d6d0354a06e46c8d4029a0895c4e054b/lightrag/rerank.py) | Rerank чанков с budget/window | Сравнить с нашим лёгким reranker, не дублировать без измерения |
 | [lightrag_webui/src/features/GraphViewer.tsx](https://github.com/HKUDS/LightRAG/blob/453dce83d6d0354a06e46c8d4029a0895c4e054b/lightrag_webui/src/features/GraphViewer.tsx) | React/Sigma graph viewer | Идеи взаимодействия; собственный scoped API/UI |
 
-Ограничения ARCH-001: повторный alias выбирает последний chunk, одинаковый текст разных документов перезаписывает provenance, `file_path` нормализуется до basename. Custom KG не имеет document-level recovery guarantee; отношения неориентированные. Поэтому LightRAG используется только для дополнительного публичного контекста с повторным разрешением evidence через наше хранилище (ADR-003). Типизированный graph retrieval остаётся нашим. Workspace не заменяет ownership; `NEO4J_WORKSPACE`/`QDRANT_WORKSPACE` могут переопределить переданный workspace. Не импортировать весь сервер, auth или готовые ответы. Повторная вставка проверена по числу векторов; crash recovery и очистка ревизий остаются gates LR-001/TEST-001.
+Ограничения ARCH-001: повторный alias выбирает последний chunk, одинаковый текст разных документов перезаписывает provenance, `file_path` нормализуется до basename. Custom KG не имеет document-level recovery guarantee; отношения неориентированные. В прежнем профиле LightRAG ограничили дополнительным публичным контекстом с повторным разрешением evidence (ADR-003). Workspace не заменяет ownership; `NEO4J_WORKSPACE`/`QDRANT_WORKSPACE` могут переопределить переданный workspace. Повторная вставка проверена по числу векторов. При отключении адаптера сохраняются результаты этих проверок.
 
-Реализация adapter: [lightrag_adapter.py](../src/app/integrations/lightrag_adapter.py). `PostgresEvidenceResolver` принимает только opaque `evidence-<chunk UUID>` reference keys из отдельного donor namespace, затем проверяет источник и членство revision в указанной index generation. Донорский текст и внутренние IDs не используются как источник evidence. Runtime опционален и ставится через extra `lightrag`, закреплённый на commit `453dce83d6d0354a06e46c8d4029a0895c4e054b`; query всегда `only_need_context`, без donor rerank/final generation. Использование/инициализация в online retrieval подключается как необязательный канал RET-001; базовый retrieval не зависит от extra.
+Существующий [адаптер](../src/app/integrations/lightrag_adapter.py) принимает opaque `evidence-<chunk UUID>` keys через `PostgresEvidenceResolver` и проверяет источник и членство revision в generation. Донорский текст и IDs не используются как доказательство. Extra `lightrag` закреплён на commit `453dce83d6d0354a06e46c8d4029a0895c4e054b`, запрос использует `only_need_context`. Базовый retrieval работает без extra. План отключения — INT-LR-001.
 
 ## PQAI — патентные эвристики
 
@@ -50,7 +54,7 @@
 | [priorartrag/app/ports.py](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/priorartrag/app/ports.py) | Outbound зависимости оформлены как Python Protocol ports | Reference для `InferenceProvider`, source/storage/cache interfaces |
 | [EVALUATION.md](https://github.com/ABHIJEET-MUNESHWAR/PriorArtRAG/blob/fcaad8482c7df5d8106d4041c45d732f18d8c295/EVALUATION.md) | Retrieval/grounding gates, regressions и каталог failure cases | Reference для citation/grounding tests и отчёта EVAL-001; не копировать заявленные чужие численные результаты |
 
-Ограничения reuse: не переносить собственные BM25/HNSW/sharding реализации вместо Qdrant; не переносить GraphQL/Kafka/Prometheus/Grafana/CQRS целиком; не использовать PriorArtRAG как основу приложения. Наша архитектура остаётся собственной: EPO/OpenAlex adapters, PostgreSQL, Qdrant + Neo4j, optional LightRAG context, наши retrieval/fusion/rerank/evidence/LLM/API contracts. PriorArtRAG — reference для decomposition/retrieval/fusion/grounding/citation/evaluation patterns. Если буквально копировать MIT-код, сохранить copyright и LICENSE notice и указать изменённые файлы.
+Ограничения reuse: не переносить собственные BM25/HNSW/sharding реализации вместо Qdrant; не переносить GraphQL/Kafka/Prometheus/Grafana/CQRS целиком; не использовать PriorArtRAG как основу приложения. Целевая система использует EPO/OpenAlex, PostgreSQL, Qdrant, собственный Neo4j-граф и собственные retrieval/fusion/rerank/evidence/LLM/API contracts. PriorArtRAG — reference для decomposition/retrieval/fusion/grounding/citation/evaluation patterns. Если буквально копировать MIT-код, сохранить copyright и LICENSE notice и указать изменённые файлы.
 
 ### Историческая заметка: nimajz/Prior-Art-Engine
 

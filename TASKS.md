@@ -1,4 +1,160 @@
-# План реализации
+# План реализации дипломного проекта
+
+Рабочий backlog следует [окончательному плану](docs/FINAL_PROJECT_PLAN.md) и [новым ADR](docs/DECISIONS.md#adr-013--собственный-graph-rag-и-перенос-из-research). Выполненные задачи и отчёты сохранены в истории ниже. Для шести незакрытых задач сохранены ID и статусы, а рабочая сводка и уточнения приёмки заменяют их прежний оставшийся объём. P0 — входит в MVP, P1 — приёмка финальной версии или внешний показ. Для APP-UI-001, APP-EXPORT-001 и EVAL-002 выделены промежуточные проверки MVP. Полная карточка закрывается после расширенной приёмки финальной версии.
+
+## Активная сводка и зависимости
+
+Столбец «После» задаёт направленные зависимости к задаче строки. Ссылки на выполненные задачи из прежнего baseline обозначают существующую основу.
+
+| ID | Направление | Приоритет | После | Статус |
+| --- | --- | --- | --- | --- |
+| RES-EVAL-001 | RESEARCH | P0 | EVAL-001 | ожидает |
+| RES-KG-001 | RESEARCH | P0 | RES-EVAL-001 | ожидает |
+| RES-AGENT-001 | RESEARCH | P0 | RES-KG-001 | ожидает |
+| INT-KG-001 | INTEGRATION | P0 | RES-KG-001, GRAPH-001 | ожидает |
+| INT-RET-001 | INTEGRATION | P0 | INT-KG-001, RET-001, RANK-001 | ожидает |
+| INT-GROQ-001 | INTEGRATION | P0 | LLM-001, ANALYST-001 | ожидает |
+| INT-LR-001 | INTEGRATION | P1 | INT-RET-001, LR-001 | ожидает |
+| CORPUS-001 | INTEGRATION | P0 | ING-001, INT-KG-001, INT-GROQ-001 | в работе |
+| APP-CHAT-001 | APPLICATION | P0 | API-001, UI-001, AUTH-001 | ожидает |
+| APP-GUARD-001 | APPLICATION | P0 | INT-GROQ-001, AUTH-001 | ожидает |
+| APP-AIR-001 | APPLICATION | P0 | CORPUS-001, APP-GUARD-001 | ожидает |
+| APP-MEM-001 | APPLICATION | P0 | STATE-001, APP-CHAT-001, APP-GUARD-001, INT-RET-001 | ожидает |
+| APP-AGENT-001 | APPLICATION | P0 | RES-AGENT-001, APP-MEM-001, INT-GROQ-001, APP-GUARD-001, INT-RET-001 | ожидает |
+| APP-GRAPH-001 | APPLICATION | P0 | INT-RET-001, APP-GUARD-001, GRAPHUI-001 | ожидает |
+| APP-UI-001 | APPLICATION | P0 | APP-AGENT-001, APP-GRAPH-001, APP-CHAT-001 | ожидает |
+| APP-EXPORT-001 | APPLICATION | P0 | APP-UI-001 | ожидает |
+| OBS-001 | APPLICATION | P0 | APP-AGENT-001, APP-AIR-001, APP-GRAPH-001 | ожидает |
+| EVAL-002 | APPLICATION | P0 | RES-EVAL-001, APP-AGENT-001, APP-UI-001, CORPUS-001 | ожидает |
+| AUTH-002 | APPLICATION | P1 | APP-GUARD-001, APP-UI-001, APP-AIR-001 | ожидает внешнего доступа |
+| TEST-001 | APPLICATION | P1 | EVAL-002, OBS-001, APP-EXPORT-001, APP-AIR-001, INT-LR-001 | ожидает |
+| REL-001 | APPLICATION | P1 | TEST-001, AUTH-002 | ожидает |
+
+Всего **21 активная задача**: 15 новых и 6 перенесённых. По направлениям: 3 RESEARCH, 5 INTEGRATION, 13 APPLICATION.
+
+## RESEARCH — эксперименты и допуск
+
+### RES-EVAL-001 — Воспроизводимая оценка и MLflow
+
+- **Цель.** Сопоставлять качество, время, токены и ресурсы на фиксированном наборе. Переиспользовать harness и утверждённую разметку в пределах её назначения.
+- **Файлы.** В RESEARCH — `reports/retrieval/benchmark_3a5_8/`, `contracts/`, test modules и адаптер tracking в `src/cgraph/`. Основа — [EVAL-001](docs/validation/EVAL-001/README.md) и [проект наблюдаемости](docs/analysis/GRAPH_RESEARCH_001_PART1/OBSERVABILITY_SECURITY_LANGUAGE_ARCHITECTURE.md).
+- **Приёмка и тесты.** MLflow получает версии кода, моделей, данных, конфигурации, metrics и безопасные артефакты. Протестировать повтор записи, отказ tracking, отсутствие приватного текста и сохранение `null` с причиной. Зафиксировать split и ручную калибровку Judge.
+
+### RES-KG-001 — Допуск KG и графового поиска
+
+- **Цель.** Выбрать переносимый профиль NER, RE, Entity Resolution, embeddings, Linking, BFS, reranking и evidence, используя готовые результаты Stage 3A.5.7/3A.5.8.
+- **Файлы.** В RESEARCH — `src/cgraph/`, `contracts/`, `reports/retrieval/`, соответствующие тесты и манифест передачи. [Свидетельства](docs/FINAL_PROJECT_PLAN.md#срез-существующей-системы)
+- **Приёмка и тесты.** Проверить linking, обход, кандидатный потолок, ошибки источников и provenance. Измерить прирост от расширения и reranking либо сохранить проверенный baseline. Раздельно показать recall документов и проверку смысла фактов при подходящей разметке.
+
+### RES-AGENT-001 — Агентное расширение поиска
+
+- **Цель.** Проверить, помогает ли агент находить дополнительные подтверждённые решения и отвечать на уточнения в пределах бюджета.
+- **Файлы.** В RESEARCH — агентный модуль в `src/cgraph/`, конфигурация Groq в `config/`, сценарии/контракты в `contracts/`, тесты в `tests/` и отчёт эксперимента в `reports/`.
+- **Приёмка и тесты.** Сравнить Hybrid с агентным расширением на одном snapshot. Передать проверенный контракт инструментов, лимиты, правила остановки, результаты по уточнениям, расходам, injection, русскоязычным запросам и деградации.
+
+## INTEGRATION — перенос и совместимость
+
+### INT-KG-001 — Сопоставление контрактов и проекция Neo4j
+
+- **Цель.** Подключить проверенный KG с обратимым переключением и доступными историческими источниками.
+- **Файлы.** `docs/GRAPH_SCHEMA.md`, `docs/DATA_MODEL.md`, `src/app/domain/graph.py`, `src/app/services/graph_index.py`, `src/app/integrations/neo4j.py`, `migrations/`, `tests/integration/test_graph.py`.
+- **Приёмка и тесты.** Матрица типов, направлений, ключей, provenance/offsets, vocab и generations для основной, pilot24 и RESEARCH схем. В отдельной проекции проверить чтение исходной ревизии, отклонение неподдержанных связей, повтор импорта, частичный ACK, откат и исторический run. Зафиксировать лицензию, несовпадения и минимальные fixtures.
+
+### INT-RET-001 — Linking, обход и ранжирование путей
+
+- **Цель.** Дать обоим режимам общую поисковую цепочку, включая расширение графа от подтверждённых vector-hit revisions.
+- **Файлы.** `src/app/services/retrieval.py`, `src/app/services/rerank.py`, `src/app/services/evidence_pack.py`, доменные порты, Neo4j/Qdrant adapters, `tests/integration/test_retrieval.py`, `tests/unit/test_evidence_pack.py`.
+- **Приёмка и тесты.** Ограниченные seeds/hops/edges и coverage. Сохранить dense по чанкам, лексический канал и дедупликацию. Устаревший seed, навигационное ребро и некорректные offsets не дают доказательства. Сверить результаты по fixtures и проверить возврат к старому профилю на период миграции.
+
+### INT-GROQ-001 — Генеративные роли через Groq
+
+- **Цель.** Сохранить проверенный lifecycle результата при переходе на внешний генеративный API.
+- **Файлы.** `src/app/domain/inference.py`, адаптер Groq в `src/app/integrations/`, `src/app/workers/bootstrap.py`, `eval/judge.py`, `config/models.yaml`, `prompts/`, `compose.yaml`, `tests/contract/test_inference.py`.
+- **Приёмка и тесты.** Роли и capabilities настраиваются, JSON валидируется. Проверить 429/backoff, deadline/cancel/late reply, общий бюджет, usage и происхождение стоимости. Smoke каждой роли только на разрешённых тестовых входах. Отдельно проверить relation classifier и narrative. Целевая сборка работает без локального генеративного endpoint; embeddings и reranker версионируются независимо.
+
+### INT-LR-001 — Безопасное отключение и удаление LightRAG
+
+- **Цель.** Вывести legacy канал из приложения с сохранением прошлых свидетельств.
+- **Файлы.** `src/app/integrations/lightrag_adapter.py`, `src/app/services/retrieval.py`, `pyproject.toml`, `compose.yaml`, `tests/integration/test_lightrag.py`, контракт coverage API.
+- **Приёмка и тесты.** Перепись imports, extra, consumers, namespaces и исторических payloads. Проверить основной pipeline при отключении, чтение старых snapshots и чистый запуск без extra. Затем удалить adapter и wiring. ADR, отчёты, история и путь отката сохраняются.
+
+### Уточнение CORPUS-001
+
+Статус «в работе» и [отчёт backfill](docs/validation/CORPUS-001/README.md) сохранены. Оставшийся объём — малый прогон обоих источников на согласованной проекции и модельной конфигурации. Затрагивает адаптеры, `scripts/corpus_backfill.py`, ingestion и тесты. Приёмка: доступ и квоты, идемпотентный повтор, изменение одной revision, restart, оба ACK и сохранность предыдущего поколения при частичной записи. Расписание и DAG принадлежат APP-AIR-001. [Micro10](docs/validation/CORPUS-001/micro10/README.md)
+
+## APPLICATION — пользовательские функции и приёмка
+
+### APP-CHAT-001 — Переименование, удаление и история исследований
+
+- **Цель.** Дополнить существующие аккаунты, создание, чтение и переключение чатов переименованием, безопасным удалением и страницами сохранённых исследований.
+- **Файлы.** `src/app/api/routes/conversations.py`, `src/app/services/conversations.py`, хранилище и миграции при необходимости, `frontend/src/App.tsx`, `tests/contract/test_api.py`, `tests/security/test_isolation.py`, browser tests.
+- **Приёмка и тесты.** Два аккаунта и независимые чаты. Rename/delete проверяют владельца и CSRF. Проверить удаление с активным run, отзыв кэша, запрет поздней записи и доступность разрешённых общих документов.
+
+### APP-GUARD-001 — Политики доверия и защита данных
+
+- **Цель.** Обнаруживать prompt injection, защищать контекст, инструменты и передачу в Groq.
+- **Файлы.** `src/app/api/`, `src/app/services/`, `src/app/integrations/`, `frontend/src/`, `docs/SECURITY.md`, `tests/security/`.
+- **Приёмка и тесты.** Типизация, allowlist, запрет произвольного Cypher/SQL, лимиты, безопасный рендеринг и проверка evidence. Тесты прямой и косвенной injection, SSRF, выхода за budget, межпользовательского доступа и утечки canary. Уведомление и отказ передачи проверяются до первого вызова Groq.
+
+### APP-AIR-001 — Инкрементальный Airflow ingestion
+
+- **Цель.** Держать EPO/OpenAlex, граф и векторы актуальными с независимым восстановлением стадий.
+- **Файлы.** Планируемые `airflow/dags/`, `compose.yaml`, `src/app/workers/ingest.py`, адаптеры/outbox, `docs/DEPLOYMENT.md`, `tests/integration/test_ingestion.py` и тесты DAG.
+- **Приёмка и тесты.** Discovery, загрузка, дедуп, chunks, сущности/факты, embeddings, две проекции, контроль и публикация, журнал ошибок. Прогнать повтор интервала и сбой между ACK. Неизменные документы не переиндексируются, онлайн-чат и предыдущее поколение доступны.
+
+### APP-MEM-001 — Длинный диалог и кэши стадий
+
+- **Цель.** Продолжать исследование после restart и использовать старые сообщения и snapshots.
+- **Файлы.** `src/app/services/analysis_run.py`, `src/app/services/conversations.py`, `src/app/services/idea_state.py`, `src/app/integrations/redis_cache.py`, миграции при необходимости, `tests/unit/test_memory_cache.py`, `tests/integration/test_idea_state.py`.
+- **Приёмка и тесты.** Версионированная summary, исторический follow-up после обновления графа, новый поиск при изменении признака. Подключить retrieval/rerank/graph cache и проверить hit/miss, инвалидацию, scope пользователя и чата, недоступность Redis.
+
+### APP-AGENT-001 — Patent Research Assistant
+
+- **Цель.** Встроить принятую агентную стратегию в существующие Planner, Analyst и jobs.
+- **Файлы.** `src/app/services/analysis_run.py`, `src/app/services/analyst.py`, tool contracts, `src/app/workers/`, `prompts/`, unit/contract tests.
+- **Приёмка и тесты.** Идея → признаки и запросы → Hybrid → ограниченное расширение → отчёт. Вопрос о сохранённом патенте использует snapshot. Проверить лимиты, отмену, lease fencing, fallback и атомарный replay.
+
+### APP-GRAPH-001 — API самостоятельного Explorer
+
+- **Цель.** Дать поиск сущностей и документов, сведения о вершине, соседей, пути и доказательства.
+- **Файлы.** `src/app/api/routes/graph.py`, `src/app/api/routes/sources.py`, DTO/ports, retrieval, `tests/contract/test_graph_api.py` и security tests.
+- **Приёмка и тесты.** Лимиты hops/visits/results/time, курсор по scope/version/filters. Проверить старую generation, чужой run, недоступность графа, разные типы рёбер и точные цитаты. Переданный агенту узел проходит повторную авторизацию.
+
+### APP-UI-001 — Два режима и навигация
+
+- **Цель.** Расширить GRAPHUI-001 до связки документ–граф–диалог.
+- **Файлы.** `frontend/src/App.tsx`, `frontend/src/features/graph/`, `frontend/src/features/sources/`, `frontend/src/api/`, `frontend/tests/browser/`.
+- **Приёмка и тесты.** MVP проверяет обе точки входа, поиск и открытие документа, ограниченных соседей и evidence. Финал добавляет desktop с тремя изменяемыми панелями и разворачиванием графа, mobile с сохранением выбора, фильтры, пути между произвольными допустимыми вершинами, историю, zoom/pan, переходы между документами, различимые типы рёбер и передачу контекста агенту.
+
+### APP-EXPORT-001 — Экспорт исследования
+
+- **Цель.** Передавать проверяемый отчёт со сравнением, источниками и границами поиска.
+- **Файлы.** `src/app/api/routes/runs.py`, сервис экспорта, `frontend/src/features/`, API/browser/security tests.
+- **Приёмка и тесты.** Базовый переносимый формат для MVP, PDF и визуализация подграфа для финала. Проверить совпадение со старым snapshot, доступ только владельцу, безопасный рендеринг и отсутствие нового inference.
+
+### Уточнение незакрытых карточек
+
+| ID | Оставшийся объём и зоны изменений | Приёмка |
+| --- | --- | --- |
+| OBS-001 | `src/app/api/health.py`, телеметрия API/worker/Airflow. Groq calls, usage, стоимость, latency, cache hit/miss, ошибки и jobs | Fake-provider и failure tests подтверждают null с причиной, redaction, readiness и degraded |
+| EVAL-002 | Расширить `eval/` до четырёх режимов. Пилот для MVP, около 100 кейсов и 70/15/15 для финала, отдельная ручная разметка | Frozen snapshot, повторяемый manifest, per-case результаты, калибровка Judge и метрики стоимости. Бюджеты согласованы до holdout |
+| AUTH-002 | Завершить внешний gate действующей топологии. `Caddyfile`, perimeter checks, `docs/DEPLOYMENT.md`, `tests/security/` | Независимые HTTPS, два аккаунта и только разрешённые порты |
+| TEST-001 | Сквозная проверка в `tests/`, `frontend/tests/browser/`, eval и validation report | Isolation, red-team, restart, invalid evidence, stale cursor, cancel/late reply, regression и restore. Критичные дефекты закрыты |
+| REL-001 | Версии, clean install/backup и demo. `README.md`, `docs/DEPLOYMENT.md`, Compose и release notes | Воспроизводимый показ обоих режимов, Airflow, истории и отчёта. Метрики, restore и внешний gate пройдены. Тег сверяется с удалённым commit |
+
+## Этапы и последовательность
+
+1. **F1 — допуск и интеграция.** RES-EVAL → RES-KG; затем агентный эксперимент и INT-KG → INT-RET. INT-GROQ и чаты стартуют параллельно. CORPUS-001 продолжает на утверждённых контрактах.
+2. **F2 — MVP.** Свести guards, память и агент с API графа и UI. Параллельно провести обновление Airflow, подключить телеметрию, базовый экспорт и пилот оценки четырёх режимов. [Критерии MVP](docs/FINAL_PROJECT_PLAN.md#этапы-и-приёмка)
+3. **F3 — финальная версия.** Полный Explorer, PDF, расширенный evaluation, вывод LightRAG, регрессии, restore и внешний периметр. TEST-001 и AUTH-002 предшествуют REL-001.
+
+После каждой задачи действуют [правила приёмки и публикации](task.md).
+
+---
+
+## История прежнего baseline
+
+Ниже сохранены прежний DAG, статусы и карточки. Для новых работ используются только рабочие зависимости и приёмка из сводки выше.
 
 Статус документа: planning baseline от 2026-09-29. Здесь нет отметок «выполнено» для будущей реализации. После любой завершённой задачи обязателен отдельный commit и **успешный push** в `https://github.com/KulikovKA/Graph-based-RAG-for-article-analysis`; до проверки удалённого коммита статус остаётся «ожидает публикации». Это же правило изложено в [task.md](task.md).
 

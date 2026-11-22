@@ -4,6 +4,8 @@ JSON UTF-8, даты ISO 8601 UTC, собственные IDs — UUID. Session 
 
 ## Endpoints
 
+Ниже действующий контур чатов и запусков. Контракты расширений выделены отдельно; их маршруты ещё не реализованы.
+
 | Метод / путь | Запрос | Успех |
 |---|---|---|
 | `POST /api/v1/auth/login` | `{email,password}`, проверка Origin | 200 session cookie + `{user_id,csrf_token}` |
@@ -18,8 +20,8 @@ JSON UTF-8, даты ISO 8601 UTC, собственные IDs — UUID. Session 
 | `GET /api/v1/runs/{id}/events` | `Last-Event-ID?` | `text/event-stream` |
 | `POST /api/v1/runs/{id}/cancel` | CSRF header | 202 `{status,cancel_requested:true}`; уже terminal → 200 текущий status |
 | `GET /api/v1/runs/{id}/evidence/{evidence_id}` | — | EvidenceV1 только из snapshot этого run |
-| `GET /api/v1/runs/{id}/graph` | — | GraphV1 после GRAPHUI-001 |
-| `GET /api/v1/runs/{id}/graph/neighbors` | node_id, cursor?, limit≤20 | GraphV1 page после GRAPHUI-001 |
+| `GET /api/v1/runs/{id}/graph` | — | GraphV1, подграф запуска GRAPHUI-001 |
+| `GET /api/v1/runs/{id}/graph/neighbors` | node_id, cursor?, limit≤20 | Страница подграфа запуска |
 | `GET /api/v1/sources/{document_id}` | authenticated session | Public metadata + validated URL; без приватных run/evidence IDs |
 | `GET /health/live`, `/health/ready` | — | 200/503 согласно ARCHITECTURE; без адресов/секретов зависимостей |
 
@@ -31,7 +33,7 @@ JSON UTF-8, даты ISO 8601 UTC, собственные IDs — UUID. Session 
 
 Если передан source_run_id, его ownership и принадлежность conversation проверяются при приёме: чужой/неизвестный или из другой conversation → 404; нетерминальный/неуспешный source run → 409 SOURCE_RUN_NOT_COMPLETED. Отсутствие source_run_id при распознанном explain intent даёт completed/clarification. Историческое объяснение связывается с idea_version исходного run, сохраняя current version conversation.
 
-RunV1: `{id,status,stage,progress,idea_version_id?,source_run_id?,outcome?,answer?,public_analysis?,answer_presentation?,sources,coverage,graph_url?,created_at,completed_at?,error_code?}`. `status ∈ {pending,running,completed,failed,cancelled}`; authoritative state machine — DATA_MODEL. До completed answer/outcome/public_analysis/answer_presentation null. `sources` пуст до snapshot commit; после него содержит metadata только из разрешённого snapshot. `graph_url=null` до GRAPHUI-001 или при отсутствии graph view. GET существующего failed run возвращает 200 с error_code. AnalysisV1 — закрытый DTO, не поле API. Новые поля реализуются в API-001; текущий skeleton ещё соответствует предыдущему baseline.
+RunV1: `{id,status,stage,progress,idea_version_id?,source_run_id?,outcome?,answer?,public_analysis?,answer_presentation?,sources,coverage,graph_url?,created_at,completed_at?,error_code?}`. `status ∈ {pending,running,completed,failed,cancelled}`; authoritative state machine — DATA_MODEL. До completed answer/outcome/public_analysis/answer_presentation null. `sources` пуст до snapshot commit; после него содержит metadata только из разрешённого snapshot. `graph_url=null` при отсутствии graph view. GET существующего failed run возвращает 200 с error_code. AnalysisV1 — закрытый DTO, не поле API. Реализация и fixtures описаны в [API-001](validation/API-001/README.md).
 
 Legacy runs без `publication_contract=adr011` могут иметь null public_analysis/answer_presentation даже при completed; API/UI показывают сохранённый AnswerV1 без нового summary и без выдуманного AnalysisV1. Отсутствующий legacy progress отображается как пустой snapshot стадии, без реконструкции неизвестных counts. Для новых completed runs обе public projections обязательны.
 
@@ -46,13 +48,27 @@ Legacy runs без `publication_contract=adr011` могут иметь null publ
 
 ClaimV1: `{text,evidence_ids:UUID[],quotes:[{evidence_id,start,end,text}]}`. Содержательные claims имеют непустые evidence_ids из snapshot текущего run; quote start/end — code-point offsets внутри EvidenceV1.quoted_span, точное совпадение обязательно. Для matches все evidence entries принадлежат указанному document_id; feature_id принадлежит связанной idea_version. Validator не доказывает смысловую верность пересказа: uncertainty не позволяет обойти проверку IDs/quotes.
 
-Для no_evidence/clarification summary/matches/differences пусты; ограничения/уточняющий вопрос строит shell. Для safe_fallback — проверенные короткие выдержки с IDs и allowlist notice о деградации; проверяется тем же валидатором. Для `outcome=analysis` deterministic renderer строит AnswerV1 из валидированного AnalysisV1 по ADR-011, затем проверяются AnswerV1 и его проекции. Coverage: `{sources:[{source,status,reason_code?}],channels:[{channel,status,reason_code?}],partial,historical}`; source status `ok|empty|unavailable|not_configured|not_requested`, channel status `ok|empty|unavailable|disabled`. Источник, не вызванный при работе по локальному snapshot, имеет not_requested; это не утверждение, что внешний API проверен. partial вычисляет shell по недоступным необходимым источникам/каналам, отключённый optional LightRAG сам по себе partial не создаёт.
+Для no_evidence/clarification summary/matches/differences пусты; ограничения/уточняющий вопрос строит shell. Для safe_fallback — проверенные короткие выдержки с IDs и allowlist notice о деградации; проверяется тем же валидатором. Для `outcome=analysis` deterministic renderer строит AnswerV1 из валидированного AnalysisV1 по ADR-011, затем проверяются AnswerV1 и его проекции. Coverage: `{sources:[{source,status,reason_code?}],channels:[{channel,status,reason_code?}],partial,historical}`; source status `ok|empty|unavailable|not_configured|not_requested`, channel status `ok|empty|unavailable|disabled`. `not_requested` обозначает работу по snapshot без запроса внешнего источника. `partial` вычисляет shell по необходимым каналам. Старые записи `lightrag_context` остаются читаемыми, новые запуски целевого профиля этот канал опускают.
 
 Sources: `{document_id,revision_id,title,kind,publication_date?,url,evidence_ids}`. EvidenceV1: `{evidence_id,document_id,revision_id,chunk_id,section,span_start,span_end,quoted_span,source_url}`. Membership и ownership проверяются независимо от того, что исходный документ публичен. Старые snapshots сохраняют старые metadata/offsets; endpoint sources показывает актуальную публичную metadata и не заменяет run-scoped карточку.
 
 ## GraphV1 (P1)
 
 `{run_id,graph_version,nodes,edges,next_cursor?,truncated}`. Узел: `{id,type,label,document_id?,revision_id?,feature_id?,evidence_ids}`; ребро: `{id,source,target,type,evidence_ids}`. id — opaque строка API, не internal Neo4j ID. Allowlist типов и исключения synthetic edges — [GRAPH_SCHEMA](GRAPH_SCHEMA.md). Неизвестный/не входящий в view node_id — 404; неверный cursor — 400. Cursor подписан и привязан к owner/run/graph_version/node/filter/limit. Раскрытие не добавляет источники вне snapshot run. Начальный cap 30 nodes/50 edges, page cap 20 новых nodes/40 edges, один hop; полный UI view cap 100 nodes/200 edges с предложением отдельного поиска для расширения.
+
+## Целевые расширения API
+
+| Операция | Планируемый контракт |
+| --- | --- |
+| Переименовать и удалить чат | `PATCH/DELETE /api/v1/conversations/{id}`. Проверка owner и CSRF; ограниченный title; удаление отзывает доступ, останавливает активный run и исключает позднюю публикацию |
+| Открыть историю исследований | Постраничные run refs той же conversation с версиями идеи и источников |
+| Поиск Explorer | Query, фильтры типов и pinned graph/index generation → страницы сущностей, документов, ранжированных путей и coverage |
+| Вершина, соседи, маршрут | Opaque node refs, разрешённая graph version, фильтры, bounded limit/hops, подписанный cursor → typed subgraph или path. Ответ включает `truncated` при лимите и provenance refs |
+| Открыть источник и evidence | Явная revision и scope. Для факта — точный span или metadata pointer, для навигации — её тип без присвоенной доказательности |
+| Передать контекст агенту | Серверный context ref на выбранный узел, документ или путь, связанный со scope и версией; сообщение остаётся в текущей conversation и проходит ownership/CSRF/budget checks |
+| Экспорт | Авторизованный запрос к завершённому run; файл использует сохранённые версии и evidence, экспорт отмечает границы поиска |
+
+Explorer допускает два явных scope: опубликованная версия публичного корпуса для самостоятельного поиска и приватное представление конкретного run для исторических результатов. Версия, фильтры, scope и пользователь проверяются при каждом запросе и при повторном использовании курсора; чужой объект возвращает 404, несовместимая версия собственного представления — явная ошибка со способом открыть правильную версию. Клиент передаёт типизированные параметры. Cypher, SQL, произвольные URL и внутренние Neo4j IDs во входном контракте отсутствуют. [Схема графа](GRAPH_SCHEMA.md) · [Безопасность](SECURITY.md)
 
 ## SSE и публикация
 

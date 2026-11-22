@@ -1,105 +1,126 @@
-# Архитектура
+# Целевая архитектура
 
-## Цель и границы
+Интеллектуальный агент исследует технические идеи по патентам и научным публикациям. Knowledge Graph Explorer и Patent Research Assistant работают на общей инфраструктуре поиска. Выводы ограничены найденным корпусом и служат предварительному техническому исследованию. Срез работающих компонентов и критерии MVP описаны в [окончательном плане](FINAL_PROJECT_PLAN.md).
 
-Система помогает находить патенты и публикации, сравнивать их технические признаки с идеей пользователя и показывать проверяемые фрагменты первоисточников. Выводы ограничены найденным корпусом. Система не выносит юридическое заключение о патентной новизне.
+## Компоненты
 
-Первое развёртывание: Ryzen 7 8845HS, 32 ГБ RAM, без дискретной GPU, Docker Compose на одном ПК. Клиенты открывают адаптивный интерфейс по LAN. Позднее HTTPS и отдельный GPU-сервер подключаются без изменения бизнес-логики.
+| Компонент | Ответственность |
+| --- | --- |
+| React / TypeScript / Vite | Режимы, чаты, документы, источники и интерактивный граф |
+| Caddy и FastAPI | HTTPS, сессии, ownership, версионированные API, SSE |
+| Backend и analysis worker | Модульный монолит на Python. Transactional jobs, Planner, ограниченная агентная оркестрация, проверка и публикация |
+| Groq / InferenceProvider | Генерация по ролям: Planner, агент, Analyst, extractor по необходимости, offline Judge. Локальные модели применяются для NER, embeddings и neural reranking |
+| Retrieval | Лексический канал PostgreSQL, dense Qdrant, Entity Linking, Neo4j, fusion, reranking и Evidence Extraction |
+| PostgreSQL | Постоянные аккаунты, приватные чаты, идея и версии, runs, snapshots, документы, факты публичного корпуса, outbox и поколения индекса |
+| Neo4j и Qdrant | Восстанавливаемые версионированные проекции графа и векторов чанков |
+| Redis | Восстановимые кэши retrieval/rerank/graph и вспомогательные счётчики. Сбой кэша оставляет durable историю доступной |
+| Airflow | Офлайн-обновление публичного корпуса с повтором, проверкой и публикацией поколения |
+| MLflow | Манифесты и метрики экспериментов RESEARCH. Работа приложения не зависит от MLflow |
 
-## Границы компонентов
+Базовая топология — Docker Compose на одном хосте, Caddy как единственная внешняя точка входа. Браузер не имеет прямого доступа к Neo4j. Сервер проверяет scope и выбирает версию проекции. [Развёртывание](DEPLOYMENT.md) · [Безопасность](SECURITY.md)
 
-| Компонент | Ответственность | Хранилище / интерфейс |
-|---|---|---|
-| Web UI | Чат, источники, статусы, объясняющий подграф | React + TypeScript + Vite; статическая сборка |
-| Caddy | HTTPS, единая точка входа, проксирование /api | Только внешний порт |
-| FastAPI | Auth, ownership, API, orchestration, SSE | PostgreSQL через репозитории |
-| Ingestion worker | Адаптеры EPO/OpenAlex, нормализация, индексация | Очередь задач в PostgreSQL; внутренние сервисы |
-| Planner | Intent и валидированный patch идеи | Small LLM через InferenceProvider |
-| Retrieval service | Параллельные кандидаты, дедупликация, rerank, evidence packing | Qdrant, PostgreSQL, Neo4j, LightRAG adapter |
-| LightRAG adapter | Контекстный поиск по разрешённым публичным документам | Отдельный namespace в Neo4j/Qdrant; только context API |
-| Domain graph | Типизированные связи документов и признаков | Neo4j с контролируемой онтологией |
-| Analyst | Structured analysis признаков и evidence | Reasoning-capable Smart Analyst через InferenceProvider |
-| PostgreSQL | Истина для пользователей, идей, версий, запусков, источников | Транзакции, outbox, job state |
-| Redis | Горячий кеш и rate limiting | Восстанавливаемые значения, не источник истины |
-
-Один кодовый backend организован как модульный монолит. Ingestion worker запускает тот же пакет с другой командой. Внешние EPO/OpenAlex и inference подключаются только через интерфейсы. Не принимать произвольные Cypher-запросы или retrieval mode от браузера.
-
-## Online flow
+## Онлайн-поток и общая поисковая инфраструктура
 
 ```mermaid
 flowchart LR
-  U[Пользователь] --> C[Caddy / Web UI]
-  C --> A[FastAPI: auth + conversation]
-  A --> P[Planner: intent + patch]
-  P --> S[Versioned idea in PostgreSQL]
-  S --> R{Нужен новый поиск?}
-  R -- да --> H[Qdrant + metadata + domain graph + LightRAG context]
-  R -- нет --> E[Saved evidence snapshot]
-  H --> K[Dedup + rerank + evidence pack]
-  K --> E
-  E --> L[Reasoning Analyst: AnalysisV1]
-  L --> V[Validate / repair once / fallback]
-  V --> D[Deterministic AnswerV1 + public analysis]
-  D --> T[Validate projections + atomic terminal commit]
-  T --> SE[Durable SSE: summary + answer chunks]
-  SE --> C
+  U["Web UI через Caddy"] --> API["FastAPI: сессия и scope"]
+  API --> EXP["A · Knowledge Graph Explorer"]
+  API --> ASST["B · Patent Research Assistant"]
+  EXP --> RET["Общий retrieval"]
+  EXP --> VIEW["Документ, вершины, соседи и пути"]
+  VIEW --> ASST
+  ASST --> CTX["Проверка контекста и разрешения на Groq"]
+  CTX --> AG["Planner и агент"]
+  AG --> RET
+  AG --> OLD["Сохранённый evidence snapshot"]
+  RET --> VIEW
+  RET --> PACK["Новый evidence snapshot"]
+  PACK --> ANALYST["Analyst через Groq"]
+  OLD --> ANALYST
+  ANALYST --> SSE["Проверка, commit, SSE"]
 ```
-
-Planner предлагает patch, deterministic shell проверяет ссылки на существующие feature IDs, применяет его с optimistic concurrency и решает, можно ли переиспользовать evidence. Изменение смыслового признака, настроек retrieval или версии индекса для нового анализа запускает новый поиск. Объяснение уже найденного источника с явным source_run_id использует сохранённые evidence snapshot и idea_version исходного run даже после смены индекса; текущую идею conversation оно не изменяет. Каждый run сохраняет immutable входы, версии моделей и ссылки на фрагменты.
-
-## Offline flow
 
 ```mermaid
 flowchart LR
-  E[EPO OPS] --> AD[Source adapters]
-  O[OpenAlex] --> AD
-  AD --> N[Normalize + provenance]
-  N --> PG[PostgreSQL metadata + chunks]
-  N --> X[Typed feature extraction + validation]
-  X --> F[PostgreSQL graph facts]
-  F --> G[Neo4j domain graph]
-  N --> EM[Embedding]
-  EM --> Q[Qdrant]
-  PG -. optional public projection .-> LR[LightRAG context index: ADR-003]
-  PG --> J[Offline eval harness]
-  G --> J
-  Q --> J
+  IN["Запрос, фильтры, scope, версии"] --> V["Qdrant: dense поиск по чанкам"]
+  IN --> L["PostgreSQL: лексический канал"]
+  IN --> EL["Entity Linking: сущности"]
+  V --> SEED["Подтверждённые ревизии и seeds графа"]
+  SEED --> G["Neo4j: ограниченный обход и ранжирование путей"]
+  EL --> G
+  V --> F["Fusion и дедупликация документов"]
+  L --> F
+  G --> F
+  F --> R["Reranking"]
+  R --> E["Evidence Extraction и проверка provenance"]
+  E --> OUT["Документы, точные цитаты, пути, coverage"]
 ```
 
-Идемпотентность: source + external ID + source revision/content hash. Обновление создаёт immutable content revision и outbox-событие. Для активации обязательны ACK Qdrant и доменного Neo4j по той же revision и версиям indexer/extractor; optional LightRAG не входит в этот барьер. Проверенные graph facts сначала сохраняются в PostgreSQL. После ACK одной транзакцией публикуются новый index generation и active revision. При частичном сбое предыдущая generation остаётся доступной; retrieval фиксирует generation и перепроверяет membership кандидатов в PostgreSQL. Подробности — [DATA_MODEL](DATA_MODEL.md).
+Реализованная база — [индексация чанков](../src/app/services/indexing.py), [поиск](../src/app/services/retrieval.py), RRF, reranking документов и evidence pack. Qdrant использует отдельный вектор для каждого чанка, а не гарантированный единый вектор на документ. Лексический канал сейчас ищет по метаданным PostgreSQL. Существующий Neo4j-канал использует признаки для поиска кандидатов. Полный Linking, bounded path retrieval с выбором разрешённых переходов и расширение от результатов dense-канала вводятся по [backlog](../TASKS.md). Fusion объединяет каналы и сохраняет coverage. При недоступном индексе ограничения явно отражаются в результате.
 
-ING-001 проверяет барьер на fake index ports. IDX-001/GRAPH-001 подключают реальные consumers; GRAPH-001 закрывает сквозной gate активации обоих индексов. Это порядок разработки, не циклическая зависимость задач. Прямой custom KG LightRAG не переносит доменный provenance: его публичная проекция даёт только кандидатов, которые повторно разрешаются в нашем evidence store (ADR-003).
+Explorer запускается и читает данные без генерации. Нажатие на документ открывает его разрешённую ревизию, вершины и доказательства. При передаче узла, документа или пути агент получает ссылку на контекст с версией графа, которая повторно проверяется сервером. Текущий run-scoped граф и новый самостоятельный режим сосуществуют с различным scope. [Схема графа](GRAPH_SCHEMA.md) · [API](API_CONTRACTS.md)
 
-## Поиск и граф
+## Агент, память и публикация
 
-Ограниченный первый пул: до 50 кандидатов из каждого доступного канала, затем дедуп по canonical source ID, гибридная нормализация и CPU-friendly rerank до 10–15 документов. Числа конфигурируются и уточняются оценкой. В Smart LLM идут только релевантные claims/abstract/snippets с лимитом токенов и стабильными evidence IDs. LightRAG запускается с `only_need_context`, не формирует пользовательский ответ; его внутренние сущности не считаются типизированным доменным графом. Для MVP адаптер может быть отключён при недоступности локальной модели извлечения, сохраняя базовый retrieval.
+```mermaid
+flowchart LR
+  M["Сообщение и ссылка на контекст"] --> P["PostgreSQL: чат, история и версии идеи"]
+  P --> SEL["Выбор релевантного контекста"]
+  SEL --> G["Planner / агент через Groq"]
+  G --> GUARD["Проверка patch, tool, аргументов и бюджета"]
+  GUARD --> HIT{"Достаточен сохранённый evidence?"}
+  HIT -- "Да" --> OLD["Исторический snapshot из PostgreSQL"]
+  HIT -- "Нет" --> RET["Hybrid Retrieval"]
+  RET <--> CACHE["Redis: версионированный кэш"]
+  RET --> SNAP["Сохранение snapshot в PostgreSQL"]
+  OLD --> A["Analyst → структурированный анализ"]
+  SNAP --> A
+  A --> V["Проверка, безопасный fallback, рендеринг"]
+  V --> J["Атомарная публикация результата и событий"]
+  J --> UI["SSE и история"]
+```
 
-GRAPH-002 — отдельный offline shadow experiment на immutable snapshot активных ревизий с завершённым extraction state. Его PostgreSQL таблицы, Qdrant feature collection и Neo4j `CanonicalTechnicalFeature`/`DISCLOSES_CANONICAL_FEATURE` не меняют production feature projection или retrieval.
+Доверенная оболочка проверяет версии и ownership, применяет patch через CAS и выполняет только разрешённые операции. Существенное изменение идеи или запрос новых фактов приводит к новому поиску. Вопрос о сохранённом источнике использует прежний snapshot и idea_version, даже после смены графа; текущая версия чата сохраняется. Узлы идеи формируются в приватном представлении конкретного пользователя. Сводки помогают выбрать контекст, а исходные сообщения и результаты остаются в PostgreSQL. [Память](MEMORY_AND_CACHE.md) · [Модель данных](DATA_MODEL.md)
 
-Граф интерфейса — производный подграф анализа, а не прямой доступ к Neo4j: идея, выбранные признаки, top документы и подтверждённые связи. Первый ответ ограничен примерно 30 узлами / 50 рёбрами. Раскрытие соседей постраничное, с проверкой ownership и лимитами.
+Сохраняются durable jobs, lease fencing, idempotency, отмена и один нетерминальный запуск на чат. Статусы `pending/running/completed/failed/cancelled` отделены от outcome. Проверенный fallback — `completed/safe_fallback`; успешный пустой поиск — `completed/no_evidence`; полная недоступность нужных каналов — `failed`. Для невалидной структуры предусмотрен один repair в пределах общего бюджета. Готовый ответ, публичный ход анализа и terminal SSE записываются одной транзакцией. До неё виден фактический progress. Reconnect восстанавливает сохранённые данные без нового inference. Raw reasoning, drafts и сырой поток модели не покидают адаптер и память обработки. [Контракт LLM](LLM_CONTRACTS.md) · [Контракт SSE](API_CONTRACTS.md#sse-и-публикация)
 
-## Исполнение и сбои
+## Офлайн-поток Airflow
 
-Очередь analysis jobs в PostgreSQL, один worker с общим лимитом генерации на CPU. API отдаёт `202` и SSE по `run_id`; приём запроса, idempotency и lease fencing описаны в [DATA_MODEL](DATA_MODEL.md), HTTP и replay — в [API_CONTRACTS](API_CONTRACTS.md). Отмена проверяется между этапами и перед terminal commit. InferenceProvider имеет `complete_json`, `stream_text`, `embed`, `rerank`; stream_text доступен внутренним потребителям, сырой поток модели клиенту не передаётся.
+```mermaid
+flowchart LR
+  E["EPO"] --> W["Airflow: обнаружение изменений и checkpoint"]
+  O["OpenAlex"] --> W
+  W --> A["Загрузка, нормализация, дедупликация и чанки"]
+  A --> PG["PostgreSQL: immutable revisions и outbox"]
+  PG --> X["Извлечение сущностей и фактов, проверка"]
+  PG --> EM["Embeddings изменённых чанков"]
+  X --> FACT["Сохранённые факты"]
+  FACT --> N["Neo4j и ACK"]
+  EM --> Q["Qdrant и ACK"]
+  N --> V["Целостность, качество и оба ACK"]
+  Q --> V
+  V --> PUB["Атомарная публикация поколения"]
+  V --> REC["Сбой: журнал, retry или возобновление"]
+```
 
-Единый run status: `pending`, `running`, `completed`, `failed`, `cancelled`. Сбой источника отражается в coverage. Невалидный draft допускает одну repair-попытку; timeout/ошибка генератора ведёт к проверенному deterministic fallback. Сохранённый fallback или сообщение о пустом evidence завершает run как `completed` с явным outcome; `failed` означает, что безопасный результат не удалось проверить/сохранить, либо обязательный этап не выполним. Citation validator проверяет структуру ссылок и буквальные spans, а смысловую достоверность оценивает отдельный offline review. Terminal answer и события публикуются атомарно после валидации, поэтому непроверенный текст не виден ни в GET, ни в SSE.
+Задачи Airflow используют существующие source adapters, ingestion, outbox и проекторы; online analysis jobs остаются в приложении. Идемпотентность опирается на source/external ID, hash содержимого и версии обработки. Опубликованное поколение сохраняется при частичном сбое. QA проверяет точные строки доказательств, membership, ожидаемые проекции и счётчики до активации. Retry возобновляет незавершённые стадии и сохраняет прошлый watermark до подтверждения достаточного прогресса. Массовое переиндексирование выполняется отдельным управляемым процессом при смене контракта или embedding-модели. [Модель данных](DATA_MODEL.md#индексация-и-чтение) · [Развёртывание](DEPLOYMENT.md)
 
-## Наблюдаемость
+## Перенос из RESEARCH
 
-Структурированные логи: request/run ID, псевдонимный user ID, stage, latency, TTFT, token counts, cache hit, document IDs, retry/error code. Минимальные health и redaction появляются в SKEL/INFRA/API; OBS-001 добавляет метрики и retention. `/health/live` проверяет процесс; `/health/ready` — PostgreSQL, schema version, приём durable jobs и свежий worker heartbeat (503 при отказе). Qdrant/Neo4j/inference отражаются отдельно как capabilities; готовность очереди не обещает успешный анализ. INFRA проверяет bootstrap profile до реальных весов, LLM-002 — отдельный CPU gate. Полный пользовательский текст не логируется.
+```mermaid
+flowchart LR
+  RES["RESEARCH: KG, Linking, BFS, rerank и агент"] --> RUN["Эксперименты, ablation, MLflow"]
+  RUN --> MAN["Закреплённый манифест, контракты и минимальные fixtures"]
+  MAN --> MAP["Сопоставление онтологий, provenance и версий"]
+  MAP --> SH["Изолированная проекция и parity tests"]
+  SH --> REV["Приёмка и обратимое переключение"]
+  REV --> APP["Основное приложение: проверенные компоненты"]
+```
 
-## Reasoning и validated streaming — ADR-011
+Совместимость текущего Neo4j с новым KG устанавливается до переноса. Проверяются старые и новые ID, направления и типы, допустимые нормализации, источники, revision/chunk spans, namespace/generation и исторический API. Для непреобразуемых записей сохраняется отчёт о пропусках. Выпуск проверяется на отдельной проекции и предусматривает возврат совместимого указателя без удаления старых данных. [Схема и допуск](GRAPH_SCHEMA.md) · [Решения](DECISIONS.md#adr-013--собственный-graph-rag-и-перенос-из-research)
 
-Текущие локальные кандидаты: Planner `LFM2.5-8B-A1B`, Analyst `gemma4:26b-a4b-it-mtp-q4_K_M`. Digest, размер, Q4_K_M, Apache-2.0 и Ollama capabilities закреплены в model inventory; tokenizer, поддержка JSON и размещение в RAM проверяются в LLM-002 на целевом хосте. Прежние измерения `gpt-oss:20b` остаются историческим baseline. Planner классифицирует intent, извлекает признаки и предлагает patch/retrieval; глубокое сравнение патентов выполняет только Analyst.
+## Наблюдаемость и проверка качества
 
-Выбран вариант B: один reasoning pass выдаёт закрытый structured `AnalysisV1`; validator проверяет его, затем deterministic renderer строит существующий `AnswerV1` и публичную проекцию «Ход анализа». Обе проекции проверяются до общей terminal transaction. Второго LLM rendering pass нет. Raw thinking/analysis channel отбрасывается внутри adapter: ни API/SSE/UI, ни durable storage, ни логи/traces его не получают. Подробности DTO — [LLM_CONTRACTS](LLM_CONTRACTS.md), публичного формата — [API_CONTRACTS](API_CONTRACTS.md).
+`/health/live` проверяет процесс, текущий `/health/ready` проверяет доступ к таблице очереди PostgreSQL. Health по worker heartbeat, индексам, Groq и Airflow расширяется отдельно. Телеметрия содержит разрешённые коды и счётчики по стадиям, модель/роль, вызовы, токены и стоимость Groq, latency, cache hit/miss, ошибки, timeout и состояние офлайн-задач. При неизвестном usage пишется `null` с причиной. Технический журнал не включает пользовательские тексты, промпты, секреты и raw reasoning.
 
-До результата UI показывает фактические этапы, число применённых признаков, кандидатов после дедупликации и документов после rerank/packing. Во время долгого reasoning доступны текущий этап, прошедшее время, состояние соединения и отмена. Нет выдуманных процентов, промежуточных findings или сообщения «проверено» до проверки. Semantic summary появляется только после общей проверки/commit; требование безопасности имеет приоритет над примерным порядком UX. Затем SSE постепенно доставляет уже сохранённое отображение ответа. Это полезный streaming этапов и presentation, но он не сокращает само время reasoning. Desktop/mobile имеют одинаковую последовательность, сворачиваемый «Ход анализа» и возможность сразу показать полный committed ответ.
-
-Authoritative result — immutable completed run: AnswerV1 + outcome + evidence snapshot/coverage в PostgreSQL. AnalysisV1 хранит проверенный вход renderer, public analysis и presentation — его согласованные проекции той же версии. Повторное подключение не вызывает LLM и не перерендеривает исторический ответ новой версией шаблона. Compaction сохраняет public summary, presentation и последний progress в run. Qdrant/Neo4j generations, owner isolation и historical source_run_id не меняются.
-
-Метрики разделены: queue wait; planner/retrieval/rerank; analyst call и отдельно reasoning/final-output duration (если измеримы); validation, deterministic rendering, terminal commit; model TTFT; time to first visible progress, validated summary и first answer delta; total run latency. Последние три считаются от приёма run, серверное время доступности отделено от фактического отображения в браузере. Total run заканчивается terminal commit, delivery/render может продолжаться после него. Неподдержанные reasoning/output token counts и интервалы имеют null + причину, не 0 и не оценку по длине текста. Логи содержат только allowlist metadata; численные SLO фиксируются после LLM-002. Подробные критерии — [EVALUATION](EVALUATION.md).
-
-## Analyst relation ownership ? LLM-006
-
-The Analyst runtime first classifies each feature/document evidence group with the pinned `relation_classifier` role (`tev1:4b`, `/v1/systemone`, `relation-classifier-v1`). The classifier owns the relation label. GPT-OSS 20B at low reasoning effort receives only the feature and evidence pack and returns an `AnalystNarrativeDraft` containing evidence and exact quote selections; its schema has no relation field. Deterministic assembly joins the classifier decision to that narrative, computes unresolved feature IDs, adds quote offsets, and validates `AnalysisV1`. An unavailable or malformed classifier response returns the whole-pipeline safe fallback and never asks GPT-OSS to infer a replacement relation.
+Эксплуатационная latency отделяется от model TTFT и офлайн-измерений. Judge вызывается только в evaluation через Groq. Сопоставимые запуски фиксируют код, данные, версии проекций, конфигурацию и манифест качества. [Оценка](EVALUATION.md)

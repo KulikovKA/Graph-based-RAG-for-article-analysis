@@ -1,5 +1,17 @@
 # Развёртывание
 
+## Целевой профиль дипломного релиза
+
+Один Docker Compose deployment с Caddy, API, worker, PostgreSQL, Redis, Neo4j, Qdrant и Airflow. Генеративные роли вызывают Groq по исходящему HTTPS через серверный адаптер. Локальные NER, embeddings и rerank имеют самостоятельные ресурсные лимиты. Генеративная служба Ollama и LightRAG extra не требуются целевому профилю. MLflow располагается в RESEARCH и отсутствует в критическом пути приложения.
+
+Airflow запускается для discovery, ingestion и публикации публичного корпуса. Его metadata и credentials отделены от пользовательской БД приложения, интерфейс доступен только операторам во внутренней сети. DAG переиспользуют source adapters и проекторы, хранят checkpoint по источнику/интервалу, повторяют идемпотентные задачи и публикуют только generation с двумя ACK и пройденным контролем. Логи показывают counts, ошибки, число попыток, задержку watermark и состояние job. При простое Airflow приложение продолжает поиск по последнему опубликованному поколению. [Практики Apache Airflow](https://airflow.apache.org/docs/apache-airflow/stable/best-practices.html)
+
+Перед выпуском INT-GROQ-001/APP-AIR-001 закрепляют совместимые версии и правила egress, secrets и квот. OBS-001 проверяет отдельно PostgreSQL/readiness, worker, доступность поисковых проекций, Groq и состояние Airflow. Релизный сценарий включает clean install, резервную копию PostgreSQL и checkpoints, восстановление опубликованного графового поколения и проверку авторизованной истории. Redis восстанавливается как кэш. [Архитектура](ARCHITECTURE.md) · [Безопасность](SECURITY.md)
+
+## Существующий переходный профиль
+
+Команды и численные результаты ниже относятся к текущему Compose и историческим CPU-запускам. Они сохранены для воспроизведения. Будущий профиль вводится отдельными задачами из [backlog](../TASKS.md).
+
 Первый профиль — Docker Compose на одном ПК (Ryzen 7 8845HS, 32 ГБ RAM). Отдельные контейнеры: `caddy`, `api`, `worker`, `postgres`, `redis`, `neo4j`, `qdrant`, `inference`. `web` собирается Vite и раздаётся Caddy как статика. Caddy выбран за простую конфигурацию HTTPS; для LAN без доверенного домена использовать HTTP только в доверенной сети или локальный сертификат, не обходить предупреждения браузера. Внешний доступ включать лишь после настройки домена, публично доверенного TLS, auth и rate limits.
 
 | Сервис | Порт внутри Compose | Публикация | Начальный memory limit / reservation |
@@ -17,7 +29,7 @@
 
 Конфиг: `.env.example` без значений секретов, реальные `.env` игнорируются Git; EPO client credentials, DB passwords, session keys, provider endpoints — через env/secrets. Миграции БД идут отдельной командой перед api/worker. Backup: PostgreSQL dump + Neo4j/Qdrant snapshots или переиндексация из сохранённых нормализованных ревизий; регулярная проба восстановления обязательна перед release. Redis в backup не нужен.
 
-Вынос GPU: заменить `INFERENCE_BASE_URL` и профиль Compose, оставить `InferenceProvider` и контракты неизменными. Связь к удалённому inference — приватная сеть/TLS и auth; API не принимает произвольный inference URL от клиента. Ingestion worker и API можно позже разнести без разделения кода или введения Kafka/Kubernetes.
+Исторический вариант выноса локального inference использовал `INFERENCE_BASE_URL` и отдельный Compose профиль. Целевой ADR-014 выбирает Groq для генерации и сохраняет `InferenceProvider`. URL провайдера задаётся серверной конфигурацией.
 
 Проверки M1: `docker compose config`, health баз и bootstrap api/worker, отсутствие опубликованных портов Postgres/Redis/Neo4j/Qdrant/inference. До LLM-002 inference запускается опциональным profile: отсутствие весов не ломает bootstrap health. DB-001 применяет Alembic schema upgrade; DB-002 добавляет транзакционные репозитории и реальный queue heartbeat. Полный CPU profile с весами получает собственный gate LLM-002. Минимальные health/redaction не откладываются до OBS-001.
 
@@ -141,6 +153,8 @@ UI_SMOKE_URL и запустить `npm run test:e2e -- live.spec.ts`. Скри�
 
 ## CPU baseline LLM-002 на локальном Ollama
 
+Исторические измерения. На целевую генерацию через Groq не распространяются.
+
 Проверенный путь на Windows использует уже установленный Ollama 0.34.4 на host. Контейнеры приложения получают фиксированный `INFERENCE_BASE_URL=http://host.docker.internal:11434`; доступ из Compose API-контейнера к `/api/version` проверен (HTTP 200). Ollama не публикуется через Caddy. Отдельный `inference` profile с собственным volume не содержит скачанных пользователем весов и **не является проверенным runtime** этих измерений. Его лимит 16 GiB основан на наблюдаемом RSS 14.17 ГБ плюс запас; перед выбором этого пути требуется отдельный запуск с закреплёнными весами и достаточной памятью Docker Desktop. На текущем Docker Desktop доступно 15.28 GiB, поэтому этот профиль с Analyst не проверялся.
 
 Версии, digest, quantization, размер, license и SHA файлов reranker записаны в [model inventory](model_inventory.json). Короткий воспроизводимый gate запускается `python scripts/benchmark_inference.py <phase>`; результаты Gemma и ограничения приведены в [отчёте LLM-002](validation/LLM-002/README.md), прежние замеры `gpt-oss:20b` — в [историческом отчёте](validation/LLM-002/measurements_gpt-oss_20b.json). Перед benchmark reranker надо один раз скачать официальный `Qwen/Qwen3-Reranker-0.6B` по revision из inventory через `huggingface_hub.snapshot_download`; далее скрипт использует `local_files_only=True` и offline flags. Веса и HF/Ollama cache находятся вне Git. Ollama-модели сверяются по digest до измерений.
@@ -178,6 +192,6 @@ SSE использует существующий Caddy/API. API-001 прове�
 - Профиль `prod` использует Caddy с TLS и loopback-публикацией на `8081/8443` по умолчанию. `PUBLIC_DOMAIN` надо настроить отдельно; доступ извне и смена bind address остаются закрыты до auth/security gate.
 - Ollama включается отдельно: `docker compose --profile cpu up -d inference`. Профиль не загружает модели; веса хранятся в отдельном Docker volume вне Git. CPU smoke и выбор модели относятся к LLM-002.
 
-`migrate` — отдельный одноразовый контейнер-зависимость перед API/worker и запускает `alembic upgrade head`. Интеграционный round-trip тест запускается отдельно: `docker compose --profile tools run --build --rm db-test`; он создаёт временную PostgreSQL-схему, проверяет миграцию и constraints, затем удаляет только эту схему. API container healthcheck проверяет liveness; `/health/ready` остаётся 503 до появления реальных schema/queue readiness gates в DB-002. Worker healthcheck подтверждает только жизнь bootstrap процесса, а не наличие durable queue.
+`migrate` — отдельный одноразовый контейнер-зависимость перед API/worker и запускает `alembic upgrade head`. Интеграционный round-trip тест запускается отдельно: `docker compose --profile tools run --build --rm db-test`; он создаёт временную PostgreSQL-схему, проверяет миграцию и constraints, затем удаляет только эту схему. API container healthcheck проверяет liveness. В текущем API `/health/ready` читает таблицу очереди в PostgreSQL. Полный gate worker heartbeat и capabilities относится к OBS-001.
 
 Начальные образы закреплены тегами в `compose.yaml` и `docker/Dockerfile.*`; обновлять их следует отдельным review с повторной проверкой поддержки, лицензий и конфигурации. Docker Desktop memory allocation должен быть достаточен для суммарных лимитов сервисов; отдельный inference profile по умолчанию не запускается.
