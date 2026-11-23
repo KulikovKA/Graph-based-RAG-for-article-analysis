@@ -180,6 +180,17 @@ def test_sse_replay_reset_terminal_cursor_and_cancel(api) -> None:  # type: igno
 
 
 @postgres
+def test_explorer_route_requires_session_and_handles_missing_adapter(api) -> None:  # type: ignore[no-untyped-def]
+    service, _, alice, _ = api
+    path = "/api/v1/explorer/search?scope=published&q=example"
+    response = alice.get(path)
+    assert response.status_code == 503 and response.json()["error"]["code"] == "GRAPH_UNAVAILABLE"
+    assert response.headers["cache-control"] == "no-store"
+    service.disable_account("alice@example.test")
+    assert alice.get(path).status_code == 401
+
+
+@postgres
 def test_export_completed_run_uses_owner_snapshot(api) -> None:  # type: ignore[no-untyped-def]
     service, _, alice, bob = api
     _, run = accepted(alice)

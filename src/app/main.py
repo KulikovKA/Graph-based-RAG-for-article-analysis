@@ -12,18 +12,24 @@ from app.api.auth import router as auth_router
 from app.api.health import router as health_router
 from app.api.middleware import RequestContextMiddleware
 from app.api.routes.conversations import router as conversations_router
+from app.api.routes.explorer import router as explorer_router
 from app.api.routes.graph import router as graph_router
 from app.api.routes.runs import router as runs_router
 from app.api.routes.sources import router as sources_router
+from app.domain.explorer import ExplorerPort
 from app.services.auth import AuthService
 
 
 def create_app(
-    *, auth: AuthService | None = None, auth_settings: AuthSettings | None = None
+    *,
+    auth: AuthService | None = None,
+    auth_settings: AuthSettings | None = None,
+    explorer: ExplorerPort | None = None,
 ) -> FastAPI:
     application = FastAPI(title="Article Analysis API", version="0.1.0")
     application.state.auth_service = auth
     application.state.auth_settings = auth_settings or AuthSettings.from_env()
+    application.state.explorer_port = explorer
 
     application.add_middleware(
         CORSMiddleware,
@@ -61,6 +67,7 @@ def create_app(
     application.include_router(conversations_router)
     application.include_router(runs_router)
     application.include_router(graph_router)
+    application.include_router(explorer_router)
     application.include_router(sources_router)
     application.include_router(health_router)
     return application

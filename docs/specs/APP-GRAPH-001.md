@@ -4,7 +4,7 @@
 
 ## Аддитивный контракт для UI и fixtures
 
-Все GET начинаются с `/api/v1/explorer`. `scope=published|run`, `run_id` обязателен для run и отсутствует для published. `graph_version` обязателен после первого поиска; первый published поиск может закрепить текущую версию. Версия — opaque строка, node_id — opaque строка, document_id/revision_id/run_id — UUID. Пустой поиск возвращает пустую страницу. Backend получает текущего пользователя из сессии.
+Все GET начинаются с `/api/v1/explorer`. `scope=published|run`, `run_id` обязателен для run и отсутствует для published. Первый `/search` без cursor может опустить `graph_version`, чтобы сервер закрепил доступную версию published или сохранённого run после проверки владельца. Страница с cursor и другие операции требуют `graph_version`. Версия — opaque строка, node_id — opaque строка, document_id/revision_id/run_id — UUID. Пустой поиск возвращает пустую страницу. Backend получает текущего пользователя из сессии.
 
 | GET | Параметры помимо scope/version | Результат |
 | --- | --- | --- |
@@ -15,7 +15,7 @@
 | `/documents/{document_id}` | `revision_id` | `{graph_version,source,nodes}`, source — Source DTO с `evidence_ids` |
 | `/evidence/{evidence_id}` | — | `EvidenceV1` из видимого scope/version |
 
-У ребра Explorer есть `kind=factual|semantic` вдобавок к существующему `type`. Факты содержат допустимые evidence IDs с точными offsets в pinned revision. Семантические рёбра служат навигации и не получают IDs доказательств. Caps MVP: 20 элементов страницы, 3 hops, 100 visits, 40 edges и 2 s на вызов порта. Cursor подписан и связан с owner, scope, version, операцией, входами, фильтрами и limit. Context ref подписан и ограничен версией, owner и сроком действия; повторная проверка передаёт в агент только разрешённые refs после проверки текущей conversation и членства вершины. Клиент не включает ref в существующий `MessageInput` до подключения APP-AGENT/I-UI.
+У ребра Explorer есть `kind=factual|semantic` вдобавок к существующему `type`. Факты содержат допустимые evidence IDs с точными offsets в pinned revision. `RELATED_TO`, `SIMILAR_TO` и `HAS_SHARED_CONCEPT` служат навигации. Синтетическое `HAS_FEATURE` доступно в run scope как переход Idea → IdeaFeature. Такие рёбра не получают IDs доказательств. Поддержка factual metadata pointer без текстового evidence отложена до согласования схемы I-KG. Caps MVP: 20 элементов страницы, 3 hops, 100 visits, 40 edges и 2 s на вызов порта. Cursor подписан и связан с owner, scope, version, операцией, входами, фильтрами и limit. Context ref подписан и ограничен версией, owner и сроком действия; повторная проверка передаёт в агент только разрешённые refs после проверки текущей conversation и членства вершины. Клиент не включает ref в существующий `MessageInput` до подключения APP-AGENT/I-UI.
 
 | ID | Given → When → Then | Проверка |
 | --- | --- | --- |

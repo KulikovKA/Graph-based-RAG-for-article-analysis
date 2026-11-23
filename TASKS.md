@@ -21,7 +21,7 @@
 | APP-AIR-001 | APPLICATION | P0 | — | в работе |
 | APP-MEM-001 | APPLICATION | P0 | — | в работе |
 | APP-AGENT-001 | APPLICATION | P0 | — | ожидает |
-| APP-GRAPH-001 | APPLICATION | P0 | — | ожидает |
+| APP-GRAPH-001 | APPLICATION | P0 | — | в работе |
 | APP-UI-001 | APPLICATION | P0 | — | ожидает |
 | APP-EXPORT-001 | APPLICATION | P0 | — | в работе |
 | OBS-001 | APPLICATION | P0 | — | ожидает |
