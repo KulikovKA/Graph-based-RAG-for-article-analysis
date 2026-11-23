@@ -106,10 +106,20 @@ export interface Run {
   error_code: string | null;
 }
 export interface GraphNode {
-  id: string; type: string; label: string; document_id?: string; revision_id?: string;
-  feature_id?: string; evidence_ids: string[];
+  id: string; type: string; label: string; document_id?: string | null; revision_id?: string | null;
+  feature_id?: string | null; evidence_ids: string[];
 }
 export interface GraphEdge { id: string; source: string; target: string; type: string; evidence_ids: string[] }
+export interface PreparedExplorerContext { ref: string; label: string }
+export interface ExplorerEdge extends GraphEdge { kind: 'factual' | 'semantic' }
+export interface ExplorerPage {
+  graph_version: string; nodes: GraphNode[]; edges: ExplorerEdge[];
+  next_cursor: string | null; truncated: boolean;
+}
+export interface ExplorerSearch {
+  graph_version: string; nodes: GraphNode[]; documents: Source[];
+  next_cursor: string | null; truncated: boolean;
+}
 export interface GraphView {
   run_id: string; graph_version: string; nodes: GraphNode[]; edges: GraphEdge[];
   next_cursor: string | null; truncated: boolean;

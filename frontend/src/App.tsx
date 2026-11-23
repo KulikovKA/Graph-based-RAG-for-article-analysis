@@ -15,8 +15,10 @@ import { RunView } from './features/chat/RunView';
 import { initialState, terminal } from './features/chat/runState';
 import { useRun } from './features/chat/useRun';
 import { SourceCards } from './features/sources/SourceCards';
+import type { PreparedExplorerContext } from './api/types';
+import { StandaloneExplorer } from './features/graph/StandaloneExplorer';
 
-function Login({ onLogin }: { onLogin: (value: Session) => void }) {
+function Login({ onLogin, expired }: { onLogin: (value: Session) => void; expired: boolean }) {
   const [email, setEmail] = useState(''),
     [password, setPassword] = useState('');
   const [busy, setBusy] = useState(false),
@@ -53,6 +55,7 @@ function Login({ onLogin }: { onLogin: (value: Session) => void }) {
           цитате.
         </p>
         <form onSubmit={submit}>
+          {expired && <p className="notice" role="status">Сессия завершилась. Войдите снова, чтобы продолжить.</p>}
           <label>
             Электронная почта
             <input
@@ -93,6 +96,8 @@ function Login({ onLogin }: { onLogin: (value: Session) => void }) {
 export default function App() {
   const [session, sessionValue] = useState<Session | null>(null),
     [booting, setBooting] = useState(true);
+  const [sessionExpired, setSessionExpired] = useState(false);
+  const signedIn = useRef(false);
   const [conversations, setConversations] = useState<Conversation[]>([]),
     [cursor, setCursor] = useState<string | null>(null);
   const [detail, setDetail] = useState<ConversationDetail | null>(null),
@@ -111,6 +116,8 @@ export default function App() {
   const [evidence, setEvidence] = useState<Evidence | null>(null),
     [evidenceLoading, setEvidenceLoading] = useState(false);
   const [cancelBusy, setCancelBusy] = useState(false);
+  const [mode, setMode] = useState<'assistant' | 'explorer'>('assistant');
+  const [preparedContext, setPreparedContext] = useState<PreparedExplorerContext | null>(null);
   const { state, connection } = useRun(initialRun);
   const composer = useRef<HTMLTextAreaElement>(null);
   const generation = useRef(0),
@@ -122,6 +129,8 @@ export default function App() {
   const active = currentRun && !terminal(currentRun);
 
   const authenticate = useCallback((value: Session | null) => {
+    signedIn.current = !!value;
+    if (value) setSessionExpired(false);
     setSession(value);
     sessionValue(value);
     setBooting(false);
@@ -137,6 +146,8 @@ export default function App() {
       setDetail(null);
       setDrafts({});
       setFollowup(null);
+      setMode('assistant');
+      setPreparedContext(null);
       setActiveEvidence(null);
       setEvidence(null);
       setBusy(false);
@@ -154,7 +165,7 @@ export default function App() {
       .catch(() => {
         if (live) authenticate(null);
       });
-    const expired = () => authenticate(null);
+    const expired = () => { if (signedIn.current) setSessionExpired(true); authenticate(null); };
     window.addEventListener('session-expired', expired);
     return () => {
       live = false;
@@ -188,6 +199,8 @@ export default function App() {
   }, [state?.run, selected]);
 
   async function selectConversation(id: string | null) {
+    setMode('assistant');
+    if (id !== selected) setPreparedContext(null);
     const gen = ++generation.current;
     evidenceRequest.current++;
     setSelected(id);
@@ -379,7 +392,7 @@ export default function App() {
         <p>Открываем рабочее пространство…</p>
       </main>
     );
-  if (!session) return <Login onLogin={authenticate} />;
+  if (!session) return <Login onLogin={authenticate} expired={sessionExpired} />;
   return (
     <div className="workspace">
       <aside className={`sidebar ${navOpen ? 'open' : ''}`} aria-label="Диалоги">
@@ -396,6 +409,10 @@ export default function App() {
             Контекст<small>Анализ публикаций</small>
           </span>
         </a>
+        <div className="mode-switch" aria-label="Режим работы">
+          <button aria-pressed={mode === 'assistant'} onClick={() => { setMode('assistant'); setNavOpen(false); }}>Ассистент</button>
+          <button aria-pressed={mode === 'explorer'} onClick={() => { setMode('explorer'); setNavOpen(false); }}>Граф знаний</button>
+        </div>
         <button
           className="new-conversation"
           onClick={() => void selectConversation(null)}
@@ -482,12 +499,13 @@ export default function App() {
           </button>
           <div>
             <span className="eyebrow">Исследование</span>
-            <h1>{detail?.title || 'Новая идея'}</h1>
+            <h1>{mode === 'explorer' ? 'Граф знаний' : detail?.title || 'Новая идея'}</h1>
           </div>
           <span className="version-pill">Версия идеи {detail?.idea?.version_no ?? 0}</span>
         </header>
-        <div className={`work-content ${messages.length ? 'has-messages' : ''}`}>
+        <div hidden={mode !== 'assistant'} className={`work-content ${messages.length ? 'has-messages' : ''}`}>
           <section className="chat-panel" aria-label="Чат анализа">
+            {preparedContext && <p className="context-notice" role="status">Контекст «{preparedContext.label}» подготовлен. Передача ассистенту станет доступна после подключения.</p>}
             {loading ? (
               <p className="loading-state" role="status">
                 Открываем диалог и сохранённые ответы…
@@ -640,6 +658,9 @@ export default function App() {
               if (sources) explain(source, sources);
             }}
           />
+        </div>
+        <div hidden={mode !== 'explorer'}>
+          <StandaloneExplorer key={session.user_id} runId={currentRun?.id ?? null} conversationId={selected} onContext={setPreparedContext} />
         </div>
       </main>
     </div>
