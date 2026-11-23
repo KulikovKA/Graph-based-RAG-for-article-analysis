@@ -1,0 +1,17 @@
+# APP-MEM-001 — память и кэши
+
+Опоры: [MEMORY_AND_CACHE](../MEMORY_AND_CACHE.md), [DATA_MODEL](../DATA_MODEL.md) и ADR-009/016. Используются существующие PostgreSQL conversations/messages, immutable idea versions, `OwnedRepository`, `summary_json`/watermark и сохранённые результаты. Реализация первой волны предоставляет вызываемые компоненты для чтения и расчёта памяти и кэширования стадий. Агент, APP-CHAT и общий `analysis_run.py` подключаются на I-MEM.
+
+На входе в память — owner, conversation, необязательные версия идеи, запрос и completed source run. На выходе — bounded recent/relevant messages, версионированная summary с watermark, разрешённая версия идеи или исторический snapshot. Релевантность детерминирована на fixtures. Доступ к summary и snapshot проверяется до обработки. Summary может пересчитываться по сохранённой истории. Старый формат читается как legacy; он не заменяет факты и версию. Повтор не продвигает watermark назад. Версия идеи меняет ключ текущего retrieval, historical follow-up пинит исходный run.
+
+Redis остаётся восстановимым кэшем. Ключи отдельных стадий учитывают владельца, чат, поколение/историческую версию, параметры, модель/конфигурацию и входы стадии; данные Redis не дают права доступа. Смена версии логически инвалидирует запись, данные получают действующий TTL. Redis outage/corruption превращается в промах. Предусмотреть отзыв scope чата с сохранением проверки PostgreSQL перед чтением. Приватные значения и содержимое кэша не пишутся в журнал.
+
+| ID | Given → When → Then | Проверка |
+| --- | --- | --- |
+| MEM-1 | Сохранённый чат с историей → новый экземпляр сервисов читает чат → те же IDs и версия, стабильный ограниченный выбор; новый чат даёт пустой контекст | Тест repositories/summary, реальный restart на I-MEM |
+| MEM-2 | Длинный чат и конкурентный/повторный расчёт → запись summary → версия и принадлежащий чату монотонный watermark, legacy читается | Unit/contract и проверка PostgreSQL на I-MEM |
+| MEM-3 | Старый completed run и новая версия/индекс → follow-up читает pinned snapshot, изменённый признак приводит к новому ключу retrieval → исторические источники совпадают | Fixture historical, тест версии ключа, живой replay на I-MEM |
+| MEM-4 | Одинаковый запрос в двух чатах/аккаунтах либо изменились generation/models/params → retrieval/rerank/graph cache не переиспользуют запись вопреки scope/version → прежняя запись вытесняется по TTL | Fake Redis по каждой стадии, scope/invalidation |
+| MEM-5 | Redis упал или значение испорчено → основной результат вычисляется и возвращается → чужой chat/run не открывается даже при живом кэше | Negative тест Redis и ownership |
+
+Файлы `src/app/services/conversations.py`, `src/app/services/idea_state.py` при необходимости, `src/app/integrations/redis_cache.py`, targeted tests. Существующая схема достаточна для JSON версии summary. Откат компонентов возможен с игнорированием новых ключей и чтением сохранённой истории; миграцию при необходимости согласует оркестратор. Реальное подключение всех стадий, удаление и агентный restart — I-MEM; эксплуатационные hit/miss — I-OBS.
