@@ -21,6 +21,7 @@ from app.api.routes.conversations import DB, Owner
 from app.api.schemas import EVENT_SCHEMAS
 from app.domain.contracts import EvidenceV1, RunV1
 from app.services.auth import AuthService, Principal
+from app.services.export_report import render_export
 from app.services.run_events import RunEventError, RunEventsService, StoredEvent
 from app.storage.jobs import JobRepository
 from app.storage.models import AnalysisRun, EvidenceChunk, RunEvidence
@@ -36,6 +37,41 @@ def get_run(run_id: UUID, owner: Owner, db: DB) -> RunV1:
     if run is None:
         raise HTTPException(404, "NOT_FOUND")
     return public_run(run)
+
+
+@router.get(
+    "/{run_id}/export",
+    response_class=Response,
+    responses={200: {"content": {"text/html": {"schema": {"type": "string"}}}}},
+)
+def export_run(run_id: UUID, owner: Owner, db: DB) -> Response:
+    try:
+        run = OwnedRepository(db).get_run(run_id, owner_id=owner.user_id)
+        if run is None:
+            raise HTTPException(404, "NOT_FOUND")
+        if run.status != "completed":
+            raise HTTPException(409, "RUN_NOT_COMPLETED", headers={"Cache-Control": "no-store"})
+        html = render_export(db, run)
+    except HTTPException as exc:
+        if exc.status_code == 503:
+            raise HTTPException(
+                503, "INVALID_STORED_RESULT", headers={"Cache-Control": "no-store"}
+            ) from None
+        raise
+    except (SQLAlchemyError, ValidationError, ValueError, TypeError, KeyError, AttributeError):
+        raise HTTPException(
+            503, "INVALID_STORED_RESULT", headers={"Cache-Control": "no-store"}
+        ) from None
+    return Response(
+        html,
+        media_type="text/html; charset=utf-8",
+        headers={
+            "Cache-Control": "no-store",
+            "Content-Disposition": f'attachment; filename="run-{run_id}.html"',
+            "Content-Security-Policy": "default-src 'none'; base-uri 'none'; form-action 'none'",
+            "X-Content-Type-Options": "nosniff",
+        },
+    )
 
 
 @router.post("/{run_id}/cancel")

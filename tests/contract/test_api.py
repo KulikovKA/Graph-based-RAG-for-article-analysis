@@ -180,6 +180,27 @@ def test_sse_replay_reset_terminal_cursor_and_cancel(api) -> None:  # type: igno
 
 
 @postgres
+def test_export_completed_run_uses_owner_snapshot(api) -> None:  # type: ignore[no-untyped-def]
+    service, _, alice, bob = api
+    _, run = accepted(alice)
+    url = f"/api/v1/runs/{run}/export"
+    assert alice.get(url).status_code == 409
+    assert bob.get(url).status_code == 404
+
+    complete(service, run)
+    response = alice.get(url)
+    assert response.status_code == 200
+    assert response.headers["content-disposition"] == f'attachment; filename="run-{run}.html"'
+    assert response.headers["cache-control"] == "no-store"
+    assert "Отчёт исследования" in response.text
+    assert "no_evidence" in response.text
+    assert bob.get(url).status_code == 404
+    assert alice.get(f"/api/v1/runs/{uuid4()}/export").status_code == 404
+    service.disable_account("alice@example.test")
+    assert alice.get(url).status_code == 401
+
+
+@postgres
 def test_inputs_versions_sources_pagination_and_revocation(api) -> None:  # type: ignore[no-untyped-def]
     service, _, alice, _ = api
     conversation, run = accepted(alice)

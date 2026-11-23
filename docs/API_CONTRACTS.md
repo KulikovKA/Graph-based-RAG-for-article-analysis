@@ -20,6 +20,7 @@ JSON UTF-8, даты ISO 8601 UTC, собственные IDs — UUID. Session 
 | `GET /api/v1/runs/{id}/events` | `Last-Event-ID?` | `text/event-stream` |
 | `POST /api/v1/runs/{id}/cancel` | CSRF header | 202 `{status,cancel_requested:true}`; уже terminal → 200 текущий status |
 | `GET /api/v1/runs/{id}/evidence/{evidence_id}` | — | EvidenceV1 только из snapshot этого run |
+| `GET /api/v1/runs/{id}/export` | session cookie | UTF-8 HTML attachment сохранённого completed run; 409 для своего незавершённого/неуспешного run |
 | `GET /api/v1/runs/{id}/graph` | — | GraphV1, подграф запуска GRAPHUI-001 |
 | `GET /api/v1/runs/{id}/graph/neighbors` | node_id, cursor?, limit≤20 | Страница подграфа запуска |
 | `GET /api/v1/sources/{document_id}` | authenticated session | Public metadata + validated URL; без приватных run/evidence IDs |
@@ -46,7 +47,7 @@ Legacy runs без `publication_contract=adr011` могут иметь null publ
 - `limitations: {code,message}[]` — shell-generated coverage/validation notices из allowlist, не произвольный LLM текст.
 - `followup_suggestions: string[]` — только вопросы/предложения действия, без новых фактических выводов.
 
-ClaimV1: `{text,evidence_ids:UUID[],quotes:[{evidence_id,start,end,text}]}`. Содержательные claims имеют непустые evidence_ids из snapshot текущего run; quote start/end — code-point offsets внутри EvidenceV1.quoted_span, точное совпадение обязательно. Для matches все evidence entries принадлежат указанному document_id; feature_id принадлежит связанной idea_version. Validator не доказывает смысловую верность пересказа: uncertainty не позволяет обойти проверку IDs/quotes.
+ClaimV1: `{text,evidence_ids:UUID[],quotes:[{evidence_id,start,end,text}]}`. Содержательные claims имеют непустые evidence_ids из snapshot текущего run. `quote.start/end` — полуинтервал Unicode code-point offsets в `chunk.text` внутри границ `EvidenceV1.span_start/span_end`. Текст цитаты равен `EvidenceV1.quoted_span[start - span_start : end - span_start]`. Для matches все evidence entries принадлежат указанному document_id; feature_id принадлежит связанной idea_version. Validator не доказывает смысловую верность пересказа: uncertainty не позволяет обойти проверку IDs/quotes.
 
 Для no_evidence/clarification summary/matches/differences пусты; ограничения/уточняющий вопрос строит shell. Для safe_fallback — проверенные короткие выдержки с IDs и allowlist notice о деградации; проверяется тем же валидатором. Для `outcome=analysis` deterministic renderer строит AnswerV1 из валидированного AnalysisV1 по ADR-011, затем проверяются AnswerV1 и его проекции. Coverage: `{sources:[{source,status,reason_code?}],channels:[{channel,status,reason_code?}],partial,historical}`; source status `ok|empty|unavailable|not_configured|not_requested`, channel status `ok|empty|unavailable|disabled`. `not_requested` обозначает работу по snapshot без запроса внешнего источника. `partial` вычисляет shell по необходимым каналам. Старые записи `lightrag_context` остаются читаемыми, новые запуски целевого профиля этот канал опускают.
 
@@ -66,7 +67,7 @@ Sources: `{document_id,revision_id,title,kind,publication_date?,url,evidence_ids
 | Вершина, соседи, маршрут | Opaque node refs, разрешённая graph version, фильтры, bounded limit/hops, подписанный cursor → typed subgraph или path. Ответ включает `truncated` при лимите и provenance refs |
 | Открыть источник и evidence | Явная revision и scope. Для факта — точный span или metadata pointer, для навигации — её тип без присвоенной доказательности |
 | Передать контекст агенту | Серверный context ref на выбранный узел, документ или путь, связанный со scope и версией; сообщение остаётся в текущей conversation и проходит ownership/CSRF/budget checks |
-| Экспорт | Авторизованный запрос к завершённому run; файл использует сохранённые версии и evidence, экспорт отмечает границы поиска |
+| Финальный экспорт | PDF и визуализация подграфа сохранённого run; backend HTML уже использует сохранённые версии и evidence |
 
 Explorer допускает два явных scope: опубликованная версия публичного корпуса для самостоятельного поиска и приватное представление конкретного run для исторических результатов. Версия, фильтры, scope и пользователь проверяются при каждом запросе и при повторном использовании курсора; чужой объект возвращает 404, несовместимая версия собственного представления — явная ошибка со способом открыть правильную версию. Клиент передаёт типизированные параметры. Cypher, SQL, произвольные URL и внутренние Neo4j IDs во входном контракте отсутствуют. [Схема графа](GRAPH_SCHEMA.md) · [Безопасность](SECURITY.md)
 

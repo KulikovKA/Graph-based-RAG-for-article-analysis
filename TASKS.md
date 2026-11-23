@@ -23,7 +23,7 @@
 | APP-AGENT-001 | APPLICATION | P0 | — | ожидает |
 | APP-GRAPH-001 | APPLICATION | P0 | — | ожидает |
 | APP-UI-001 | APPLICATION | P0 | — | ожидает |
-| APP-EXPORT-001 | APPLICATION | P0 | — | ожидает |
+| APP-EXPORT-001 | APPLICATION | P0 | — | в работе |
 | OBS-001 | APPLICATION | P0 | — | ожидает |
 | EVAL-002 | APPLICATION | P0 | — | ожидает |
 | AUTH-002 | APPLICATION | P1 | — | ожидает внешнего доступа |
