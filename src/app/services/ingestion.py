@@ -12,6 +12,7 @@ from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
 from app.domain.documents import DocumentSection, NormalizedDocument
+from app.domain.external_ids import canonical_external_id
 from app.storage.jobs import OutboxRepository
 from app.storage.models import (
     DocumentRevision,
@@ -27,22 +28,6 @@ from app.storage.models import (
 _SOURCES = {"epo_ops", "openalex"}
 _REQUIRED_BACKENDS = {"qdrant", "domain_graph"}
 _LANGUAGE_RE = re.compile(r"^[a-z]{2,3}(?:-[a-z0-9]{2,8})*$", re.IGNORECASE)
-
-
-def canonical_external_id(source: str, external_id: str) -> str:
-    """Вернуть стабильный внешний ключ для поддерживаемых источников."""
-    value = external_id.strip()
-    if source == "epo_ops":
-        value = re.sub(r"[\s.]", "", value).upper()
-        if not re.fullmatch(r"[A-Z]{2}[A-Z0-9]+[A-Z][0-9]?", value):
-            raise ValueError("invalid EPO publication ID")
-        return value
-    if source == "openalex":
-        value = value.rsplit("/", 1)[-1].upper()
-        if not re.fullmatch(r"W[0-9]+", value):
-            raise ValueError("invalid OpenAlex work ID")
-        return value
-    raise ValueError("unsupported source")
 
 
 def _language(value: str | None, text: str) -> str:

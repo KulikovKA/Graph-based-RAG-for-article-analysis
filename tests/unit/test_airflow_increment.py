@@ -242,8 +242,11 @@ def test_bounded_pages_resume_from_committed_checkpoint(fixture_ports):
     assert run(p, p.source, INTERVAL, Limits(max_pages=1))["stage"] == "complete"
 
 
-def test_dag_callable_uses_injected_ports_and_sanitizes_failure(monkeypatch, fixture_ports):
+def test_dag_callable_uses_injected_ports_and_sanitizes_failure(
+    monkeypatch, fixture_ports, tmp_path
+):
     import importlib.util
+    import sqlite3
     import types
 
     class FakeDag:
@@ -258,16 +261,22 @@ def test_dag_callable_uses_injected_ports_and_sanitizes_failure(monkeypatch, fix
 
     airflow_module = types.ModuleType("airflow")
     airflow_module.DAG = FakeDag
+    exceptions = types.ModuleType("airflow.exceptions")
+    exceptions.AirflowSkipException = type("AirflowSkipException", (Exception,), {})
     operators = types.ModuleType("airflow.operators")
     python_operator = types.ModuleType("airflow.operators.python")
     python_operator.PythonOperator = lambda **kwargs: kwargs
     pendulum = types.ModuleType("pendulum")
     pendulum.datetime = lambda *args, **kwargs: datetime(*args, tzinfo=UTC)
+    timetable = types.ModuleType("offline_increment.timetable")
+    timetable.FutureCronTimetable = lambda *args, **kwargs: (args, kwargs)
     for name, module in (
         ("airflow", airflow_module),
+        ("airflow.exceptions", exceptions),
         ("airflow.operators", operators),
         ("airflow.operators.python", python_operator),
         ("pendulum", pendulum),
+        ("offline_increment.timetable", timetable),
     ):
         monkeypatch.setitem(sys.modules, name, module)
     spec = importlib.util.spec_from_file_location(
@@ -275,8 +284,16 @@ def test_dag_callable_uses_injected_ports_and_sanitizes_failure(monkeypatch, fix
     )
     dag = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(dag)
-    assert dag.dag.kwargs["schedule"] is None
+    assert dag.dag.kwargs["schedule"][0] == ("0 3 * * *",)
+    assert dag.dag.kwargs["is_paused_upon_creation"] is True
+    assert dag.dag.kwargs["catchup"] is False
+    assert dag.dag.kwargs["max_active_runs"] == 1
     assert dag.dag.kwargs["default_args"]["retries"] == 0
+    events = []
+    real_record_run = dag.record_run
+    monkeypatch.setattr(
+        dag, "record_run", lambda context, totals, status, error_code: events.append(status)
+    )
     monkeypatch.setattr(dag, "configured_ports", lambda: fixture_ports)
     called = []
 
@@ -290,6 +307,7 @@ def test_dag_callable_uses_injected_ports_and_sanitizes_failure(monkeypatch, fix
     )
     assert result == {"stage": "complete", "pages": 2, "revisions": 4}
     assert [item[1] for item in called] == ["epo_ops", "openalex"]
+    assert events == ["FINISHED"]
 
     def failed_ports():
         raise ValueError("SECRET raw payload")
@@ -299,6 +317,43 @@ def test_dag_callable_uses_injected_ports_and_sanitizes_failure(monkeypatch, fix
         dag.execute_increment(data_interval_start=INTERVAL.start, data_interval_end=INTERVAL.end)
     assert str(exc.value) == "offline_increment_failed"
     assert exc.value.__suppress_context__
+    assert events == ["FINISHED", "FAILED"]
+
+    # Запоздавший run, сохранённый scheduler до паузы, не вызывает порты.
+    monkeypatch.setattr(dag, "configured_ports", lambda: pytest.fail("ports called"))
+    with pytest.raises(exceptions.AirflowSkipException, match="stale_interval"):
+        dag.execute_increment(
+            data_interval_start=INTERVAL.start,
+            data_interval_end=INTERVAL.end,
+            dag_run=types.SimpleNamespace(run_type="scheduled"),
+        )
+
+    monkeypatch.setattr(dag, "record_run", real_record_run)
+    monkeypatch.setattr(dag, "configured_ports", lambda: fixture_ports)
+    def partial_run(ports, source, interval, limits):
+        if source == "openalex":
+            raise PipelineError("dependency_failure")
+        return {"stage": "complete", "pages": 1, "revisions": 2}
+
+    monkeypatch.setattr(dag, "run", partial_run)
+    monkeypatch.setenv("TRACKING_ENABLED", "true")
+    monkeypatch.setenv("MLFLOW_TRACKING_URI", "http://127.0.0.1:1")
+    monkeypatch.setenv("TRACKING_OUTBOX", str(tmp_path / "queue.sqlite"))
+    with pytest.raises(PipelineError, match="dependency_failure"):
+        dag.execute_increment(
+            run_id="manual__PRIVATE_SECRET",
+            data_interval_start=INTERVAL.start,
+            data_interval_end=INTERVAL.end,
+            dag_run=types.SimpleNamespace(run_type="manual", start_date=INTERVAL.start),
+        )
+    with sqlite3.connect(tmp_path / "queue.sqlite") as connection:
+        payload = connection.execute("SELECT payload FROM events").fetchone()[0]
+    event = json.loads(payload)
+    assert "PRIVATE_SECRET" not in payload
+    assert event["status"] == "FAILED"
+    assert event["metrics"]["epo_ops_pages"] == 1
+    assert event["metrics"]["epo_ops_revisions"] == 2
+    assert "openalex_pages" not in event["metrics"]
 
 
 def test_stage_logs_and_safe_error_codes(fixture_ports, caplog):

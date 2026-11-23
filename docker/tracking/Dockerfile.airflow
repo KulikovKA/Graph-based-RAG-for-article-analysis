@@ -1,0 +1,4 @@
+﻿FROM apache/airflow:2.11.0-python3.11
+USER root
+RUN mkdir -p /opt/airflow/outbox && chown airflow:root /opt/airflow/outbox
+USER airflow

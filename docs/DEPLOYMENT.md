@@ -2,7 +2,7 @@
 
 ## Целевой профиль дипломного релиза
 
-Один Docker Compose deployment с Caddy, API, worker, PostgreSQL, Redis, Neo4j, Qdrant и Airflow. Генеративные роли вызывают Groq по исходящему HTTPS через серверный адаптер. Локальные NER, embeddings и rerank имеют самостоятельные ресурсные лимиты. Генеративная служба Ollama и LightRAG extra не требуются целевому профилю. MLflow располагается в RESEARCH и отсутствует в критическом пути приложения.
+Продуктовый Docker Compose включает Caddy, API, worker, PostgreSQL, Redis, Neo4j и Qdrant. Airflow и MLflow развёртываются из MAIN отдельным проектом Compose. Генеративные роли вызывают Groq по исходящему HTTPS через серверный адаптер. Локальные NER, embeddings и rerank имеют самостоятельные ресурсные лимиты. Генеративная служба Ollama и LightRAG extra не требуются целевому профилю. RESEARCH использует общий tracking URI. Разделение владельцев сервера и измерений закреплено в [RES-EVAL-001](specs/RES-EVAL-001.md). Инструкции запуска и восстановления приведены в [руководстве](TRACKING.md).
 
 Airflow запускается для discovery, ingestion и публикации публичного корпуса. Его metadata и credentials отделены от пользовательской БД приложения, интерфейс доступен только операторам во внутренней сети. DAG переиспользуют source adapters и проекторы, хранят checkpoint по источнику/интервалу, повторяют идемпотентные задачи и публикуют только generation с двумя ACK и пройденным контролем. Логи показывают counts, ошибки, число попыток, задержку watermark и состояние job. При простое Airflow приложение продолжает поиск по последнему опубликованному поколению. [Практики Apache Airflow](https://airflow.apache.org/docs/apache-airflow/stable/best-practices.html)
 

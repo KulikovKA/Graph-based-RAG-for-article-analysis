@@ -10,10 +10,10 @@ import re
 from dataclasses import asdict, dataclass
 
 from app.domain.documents import NormalizedDocument
+from app.domain.external_ids import canonical_external_id
 from app.domain.source import SourceStatus
 from app.integrations.epo import EpoOpsClient
 from app.integrations.openalex import OpenAlexClient
-from app.services.ingestion import canonical_external_id
 from app.workers.ingest import from_epo, from_openalex
 
 from .pipeline import Interval, Item, Page, PipelineError, RetryableError, Source

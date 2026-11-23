@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 from functools import partial
 from typing import Literal, Protocol, TypeVar
 
-from app.services.ingestion import canonical_external_id
+from app.domain.external_ids import canonical_external_id
 
 Source = Literal["epo_ops", "openalex"]
 Backend = Literal["domain_graph", "qdrant"]

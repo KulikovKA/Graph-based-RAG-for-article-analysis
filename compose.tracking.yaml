@@ -1,0 +1,221 @@
+name: article-tracking
+
+x-airflow-common: &airflow-common
+  image: article-tracking-airflow:2.11.0
+  pull_policy: never
+  environment: &airflow-environment
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__CORE__PARALLELISM: "2"
+    AIRFLOW__SCHEDULER__PARSING_PROCESSES: "1"
+    AIRFLOW__WEBSERVER__WORKERS: "1"
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow_runtime:${AIRFLOW_DB_RUNTIME_PASSWORD:?Set AIRFLOW_DB_RUNTIME_PASSWORD}@airflow-db:5432/airflow
+    AIRFLOW__CORE__FERNET_KEY: ${AIRFLOW_FERNET_KEY:?Set AIRFLOW_FERNET_KEY}
+    AIRFLOW__WEBSERVER__SECRET_KEY: ${AIRFLOW_WEBSERVER_SECRET_KEY:?Set AIRFLOW_WEBSERVER_SECRET_KEY}
+    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
+    AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+    AIRFLOW__CORE__DEFAULT_TIMEZONE: Europe/Moscow
+    AIRFLOW__WEBSERVER__DEFAULT_UI_TIMEZONE: Europe/Moscow
+    AIRFLOW__WEBSERVER__BASE_URL: http://localhost:8085
+    AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: "true"
+    PUBLIC_CORPUS_CRON: ${PUBLIC_CORPUS_CRON:-0 3 * * *}
+    MLFLOW_TRACKING_URI: http://mlflow:5000
+    TRACKING_ENABLED: ${TRACKING_ENABLED:-true}
+    TRACKING_ALLOW_CREATE: "false"
+    TRACKING_OUTBOX: /opt/airflow/outbox/events.sqlite3
+    PYTHONPATH: /opt/project/src
+    TZ: UTC
+  volumes:
+    - ./airflow/dags:/opt/airflow/dags:ro
+    - ./airflow/plugins:/opt/airflow/plugins:ro
+    - ./src/project_tracking:/opt/project/src/project_tracking:ro
+    - ./src/app/domain:/opt/project/src/app/domain:ro
+    - airflow_logs:/opt/airflow/logs
+    - tracking_outbox:/opt/airflow/outbox
+  networks: [tracking]
+  depends_on:
+    airflow-db:
+      condition: service_healthy
+
+services:
+  airflow-db:
+    image: postgres:17.11-bookworm
+    profiles: [airflow]
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: airflow
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: ${AIRFLOW_DB_PASSWORD:?Set AIRFLOW_DB_PASSWORD}
+    volumes: [airflow_db:/var/lib/postgresql/data]
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U airflow -d airflow"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks: [tracking]
+
+  airflow-db-provision:
+    image: postgres:17.11-bookworm
+    profiles: [airflow]
+    restart: "no"
+    entrypoint: [sh, /provision.sh]
+    environment:
+      DB_HOST: airflow-db
+      DB_NAME: airflow
+      ADMIN_USER: airflow
+      ADMIN_PASSWORD: ${AIRFLOW_DB_PASSWORD:?Set AIRFLOW_DB_PASSWORD}
+      APP_USER: airflow_runtime
+      APP_PASSWORD: ${AIRFLOW_DB_RUNTIME_PASSWORD:?Set AIRFLOW_DB_RUNTIME_PASSWORD}
+    volumes: ["./docker/tracking/provision.sh:/provision.sh:ro"]
+    depends_on:
+      airflow-db:
+        condition: service_healthy
+    networks: [tracking]
+
+  airflow-init:
+    <<: *airflow-common
+    build:
+      context: ./docker/tracking
+      dockerfile: Dockerfile.airflow
+    profiles: [airflow]
+    restart: "no"
+    environment:
+      <<: *airflow-environment
+      _AIRFLOW_DB_MIGRATE: "true"
+      _AIRFLOW_WWW_USER_CREATE: "true"
+      _AIRFLOW_WWW_USER_USERNAME: ${AIRFLOW_ADMIN_USERNAME:?Set AIRFLOW_ADMIN_USERNAME}
+      _AIRFLOW_WWW_USER_PASSWORD: ${AIRFLOW_ADMIN_PASSWORD:?Set AIRFLOW_ADMIN_PASSWORD}
+    command: version
+    depends_on:
+      airflow-db-provision:
+        condition: service_completed_successfully
+
+  airflow-webserver:
+    <<: *airflow-common
+    profiles: [airflow]
+    restart: unless-stopped
+    command: webserver
+    ports: ["127.0.0.1:8085:8080"]
+    depends_on:
+      airflow-db:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+    healthcheck:
+      test: [CMD, curl, --fail, --silent, "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  airflow-scheduler:
+    <<: *airflow-common
+    profiles: [airflow]
+    restart: unless-stopped
+    command: scheduler
+    depends_on:
+      airflow-db:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+    healthcheck:
+      test: [CMD-SHELL, 'airflow jobs check --job-type SchedulerJob --hostname "$$HOSTNAME"']
+      interval: 30s
+      timeout: 15s
+      retries: 5
+      start_period: 60s
+
+  mlflow-db:
+    image: postgres:17.11-bookworm
+    profiles: [observability]
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: mlflow
+      POSTGRES_USER: mlflow
+      POSTGRES_PASSWORD: ${MLFLOW_DB_PASSWORD:?Set MLFLOW_DB_PASSWORD}
+    volumes: [mlflow_db:/var/lib/postgresql/data]
+    healthcheck:
+      test: [CMD-SHELL, "pg_isready -U mlflow -d mlflow"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks: [tracking]
+
+  mlflow-db-provision:
+    image: postgres:17.11-bookworm
+    profiles: [observability]
+    restart: "no"
+    entrypoint: [sh, /provision.sh]
+    environment:
+      DB_HOST: mlflow-db
+      DB_NAME: mlflow
+      ADMIN_USER: mlflow
+      ADMIN_PASSWORD: ${MLFLOW_DB_PASSWORD:?Set MLFLOW_DB_PASSWORD}
+      APP_USER: mlflow_runtime
+      APP_PASSWORD: ${MLFLOW_DB_RUNTIME_PASSWORD:?Set MLFLOW_DB_RUNTIME_PASSWORD}
+    volumes: ["./docker/tracking/provision.sh:/provision.sh:ro"]
+    depends_on:
+      mlflow-db:
+        condition: service_healthy
+    networks: [tracking]
+
+  mlflow:
+    build:
+      context: ./docker/tracking
+      dockerfile: Dockerfile.mlflow
+    image: article-tracking-mlflow:3.10.0
+    profiles: [observability]
+    restart: unless-stopped
+    environment:
+      MLFLOW_BACKEND_STORE_URI: postgresql+psycopg2://mlflow_runtime:${MLFLOW_DB_RUNTIME_PASSWORD:?Set MLFLOW_DB_RUNTIME_PASSWORD}@mlflow-db:5432/mlflow
+    command:
+      - mlflow
+      - server
+      - --host
+      - 0.0.0.0
+      - --port
+      - "5000"
+      - --workers
+      - "1"
+      - --serve-artifacts
+      - --artifacts-destination
+      - /artifacts
+      - --allowed-hosts
+      - "localhost:5000,127.0.0.1:5000,mlflow:5000"
+    ports: ["127.0.0.1:5000:5000"]
+    volumes: [mlflow_artifacts:/artifacts]
+    depends_on:
+      mlflow-db-provision:
+        condition: service_completed_successfully
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/health', timeout=3)"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 90s
+    networks: [tracking]
+
+  mlflow-init:
+    image: article-tracking-mlflow:3.10.0
+    profiles: [observability]
+    restart: "no"
+    command: [python, -m, project_tracking.client, initialize]
+    environment:
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      TRACKING_ENABLED: "true"
+      TRACKING_ALLOW_CREATE: "true"
+      PYTHONPATH: /opt/project/src
+    volumes: ["./src/project_tracking:/opt/project/src/project_tracking:ro"]
+    depends_on:
+      mlflow:
+        condition: service_healthy
+    networks: [tracking]
+
+networks:
+  tracking:
+
+volumes:
+  airflow_db:
+  airflow_logs:
+  tracking_outbox:
+  mlflow_db:
+  mlflow_artifacts:
