@@ -122,15 +122,33 @@ class ConversationService:
         until_message_id: UUID,
     ) -> None:
         """Store a derived summary only when its checkpoint belongs to this conversation."""
-        conversation = self.get(owner_id, conversation_id)
+        conversation = self.session.scalar(
+            select(Conversation)
+            .where(Conversation.id == conversation_id, Conversation.owner_user_id == owner_id)
+            .with_for_update()
+            .execution_options(populate_existing=True)
+        )
+        if conversation is None:
+            raise LookupError("conversation not found")
         checkpoint = self.session.scalar(
-            select(Message.id).where(
+            select(Message).where(
                 Message.id == until_message_id,
                 Message.conversation_id == conversation_id,
             )
         )
         if checkpoint is None:
             raise LookupError("summary checkpoint not found")
+        if conversation.summary_until_message_id is not None:
+            previous = self.session.scalar(
+                select(Message).where(
+                    Message.id == conversation.summary_until_message_id,
+                    Message.conversation_id == conversation_id,
+                )
+            )
+            if previous is None:
+                raise LookupError("previous summary checkpoint not found")
+            if (checkpoint.created_at, checkpoint.id) < (previous.created_at, previous.id):
+                return
         conversation.summary_json = summary
         conversation.summary_until_message_id = until_message_id
         self.session.flush()

@@ -19,7 +19,7 @@
 | APP-CHAT-001 | APPLICATION | P0 | — | ожидает |
 | APP-GUARD-001 | APPLICATION | P0 | — | ожидает |
 | APP-AIR-001 | APPLICATION | P0 | — | ожидает |
-| APP-MEM-001 | APPLICATION | P0 | — | ожидает |
+| APP-MEM-001 | APPLICATION | P0 | — | в работе |
 | APP-AGENT-001 | APPLICATION | P0 | — | ожидает |
 | APP-GRAPH-001 | APPLICATION | P0 | — | ожидает |
 | APP-UI-001 | APPLICATION | P0 | — | ожидает |
