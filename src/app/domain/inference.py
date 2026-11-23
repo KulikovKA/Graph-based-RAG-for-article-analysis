@@ -63,6 +63,14 @@ class InferenceMetadata:
     total_ms: float
     load_ms: float | None
     load_reason: str | None
+    input_tokens: int | None = None
+    input_tokens_reason: str | None = None
+    estimated_cost: str | None = None
+    estimated_cost_reason: str | None = None
+    cost_currency: str | None = None
+    cost_source: str | None = None
+    cost_version: str | None = None
+    attempts: int | None = None
 
 
 @dataclass(frozen=True)

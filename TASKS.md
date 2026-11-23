@@ -13,7 +13,7 @@
 | RES-AGENT-001 | RESEARCH | P0 | — | ожидает |
 | INT-KG-001 | INTEGRATION | P0 | RES-KG-001 | ожидает |
 | INT-RET-001 | INTEGRATION | P0 | INT-KG-001 | ожидает |
-| INT-GROQ-001 | INTEGRATION | P0 | — | ожидает |
+| INT-GROQ-001 | INTEGRATION | P0 | — | в работе |
 | INT-LR-001 | INTEGRATION | P1 | — | ожидает |
 | CORPUS-001 | INTEGRATION | P0 | — | в работе |
 | APP-CHAT-001 | APPLICATION | P0 | — | ожидает |

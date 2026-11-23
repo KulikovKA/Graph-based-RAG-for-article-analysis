@@ -1,0 +1,12 @@
+﻿# Шаблон не активирует сетевые вызовы; модели и тарифы утверждаются до интеграции.
+enabled: false
+roles:
+  planner: {model_id: null, prompt_version: null, capability: null, timeout_seconds: null, max_output_tokens: null}
+  agent: {model_id: null, prompt_version: null, capability: null, timeout_seconds: null, max_output_tokens: null}
+  analyst: {model_id: null, prompt_version: null, capability: null, timeout_seconds: null, max_output_tokens: null}
+  relation_classifier: {model_id: null, prompt_version: null, capability: null, timeout_seconds: null, max_output_tokens: null}
+  narrative: {model_id: null, prompt_version: null, capability: null, timeout_seconds: null, max_output_tokens: null}
+  extractor: {model_id: null, prompt_version: null, capability: null, timeout_seconds: null, max_output_tokens: null}
+  judge: {model_id: null, prompt_version: null, capability: null, timeout_seconds: null, max_output_tokens: null}
+# Тариф по model_id: input_per_million, output_per_million, currency, source, version.
+prices: {}
