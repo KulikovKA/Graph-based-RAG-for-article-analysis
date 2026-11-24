@@ -25,13 +25,13 @@ Airflow запускается для discovery, ingestion и публикаци
 | qdrant | 6333 | нет | 3 GiB / 1 GiB |
 | inference | provider-specific | нет | 16 GiB / 8 GiB для отдельного контейнерного профиля; один concurrent generation |
 
-Сумма limits контейнерного профиля ~29 ГБ; лимиты не равны фактическому расходу памяти. Для проверенного host Ollama профиль `cpu` не запускается: проектные контейнеры занимали около 1.7 ГБ, а модели измерялись как процессы Windows. CPU inference может быть медленным; см. фактические значения ниже. У контейнерного inference volume с весами вне Git. Базы имеют отдельные volumes и health checks. Для разработки разрешён ручной доступ к БД лишь через `docker compose exec`, без публичного port mapping.
+Сумма limits контейнерного профиля ~29 ГБ; лимиты не равны фактическому расходу памяти. Для проверенного host Ollama профиль `cpu` не запускается: проектные контейнеры занимали около 1.7 ГБ, а модели измерялись как процессы Windows. CPU inference может быть медленным; см. фактические значения ниже. У контейнерного inference volume с весами вне Git. Базы имеют отдельные volumes и health checks. Для разработки разрешён ручной доступ к БД лишь через `docker compose --env-file .env --env-file .env.secrets exec`, без публичного port mapping.
 
 Конфиг: `.env.example` без значений секретов, реальные `.env` игнорируются Git; EPO client credentials, DB passwords, session keys, provider endpoints — через env/secrets. Миграции БД идут отдельной командой перед api/worker. Backup: PostgreSQL dump + Neo4j/Qdrant snapshots или переиндексация из сохранённых нормализованных ревизий; регулярная проба восстановления обязательна перед release. Redis в backup не нужен.
 
 Исторический вариант выноса локального inference использовал `INFERENCE_BASE_URL` и отдельный Compose профиль. Целевой ADR-014 выбирает Groq для генерации и сохраняет `InferenceProvider`. URL провайдера задаётся серверной конфигурацией.
 
-Проверки M1: `docker compose config`, health баз и bootstrap api/worker, отсутствие опубликованных портов Postgres/Redis/Neo4j/Qdrant/inference. До LLM-002 inference запускается опциональным profile: отсутствие весов не ломает bootstrap health. DB-001 применяет Alembic schema upgrade; DB-002 добавляет транзакционные репозитории и реальный queue heartbeat. Полный CPU profile с весами получает собственный gate LLM-002. Минимальные health/redaction не откладываются до OBS-001.
+Проверки M1: `docker compose --env-file .env --env-file .env.secrets config --quiet`, health баз и bootstrap api/worker, отсутствие опубликованных портов Postgres/Redis/Neo4j/Qdrant/inference. До LLM-002 inference запускается опциональным profile: отсутствие весов не ломает bootstrap health. DB-001 применяет Alembic schema upgrade; DB-002 добавляет транзакционные репозитории и реальный queue heartbeat. Полный CPU profile с весами получает собственный gate LLM-002. Минимальные health/redaction не откладываются до OBS-001.
 
 До AUTH-001 Caddy слушает только loopback; после auth/isolation gate допускается доверенный LAN. Перед внешним demo: TLS, login, CSRF/CORS, rate limits и восстановление backup. Один worker обслуживает analysis и ingestion очереди; отдельный общий semaphore ограничивает **все** генеративные роли (planner, extractor, analyst), а embedding/rerank имеют собственные RAM/batch лимиты. Ingestion не запускает вторую тяжёлую генерацию в обход очереди. Budget 6k input не гарантирует размещение двух моделей; загрузку/выгрузку и RSS измерить в LLM-002.
 
@@ -78,7 +78,7 @@ python scripts/audit_perimeter.py --output data/auth002-ports.json
 
 ```sh
 python scripts/check_perimeter_tls.py https://<домен> --http-origin http://<домен> --output data/auth002-tls.json
-docker compose --profile tools run --build --rm db-test python -m pytest tests/security/test_perimeter.py tests/security/test_isolation.py tests/contract/test_api.py tests/contract/test_graph_api.py
+docker compose --env-file .env --env-file .env.secrets --profile tools run --build --rm db-test python -m pytest tests/security/test_perimeter.py tests/security/test_isolation.py tests/contract/test_api.py tests/contract/test_graph_api.py
 ```
 
 Первый скрипт проверяет handshake TLS 1.2/1.3, hostname/цепочку сертификата,
@@ -94,8 +94,8 @@ release gates остаются обязательными; отметку «вы
 сохраняются. Оператор создаёт аккаунты внутри API-контейнера:
 
 ```sh
-docker compose exec api python -m app.auth_cli create user@example.org
-docker compose exec api python -m app.auth_cli disable user@example.org
+docker compose --env-file .env --env-file .env.secrets exec api python -m app.auth_cli create user@example.org
+docker compose --env-file .env --env-file .env.secrets exec api python -m app.auth_cli disable user@example.org
 ```
 
 Пароль вводится дважды через скрытый prompt, не через argv; длина 12–1024 символа.
@@ -131,7 +131,7 @@ network; при публикации API напрямую эту настрой�
 
 Frontend — React/TypeScript/Vite, статическая сборка за тем же Caddy, что и `/api/v1`.
 Для loopback dev указать настройки AUTH-001 выше, например origin
-`http://localhost:8080`, и выполнить `docker compose --profile dev up --build`.
+`http://localhost:8080`, и выполнить `docker compose --env-file .env --env-file .env.secrets --profile dev up --build`.
 Создать аккаунт операторской CLI, открыть этот же адрес в браузере и войти.
 Порт API или базы для браузера публиковать не требуется. Для HTTPS выбрать prod
 profile и соответствующий origin; внешний gate AUTH-002 остаётся обязательным.
@@ -184,14 +184,14 @@ SSE использует существующий Caddy/API. API-001 прове�
 
 ## Compose bootstrap (INFRA-001)
 
-Скопируйте `.env.example` в `.env`. Оставленные пустыми пароли используют известные dev-only значения: сервисы не публикуют свои порты, а Caddy привязан к loopback. Перед сохранением реальных данных замените все три пароля на длинные URL-safe случайные значения. Не задавайте `CADDY_BIND_ADDRESS=0.0.0.0` до AUTH-001 и security gate.
+Подготовьте `.env` и `.env.secrets` по [инструкции](SECRETS.md). Пустые пароли баз не допускаются; для существующих данных сохраните действующие значения. Устраните конфликты с окружением процесса до вызова Compose. Не задавайте `CADDY_BIND_ADDRESS=0.0.0.0` до AUTH-001 и security gate.
 
-- Проверка конфигурации: `docker compose config`.
-- Bootstrap с веб-прокси: `docker compose --profile dev up --build -d`. Открыть `http://127.0.0.1:8080`; единственная опубликованная служба — Caddy. PostgreSQL, Redis, Neo4j и Qdrant доступны только в закрытой backend-сети.
-- Остановить контейнеры без удаления данных: `docker compose down`.
+- Проверка конфигурации: `docker compose --env-file .env --env-file .env.secrets config --quiet`.
+- Bootstrap с веб-прокси: `docker compose --env-file .env --env-file .env.secrets --profile dev up --build -d`. Открыть `http://127.0.0.1:8080`; единственная опубликованная служба — Caddy. PostgreSQL, Redis, Neo4j и Qdrant доступны только в закрытой backend-сети.
+- Остановить контейнеры без удаления данных: `docker compose --env-file .env --env-file .env.secrets down`.
 - Профиль `prod` использует Caddy с TLS и loopback-публикацией на `8081/8443` по умолчанию. `PUBLIC_DOMAIN` надо настроить отдельно; доступ извне и смена bind address остаются закрыты до auth/security gate.
-- Ollama включается отдельно: `docker compose --profile cpu up -d inference`. Профиль не загружает модели; веса хранятся в отдельном Docker volume вне Git. CPU smoke и выбор модели относятся к LLM-002.
+- Ollama включается отдельно: `docker compose --env-file .env --env-file .env.secrets --profile cpu up -d inference`. Профиль не загружает модели; веса хранятся в отдельном Docker volume вне Git. CPU smoke и выбор модели относятся к LLM-002.
 
-`migrate` — отдельный одноразовый контейнер-зависимость перед API/worker и запускает `alembic upgrade head`. Интеграционный round-trip тест запускается отдельно: `docker compose --profile tools run --build --rm db-test`; он создаёт временную PostgreSQL-схему, проверяет миграцию и constraints, затем удаляет только эту схему. API container healthcheck проверяет liveness. В текущем API `/health/ready` читает таблицу очереди в PostgreSQL. Полный gate worker heartbeat и capabilities относится к OBS-001.
+`migrate` — отдельный одноразовый контейнер-зависимость перед API/worker и запускает `alembic upgrade head`. Интеграционный round-trip тест запускается отдельно: `docker compose --env-file .env --env-file .env.secrets --profile tools run --build --rm db-test`; он создаёт временную PostgreSQL-схему, проверяет миграцию и constraints, затем удаляет только эту схему. API container healthcheck проверяет liveness. В текущем API `/health/ready` читает таблицу очереди в PostgreSQL. Полный gate worker heartbeat и capabilities относится к OBS-001.
 
 Начальные образы закреплены тегами в `compose.yaml` и `docker/Dockerfile.*`; обновлять их следует отдельным review с повторной проверкой поддержки, лицензий и конфигурации. Docker Desktop memory allocation должен быть достаточен для суммарных лимитов сервисов; отдельный inference profile по умолчанию не запускается.

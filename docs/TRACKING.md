@@ -4,19 +4,19 @@ MAIN владеет Compose-проектом `article-tracking`. Он имеет
 
 ## Развёртывание на локальном компьютере
 
-Заполните блок переменных из конца `.env.example` в отдельном `.env.tracking`, исключённом из Git. Для каждой переменной с паролем и для ключа webserver сгенерируйте отдельное значение. Для Fernet подойдёт `base64.urlsafe_b64encode(secrets.token_bytes(32)).decode()`. Пароли ролей в URI должны быть URL-safe. Смена пароля bootstrap существующей БД требует согласованной смены в PostgreSQL. Контейнер приложения работает с отдельной ролью runtime. Оба UI доступны доверенным пользователям этого компьютера. Прокси для внешнего доступа в этой конфигурации отсутствует.
+Подготовьте `.env` и `.env.secrets` по [инструкции по секретам](SECRETS.md). Существующие значения не меняйте без отдельной процедуры ротации. Оба UI доступны доверенным пользователям этого компьютера. Прокси для внешнего доступа в этой конфигурации отсутствует.
 
 ```powershell
-$stack = @('--env-file','.env.tracking','-f','compose.tracking.yaml')
+$stack = @('--env-file','.env','--env-file','.env.secrets','-f','compose.tracking.yaml')
 docker compose @stack --profile airflow --profile observability config --quiet
-docker compose @stack --profile observability up -d --build
-docker compose @stack --profile airflow up -d --build
 docker compose @stack --profile airflow --profile observability ps -a
 docker compose @stack exec airflow-scheduler airflow dags list-import-errors
 docker compose @stack exec airflow-scheduler airflow dags list
 ```
 
-Airflow UI доступен по http://127.0.0.1:8085 с учётной записью из `.env.tracking`. При первом создании `public_corpus_increment` приостановлен. Включение, trigger и backfill в процедуру проверки не входят. Для уже зарегистрированного DAG проверьте `is_paused`. Если он включён, зафиксируйте состояние и выполните `docker compose @stack exec airflow-scheduler airflow dags pause public_corpus_increment`. Остановка расписания не отменяет уже исполняющуюся задачу.
+Для первоначального развёртывания пустых томов отдельно выполните `docker compose @stack --profile observability up -d --build`, затем `docker compose @stack --profile airflow up -d --build`. Эти команды запускают provision-контейнеры, которые изменяют пароли runtime-ролей; не используйте их для проверки действующей установки. Порядок работы с существующими контейнерами описан в [локальном администрировании](LOCAL_ADMIN.md). Повторный provision и пересоздание требуют отдельной проверки и согласованной процедуры. Просмотр `ps` и ошибок импорта не меняет роли.
+
+Airflow UI доступен по http://127.0.0.1:8085 с учётной записью из защищённой конфигурации. При первом создании `public_corpus_increment` приостановлен. Включение, trigger и backfill в процедуру проверки не входят. Для уже зарегистрированного DAG проверьте `is_paused`. Если он включён, зафиксируйте состояние и выполните `docker compose @stack exec airflow-scheduler airflow dags pause public_corpus_increment`. Остановка расписания не отменяет уже исполняющуюся задачу.
 
 MLflow UI и REST используют http://127.0.0.1:5000. В сети Compose URI равен `http://mlflow:5000`. Служба mlflow-init идемпотентно создаёт прикладные experiments, служебный Default MLflow сохраняется. Ключи источников данных, API и prompts не нужны. Режим доверенного однопользовательского хоста не даёт изоляции разных пользователей одной машины.
 

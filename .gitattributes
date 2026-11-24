@@ -1,1 +1,2 @@
 docker/tracking/*.sh text eol=lf
+docker/redis-entrypoint.sh text eol=lf

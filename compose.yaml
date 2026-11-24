@@ -17,11 +17,12 @@ services:
       AUTH_ALLOWED_ORIGINS: ${AUTH_ALLOWED_ORIGINS:-}
       AUTH_COOKIE_SECURE: ${AUTH_COOKIE_SECURE:-true}
       AUTH_SESSION_SECRET: ${AUTH_SESSION_SECRET:?AUTH_SESSION_SECRET must be set in the environment}
-      DATABASE_URL: postgresql://${POSTGRES_USER:-article_app}:${POSTGRES_PASSWORD:-local-dev-only-change-me}@postgres:5432/${POSTGRES_DB:-article_analysis}
-      REDIS_URL: redis://:${REDIS_PASSWORD:-local-dev-only-change-me}@redis:6379/0
+      STAGE_CACHE_SCOPE_SECRET: ${STAGE_CACHE_SCOPE_SECRET:-}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-article_app}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-article_analysis}
+      REDIS_URL: redis://:${REDIS_PASSWORD:?Set REDIS_PASSWORD}@redis:6379/0
       NEO4J_URI: bolt://neo4j:7687
       NEO4J_USER: neo4j
-      NEO4J_PASSWORD: ${NEO4J_PASSWORD:-local-dev-only-change-me}
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD:?Set NEO4J_PASSWORD}
       QDRANT_URL: http://qdrant:6333
       PYTHONDONTWRITEBYTECODE: "1"
     depends_on:
@@ -48,12 +49,14 @@ services:
     environment:
       APP_ENV: ${APP_ENV:-development}
       APP_LOG_LEVEL: ${APP_LOG_LEVEL:-INFO}
-      DATABASE_URL: postgresql://${POSTGRES_USER:-article_app}:${POSTGRES_PASSWORD:-local-dev-only-change-me}@postgres:5432/${POSTGRES_DB:-article_analysis}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-article_app}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-article_analysis}
+      REDIS_URL: redis://:${REDIS_PASSWORD:?Set REDIS_PASSWORD}@redis:6379/0
+      STAGE_CACHE_SCOPE_SECRET: ${STAGE_CACHE_SCOPE_SECRET:-}
       INFERENCE_BASE_URL: ${INFERENCE_BASE_URL:-http://host.docker.internal:11434}
       QDRANT_URL: http://qdrant:6333
       NEO4J_URI: bolt://neo4j:7687
       NEO4J_USER: neo4j
-      NEO4J_PASSWORD: ${NEO4J_PASSWORD:-local-dev-only-change-me}
+      NEO4J_PASSWORD: ${NEO4J_PASSWORD:?Set NEO4J_PASSWORD}
       MODEL_CONFIG_PATH: /opt/app/config/models.yaml
       ANALYST_TOKENIZER_PATH: ${ANALYST_TOKENIZER_PATH:-/models/gpt-oss-tokenizer.json}
       RERANKER_MODEL_PATH: ${RERANKER_MODEL_PATH:-/models/qwen3-reranker}
@@ -89,7 +92,7 @@ services:
     init: true
     restart: "no"
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER:-article_app}:${POSTGRES_PASSWORD:-local-dev-only-change-me}@postgres:5432/${POSTGRES_DB:-article_analysis}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-article_app}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-article_analysis}
       QDRANT_URL: http://qdrant:6333
       NEO4J_URI: bolt://neo4j:7687
       NEO4J_USER: neo4j
@@ -123,7 +126,7 @@ services:
     command: ["alembic", "upgrade", "head"]
     restart: "no"
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER:-article_app}:${POSTGRES_PASSWORD:-local-dev-only-change-me}@postgres:5432/${POSTGRES_DB:-article_analysis}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-article_app}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-article_analysis}
       PYTHONDONTWRITEBYTECODE: "1"
     depends_on:
       postgres: { condition: service_healthy }
@@ -134,10 +137,10 @@ services:
     build: { context: ., dockerfile: docker/Dockerfile.tests }
     image: article-analysis-tests:local
     environment:
-      TEST_DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-article_app}:${POSTGRES_PASSWORD:-local-dev-only-change-me}@postgres:5432/${POSTGRES_DB:-article_analysis}
+      TEST_DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-article_app}:${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-article_analysis}
       TEST_NEO4J_URI: bolt://neo4j:7687
       TEST_NEO4J_USER: neo4j
-      TEST_NEO4J_PASSWORD: ${NEO4J_PASSWORD:-local-dev-only-change-me}
+      TEST_NEO4J_PASSWORD: ${NEO4J_PASSWORD:?Set NEO4J_PASSWORD}
       TEST_QDRANT_URL: http://qdrant:6333
     depends_on:
       postgres: { condition: service_healthy }
@@ -152,7 +155,7 @@ services:
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-article_analysis}
       POSTGRES_USER: ${POSTGRES_USER:-article_app}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-local-dev-only-change-me}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD}
     volumes: [postgres_data:/var/lib/postgresql/data]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
@@ -168,9 +171,9 @@ services:
     image: redis:7.4.11-bookworm
     restart: unless-stopped
     environment:
-      REDIS_PASSWORD: ${REDIS_PASSWORD:-local-dev-only-change-me}
-    command: [redis-server, --appendonly, "yes", --maxmemory, 256mb, --maxmemory-policy, allkeys-lru, --requirepass, "${REDIS_PASSWORD:-local-dev-only-change-me}"]
-    volumes: [redis_data:/data]
+      REDIS_PASSWORD: ${REDIS_PASSWORD:?Set REDIS_PASSWORD}
+    entrypoint: [sh, /opt/redis/entrypoint.sh]
+    volumes: [redis_data:/data, "./docker/redis-entrypoint.sh:/opt/redis/entrypoint.sh:ro"]
     healthcheck:
       test: ["CMD-SHELL", "REDISCLI_AUTH=\"$$REDIS_PASSWORD\" redis-cli ping | grep -q PONG"]
       interval: 10s
@@ -184,7 +187,7 @@ services:
     image: neo4j:2026.08.1-community
     restart: unless-stopped
     environment:
-      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:-local-dev-only-change-me}
+      NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:?Set NEO4J_PASSWORD}
       NEO4J_server_memory_heap_initial__size: 1G
       NEO4J_server_memory_heap_max__size: 1G
       NEO4J_server_memory_pagecache_size: 1G
