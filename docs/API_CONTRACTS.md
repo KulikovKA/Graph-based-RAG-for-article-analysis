@@ -14,13 +14,16 @@ JSON UTF-8, даты ISO 8601 UTC, собственные IDs — UUID. Session 
 | `GET /api/v1/conversations` | cursor, limit≤50 | `{items,next_cursor}` |
 | `POST /api/v1/conversations` | `{title?}` | 201 `{id,title}` |
 | `GET /api/v1/conversations/{id}` | — | conversation, current idea/version, last runs |
+| `PATCH /api/v1/conversations/{id}` | `{title: string \| null}`, CSRF header | 200 ConversationV1, 422 для неверного заголовка |
+| `DELETE /api/v1/conversations/{id}` | CSRF header | 204 после транзакционного удаления; 503 `CHAT_BUSY` при конфликте блокировок |
+| `GET /api/v1/conversations/{id}/runs` | cursor, limit≤50 | Страница run refs с status, outcome, датами, `idea_version_id` и `index_generation_id` |
 | `GET /api/v1/conversations/{id}/messages` | cursor, limit≤100 | paginated messages |
 | `POST /api/v1/conversations/{id}/messages` | `{content,expected_idea_version,source_run_id?,analyze:true}`; `Idempotency-Key` | 202 `{message_id,run_id,status_url,events_url}` |
 | `GET /api/v1/runs/{id}` | — | RunV1 |
 | `GET /api/v1/runs/{id}/events` | `Last-Event-ID?` | `text/event-stream` |
 | `POST /api/v1/runs/{id}/cancel` | CSRF header | 202 `{status,cancel_requested:true}`; уже terminal → 200 текущий status |
 | `GET /api/v1/runs/{id}/evidence/{evidence_id}` | — | EvidenceV1 только из snapshot этого run |
-| `GET /api/v1/runs/{id}/export` | session cookie | UTF-8 HTML attachment сохранённого completed run; 409 для своего незавершённого/неуспешного run |
+| `GET /api/v1/runs/{id}/export` | session cookie, `format=html` (по умолчанию) или `format=pdf` | HTML UTF-8 или PDF attachment сохранённого completed run; 409 для своего незавершённого/неуспешного run |
 | `GET /api/v1/runs/{id}/graph` | — | GraphV1, подграф запуска GRAPHUI-001 |
 | `GET /api/v1/runs/{id}/graph/neighbors` | node_id, cursor?, limit≤20 | Страница подграфа запуска |
 | `GET /api/v1/sources/{document_id}` | authenticated session | Public metadata + validated URL; без приватных run/evidence IDs |
@@ -61,13 +64,11 @@ Sources: `{document_id,revision_id,title,kind,publication_date?,url,evidence_ids
 
 | Операция | Планируемый контракт |
 | --- | --- |
-| Переименовать и удалить чат | `PATCH/DELETE /api/v1/conversations/{id}`. Проверка owner и CSRF; ограниченный title; удаление отзывает доступ, останавливает активный run и исключает позднюю публикацию |
-| Открыть историю исследований | Постраничные run refs той же conversation с версиями идеи и источников |
 | Поиск Explorer | Query, фильтры типов и pinned graph/index generation → страницы сущностей, документов, ранжированных путей и coverage |
 | Вершина, соседи, маршрут | Opaque node refs, разрешённая graph version, фильтры, bounded limit/hops, подписанный cursor → typed subgraph или path. Ответ включает `truncated` при лимите и provenance refs |
 | Открыть источник и evidence | Явная revision и scope. Для факта — точный span или metadata pointer, для навигации — её тип без присвоенной доказательности |
 | Передать контекст агенту | Серверный context ref на выбранный узел, документ или путь, связанный со scope и версией; сообщение остаётся в текущей conversation и проходит ownership/CSRF/budget checks |
-| Финальный экспорт | PDF и визуализация подграфа сохранённого run; backend HTML уже использует сохранённые версии и evidence |
+| Финальный экспорт | Подключение записи версионированной проекции подграфа из Graph-RAG в snapshot нового run |
 
 Explorer допускает два явных scope: опубликованная версия публичного корпуса для самостоятельного поиска и приватное представление конкретного run для исторических результатов. Версия, фильтры, scope и пользователь проверяются при каждом запросе и при повторном использовании курсора; чужой объект возвращает 404, несовместимая версия собственного представления — явная ошибка со способом открыть правильную версию. Клиент передаёт типизированные параметры. Cypher, SQL, произвольные URL и внутренние Neo4j IDs во входном контракте отсутствуют. [Схема графа](GRAPH_SCHEMA.md) · [Безопасность](SECURITY.md)
 

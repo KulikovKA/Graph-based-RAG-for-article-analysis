@@ -7,15 +7,18 @@ from datetime import datetime
 from typing import Annotated, Any
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, Header, HTTPException, Query
-from pydantic import ValidationError
+from fastapi import APIRouter, Depends, Header, HTTPException, Query, Request, Response
+from pydantic import Field, ValidationError, field_validator
 from sqlalchemy import or_, select
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 
-from app.api.auth import require_owner
+from app.api.auth import auth_service, require_owner
 from app.api.dependencies import bounded_json, database
 from app.api.schemas import AcceptedV1, ConversationInput, ConversationV1, MessageInput, MessageV1
-from app.services.auth import Principal
+from app.domain.contracts import StrictModel
+from app.services.auth import AuthService, Principal
+from app.services.chat_lifecycle import ChatBusy, delete_conversation
 from app.services.conversations import ConversationService
 from app.storage.models import AnalysisRun, Conversation, Message, utcnow
 from app.storage.repositories import (
@@ -29,6 +32,33 @@ router = APIRouter(prefix="/api/v1/conversations", tags=["conversations"])
 DB = Annotated[Session, Depends(database)]
 Owner = Annotated[Principal, Depends(require_owner)]
 Body = Annotated[dict[str, Any], Depends(bounded_json)]
+Auth = Annotated[AuthService, Depends(auth_service)]
+
+
+class RenameInput(StrictModel):
+    title: str | None = Field(max_length=160)
+
+    @field_validator("title")
+    @classmethod
+    def nonblank_title(cls, value: str | None) -> str | None:
+        if value is not None and not value.strip():
+            raise ValueError("EMPTY_TITLE")
+        return value
+
+
+class RunHistoryItem(StrictModel):
+    id: UUID
+    status: str
+    outcome: str | None
+    created_at: datetime
+    completed_at: datetime | None
+    idea_version_id: UUID | None
+    index_generation_id: UUID | None
+
+
+class RunHistoryPage(StrictModel):
+    items: list[RunHistoryItem]
+    next_cursor: str | None
 
 
 def decode_cursor(value: str | None) -> tuple[datetime, UUID] | None:
@@ -127,6 +157,107 @@ def conversation(conversation_id: UUID, owner: Owner, db: DB) -> dict[str, Any]:
         else None,
         "last_runs": [str(identifier) for identifier in runs],
     }
+
+
+@router.patch(
+    "/{conversation_id}",
+    response_model=ConversationV1,
+    openapi_extra={
+        "requestBody": {
+            "required": True,
+            "content": {"application/json": {"schema": RenameInput.model_json_schema()}},
+        }
+    },
+)
+def rename_conversation(conversation_id: UUID, body: Body, owner: Owner, db: DB) -> ConversationV1:
+    try:
+        data = RenameInput.model_validate(body)
+    except ValidationError:
+        raise HTTPException(422, "INVALID_INPUT") from None
+    row = db.scalar(
+        select(Conversation)
+        .where(Conversation.id == conversation_id, Conversation.owner_user_id == owner.user_id)
+        .with_for_update()
+    )
+    if row is None:
+        raise HTTPException(404, "NOT_FOUND")
+    row.title = data.title
+    row.updated_at = utcnow()
+    db.flush()
+    return conversation_dto(row)
+
+
+@router.delete("/{conversation_id}", status_code=204)
+def remove_conversation(
+    conversation_id: UUID, request: Request, owner: Owner, service: Auth
+) -> Response:
+    try:
+        delete_conversation(service.sessions, owner.user_id, conversation_id)
+    except LookupError:
+        raise HTTPException(404, "NOT_FOUND") from None
+    except ChatBusy:
+        raise HTTPException(503, "CHAT_BUSY") from None
+    except SQLAlchemyError:
+        raise HTTPException(503, "QUEUE_UNAVAILABLE") from None
+    cache = getattr(request.app.state, "stage_cache", None)
+    if cache is not None:
+        try:
+            cache.invalidate_conversation(owner.user_id, conversation_id)
+        except Exception:
+            pass
+    return Response(status_code=204)
+
+
+@router.get("/{conversation_id}/runs", response_model=RunHistoryPage)
+def conversation_runs(
+    conversation_id: UUID,
+    owner: Owner,
+    db: DB,
+    cursor: str | None = None,
+    limit: int = Query(50, ge=1, le=50),
+) -> RunHistoryPage:
+    if OwnedRepository(db).conversation(owner.user_id, conversation_id) is None:
+        raise HTTPException(404, "NOT_FOUND")
+    query = select(AnalysisRun).where(
+        AnalysisRun.conversation_id == conversation_id, AnalysisRun.owner_user_id == owner.user_id
+    )
+    after = decode_cursor(cursor)
+    if after:
+        at, identifier = after
+        # Курсор может указывать только на существующий run выбранного чата.
+        anchor = db.scalar(query.where(AnalysisRun.id == identifier))
+        if anchor is None or anchor.created_at != at:
+            raise HTTPException(400, "INVALID_CURSOR")
+        query = query.where(
+            or_(
+                AnalysisRun.created_at < at,
+                (AnalysisRun.created_at == at) & (AnalysisRun.id < identifier),
+            )
+        )
+    rows = list(
+        db.scalars(
+            query.order_by(AnalysisRun.created_at.desc(), AnalysisRun.id.desc()).limit(limit + 1)
+        )
+    )
+    return RunHistoryPage(
+        items=[
+            RunHistoryItem(
+                id=row.id,
+                status=row.status,
+                outcome=row.outcome,
+                created_at=row.created_at,
+                completed_at=row.completed_at,
+                idea_version_id=row.idea_version_id,
+                index_generation_id=row.index_generation_id,
+            )
+            for row in rows[:limit]
+        ],
+        next_cursor=(
+            encode_cursor(rows[limit - 1].created_at, rows[limit - 1].id)
+            if len(rows) > limit
+            else None
+        ),
+    )
 
 
 @router.get("/{conversation_id}/messages")
