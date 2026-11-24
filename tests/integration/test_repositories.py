@@ -1,27 +1,28 @@
 """Проверки транзакционных инвариантов репозиториев в изолированной схеме PostgreSQL."""
 
 import os
-from datetime import timedelta
+from datetime import UTC, datetime, timedelta
 from uuid import uuid4
 
 import pytest
 from alembic import command
 from alembic.config import Config
-from sqlalchemy import create_engine, delete, text
+from sqlalchemy import create_engine, delete, func, select, text
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from app.services.conversations import ConversationService
+from app.storage import jobs
 from app.storage.jobs import JobRepository, OutboxRepository
 from app.storage.models import (
     AnalysisJob,
+    AnalysisRun,
     Conversation,
     DocumentRevision,
     EvidenceChunk,
     RunEvidence,
     SourceDocument,
     User,
-    utcnow,
 )
 from app.storage.repositories import IdempotencyConflict, OwnedRepository, VersionConflict
 
@@ -136,7 +137,9 @@ def test_owner_idempotency_version_and_fencing(engine) -> None:  # type: ignore[
         )
         lease = session.get(AnalysisJob, run_id)
         assert lease is not None
-        lease.lease_until = utcnow() - timedelta(seconds=1)
+        lease.lease_until = session.scalar(
+            select(func.statement_timestamp() - timedelta(seconds=1))
+        )
     with Session(engine) as session, session.begin():
         job = JobRepository(session)
         assert job.claim(run_id, worker="new", duration=timedelta(seconds=30)) == 2
@@ -160,6 +163,69 @@ def test_owner_idempotency_version_and_fencing(engine) -> None:  # type: ignore[
                 content="x",
                 query="x",
             )
+
+
+@pytest.mark.parametrize("skew", [-3, 3])
+def test_queue_uses_database_time_under_worker_clock_skew(engine, monkeypatch, skew) -> None:  # type: ignore[no-untyped-def]
+    owner, conversation_id = uuid4(), uuid4()
+    monkeypatch.setattr(
+        jobs, "utcnow", lambda: datetime.now(UTC) + timedelta(hours=skew), raising=False
+    )
+    duration = timedelta(minutes=1)
+    with Session(engine) as session, session.begin():
+        session.execute(text("SET LOCAL TIME ZONE 'Asia/Tokyo'"))
+        session.add(User(id=owner, email_normalized=f"{owner}@example.test"))
+        session.flush()
+        session.add(Conversation(id=conversation_id, owner_user_id=owner))
+        session.flush()
+        run, _ = OwnedRepository(session).accept_run(
+            owner_id=owner,
+            conversation_id=conversation_id,
+            idempotency_key="clock-test",
+            request_hash="a" * 64,
+            expected_idea_version=0,
+            content="fixture",
+            query="fixture",
+        )
+        run_id = run.id
+        queue = JobRepository(session)
+        lease = queue.claim_next(worker="first", duration=duration)
+        assert lease is not None and lease.run_id == run_id and lease.token == 1
+        job = session.get(AnalysisJob, run_id)
+        assert job is not None
+        before = session.scalar(select(func.statement_timestamp()))
+        assert before is not None and job.heartbeat_at is not None
+        assert job.next_attempt_at <= job.heartbeat_at <= before
+        assert job.heartbeat_at.utcoffset() == timedelta(hours=9)
+        assert queue.heartbeat(run_id, worker="first", token=1, duration=duration)
+        assert job.heartbeat_at >= before and job.lease_until == job.heartbeat_at + duration
+        assert job.heartbeat_at.utcoffset() == timedelta(0)
+
+        # Значение ещё в будущем относительно now() транзакции, но уже истекло.
+        job.lease_until = session.scalar(select(func.statement_timestamp()))
+        session.flush()
+        assert not queue.heartbeat(run_id, worker="first", token=1, duration=duration)
+        assert not queue.set_stage(run_id, worker="first", token=1, stage="late")
+        assert queue.claim(run_id, worker="second", duration=duration) == 2
+        assert not queue.set_stage(run_id, worker="first", token=1, stage="fenced")
+
+        assert queue.requeue(run_id, worker="second", token=2, delay=duration)
+        assert job.next_attempt_at == job.heartbeat_at + duration
+        assert queue.claim_next(worker="third", duration=duration) is None
+        job.next_attempt_at = session.scalar(select(func.statement_timestamp()))
+        session.flush()
+        new_lease = queue.claim_next(worker="third", duration=duration)
+        assert new_lease is not None and new_lease.token == 3
+
+        assert queue.request_cancel(run_id, owner_id=owner)
+        assert not queue.heartbeat(run_id, worker="third", token=3, duration=duration)
+        assert not queue.finish_cancelled(run_id, worker="second", token=2)
+        assert queue.finish_cancelled(run_id, worker="third", token=3)
+        ended = session.get(AnalysisRun, run_id)
+        assert ended is not None and ended.status == "cancelled"
+        assert ended.completed_at is not None and ended.cancel_requested_at is not None
+        assert before <= ended.cancel_requested_at <= ended.completed_at
+        assert ended.completed_at == job.heartbeat_at and job.lease_until is None
 
 
 def test_outbox_ack_and_referenced_chunk(engine) -> None:  # type: ignore[no-untyped-def]

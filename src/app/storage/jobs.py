@@ -5,15 +5,15 @@
 """
 
 from dataclasses import dataclass
-from datetime import timedelta
+from datetime import UTC, datetime, timedelta
 from typing import Any
 from uuid import UUID
 
-from sqlalchemy import or_, select
+from sqlalchemy import DateTime, func, or_, select
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.orm import Session
 
-from app.storage.models import AnalysisJob, AnalysisRun, OutboxAck, OutboxEvent, RunEvidence, utcnow
+from app.storage.models import AnalysisJob, AnalysisRun, OutboxAck, OutboxEvent, RunEvidence
 
 
 @dataclass(frozen=True)
@@ -28,6 +28,12 @@ class JobRepository:
     def __init__(self, session: Session) -> None:
         self.session = session
 
+    def _now(self) -> datetime:
+        # Решение после блокировки учитывает фактическое время БД в этом statement.
+        now = self.session.scalar(select(func.statement_timestamp(type_=DateTime(timezone=True))))
+        assert now is not None
+        return now.astimezone(UTC)
+
     def claim(self, run_id: UUID, *, worker: str, duration: timedelta) -> int | None:
         if duration <= timedelta(0):
             raise ValueError("lease duration must be positive")
@@ -40,7 +46,7 @@ class JobRepository:
             select(AnalysisRun).where(AnalysisRun.id == run_id).with_for_update()
         )
         assert run is not None
-        now = utcnow()
+        now = self._now()
         if run.status not in ("pending", "running") or run.cancel_requested_at is not None:
             return None
         if job.next_attempt_at > now or (job.lease_until is not None and job.lease_until > now):
@@ -58,14 +64,14 @@ class JobRepository:
         """Claim the oldest ready job without relying on a volatile broker queue."""
         if not worker or len(worker) > 128 or duration <= timedelta(0):
             raise ValueError("invalid worker or lease duration")
-        now = utcnow()
+        ready_at = func.statement_timestamp()
         job = self.session.scalar(
             select(AnalysisJob)
             .join(AnalysisRun, AnalysisRun.id == AnalysisJob.run_id)
             .where(
                 AnalysisRun.status.in_(("pending", "running")),
-                AnalysisJob.next_attempt_at <= now,
-                or_(AnalysisJob.lease_until.is_(None), AnalysisJob.lease_until <= now),
+                AnalysisJob.next_attempt_at <= ready_at,
+                or_(AnalysisJob.lease_until.is_(None), AnalysisJob.lease_until <= ready_at),
             )
             .order_by(AnalysisJob.next_attempt_at, AnalysisRun.created_at, AnalysisJob.run_id)
             .with_for_update(of=AnalysisJob, skip_locked=True)
@@ -78,6 +84,7 @@ class JobRepository:
         )
         if run is None or run.status not in ("pending", "running"):
             return None
+        now = self._now()
         if run.cancel_requested_at is not None:
             run.status = "cancelled"
             run.stage = "cancelled"
@@ -114,7 +121,7 @@ class JobRepository:
 
     def _fenced(
         self, run_id: UUID, *, worker: str, token: int
-    ) -> tuple[AnalysisJob, AnalysisRun] | None:
+    ) -> tuple[AnalysisJob, AnalysisRun, datetime] | None:
         job = self.session.scalar(
             select(AnalysisJob)
             .where(AnalysisJob.run_id == run_id)
@@ -130,16 +137,17 @@ class JobRepository:
             .execution_options(populate_existing=True)
         )
         assert run is not None
+        now = self._now()
         if (
             run.status != "running"
             or run.cancel_requested_at is not None
             or job.lease_owner != worker
             or job.lease_token != token
             or job.lease_until is None
-            or job.lease_until <= utcnow()
+            or job.lease_until <= now
         ):
             return None
-        return job, run
+        return job, run, now
 
     def heartbeat(self, run_id: UUID, *, worker: str, token: int, duration: timedelta) -> bool:
         if duration <= timedelta(0):
@@ -147,8 +155,7 @@ class JobRepository:
         fenced = self._fenced(run_id, worker=worker, token=token)
         if fenced is None:
             return False
-        job, _ = fenced
-        now = utcnow()
+        job, _, now = fenced
         job.lease_until = now + duration
         job.heartbeat_at = now
         self.session.flush()
@@ -262,7 +269,7 @@ class JobRepository:
         fenced = self._fenced(run_id, worker=worker, token=token)
         if fenced is None:
             return False
-        job, run = fenced
+        job, run, now = fenced
         if not run.legacy_projection and (
             public_analysis is None
             or answer_presentation is None
@@ -282,7 +289,7 @@ class JobRepository:
         run.answer_presentation_json = answer_presentation
         run.coverage_json = coverage
         run.error_code = None
-        run.completed_at = utcnow()
+        run.completed_at = now
         if run.progress_json.get("stage") == "verification":
             run.progress_json = {**run.progress_json, "phase": "completed"}
         job.lease_owner = None
@@ -314,13 +321,13 @@ class JobRepository:
         fenced = self._fenced(run_id, worker=worker, token=token)
         if fenced is None:
             return False
-        job, run = fenced
+        job, run, now = fenced
         run.status = "pending"
         run.stage = "accepted"
         job.lease_owner = None
         job.lease_until = None
-        job.next_attempt_at = utcnow() + delay
-        job.heartbeat_at = utcnow()
+        job.next_attempt_at = now + delay
+        job.heartbeat_at = now
         run.progress_json = {
             "schema_version": 1,
             "attempt": job.attempts,
@@ -352,14 +359,14 @@ class JobRepository:
         fenced = self._fenced(run_id, worker=worker, token=token)
         if fenced is None:
             return False
-        job, run = fenced
+        job, run, now = fenced
         run.status = "failed"
         run.stage = "failed"
         run.error_code = error_code
-        run.completed_at = utcnow()
+        run.completed_at = now
         job.lease_owner = None
         job.lease_until = None
-        job.heartbeat_at = utcnow()
+        job.heartbeat_at = now
         from app.services.run_events import add_event, run_snapshot
 
         add_event(
@@ -381,7 +388,7 @@ class JobRepository:
         run = self.session.scalar(
             select(AnalysisRun).where(AnalysisRun.id == run_id).with_for_update()
         )
-        now = utcnow()
+        now = self._now()
         if (
             run is None
             or run.status not in ("pending", "running")
@@ -423,7 +430,7 @@ class JobRepository:
         )
         if run is None or run.status not in ("pending", "running"):
             return False
-        run.cancel_requested_at = utcnow()
+        run.cancel_requested_at = self._now()
         self.session.flush()
         return True
 

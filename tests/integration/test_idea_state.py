@@ -307,7 +307,9 @@ def test_invalid_patch_or_fence_never_changes_idea(engine, saved, fault) -> None
         if fault == "cancel":
             run.cancel_requested_at = utcnow()
         if fault == "lease":
-            session.get(AnalysisJob, run_id).lease_until = utcnow() - timedelta(seconds=1)
+            session.get(AnalysisJob, run_id).lease_until = session.scalar(
+                select(func.statement_timestamp() - timedelta(seconds=1))
+            )
     error = {
         "id": PlannerViolation,
         "plan_version": PlannerViolation,
