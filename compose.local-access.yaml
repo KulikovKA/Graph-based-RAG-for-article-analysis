@@ -1,0 +1,39 @@
+services:
+  qdrant-local-proxy:
+    image: alpine/socat@sha256:5ffbd6ae916cbad86a58fabe0d6d5a6fd5c2b47ddf031e82996baac9300e732f
+    profiles: [local-access]
+    entrypoint: [socat]
+    command: ["TCP-LISTEN:6333,fork,reuseaddr", "TCP:qdrant:6333"]
+    ports: ["127.0.0.1:6333:6333"]
+    networks: [backend, local-admin]
+    restart: unless-stopped
+
+  postgres-local-proxy:
+    image: alpine/socat@sha256:5ffbd6ae916cbad86a58fabe0d6d5a6fd5c2b47ddf031e82996baac9300e732f
+    profiles: [local-access]
+    entrypoint: [socat]
+    command: ["TCP-LISTEN:5432,fork,reuseaddr", "TCP:postgres:5432"]
+    ports: ["127.0.0.1:5432:5432"]
+    networks: [backend, local-admin]
+    restart: unless-stopped
+
+  redis-local-proxy:
+    image: alpine/socat@sha256:5ffbd6ae916cbad86a58fabe0d6d5a6fd5c2b47ddf031e82996baac9300e732f
+    profiles: [local-access]
+    entrypoint: [socat]
+    command: ["TCP-LISTEN:6379,fork,reuseaddr", "TCP:redis:6379"]
+    ports: ["127.0.0.1:6379:6379"]
+    networks: [backend, local-admin]
+    restart: unless-stopped
+
+  redis-insight:
+    image: redis/redisinsight:2.70.1
+    tmpfs: ["/data:uid=1000,gid=1000,mode=0700"]
+    profiles: [local-access]
+    ports: ["127.0.0.1:5540:5540"]
+    networks: [backend, local-admin]
+    restart: unless-stopped
+
+networks:
+  local-admin:
+    driver: bridge
