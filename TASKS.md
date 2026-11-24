@@ -16,8 +16,8 @@
 | INT-GROQ-001 | INTEGRATION | P0 | — | в работе |
 | INT-LR-001 | INTEGRATION | P1 | — | ожидает |
 | CORPUS-001 | INTEGRATION | P0 | — | в работе |
-| APP-CHAT-001 | APPLICATION | P0 | — | ожидает |
-| APP-GUARD-001 | APPLICATION | P0 | — | ожидает |
+| APP-CHAT-001 | APPLICATION | P0 | — | выполнено |
+| APP-GUARD-001 | APPLICATION | P0 | — | в работе |
 | APP-AIR-001 | APPLICATION | P0 | — | в работе |
 | APP-MEM-001 | APPLICATION | P0 | — | в работе |
 | APP-AGENT-001 | APPLICATION | P0 | — | ожидает |
@@ -30,7 +30,7 @@
 | TEST-001 | APPLICATION | P1 | — | ожидает |
 | REL-001 | APPLICATION | P1 | — | ожидает |
 
-Список по-прежнему включает **21 активную задачу**. По направлениям: 3 RESEARCH, 5 INTEGRATION, 13 APPLICATION. Новых ID нет.
+Сводка включает **21 карточку**, из них 20 открыты. Результаты следующей проверки MAIN, включая пройденные критерии APP-CHAT-001 и открытые ворота, зафиксированы в [SDD-отчёте](docs/SDD_VERIFICATION_REPORT.md#повторная-верификация-main).
 
 ### DAG начала разработки
 
