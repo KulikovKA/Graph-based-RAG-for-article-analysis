@@ -42,6 +42,7 @@ class GroqRole:
     max_output_tokens: int
     revision: str | None = None
     strict: bool = False
+    reasoning_efforts: tuple[ReasoningEffort, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -137,6 +138,7 @@ class GroqProvider:
         max_request_bytes: int = 200_000,
         base_backoff: float = 0.1,
         max_backoff: float = 5.0,
+        _shared_slots: asyncio.Semaphore | None = None,
     ) -> None:
         if (
             not api_key
@@ -165,6 +167,7 @@ class GroqProvider:
                 or role.timeout <= 0
                 or role.max_output_tokens < 1
                 or (role.strict and role.capability != "json_schema")
+                or any(e not in {"low", "medium", "high"} for e in role.reasoning_efforts)
                 or price is None
                 or not price.input_per_million.is_finite()
                 or price.input_per_million < 0
@@ -185,7 +188,9 @@ class GroqProvider:
             prices.copy(),
         )
         self.budget, self._validator, self._local = budget, validator, local
-        self._slots = asyncio.Semaphore(max_parallel)
+        self._slots = (
+            _shared_slots if _shared_slots is not None else asyncio.Semaphore(max_parallel)
+        )
         self._attempts, self._response_limit, self._request_limit = (
             max_attempts,
             max_response_bytes,
@@ -212,12 +217,12 @@ class GroqProvider:
             or not math.isfinite(timeout)
             or timeout <= 0
             or max_output_tokens < 1
-            or effort != "default"
         ):
             raise InferenceConfigurationError("unsupported generation request")
         role = matches[0]
         if (
             max_output_tokens > role.max_output_tokens
+            or (effort != "default" and effort not in role.reasoning_efforts)
             or (json_mode and role.capability == "text")
             or (not json_mode and role.capability != "text")
         ):
@@ -372,7 +377,9 @@ class GroqProvider:
         timeout: float,
         max_output_tokens: int,
         schema: dict[str, Any] | None,
+        reasoning_effort: ReasoningEffort,
         cancel: asyncio.Event | None,
+        system: str | None = None,
     ) -> tuple[str, InferenceMetadata]:
         started = time.monotonic()
         if not prompt:
@@ -383,6 +390,13 @@ class GroqProvider:
             "max_completion_tokens": max_output_tokens,
             "stream": False,
         }
+        if system is not None:
+            body["messages"] = [
+                {"role": "system", "content": system},
+                {"role": "user", "content": prompt},
+            ]
+        if reasoning_effort != "default":
+            body["reasoning_effort"] = reasoning_effort
         if schema is not None:
             try:
                 self._check_local_schema(schema)
@@ -493,6 +507,55 @@ class GroqProvider:
         thinking: bool | None = None,
         cancel: asyncio.Event | None = None,
     ) -> JsonResult:
+        return await self._complete_json(
+            model_id=model_id, prompt_version=prompt_version, request_id=request_id,
+            prompt=prompt, timeout=timeout, schema=schema, max_output_tokens=max_output_tokens,
+            context_window=context_window, reasoning_effort=reasoning_effort,
+            thinking=thinking, cancel=cancel, system=None,
+        )
+
+    async def complete_guarded_json(
+        self,
+        *,
+        system: str,
+        data: str,
+        model_id: str,
+        prompt_version: str,
+        request_id: str,
+        timeout: float,
+        schema: dict[str, Any],
+        max_output_tokens: int,
+        cancel: asyncio.Event | None = None,
+    ) -> JsonResult:
+        try:
+            value = json.loads(data, parse_constant=lambda _: (_ for _ in ()).throw(ValueError()))
+            if not isinstance(value, dict) or not system.strip():
+                raise ValueError
+        except (ValueError, TypeError, AttributeError):
+            raise InferenceConfigurationError("invalid guarded inference request") from None
+        return await self._complete_json(
+            model_id=model_id, prompt_version=prompt_version, request_id=request_id,
+            prompt=data, timeout=timeout, schema=schema, max_output_tokens=max_output_tokens,
+            context_window=None, reasoning_effort="default", thinking=None, cancel=cancel,
+            system=system,
+        )
+
+    async def _complete_json(
+        self,
+        *,
+        model_id: str,
+        prompt_version: str,
+        request_id: str,
+        prompt: str,
+        timeout: float,
+        schema: dict[str, Any],
+        max_output_tokens: int,
+        context_window: int | None,
+        reasoning_effort: ReasoningEffort,
+        thinking: bool | None,
+        cancel: asyncio.Event | None,
+        system: str | None,
+    ) -> JsonResult:
         started = time.monotonic()
         role = self._role(
             model_id, prompt_version, True, timeout, max_output_tokens, reasoning_effort
@@ -505,7 +568,9 @@ class GroqProvider:
             timeout=timeout,
             max_output_tokens=max_output_tokens,
             schema=schema,
+            reasoning_effort=reasoning_effort,
             cancel=cancel,
+            system=system,
         )
         try:
             value = json.loads(
@@ -544,6 +609,7 @@ class GroqProvider:
             timeout=timeout,
             max_output_tokens=max_output_tokens,
             schema=None,
+            reasoning_effort=reasoning_effort,
             cancel=cancel,
         )
         if cancel is not None and cancel.is_set():
@@ -582,4 +648,42 @@ class GroqProvider:
             documents=documents,
             timeout=timeout,
             cancel=cancel,
+        )
+
+
+class GroqProviderFactory:
+    """Новый бюджет на каждый анализ при общем лимите одновременных вызовов."""
+
+    def __init__(
+        self,
+        client: httpx.AsyncClient,
+        *,
+        api_key: str,
+        roles: dict[str, GroqRole],
+        prices: dict[str, GroqPrice],
+        validator: SchemaValidator,
+        local: InferenceProvider,
+        max_parallel: int = 2,
+        max_attempts: int = 3,
+    ) -> None:
+        if max_parallel < 1:
+            raise InferenceConfigurationError("invalid provider configuration")
+        self._client, self._api_key = client, api_key
+        self._roles, self._prices = roles.copy(), prices.copy()
+        self._validator, self._local = validator, local
+        self._max_parallel, self._max_attempts = max_parallel, max_attempts
+        self._slots = asyncio.Semaphore(max_parallel)
+
+    def for_run(self, *, max_requests: int, max_tokens: int, max_cost: Decimal) -> GroqProvider:
+        return GroqProvider(
+            self._client,
+            api_key=self._api_key,
+            roles=self._roles,
+            prices=self._prices,
+            budget=GroqBudget(max_requests, max_tokens, max_cost),
+            validator=self._validator,
+            local=self._local,
+            max_parallel=self._max_parallel,
+            max_attempts=self._max_attempts,
+            _shared_slots=self._slots,
         )

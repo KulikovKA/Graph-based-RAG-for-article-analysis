@@ -1,12 +1,19 @@
-﻿# Шаблон не активирует сетевые вызовы; модели и тарифы утверждаются до интеграции.
+# Синтетический профиль проверки адаптера; рабочий worker его не загружает.
+# Модель и тариф необходимо повторно проверить перед сетевой проверкой.
 enabled: false
 roles:
-  planner: {model_id: null, prompt_version: null, capability: null, timeout_seconds: null, max_output_tokens: null}
-  agent: {model_id: null, prompt_version: null, capability: null, timeout_seconds: null, max_output_tokens: null}
-  analyst: {model_id: null, prompt_version: null, capability: null, timeout_seconds: null, max_output_tokens: null}
-  relation_classifier: {model_id: null, prompt_version: null, capability: null, timeout_seconds: null, max_output_tokens: null}
-  narrative: {model_id: null, prompt_version: null, capability: null, timeout_seconds: null, max_output_tokens: null}
-  extractor: {model_id: null, prompt_version: null, capability: null, timeout_seconds: null, max_output_tokens: null}
-  judge: {model_id: null, prompt_version: null, capability: null, timeout_seconds: null, max_output_tokens: null}
-# Тариф по model_id: input_per_million, output_per_million, currency, source, version.
-prices: {}
+  planner: {model_id: openai/gpt-oss-20b, prompt_version: planner_v3, capability: json_schema, timeout_seconds: 30, max_output_tokens: 4096}
+  analyst: {model_id: openai/gpt-oss-20b, prompt_version: analyst_v4, capability: json_schema, timeout_seconds: 30, max_output_tokens: 2048, reasoning_efforts: [low]}
+  narrative: {model_id: openai/gpt-oss-20b, prompt_version: narrative_synthetic_v1, capability: json_schema, timeout_seconds: 30, max_output_tokens: 512}
+  relation_classifier: {model_id: openai/gpt-oss-20b, prompt_version: relation_classifier_synthetic_v1, capability: json_schema, timeout_seconds: 30, max_output_tokens: 512}
+  # Следующие роли ещё не интегрированы через InferenceProvider.
+  agent: null
+  extractor: null
+  judge: null
+prices:
+  openai/gpt-oss-20b:
+    input_per_million: '0.075'
+    output_per_million: '0.30'
+    currency: USD
+    source: https://console.groq.com/docs/models
+    version: groq-models-2026-11-24
