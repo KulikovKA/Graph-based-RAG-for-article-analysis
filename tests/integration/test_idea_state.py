@@ -365,7 +365,8 @@ def test_historical_followup_rebinds_only_its_graph_projection(engine, saved) ->
             "graph_projection": projection,
         }
         run = accept(session, s["owner"], s["conversation"], 1, s["source"])
-        result = apply(session, s["owner"], run, s["newer"], plan(1, "explain_evidence"))
+        proposal = plan(1, "explain_evidence", focus_evidence_ids=[str(s["evidence"][0])])
+        result = apply(session, s["owner"], run, s["newer"], proposal)
         assert result.decision.historical
         assert run.evidence_snapshot_json["graph_projection"] == {
             **projection,
