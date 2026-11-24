@@ -551,3 +551,44 @@ def test_first_search_pins_run_but_cursor_requires_version(setup):
         ).status_code
         == 422
     )
+
+
+def test_historical_search_reads_pinned_contents_and_retirement_fails_closed(setup):
+    client, graph, _ = setup
+    snapshots = {
+        "g1": [
+            ExplorerNode(id="old1", type="TechnicalFeature", label="match old1"),
+            ExplorerNode(id="old2", type="TechnicalFeature", label="match old2"),
+        ],
+        "g2": [ExplorerNode(id="new1", type="TechnicalFeature", label="match new1")],
+    }
+
+    async def versioned_search(scope, q, offset, limit):
+        if scope.version not in graph.published_versions:
+            raise RuntimeError("snapshot retired")
+        values = snapshots[scope.version]
+        return SearchPage(
+            nodes=values[offset : offset + limit], documents=[], more=offset + limit < len(values)
+        )
+
+    graph.search = versioned_search
+    params = {"scope": "published", "q": "match", "limit": 1}
+    first = client.get("/api/v1/explorer/search", params=params).json()
+    assert first["nodes"][0]["id"] == "old1"
+    graph.published_versions.add("g2")
+    graph.active_version = "g2"
+    assert client.get("/api/v1/explorer/search", params=params).json()["nodes"][0]["id"] == "new1"
+    pinned = {**params, "graph_version": "g1", "cursor": first["next_cursor"]}
+    assert client.get("/api/v1/explorer/search", params=pinned).json()["nodes"][0]["id"] == "old2"
+
+    original_resolve = graph.resolve
+
+    async def retire_after_resolve(*args, **kwargs):
+        result = await original_resolve(*args, **kwargs)
+        graph.published_versions.remove("g1")
+        return result
+
+    graph.resolve = retire_after_resolve
+    response = client.get("/api/v1/explorer/search", params=pinned)
+    assert response.status_code == 503
+    assert response.json()["error"]["code"] == "GRAPH_UNAVAILABLE"
