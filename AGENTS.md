@@ -38,11 +38,43 @@ SDD is a discipline of verifiable requirements and evidence, **not** a mandate t
 ## 3. Roles: Orchestrator and Subagents
 
 - **Orchestrator:** The main Codex session. The user selects its model and reasoning effort via `/model`. Do not override that choice in project configuration or subagent instructions.
-- **Subagents:** Scoped implementers. The project's `.codex/config.toml` sets the intended default to `gpt-6.1-terra`, `xhigh`, with at most **six** concurrent subagents. Do not override these settings unless the user explicitly asks.
+- **Subagents:** Scoped implementers. The default is `gpt-6.1-terra` with `high` reasoning effort and at most **six** concurrent subagents. Set the model and effort explicitly at spawn if the installed runtime does not confirm the project defaults.
 - **Six is a maximum, not a target.** Delegate only genuinely independent, useful work. Simple tasks do not require subagents.
-- Subagents **must not push to the shared branch, merge into `main`, or unilaterally update task-completion statuses**. They return their scoped diff or feature-branch commits, actual test results, changed files, and open risks.
-- The orchestrator owns final review, fixes, sequential integration, status updates, per-task commits, and push under `task.md`.
+- Subagents **must not push to the shared branch, merge into `main`, or unilaterally update task-completion statuses**.
 - Do not rely on the author to review their own changes. The orchestrator must perform **its own final review of each contribution** and arrange an independent check when warranted.
+
+### Orchestrator–Implementer Separation
+
+The orchestrator is responsible for planning, specification, architecture, task decomposition, delegation, coordination, independent review, verification, integration, and publication. The orchestrator may run tests, inspect code, reproduce bugs, maintain specifications, coordinate shared contracts, update task statuses, perform Git operations, and integrate approved changes.
+
+Subagents are responsible for implementation, debugging, code corrections, and implementation-level regression tests. The orchestrator **must not** directly implement or repair code assigned to subagents. Implementation-level merge conflicts, shared-code corrections, and defects discovered during integration must be assigned to an explicitly designated implementer. Independent reviewers report findings without modifying another implementer's code.
+
+For each defect, the orchestrator must:
+
+1. Identify the affected requirement, file, function, and observed problem.
+2. Provide actionable findings and the expected behavior.
+3. Return the task to its original implementer. If that implementer is unavailable, assign another qualified subagent with explicit file ownership.
+4. Require the implementer to correct the issue and execute the relevant tests.
+5. Independently review and verify the revised contribution.
+6. Repeat the cycle until acceptance criteria are satisfied or a genuine blocker is established.
+
+Keep implementer assignments persistent. Use isolated worktrees or strictly exclusive file ownership and prevent concurrent edits and conflicting Git operations. The size, urgency, or simplicity of a correction does not change the assignment. Only an explicit user instruction may authorize the orchestrator to bypass this separation.
+
+Each subagent must return the changed files, implementation decisions, executed commands, actual test results, unresolved risks, and acceptance-criteria coverage. The orchestrator records the implementer model and effort, assigned scope, review findings, correction rounds, final verification, and whether the orchestrator modified implementation code for every delegated task. The expected number of direct implementation corrections by the orchestrator is zero. An implementer's success report alone does not authorize acceptance.
+
+### Subagent Permissions
+
+All implementation subagents must inherit the effective permissions of the orchestrator whenever supported by the installed Codex runtime.
+
+Subagents should execute authorized, in-scope implementation tasks without redundant user approval requests.
+
+The orchestrator must verify effective sandbox and approval policies when spawning, resuming, or reassigning subagents.
+
+If permissions are unexpectedly downgraded, diagnose the runtime configuration and restore the user-authorized permission profile through supported Codex mechanisms.
+
+Full technical access does not authorize actions outside the assigned task scope, destructive operations, secret disclosure, or unauthorized modifications to databases and repositories.
+
+Do not circumvent enforced system or administrator restrictions.
 
 ## 4. Parallel-Work Protocol
 
@@ -50,13 +82,13 @@ SDD is a discipline of verifiable requirements and evidence, **not** a mandate t
 2. Partition work around stable contracts and test fixtures. Agree on DTOs/ports before concurrent edits. UI development need not wait for completed backend services if contract-aligned mock APIs are available.
 3. Prefer separate Git worktrees and feature branches. **Spawning a subagent does not automatically isolate its filesystem.** If sharing one tree, enforce nonoverlapping file ownership and prevent concurrent Git commit/checkout/merge/rebase operations.
 4. Assign each subagent one task ID or one explicitly bounded part of it, allowed and forbidden files, tests, and stop criteria. Require the agent to identify ownership conflicts before editing.
-5. Reserve shared files (`TASKS.md`, `task.md`, `docs/FINAL_PROJECT_PLAN.md`, `compose.yaml`, shared API DTOs, and migrations) for the orchestrator unless one exclusive owner is explicitly assigned. Subagents may propose patches but must not concurrently edit those files.
+5. Reserve shared planning files (`TASKS.md`, `task.md`, and `docs/FINAL_PROJECT_PLAN.md`) for the orchestrator. Assign an exclusive implementer for shared implementation files such as `compose.yaml`, API DTOs, migrations, and worker wiring. Coordinate their contracts and integrate their changes sequentially.
 6. Do not run multiple heavy Docker stacks, full test suites, ML benchmarks, model downloads, or broad scans simultaneously. While a RESEARCH benchmark is active, favor fake/mock tests, focused unit/contract checks, and frontend lint/type checking. Schedule any heavier check separately.
 7. If two tasks need the same file or incompatible contracts, stop the conflicting portion and replan rather than allowing a race.
 
 ### Preferred First Wave of Six Tasks — Only When Requested
 
-| Task | Subagent-owned work | Reserved for orchestrator / integration |
+| Task | Subagent-owned work | Coordinated integration scope |
 | --- | --- | --- |
 | `INT-GROQ-001` | Groq adapter, inference contracts, target configuration, contract tests | Shared `compose.yaml` updates; live user traffic before guards |
 | `APP-MEM-001` | PostgreSQL memory/summaries, Redis caching, corresponding tests | Common `analysis_run.py` wiring; final `I-MEM` |
@@ -78,7 +110,7 @@ For **every** subagent result, **before integration, commit, or push**:
 3. Review security: ownership, user/chat isolation, untrusted documents, prompt injection, SQL/Cypher allowlists, secrets, Groq data minimization, provenance, and evidence integrity.
 4. Re-run appropriate focused tests independently; inspect skipped checks and ensure mock tests are not described as live integration.
 5. Check that unrelated worktrees/files are untouched, existing behavior is preserved, and no invalid imports or dependencies were introduced.
-6. If a result is deficient, send specific findings back or fix them; then repeat the relevant verification. “Tests passed” alone is insufficient.
+6. If a result is deficient, return actionable findings to its original implementer and follow the review–correction cycle in section 3. Independently repeat the relevant verification after each revision.
 7. Integrate changes sequentially only after review. Keep separate task-level history and leave integration/release gate status **open** unless actual E2E evidence exists.
 
 **Important: “Can start a task” is not “can close a task.”** Passing component tests is not a substitute for required `I-*` and `G-*` acceptance.
@@ -88,7 +120,7 @@ For **every** subagent result, **before integration, commit, or push**:
 The orchestrator is **explicitly authorized** to run `git add`, `git commit`, and `git push` within the user's requested work in this repository, subject to `task.md`, successful review, and checks. No extra user confirmation is necessary solely for a normal push **when the Codex environment already permits it**. These instructions do not bypass sandbox, network, or approval policies; use the environment's normal permission flow if required.
 
 - Create a separate meaningful **Russian-language** commit for each accepted unit of work; push to the designated current branch after sequential integration.
-- If work was done in worktrees, integrate feature-branch commits sequentially, resolve conflicts explicitly, and rerun affected checks.
+- If work was done in worktrees, integrate feature-branch commits sequentially. Delegate implementation-level merge conflicts to a designated implementer, review their resolution, and rerun affected checks.
 - Never force-push, rewrite published history, perform destructive `reset --hard`, or delete large amounts of data without specific authorization.
 - Never commit `.env`, API keys, tokens, private user data, databases, downloaded corpora, model weights, caches, or temporary benchmark artifacts. Inspect the staged diff and `git status` before push.
 - Verify the pushed SHA on the remote branch. If publication fails, report **pending publication**; do not mark the task completed.

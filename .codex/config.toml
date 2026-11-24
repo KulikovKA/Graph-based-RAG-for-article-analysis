@@ -1,10 +1,8 @@
-# Настройки Codex только для основного репозитория.
-# Модель и reasoning effort оркестратора намеренно НЕ заданы здесь:
-# пользователь выбирает их в основном чате через /model.
-# Важен trusted project: иначе Codex игнорирует .codex/config.toml.
+approval_policy = "never"
+sandbox_mode = "danger-full-access"
 
 [agents]
 enabled = true
 max_concurrent_threads_per_session = 6
 default_subagent_model = "gpt-6.1-terra"
-default_subagent_reasoning_effort = "xhigh"
+default_subagent_reasoning_effort = "high"
