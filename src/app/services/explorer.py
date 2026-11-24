@@ -85,7 +85,7 @@ class ExplorerService:
             raise HTTPException(422, "INVALID_SCOPE")
         if version is None and not first:
             raise HTTPException(422, "GRAPH_VERSION_REQUIRED")
-        current = await _call(self.port.resolve(owner, scope, run_id))
+        current = await _call(self.port.resolve(owner, scope, run_id, requested_version=version))
         if current is None:
             raise HTTPException(404, "NOT_FOUND")
         if version is not None and version != current:

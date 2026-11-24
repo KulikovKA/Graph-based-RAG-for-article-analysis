@@ -62,13 +62,19 @@ class FixtureGraph:
             ExplorerEdge(id="2", source="a", target="c", type="SIMILAR_TO", kind="semantic"),
         ]
         self.chat_allowed = True
+        self.active_version = "g1"
+        self.published_versions = {"g1"}
+        self.searched_versions = []
 
-    async def resolve(self, owner, scope, run_id):
-        if scope == Scope.RUN and (owner != OWNER or run_id != RUN):
-            return None
-        return "g1"
+    async def resolve(self, owner, scope, run_id, *, requested_version):
+        if scope == Scope.RUN:
+            return "g1" if owner == OWNER and run_id == RUN else None
+        if requested_version in self.published_versions:
+            return requested_version
+        return self.active_version
 
     async def search(self, scope, q, offset, limit):
+        self.searched_versions.append(scope.version)
         values = sorted(
             (n for n in self.nodes.values() if q.casefold() in n.label.casefold()),
             key=lambda n: n.id,
@@ -212,6 +218,34 @@ def test_search_pagination_cursor_and_revision(setup):
     ).json()["source"]["evidence_ids"] == [str(EID)]
 
 
+def test_cursor_keeps_a_retained_published_generation(setup):
+    client, graph, _ = setup
+    endpoint = "/api/v1/explorer/search"
+    params = {"scope": "published", "q": "a", "limit": 1}
+    initial = client.get(endpoint, params=params)
+    assert initial.status_code == 200 and initial.json()["graph_version"] == "g1"
+    cursor = initial.json()["next_cursor"]
+    assert cursor
+
+    graph.published_versions.add("g2")
+    graph.active_version = "g2"
+    assert client.get(endpoint, params=params).json()["graph_version"] == "g2"
+    historical = {**params, "graph_version": "g1", "cursor": cursor}
+    second = client.get(endpoint, params=historical)
+    assert second.status_code == 200 and second.json()["graph_version"] == "g1"
+    assert graph.searched_versions == ["g1", "g2", "g1"]
+
+    graph.published_versions.remove("g1")
+    conflict = client.get(endpoint, params=historical)
+    assert conflict.status_code == 409 and conflict.json()["error"]["code"] == (
+        "GRAPH_VERSION_CONFLICT"
+    )
+    assert graph.searched_versions == ["g1", "g2", "g1"]
+    run = {**params, "scope": "run", "run_id": str(RUN), "graph_version": "g2"}
+    assert client.get(endpoint, params=run).status_code == 409
+    assert client.get(endpoint, params={**run, "run_id": str(uuid4())}).status_code == 404
+
+
 def test_edges_evidence_and_traversal(setup):
     client, graph, _ = setup
     params = {"scope": "published", "graph_version": "g1"}
@@ -341,7 +375,7 @@ def test_rejects_private_nodes_and_bad_adapter_subgraphs(setup):
 def test_adapter_failure_does_not_leak_details(setup):
     client, graph, _ = setup
 
-    async def fail(*args):
+    async def fail(*args, **kwargs):
         raise RuntimeError("secret database address")
 
     graph.resolve = fail
@@ -394,7 +428,7 @@ def test_port_timeout_is_controlled(setup):
 
     client, graph, _ = setup
 
-    async def slow(*args):
+    async def slow(*args, **kwargs):
         await asyncio.sleep(10)
         return "g1"
 
