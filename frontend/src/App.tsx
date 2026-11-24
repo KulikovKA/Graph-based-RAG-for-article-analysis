@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState, type FormEvent } from 'react';
+import { useCallback, useEffect, useRef, useState, type CSSProperties, type FormEvent } from 'react';
 import { api, ApiError, errorMessage, randomKey, setSession } from './api/client';
 import type {
   Conversation,
@@ -12,6 +12,7 @@ import type {
 } from './api/types';
 import { Mark, SendIcon } from './components/Icons';
 import { RunView } from './features/chat/RunView';
+import { ConversationTools } from './features/chat/ConversationTools';
 import { initialState, terminal } from './features/chat/runState';
 import { useRun } from './features/chat/useRun';
 import { SourceCards } from './features/sources/SourceCards';
@@ -111,6 +112,7 @@ export default function App() {
   const [error, setError] = useState(''),
     [busy, setBusy] = useState(false),
     [loading, setLoading] = useState(false);
+  const [sidebarWidth, setSidebarWidth] = useState(246);
   const [navOpen, setNavOpen] = useState(false),
     [activeEvidence, setActiveEvidence] = useState<string | null>(null);
   const [evidence, setEvidence] = useState<Evidence | null>(null),
@@ -395,7 +397,7 @@ export default function App() {
   if (!session) return <Login onLogin={authenticate} expired={sessionExpired} />;
   return (
     <div className="workspace">
-      <aside className={`sidebar ${navOpen ? 'open' : ''}`} aria-label="Диалоги">
+      <aside className={`sidebar ${navOpen ? 'open' : ''}`} aria-label="Диалоги" style={{ '--sidebar-width': `${sidebarWidth}px` } as CSSProperties}>
         <a
           className="brand"
           href="#"
@@ -460,6 +462,9 @@ export default function App() {
             </button>
           )}
         </nav>
+        {mode === 'explorer' && <label className="sidebar-resize">Ширина списка диалогов
+          <input type="range" min="200" max="320" value={sidebarWidth} onChange={(event) => setSidebarWidth(Number(event.target.value))} />
+        </label>}
         <div className="sidebar-footer">
           <span className="avatar">К</span>
           <span>
@@ -505,6 +510,14 @@ export default function App() {
         </header>
         <div hidden={mode !== 'assistant'} className={`work-content ${messages.length ? 'has-messages' : ''}`}>
           <section className="chat-panel" aria-label="Чат анализа">
+            {detail && <ConversationTools key={detail.id} conversation={detail} onRenamed={(value) => {
+              setDetail((old) => old && old.id === value.id ? { ...old, ...value } : old);
+              setConversations((old) => old.map((item) => item.id === value.id ? value : item));
+            }} onDeleted={() => {
+              setConversations((old) => old.filter((item) => item.id !== detail.id));
+              setDrafts((old) => { const next = { ...old }; delete next[detail.id]; return next; });
+              void selectConversation(null);
+            }} onCitation={(run, id) => void citation(run, id)} />}
             {preparedContext && <p className="context-notice" role="status">Контекст «{preparedContext.label}» подготовлен. Передача ассистенту станет доступна после подключения.</p>}
             {loading ? (
               <p className="loading-state" role="status">

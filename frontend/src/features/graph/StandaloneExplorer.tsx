@@ -12,6 +12,10 @@ import { safeSourceUrl } from '../sources/SourceCards';
 
 type NodeDetail = { graph_version: string; node: GraphNode; context_ref: string };
 type DocumentDetail = { graph_version: string; source: Source; nodes: GraphNode[] };
+const edgeTypes = [
+  'HAS_FEATURE', 'MATCHES', 'DISCLOSES_FEATURE', 'USES_TECHNOLOGY', 'CLASSIFIED_AS', 'CITES',
+  'APPLIED_BY', 'INVENTED_BY', 'AUTHORED_BY', 'RELATED_TO', 'SIMILAR_TO', 'HAS_SHARED_CONCEPT',
+] as const;
 
 export function StandaloneExplorer({
   runId,
@@ -34,6 +38,11 @@ export function StandaloneExplorer({
   const [prepared, setPrepared] = useState<NodeDetail | null>(null);
   const [status, setStatus] = useState('');
   const [panel, setPanel] = useState<'document' | 'graph'>('document');
+  const [graphWidth, setGraphWidth] = useState(42);
+  const [fullGraph, setFullGraph] = useState(false);
+  const [edgeType, setEdgeType] = useState('');
+  const [target, setTarget] = useState('');
+  const [selectionHistory, setSelectionHistory] = useState<GraphNode[]>([]);
   const [scale, setScale] = useState(1),
     [pan, setPan] = useState({ x: 0, y: 0 });
   const epoch = useRef(0),
@@ -61,6 +70,9 @@ export function StandaloneExplorer({
     setStatus('');
     setScale(1);
     setPan({ x: 0, y: 0 });
+    setEdgeType('');
+    setTarget('');
+    setSelectionHistory([]);
   }
   useEffect(() => {
     if (previousRun.current !== runId) {
@@ -165,6 +177,7 @@ export function StandaloneExplorer({
       if (value.node.id !== id) throw new ApiError(404, 'NOT_FOUND');
       checkVersion(value.graph_version, version);
       setNode(value);
+      setSelectionHistory((old) => [value.node, ...old.filter((item) => item.id !== id)].slice(0, 10));
       setStatus('');
       setGraph((old) =>
         old
@@ -195,7 +208,7 @@ export function StandaloneExplorer({
     setStatus('Загружаем соседей…');
     try {
       const page = await request<ExplorerPage>(
-        `/api/v1/explorer/nodes/${encodeURIComponent(id)}/neighbors?${params(version, { limit: '20', ...(cursor ? { cursor } : {}) })}`,
+        `/api/v1/explorer/nodes/${encodeURIComponent(id)}/neighbors?${params(version, { limit: '20', ...(edgeType ? { edge_type: edgeType } : {}), ...(cursor ? { cursor } : {}) })}`,
       );
       if (token !== epoch.current || serial !== neighborRequest.current) return;
       checkVersion(page.graph_version, version);
@@ -211,6 +224,22 @@ export function StandaloneExplorer({
         ],
       }));
       setStatus(page.edges.length ? '' : 'У этой вершины нет соседей.');
+    } catch (cause) {
+      if (token === epoch.current && serial === neighborRequest.current) failed(cause);
+    }
+  }
+  async function findPath() {
+    if (!version || !node || !target || target === node.node.id) return;
+    const token = epoch.current, serial = ++neighborRequest.current;
+    setStatus('Ищем путь…');
+    try {
+      const page = await request<ExplorerPage>(`/api/v1/explorer/paths?${params(version, {
+        source: node.node.id, target, max_hops: '3', ...(edgeType ? { edge_type: edgeType } : {}),
+      })}`);
+      if (token !== epoch.current || serial !== neighborRequest.current) return;
+      checkVersion(page.graph_version, version);
+      setGraph({ ...page, next_cursor: null });
+      setStatus(page.edges.length ? '' : 'Путь не найден в пределах трёх переходов.');
     } catch (cause) {
       if (token === epoch.current && serial === neighborRequest.current) failed(cause);
     }
@@ -283,11 +312,15 @@ export function StandaloneExplorer({
     [graph],
   );
   const byId = new Map(positions.map((item) => [item.item.id, item]));
+  const pathTargets = Array.from(new Map([
+    ...selectionHistory, ...(results?.nodes ?? []), ...(graph?.nodes ?? []),
+    ...(document?.nodes ?? []),
+  ].map((item) => [item.id, item])).values()).filter((item) => item.id !== node?.node.id);
   const url = document && safeSourceUrl(document.source.url);
   return (
-    <section className="standalone-explorer" aria-label="Обзор графа знаний">
+    <section className={`standalone-explorer ${fullGraph ? 'graph-full' : ''}`} style={{ gridTemplateColumns: fullGraph ? 'minmax(0, 1fr)' : `minmax(0, 1fr) minmax(300px, ${graphWidth}%)` }} aria-label="Обзор графа знаний">
       <div className="explorer-mobile-tabs" aria-label="Панель Explorer">
-        <button aria-pressed={panel === 'document'} onClick={() => setPanel('document')}>
+        <button aria-pressed={panel === 'document'} onClick={() => { setFullGraph(false); setPanel('document'); }}>
           Документ и поиск
         </button>
         <button aria-pressed={panel === 'graph'} onClick={() => setPanel('graph')}>
@@ -299,7 +332,7 @@ export function StandaloneExplorer({
           {status}
         </p>
       )}
-      <div className={`explorer-document ${panel !== 'document' ? 'mobile-hidden' : ''}`}>
+      <div className={`explorer-document ${panel !== 'document' ? 'mobile-hidden' : ''}`} hidden={fullGraph}>
         <span className="eyebrow">Исследование связей</span>
         <h2>Поиск по графу знаний</h2>
         <label className="explorer-scope">
@@ -401,6 +434,7 @@ export function StandaloneExplorer({
             <p>Выберите вершину и раскройте её соседей</p>
           </div>
           <div className="graph-zoom">
+            <button aria-label={fullGraph ? 'Вернуть панели' : 'Развернуть граф'} onClick={() => setFullGraph((value) => !value)}>{fullGraph ? '↙' : '↗'}</button>
             <button
               aria-label="Уменьшить граф"
               onClick={() => setScale((v) => Math.max(0.65, v - 0.15))}
@@ -415,6 +449,19 @@ export function StandaloneExplorer({
             </button>
           </div>
         </div>
+        {!fullGraph && <label className="explorer-resize">Ширина графа <input type="range" min="30" max="70" value={graphWidth} onChange={(event) => setGraphWidth(Number(event.target.value))} /></label>}
+        <div className="explorer-controls">
+          <label>Тип связи <select value={edgeType} onChange={(event) => { setEdgeType(event.target.value); neighborRequest.current++; setGraph((old) => old ? { ...old, next_cursor: null } : old); }}>
+            <option value="">Все типы</option>
+            {edgeTypes.map((type) => <option key={type} value={type}>{type}</option>)}
+          </select></label>
+          <label>Путь к вершине <select value={target} onChange={(event) => setTarget(event.target.value)}>
+            <option value="">Выберите вершину</option>
+            {pathTargets.map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}
+          </select></label>
+          <button disabled={!node || !target || target === node.node.id} onClick={() => void findPath()}>Найти путь</button>
+        </div>
+        {selectionHistory.length > 1 && <div className="explorer-history" aria-label="История выбора"><span>История:</span> {selectionHistory.map((item) => <button className="text-button" key={item.id} onClick={() => void selectNode(item.id)}>{item.label}</button>)}</div>}
         <p className="explorer-legend">
           <span>━ Фактическая связь</span> <span>┄ Семантическая связь</span>
         </p>
@@ -452,7 +499,7 @@ export function StandaloneExplorer({
               <g
                 transform={`translate(${300 * (1 - scale) + pan.x} ${180 * (1 - scale) + pan.y}) scale(${scale})`}
               >
-                {graph?.edges.map((edge) => {
+                {graph?.edges.filter((edge) => !edgeType || edge.type === edgeType).map((edge) => {
                   const a = byId.get(edge.source),
                     b = byId.get(edge.target);
                   return a && b ? (
@@ -558,7 +605,7 @@ export function StandaloneExplorer({
           </aside>
         )}
         {graph?.truncated && <p className="graph-note">Показана часть связей.</p>}
-        {graph?.edges.map((edge) => (
+        {graph?.edges.filter((edge) => !edgeType || edge.type === edgeType).map((edge) => (
           <div className="explorer-edge" key={edge.id}>
             <span>
               {edge.kind === 'factual' ? 'Фактическая' : 'Семантическая'} · {edge.type}

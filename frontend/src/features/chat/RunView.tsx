@@ -4,6 +4,7 @@ import type { Connection } from './useRun';
 import type { RunState } from './runState';
 import { terminal } from './runState';
 import { GraphExplorer } from '../graph/GraphExplorer';
+import { downloadExport, errorMessage } from '../../api/client';
 
 const stages: Record<string, string> = {
   accepted: 'В очереди',
@@ -57,6 +58,7 @@ export function RunView({
   const [now, setNow] = useState(Date.now());
   const [shown, setShown] = useState(0);
   const [showAll, setShowAll] = useState(false);
+  const [exportError, setExportError] = useState('');
   const [reduced, setReduced] = useState(
     () => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
   );
@@ -273,6 +275,13 @@ export function RunView({
         </div>
       )}
       {run.status === 'completed' && <GraphExplorer run={run} onCitation={onCitation} />}
+      {run.status === 'completed' && <div className="export-links" aria-label="Скачать отчёт">
+        {(['html', 'pdf'] as const).map((format) => <button className="text-button" key={format} onClick={() => {
+          setExportError('');
+          void downloadExport(run.id, format).catch((cause) => setExportError(errorMessage(cause)));
+        }}>Скачать {format.toUpperCase()}</button>)}
+        {exportError && <p role="alert">{exportError}</p>}
+      </div>}
       {terminal(run) && (
         <div className="result-footer">
           {run.status === 'completed' ? 'Ответ сохранён' : stages[run.status]}

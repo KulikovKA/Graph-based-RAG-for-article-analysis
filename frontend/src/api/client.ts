@@ -8,6 +8,7 @@ import type {
   MessageInput,
   Page,
   Run,
+  RunHistoryItem,
   Session,
 } from './types';
 
@@ -53,6 +54,30 @@ export async function request<T>(path: string, options: RequestInit = {}): Promi
   return response.status === 204 ? (undefined as T) : ((await response.json()) as T);
 }
 
+export async function downloadExport(id: string, format: 'html' | 'pdf'): Promise<void> {
+  const response = await fetch(`/api/v1/runs/${encodeURIComponent(id)}/export?format=${format}`, {
+    credentials: 'same-origin', cache: 'no-store',
+  });
+  if (!response.ok) {
+    const body = await response.json().catch(() => ({}));
+    if (response.status === 401) window.dispatchEvent(new Event('session-expired'));
+    throw new ApiError(response.status, body.error?.code ?? 'REQUEST_FAILED');
+  }
+  const mediaType = response.headers.get('Content-Type')?.split(';', 1)[0];
+  if (mediaType !== (format === 'pdf' ? 'application/pdf' : 'text/html')) {
+    throw new ApiError(502, 'INVALID_EXPORT');
+  }
+  const blob = await response.blob();
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement('a');
+  anchor.href = url;
+  anchor.download = `run-${id}.${format}`;
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 export const api = {
   session: () => request<Session>('/api/v1/auth/session'),
   login: (email: string, password: string) =>
@@ -72,6 +97,15 @@ export const api = {
     }),
   conversation: (id: string) =>
     request<ConversationDetail>(`/api/v1/conversations/${encodeURIComponent(id)}`),
+  renameConversation: (id: string, title: string | null) =>
+    request<Conversation>(`/api/v1/conversations/${encodeURIComponent(id)}`, {
+      method: 'PATCH', body: JSON.stringify({ title }),
+    }),
+  deleteConversation: (id: string) =>
+    request<void>(`/api/v1/conversations/${encodeURIComponent(id)}`, { method: 'DELETE' }),
+  conversationRuns: (id: string, cursor?: string) =>
+    request<Page<RunHistoryItem>>(`/api/v1/conversations/${encodeURIComponent(id)}/runs?limit=20` +
+      (cursor ? `&cursor=${encodeURIComponent(cursor)}` : '')),
   messages: (id: string, cursor?: string) =>
     request<Page<Message>>(
       `/api/v1/conversations/${encodeURIComponent(id)}/messages` +
@@ -109,6 +143,7 @@ export function errorMessage(error: unknown): string {
       HTTPS_REQUIRED: 'Откройте приложение по HTTPS.',
       VERSION_CONFLICT: 'Идея обновилась. Версия синхронизирована — повторите отправку.',
       RUN_IN_PROGRESS: 'В этом диалоге уже идёт анализ. Дождитесь результата или отмените его.',
+      CHAT_BUSY: 'Диалог занят другой операцией. Повторите удаление.',
       SOURCE_RUN_NOT_COMPLETED: 'Сначала дождитесь результата выбранного анализа.',
       NOT_FOUND: 'Диалог или источник недоступен.',
       UNAUTHENTICATED: 'Сессия завершилась. Войдите снова.',

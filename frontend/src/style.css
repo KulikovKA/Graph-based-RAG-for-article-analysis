@@ -98,7 +98,7 @@ svg {
   min-height: 100dvh;
 }
 .sidebar {
-  width: 246px;
+  width: var(--sidebar-width, 246px);
   flex-shrink: 0;
   background: #f0f3eb;
   padding: 27px 19px 18px;
@@ -1073,3 +1073,24 @@ svg {
   .standalone-explorer .explorer-canvas { display: block; }
 }
 .explorer-status { grid-column: 1 / -1; margin: 0; }
+.explorer-resize { display: flex; gap: 8px; align-items: center; margin: 12px 0; font-size: 11px; }
+.explorer-resize input { width: 120px; max-width: 50%; }
+.explorer-controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: end; }
+.explorer-controls label { display: grid; gap: 4px; font-size: 11px; min-width: 0; }
+.explorer-controls select { max-width: 100%; padding: 6px; border: 1px solid #dce3d6; border-radius: 6px; }
+.explorer-controls > button, .conversation-rename button { padding: 7px; border: 1px solid #dce3d6; border-radius: 6px; background: #fff; }
+.explorer-history { margin: 12px 0; font-size: 11px; overflow-wrap: anywhere; }
+.explorer-history button { margin-left: 8px; }
+.conversation-tools { margin: 0 0 18px; }
+.conversation-actions, .conversation-rename, .export-links { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.conversation-rename { margin: 12px 0; }
+.conversation-rename label { display: grid; gap: 5px; font-size: 12px; }
+.conversation-rename input { border: 1px solid #dce3d6; border-radius: 6px; padding: 7px; max-width: 100%; }
+.conversation-history { margin-top: 12px; }
+.history-item { display: grid; gap: 4px; padding: 8px 0; overflow-wrap: anywhere; }
+.history-item small { color: #687667; }
+.export-links { margin-top: 16px; font-size: 12px; }
+.sidebar-resize { display: grid; gap: 5px; font-size: 11px; color: var(--muted); }
+.sidebar-resize input { width: 100%; }
+@media (max-width: 1100px) { .sidebar-resize { display: none; } }
+@media (max-width: 800px) { .explorer-resize { display: none; } }

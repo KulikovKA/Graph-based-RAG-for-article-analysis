@@ -1,0 +1,53 @@
+import { readFile } from 'node:fs/promises';
+import { expect, test } from '@playwright/test';
+
+test('synthetic worker: чат, история, экспорт и удаление через реальный API', async ({ page }, info) => {
+  const url = process.env.UI_SMOKE_URL;
+  test.skip(!url, 'UI_SMOKE_URL не задан');
+  test.setTimeout(60000);
+  await page.goto(url!);
+  await page.getByLabel('Электронная почта').fill('ui-smoke@example.test');
+  await page.getByLabel('Пароль', { exact: true }).fill('synthetic-smoke-password');
+  await page.getByRole('button', { name: 'Войти в пространство' }).click();
+  const create = page.waitForResponse((response) => response.url().endsWith('/api/v1/conversations') && response.request().method() === 'POST');
+  await page.getByLabel('Ваша идея или уточнение').fill(`Проверка истории и экспорта ${info.project.name} ${Date.now()}`);
+  await page.getByRole('button', { name: 'Отправить запрос' }).click();
+  const created = await create;
+  expect(created.status()).toBe(201);
+  const chatId: string = (await created.json()).id;
+  await expect(page.getByText('Ответ сохранён')).toBeVisible();
+  await page.getByRole('button', { name: 'Переименовать' }).click();
+  await page.getByLabel('Название диалога').fill(`Проверка ${info.project.name}`);
+  const renamed = page.waitForResponse((response) => response.url().endsWith(`/conversations/${chatId}`) && response.request().method() === 'PATCH');
+  await page.getByRole('button', { name: 'Сохранить', exact: true }).click();
+  const patch = await renamed;
+  expect(patch.status()).toBe(200);
+  expect(patch.request().headers()['x-csrf-token']).toBeTruthy();
+  await expect(page.getByRole('heading', { name: `Проверка ${info.project.name}` })).toBeVisible();
+  await page.getByRole('button', { name: 'История исследований' }).click();
+  await expect(page.locator('.history-item')).toHaveCount(1);
+  await expect(page.locator('.history-item')).toContainText('no_evidence');
+  for (const format of ['html', 'pdf'] as const) {
+    const responsePromise = page.waitForResponse((response) => response.url().includes(`/export?format=${format}`));
+    const downloadPromise = page.waitForEvent('download');
+    await page.getByRole('button', { name: `Скачать ${format.toUpperCase()}` }).first().click();
+    const response = await responsePromise;
+    expect(response.status()).toBe(200);
+    expect(response.headers()['content-type']).toContain(format === 'pdf' ? 'application/pdf' : 'text/html');
+    const download = await downloadPromise;
+    expect(download.suggestedFilename()).toMatch(new RegExp(`^run-[a-f0-9-]+\\.${format}$`));
+    const path = await download.path();
+    const bytes = await readFile(path!);
+    expect(bytes.length).toBeGreaterThan(100);
+    if (format === 'pdf') expect(bytes.subarray(0, 5).toString()).toBe('%PDF-');
+    else expect(bytes.toString('utf8')).toContain('Проверка интерфейса завершена');
+  }
+  page.once('dialog', (dialog) => void dialog.accept());
+  const removed = page.waitForResponse((response) => response.url().endsWith(`/conversations/${chatId}`) && response.request().method() === 'DELETE');
+  await page.getByRole('button', { name: 'Удалить диалог' }).click();
+  const deletion = await removed;
+  expect(deletion.status()).toBe(204);
+  expect(deletion.request().headers()['x-csrf-token']).toBeTruthy();
+  await expect(page.getByRole('heading', { name: 'Какая у вас идея?' })).toBeVisible();
+  expect((await page.request.get(`/api/v1/conversations/${chatId}`)).status()).toBe(404);
+});

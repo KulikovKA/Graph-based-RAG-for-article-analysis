@@ -23,6 +23,15 @@ export interface Page<T> {
   items: T[];
   next_cursor: string | null;
 }
+export interface RunHistoryItem {
+  id: string;
+  status: Run['status'];
+  outcome: Run['outcome'];
+  created_at: string;
+  completed_at: string | null;
+  idea_version_id: string | null;
+  index_generation_id: string | null;
+}
 export interface Progress {
   schema_version: 1;
   attempt: number;

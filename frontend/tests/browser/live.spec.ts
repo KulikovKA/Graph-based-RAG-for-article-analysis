@@ -10,7 +10,7 @@ test('built UI through Caddy with real auth, API, PostgreSQL and synthetic worke
   await page.getByLabel('Пароль', { exact: true }).fill('synthetic-smoke-password');
   await page.getByRole('button', { name: 'Войти в пространство' }).click();
   await expect(page.getByRole('heading', { name: 'Какая у вас идея?' })).toBeVisible();
-  const title = `Синтетическая идея для проверки интерфейса ${info.project.name}`;
+  const title = `Проверка ${info.project.name} ${crypto.randomUUID().slice(0, 8)}`;
   await page.getByLabel('Ваша идея или уточнение').fill(title);
   await page.getByRole('button', { name: 'Отправить запрос' }).click();
   await expect(page.getByText('Ответ сохранён')).toHaveCount(1);

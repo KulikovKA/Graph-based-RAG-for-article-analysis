@@ -1,4 +1,4 @@
-﻿import { expect, test, type Page, type Route } from '@playwright/test';
+import { expect, test, type Page, type Route } from '@playwright/test';
 
 const USER = '00000000-0000-4000-8000-000000000001';
 const CONVERSATION = '00000000-0000-4000-8000-000000000002';
@@ -137,6 +137,7 @@ async function setup(page: Page) {
           truncated: false,
         });
       }
+      if (path.endsWith('/paths')) return json(route, { graph_version: 'v1', nodes, edges: [edges[0]], next_cursor: null, truncated: false });
       if (path.includes('/nodes/'))
         return json(route, {
           graph_version: 'v1',
@@ -169,6 +170,35 @@ async function switchMode(page: Page, mobile: boolean, name: string) {
   await page.getByRole('button', { name, exact: true }).click();
 }
 
+test('фильтр, путь, история и панели сохраняют версию и выбор', async ({ page }, info) => {
+  const { requests } = await setup(page);
+  await switchMode(page, info.project.name === 'mobile', 'Граф знаний');
+  await page.getByLabel('Сущность или документ').fill('батарея');
+  await page.getByRole('button', { name: 'Найти', exact: true }).click();
+  await page.getByRole('button', { name: /Охлаждение Technology/ }).click();
+  await page.getByRole('button', { name: 'Раскрыть соседей' }).click();
+  await page.getByLabel('Тип связи').selectOption('DISCLOSES_FEATURE');
+  await expect(page.getByText('Фактическая · DISCLOSES_FEATURE')).toBeVisible();
+  await expect(page.getByText('Семантическая · SIMILAR_TO')).toHaveCount(0);
+  await page.getByLabel('Путь к вершине').selectOption('node-b');
+  await page.getByRole('button', { name: 'Найти путь' }).click();
+  await expect.poll(() => requests.some((url) => url.pathname.endsWith('/paths'))).toBe(true);
+  const path = requests.find((url) => url.pathname.endsWith('/paths'))!;
+  expect(Object.fromEntries(path.searchParams)).toMatchObject({ source: 'node-a', target: 'node-b', max_hops: '3', edge_type: 'DISCLOSES_FEATURE', graph_version: 'v1' });
+  await page.locator('.explorer-canvas').getByRole('button', { name: 'Термодатчик' }).click();
+  await page.getByLabel('История выбора').getByRole('button', { name: 'Охлаждение' }).click();
+  await expect(page.locator('.graph-details strong')).toHaveText('Охлаждение');
+  await page.getByRole('button', { name: 'Развернуть граф' }).click();
+  await expect(page.getByRole('button', { name: 'Вернуть панели' })).toBeVisible();
+  await page.getByRole('button', { name: 'Вернуть панели' }).click();
+  if (info.project.name === 'desktop') {
+    await page.getByLabel('Ширина графа').fill('60');
+    await page.getByLabel('Ширина списка диалогов').fill('280');
+    await expect(page.getByRole('complementary', { name: 'Диалоги' })).toHaveCSS('width', '280px');
+  }
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
 test('Explorer связывает документ, цитату, граф и подготовленный контекст', async ({
   page,
 }, info) => {
@@ -177,7 +207,7 @@ test('Explorer связывает документ, цитату, граф и п
   await page.getByLabel('Ваша идея или уточнение').fill('Тестовая идея');
   await switchMode(page, mobile, 'Граф знаний');
   await page.getByLabel('Сущность или документ').fill('батарея');
-  await page.getByRole('button', { name: 'Найти' }).click();
+  await page.getByRole('button', { name: 'Найти', exact: true }).click();
   await page.getByRole('button', { name: /Публикация о батарее/ }).click();
   await expect(page.getByText(`Ревизия: ${REVISION}`)).toBeVisible();
   await page.getByRole('button', { name: 'Фрагмент 1' }).click();
@@ -240,7 +270,7 @@ test('запоздалый ответ не переносится между о�
   const started = page.waitForRequest(
     (req) => req.url().includes('/explorer/search') && req.url().includes('%D0'),
   );
-  await page.getByRole('button', { name: 'Найти' }).click();
+  await page.getByRole('button', { name: 'Найти', exact: true }).click();
   await started;
   await page.getByLabel('Область').selectOption('run');
   await expect(page.getByText('Публикация о батарее')).toHaveCount(0);
@@ -248,7 +278,7 @@ test('запоздалый ответ не переносится между о�
   await expect(page.getByText('Публикация о батарее')).toHaveCount(0);
   await expect(page.getByText('Версия графа: v1')).toHaveCount(0);
   await page.getByLabel('Сущность или документ').fill('батарея');
-  await page.getByRole('button', { name: 'Найти' }).click();
+  await page.getByRole('button', { name: 'Найти', exact: true }).click();
   await page.getByRole('button', { name: /Охлаждение Technology/ }).click();
   await expect(page.getByRole('button', { name: 'Раскрыть соседей' })).toBeVisible();
   const runSearch = requests.find(
@@ -271,7 +301,7 @@ test('смена вершины и чата очищает подготовле�
   await expect.poll(() => page.getByLabel('Ваша идея или уточнение').inputValue()).toBe('');
   await switchMode(page, mobile, 'Граф знаний');
   await page.getByLabel('Сущность или документ').fill('батарея');
-  await page.getByRole('button', { name: 'Найти' }).click();
+  await page.getByRole('button', { name: 'Найти', exact: true }).click();
   await page.getByRole('button', { name: /Охлаждение Technology/ }).click();
   await page.getByRole('button', { name: 'Раскрыть соседей' }).click();
   await page.getByRole('button', { name: 'Подготовить контекст' }).click();
@@ -298,7 +328,7 @@ test('пустой поиск и ошибки оставляют доступн�
     mobile = info.project.name === 'mobile';
   await switchMode(page, mobile, 'Граф знаний');
   await page.getByLabel('Сущность или документ').fill('пусто');
-  await page.getByRole('button', { name: 'Найти' }).click();
+  await page.getByRole('button', { name: 'Найти', exact: true }).click();
   await expect(page.getByRole('status')).toContainText('Ничего не найдено');
   for (const [code, text] of [
     [404, 'Объект недоступен'],
@@ -306,12 +336,12 @@ test('пустой поиск и ошибки оставляют доступн�
     [409, 'Версия графа устарела'],
   ] as const) {
     fixture.setError(code);
-    await page.getByRole('button', { name: 'Найти' }).click();
+    await page.getByRole('button', { name: 'Найти', exact: true }).click();
     await expect(page.getByRole('status')).toContainText(text);
   }
   fixture.setError(0);
   await page.getByLabel('Сущность или документ').fill('батарея');
-  await page.getByRole('button', { name: 'Найти' }).click();
+  await page.getByRole('button', { name: 'Найти', exact: true }).click();
   await expect(page.getByRole('button', { name: /Публикация о батарее/ })).toBeVisible();
   if (mobile) await page.getByRole('button', { name: 'Открыть диалоги' }).click();
   await page.getByRole('button', { name: 'Выйти', exact: true }).click();
@@ -326,7 +356,7 @@ test('конфликт версии сбрасывает контекст, ис�
     mobile = info.project.name === 'mobile';
   await switchMode(page, mobile, 'Граф знаний');
   await page.getByLabel('Сущность или документ').fill('батарея');
-  await page.getByRole('button', { name: 'Найти' }).click();
+  await page.getByRole('button', { name: 'Найти', exact: true }).click();
   await page.getByRole('button', { name: /Охлаждение Technology/ }).click();
   await page.getByRole('button', { name: 'Подготовить контекст' }).click();
   fixture.setError(409);
@@ -337,7 +367,7 @@ test('конфликт версии сбрасывает контекст, ис�
   await switchMode(page, mobile, 'Граф знаний');
   fixture.setError(401);
   if (mobile) await page.getByRole('button', { name: 'Документ и поиск' }).click();
-  await page.getByRole('button', { name: 'Найти' }).click();
+  await page.getByRole('button', { name: 'Найти', exact: true }).click();
   await expect(
     page.getByText('Сессия завершилась. Войдите снова, чтобы продолжить.'),
   ).toBeVisible();
