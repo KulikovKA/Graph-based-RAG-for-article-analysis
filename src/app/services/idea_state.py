@@ -252,7 +252,12 @@ class IdeaStateService:
             run.id, owner_id=run.owner_user_id
         ):
             raise VersionConflict("SNAPSHOT_ALREADY_EXISTS")
-        run.evidence_snapshot_json = copy.deepcopy(source.evidence_snapshot_json)
+        snapshot = copy.deepcopy(source.evidence_snapshot_json)
+        if isinstance(snapshot, dict):
+            graph = snapshot.get("graph_projection")
+            if isinstance(graph, dict) and graph.get("run_id") == str(source.id):
+                graph["run_id"] = str(run.id)
+        run.evidence_snapshot_json = snapshot
         run.index_generation_id = source.index_generation_id
         run.coverage_json = {**copy.deepcopy(source.coverage_json), "historical": historical}
         for item in self.repo.evidence(source.id, owner_id=run.owner_user_id):

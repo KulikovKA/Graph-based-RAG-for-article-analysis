@@ -355,6 +355,25 @@ def test_general_followup_reuse_requires_matching_key(engine, saved, different_g
         assert session.scalar(select(func.count()).select_from(IdeaVersion)) == 1
 
 
+def test_historical_followup_rebinds_only_its_graph_projection(engine, saved) -> None:  # type: ignore[no-untyped-def]
+    s = saved
+    with Session(engine) as session, session.begin():
+        original = session.get(AnalysisRun, s["source"])
+        projection = {"schema_version": 1, "run_id": str(original.id), "graph_version": "g1"}
+        original.evidence_snapshot_json = {
+            **original.evidence_snapshot_json,
+            "graph_projection": projection,
+        }
+        run = accept(session, s["owner"], s["conversation"], 1, s["source"])
+        result = apply(session, s["owner"], run, s["newer"], plan(1, "explain_evidence"))
+        assert result.decision.historical
+        assert run.evidence_snapshot_json["graph_projection"] == {
+            **projection,
+            "run_id": str(run.id),
+        }
+        assert original.evidence_snapshot_json["graph_projection"]["run_id"] == str(original.id)
+
+
 def test_source_from_other_conversation_or_unfinished_run_is_rejected(engine, saved) -> None:  # type: ignore[no-untyped-def]
     s = saved
     with Session(engine) as session, session.begin():

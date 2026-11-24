@@ -11,10 +11,11 @@ from sqlalchemy.orm import Session
 from app.api.projections import public_run, source_url
 from app.domain.contracts import ClaimV1
 from app.domain.planner import IdeaV1
+from app.services.export_graph import ExportGraph, read_graph, render_graph_html
 from app.storage.models import AnalysisRun, EvidenceChunk, IdeaVersion, RunEvidence
 
 
-def render_export(db: Session, run: AnalysisRun) -> str:
+def _render_report(db: Session, run: AnalysisRun) -> tuple[str, ExportGraph | None]:
     dto = public_run(run)
     if dto.answer is None or dto.outcome is None:
         raise ValueError("INVALID_STORED_RESULT")
@@ -95,6 +96,10 @@ def render_export(db: Session, run: AnalysisRun) -> str:
     if source_ids != set(evidence):
         raise ValueError("INVALID_SOURCE_METADATA")
 
+    if "graph_projection" in snapshot and snapshot["graph_projection"] is None:
+        raise ValueError("INVALID_GRAPH_SNAPSHOT")
+    graph = read_graph(snapshot.get("graph_projection"), run.id, evidence, dto.sources)
+
     def check(claim: ClaimV1, document_id: UUID | None = None) -> None:
         for eid in claim.evidence_ids:
             item = evidence.get(eid)
@@ -157,6 +162,8 @@ def render_export(db: Session, run: AnalysisRun) -> str:
 
     parts = [
         '<!doctype html><html lang="ru"><head><meta charset="utf-8">'
+        '<meta http-equiv="Content-Security-Policy" '
+        'content="default-src \'none\'; base-uri \'none\'; form-action \'none\'">'
         "<title>Отчёт исследования</title></head><body><h1>Отчёт исследования</h1>",
         "<p>Run: "
         + esc(run.id)
@@ -236,6 +243,20 @@ def render_export(db: Session, run: AnalysisRun) -> str:
         )
         + "</ul><h2>Следующие вопросы</h2><ul>"
         + "".join("<li>" + esc(x) + "</li>" for x in dto.answer.followup_suggestions)
-        + "</ul><p>Предварительное техническое исследование.</p></body></html>"
+        + "</ul>"
+        + render_graph_html(graph)
+        + "<p>Предварительное техническое исследование.</p></body></html>"
     )
-    return "".join(parts)
+    return "".join(parts), graph
+
+
+def render_export(db: Session, run: AnalysisRun) -> str:
+    html, _ = _render_report(db, run)
+    return html
+
+
+def render_export_pdf(db: Session, run: AnalysisRun) -> bytes:
+    from app.services.export_pdf import render_pdf
+
+    html, graph = _render_report(db, run)
+    return render_pdf(html, graph)

@@ -4,7 +4,7 @@ import asyncio
 import json
 import time
 from collections.abc import AsyncIterator
-from typing import Annotated, Any
+from typing import Annotated, Any, Literal
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Request, Response
@@ -21,7 +21,7 @@ from app.api.routes.conversations import DB, Owner
 from app.api.schemas import EVENT_SCHEMAS
 from app.domain.contracts import EvidenceV1, RunV1
 from app.services.auth import AuthService, Principal
-from app.services.export_report import render_export
+from app.services.export_report import render_export, render_export_pdf
 from app.services.run_events import RunEventError, RunEventsService, StoredEvent
 from app.storage.jobs import JobRepository
 from app.storage.models import AnalysisRun, EvidenceChunk, RunEvidence
@@ -42,16 +42,21 @@ def get_run(run_id: UUID, owner: Owner, db: DB) -> RunV1:
 @router.get(
     "/{run_id}/export",
     response_class=Response,
-    responses={200: {"content": {"text/html": {"schema": {"type": "string"}}}}},
+    responses={200: {"content": {
+        "text/html": {"schema": {"type": "string"}},
+        "application/pdf": {"schema": {"type": "string", "format": "binary"}},
+    }}},
 )
-def export_run(run_id: UUID, owner: Owner, db: DB) -> Response:
+def export_run(
+    run_id: UUID, owner: Owner, db: DB, format: Literal["html", "pdf"] = "html"
+) -> Response:
     try:
         run = OwnedRepository(db).get_run(run_id, owner_id=owner.user_id)
         if run is None:
             raise HTTPException(404, "NOT_FOUND")
         if run.status != "completed":
             raise HTTPException(409, "RUN_NOT_COMPLETED", headers={"Cache-Control": "no-store"})
-        html = render_export(db, run)
+        content = render_export(db, run) if format == "html" else render_export_pdf(db, run)
     except HTTPException as exc:
         if exc.status_code == 503:
             raise HTTPException(
@@ -63,11 +68,11 @@ def export_run(run_id: UUID, owner: Owner, db: DB) -> Response:
             503, "INVALID_STORED_RESULT", headers={"Cache-Control": "no-store"}
         ) from None
     return Response(
-        html,
-        media_type="text/html; charset=utf-8",
+        content,
+        media_type="text/html; charset=utf-8" if format == "html" else "application/pdf",
         headers={
             "Cache-Control": "no-store",
-            "Content-Disposition": f'attachment; filename="run-{run_id}.html"',
+            "Content-Disposition": f'attachment; filename="run-{run_id}.{format}"',
             "Content-Security-Policy": "default-src 'none'; base-uri 'none'; form-action 'none'",
             "X-Content-Type-Options": "nosniff",
         },
