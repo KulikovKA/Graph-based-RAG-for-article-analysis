@@ -197,6 +197,7 @@ async function setup(page: Page, mode: Mode = 'normal') {
         source_url: sources[0].url,
       });
     }
+    if (path.endsWith('/external-consent')) return json(route, { notice_version: 'groq_context_v1', granted: false });
     const runId = path.split('/')[4],
       run = runs[runId];
     if (!run) return json(route, { error: { code: 'NOT_FOUND' } }, 404);

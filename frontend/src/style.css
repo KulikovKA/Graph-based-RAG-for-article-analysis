@@ -1038,6 +1038,10 @@ svg {
 .mode-switch + .new-conversation { margin-top: 16px; }
 [hidden] { display: none !important; }
 .context-notice { padding: 12px; background: #edf2e5; border-radius: 8px; font-size: 12px; }
+.external-consent { margin: 12px 0; padding: 14px; border: 1px solid #dce3d6; border-radius: 10px; background: #f7faf5; overflow-wrap: anywhere; }
+.external-consent h2 { font-size: 15px; margin: 0 0 8px; }
+.external-consent p { font-size: 13px; line-height: 1.45; margin: 8px 0; }
+.external-consent button { padding: 8px 12px; border: 1px solid #526f40; border-radius: 7px; background: #fff; color: #283927; }
 .standalone-explorer { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 42%); gap: 28px; padding: 32px 36px; max-width: 1380px; margin: auto; }
 .explorer-document, .explorer-graph { min-width: 0; }
 .explorer-document h2 { font-size: 24px; margin: 10px 0 20px; }

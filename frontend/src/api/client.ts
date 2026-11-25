@@ -118,6 +118,11 @@ export const api = {
       body: JSON.stringify(input),
     }),
   run: (id: string) => request<Run>(`/api/v1/runs/${encodeURIComponent(id)}`),
+  externalConsent: (id: string, signal: AbortSignal) => request<{ notice_version: 'groq_context_v1'; granted: boolean }>(`/api/v1/runs/${encodeURIComponent(id)}/external-consent`, { signal }),
+  grantExternalConsent: (id: string, signal: AbortSignal) => request<{ notice_version: 'groq_context_v1'; granted: boolean }>(`/api/v1/runs/${encodeURIComponent(id)}/external-consent`, {
+    method: 'POST', body: JSON.stringify({ notice_version: 'groq_context_v1' }), signal,
+  }),
+  revokeExternalConsent: (id: string, signal: AbortSignal) => request<void>(`/api/v1/runs/${encodeURIComponent(id)}/external-consent`, { method: 'DELETE', signal }),
   cancel: (id: string) =>
     request<{ status: Run['status']; cancel_requested: boolean }>(
       `/api/v1/runs/${encodeURIComponent(id)}/cancel`,

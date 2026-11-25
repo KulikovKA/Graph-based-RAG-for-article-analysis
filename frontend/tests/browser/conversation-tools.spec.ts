@@ -7,7 +7,7 @@ const now = '2026-01-01T00:00:00Z';
 const json = (route: Route, value: unknown, status = 200) => route.fulfill({ status, contentType: 'application/json', body: JSON.stringify(value) });
 
 async function setup(page: Page) {
-  let title: string | null = 'Первый чат', deleted = false, deny = false, denyExport = false;
+  let title: string | null = 'Первый чат', deleted = false, deny = false, denyExport = false, denyRun = false;
   const mutations: { method: string; body: unknown; csrf: string | undefined }[] = [];
   const cursors: (string | null)[] = [];
   const conversation = () => ({ id: chat, title, created_at: now, updated_at: now });
@@ -31,6 +31,8 @@ async function setup(page: Page) {
       return json(route, cursor ? { items: [historyItem(oldRun)], next_cursor: null } : { items: [historyItem(run)], next_cursor: 'next' });
     }
     if (path.endsWith('/export')) return denyExport ? json(route, { error: { code: 'RUN_NOT_COMPLETED' } }, 409) : route.fulfill({ status: 200, contentType: url.searchParams.get('format') === 'pdf' ? 'application/pdf' : 'text/html', headers: { 'Content-Disposition': 'attachment; filename="report.txt"' }, body: 'fixture' });
+    if (path.endsWith('/external-consent')) return json(route, { notice_version: 'groq_context_v1', granted: false });
+    if (path === `/api/v1/runs/${oldRun}` && denyRun) return json(route, { error: { code: 'NOT_FOUND' } }, 404);
     if (path.startsWith('/api/v1/runs/')) return json(route, {
       id: path.split('/')[4], status: 'completed', stage: 'completed', progress: {}, idea_version_id: null,
       source_run_id: null, outcome: 'no_evidence', answer: null, public_analysis: null, answer_presentation: null,
@@ -40,7 +42,7 @@ async function setup(page: Page) {
     return json(route, { error: { code: 'NOT_FOUND' } }, 404);
   });
   await page.goto('/');
-  return { mutations, cursors, setDeny: (value: boolean) => { deny = value; }, setDenyExport: (value: boolean) => { denyExport = value; } };
+  return { mutations, cursors, setDeny: (value: boolean) => { deny = value; }, setDenyExport: (value: boolean) => { denyExport = value; }, setDenyRun: (value: boolean) => { denyRun = value; } };
 }
 async function openChat(page: Page, mobile: boolean) {
   if (mobile) await page.getByRole('button', { name: 'Открыть диалоги' }).click();
@@ -63,6 +65,9 @@ test('переименование, история, экспорт и удале
   await page.getByRole('button', { name: 'Ещё исследования' }).click();
   expect(fixture.cursors).toEqual([null, 'next']);
   await page.locator('.history-item button').first().click();
+  await expect(page.getByRole('region', { name: 'Согласие на внешнюю обработку' })).toContainText(run);
+  await page.locator('.history-item button').nth(1).click();
+  await expect(page.getByRole('region', { name: 'Согласие на внешнюю обработку' })).toContainText(oldRun);
   for (const format of ['HTML', 'PDF']) {
     const request = page.waitForRequest((req) => req.url().includes(`/export?format=${format.toLowerCase()}`));
     const download = page.waitForEvent('download');
@@ -100,4 +105,18 @@ test('ошибка экспорта отображается вместо ска
   fixture.setDenyExport(true);
   await page.getByRole('button', { name: 'Скачать PDF' }).click();
   await expect(page.getByRole('alert')).toContainText('Запрос не выполнен');
+});
+
+test('ошибка открытия истории не меняет выбранное согласие', async ({ page }, info) => {
+  const fixture = await setup(page);
+  await openChat(page, info.project.name === 'mobile');
+  await page.getByRole('button', { name: 'История исследований' }).click();
+  await page.getByRole('button', { name: 'Ещё исследования' }).click();
+  await page.locator('.history-item button').first().click();
+  const panel = page.getByRole('region', { name: 'Согласие на внешнюю обработку' });
+  await expect(panel).toContainText(run);
+  fixture.setDenyRun(true);
+  await page.locator('.history-item button').nth(1).click();
+  await expect(page.getByRole('region', { name: 'Управление диалогом' }).getByRole('alert')).toBeVisible();
+  await expect(panel).toContainText(run);
 });

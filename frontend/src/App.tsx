@@ -13,6 +13,7 @@ import type {
 import { Mark, SendIcon } from './components/Icons';
 import { RunView } from './features/chat/RunView';
 import { ConversationTools } from './features/chat/ConversationTools';
+import { ExternalConsent } from './features/chat/ExternalConsent';
 import { initialState, terminal } from './features/chat/runState';
 import { useRun } from './features/chat/useRun';
 import { SourceCards } from './features/sources/SourceCards';
@@ -107,6 +108,7 @@ export default function App() {
     [runs, setRuns] = useState<Record<string, Run>>({});
   const [initialRun, setInitialRun] = useState<Run | null>(null),
     [sourceRun, setSourceRun] = useState<Run | null>(null);
+  const [consentRun, setConsentRun] = useState<string | null>(null);
   const [drafts, setDrafts] = useState<Record<string, string>>({}),
     [followup, setFollowup] = useState<{ run: string; title: string } | null>(null);
   const [error, setError] = useState(''),
@@ -143,6 +145,7 @@ export default function App() {
       setMessages([]);
       setRuns({});
       setInitialRun(null);
+      setConsentRun(null);
       setSourceRun(null);
       setSelected(null);
       setDetail(null);
@@ -210,12 +213,14 @@ export default function App() {
     setMessages([]);
     setRuns({});
     setInitialRun(null);
+    setConsentRun(null);
     setSourceRun(null);
     setActiveEvidence(null);
     setEvidence(null);
     setFollowup(null);
     setError('');
     setNavOpen(false);
+    setBusy(false);
     pending.current = null;
     if (!id) {
       setLoading(false);
@@ -239,6 +244,7 @@ export default function App() {
       setRuns(saved);
       const latest = value.last_runs[0] ? saved[value.last_runs[0]] : null;
       setInitialRun(latest);
+      setConsentRun(latest?.id ?? null);
       setSourceRun(latest);
     } catch (cause) {
       if (gen === generation.current) setError(errorMessage(cause));
@@ -271,6 +277,7 @@ export default function App() {
         setSelected(conversation.id);
         setDrafts((value) => ({ ...value, [conversation!.id]: draft }));
         await refreshList();
+        if (gen !== generation.current) return;
       }
       const input: MessageInput = {
         content: draft,
@@ -284,6 +291,7 @@ export default function App() {
       const accepted = await api.send(conversation.id, input, pending.current.key);
       if (gen !== generation.current) return;
       const run = await api.run(accepted.run_id);
+      if (gen !== generation.current) return;
       setMessages((value) =>
         value.some((x) => x.id === accepted.message_id)
           ? value
@@ -299,6 +307,7 @@ export default function App() {
             ],
       );
       setInitialRun(run);
+      setConsentRun(run.id);
       setSourceRun(run);
       setRuns((value) => ({ ...value, [run.id]: run }));
       setDrafts((value) => ({ ...value, [conversation.id]: '', new: '' }));
@@ -517,7 +526,8 @@ export default function App() {
               setConversations((old) => old.filter((item) => item.id !== detail.id));
               setDrafts((old) => { const next = { ...old }; delete next[detail.id]; return next; });
               void selectConversation(null);
-            }} onCitation={(run, id) => void citation(run, id)} />}
+            }} onCitation={(run, id) => void citation(run, id)} onRunSelected={setConsentRun} />}
+            {detail && consentRun && <ExternalConsent key={`${session.user_id}:${detail.id}:${consentRun}`} runId={consentRun} />}
             {preparedContext && <p className="context-notice" role="status">Контекст «{preparedContext.label}» подготовлен. Передача ассистенту станет доступна после подключения.</p>}
             {loading ? (
               <p className="loading-state" role="status">

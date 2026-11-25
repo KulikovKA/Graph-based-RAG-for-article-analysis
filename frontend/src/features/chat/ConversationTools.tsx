@@ -4,11 +4,12 @@ import type { Conversation, Run, RunHistoryItem } from '../../api/types';
 import { initialState } from './runState';
 import { RunView } from './RunView';
 
-export function ConversationTools({ conversation, onRenamed, onDeleted, onCitation }: {
+export function ConversationTools({ conversation, onRenamed, onDeleted, onCitation, onRunSelected }: {
   conversation: Conversation;
   onRenamed: (value: Conversation) => void;
   onDeleted: () => void;
   onCitation: (run: Run, id: string) => void;
+  onRunSelected: (id: string) => void;
 }) {
   const [title, setTitle] = useState(conversation.title ?? '');
   const [editing, setEditing] = useState(false);
@@ -56,7 +57,7 @@ export function ConversationTools({ conversation, onRenamed, onDeleted, onCitati
   }
   async function openRun(id: string) {
     setBusy(true); setError(''); setRun(null);
-    try { const value = await api.run(id); if (live.current) setRun(value); }
+    try { const value = await api.run(id); if (live.current) { setRun(value); onRunSelected(value.id); } }
     catch (cause) { if (live.current) setError(errorMessage(cause)); }
     finally { if (live.current) setBusy(false); }
   }
