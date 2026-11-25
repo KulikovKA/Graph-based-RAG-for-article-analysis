@@ -3,25 +3,33 @@
 from html import escape
 from html.parser import HTMLParser
 from io import BytesIO
+from math import atan2, cos, sin
 from pathlib import Path
 from typing import Any
 
 from reportlab.lib import colors  # type: ignore[import-untyped]
-from reportlab.lib.enums import TA_CENTER  # type: ignore[import-untyped]
 from reportlab.lib.styles import ParagraphStyle  # type: ignore[import-untyped]
 from reportlab.lib.units import mm  # type: ignore[import-untyped]
 from reportlab.pdfbase import pdfmetrics  # type: ignore[import-untyped]
 from reportlab.pdfbase.ttfonts import TTFont  # type: ignore[import-untyped]
 from reportlab.platypus import (  # type: ignore[import-untyped]
+    Flowable,
     Paragraph,
     SimpleDocTemplate,
     Spacer,
-    Table,
-    TableStyle,
 )
 from reportlab.platypus.doctemplate import LayoutError  # type: ignore[import-untyped]
 
-from app.services.export_graph import ExportGraph
+from app.services.export_graph import (
+    EDGE_STYLES,
+    NODE_STYLES,
+    ExportGraph,
+    edge_curve,
+    edge_kind,
+    graph_layout,
+    short_label,
+    visible_edges,
+)
 
 
 class _Text(HTMLParser):
@@ -66,6 +74,58 @@ class _Text(HTMLParser):
         self.parts.clear()
 
 
+class _GraphDiagram(Flowable):  # type: ignore[misc]
+    def __init__(self, graph: ExportGraph, font: str) -> None:
+        super().__init__()
+        self.graph, self.font = graph, font
+        self.positions, height = graph_layout(graph)
+        self.scale = min(174 * mm / 900, 200 * mm / height)
+        self.width, self.height = 900 * self.scale, height * self.scale
+
+    def draw(self) -> None:
+        canvas = self.canv
+        scale = self.scale
+        canvas.saveState()
+        canvas.scale(scale, scale)
+        canvas.translate(0, self.height / scale)
+        canvas.scale(1, -1)
+        for edge, lane, count in visible_edges(self.graph):
+            x1, y1, c1x, c1y, c2x, c2y, x2, y2 = edge_curve(edge, self.positions, lane, count)
+            color, dash = EDGE_STYLES[edge_kind(edge)]
+            canvas.setStrokeColor(colors.HexColor(color))
+            canvas.setLineWidth(2)
+            canvas.setDash([int(x) for x in dash.split()] if dash else [])
+            path = canvas.beginPath()
+            path.moveTo(x1, y1)
+            path.curveTo(c1x, c1y, c2x, c2y, x2, y2)
+            canvas.drawPath(path)
+            canvas.setDash([])
+            angle = atan2(y2 - c2y, x2 - c2x)
+            canvas.line(x2, y2, x2 - 10 * cos(angle - 0.45), y2 - 10 * sin(angle - 0.45))
+            canvas.line(x2, y2, x2 - 10 * cos(angle + 0.45), y2 - 10 * sin(angle + 0.45))
+        for i, node in enumerate(self.graph.nodes):
+            x, y = self.positions[node.id]
+            code, fill = NODE_STYLES[node.type]
+            canvas.setFillColor(colors.HexColor(fill))
+            canvas.setStrokeColor(colors.HexColor("#31526b"))
+            canvas.circle(x, y, 19, fill=1, stroke=1)
+            canvas.saveState()
+            canvas.translate(x, y)
+            canvas.scale(1, -1)
+            canvas.setFillColor(colors.black)
+            canvas.setFont(self.font, 12)
+            canvas.drawCentredString(0, 1, code)
+            canvas.drawCentredString(0, -13, str(i + 1))
+            if len(self.graph.nodes) <= 10:
+                canvas.setFont(self.font, 15)
+                if x < 450:
+                    canvas.drawRightString(-25, -5, short_label(node.label))
+                else:
+                    canvas.drawString(25, -5, short_label(node.label))
+            canvas.restoreState()
+        canvas.restoreState()
+
+
 def render_pdf(html: str, graph: ExportGraph | None) -> bytes:
     paths = [
         Path("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"),
@@ -92,7 +152,6 @@ def render_pdf(html: str, graph: ExportGraph | None) -> bytes:
             "subheading", parent=normal, fontSize=10, leading=14, spaceBefore=5, keepWithNext=True
         ),
     }
-    center = ParagraphStyle("diagram", parent=normal, alignment=TA_CENTER, fontSize=8)
     parser = _Text()
     parser.feed(html)
     parser.flush()
@@ -106,27 +165,14 @@ def render_pdf(html: str, graph: ExportGraph | None) -> bytes:
         bottomMargin=18 * mm,
     )
     story = [Paragraph(escape(line), styles[style]) for line, style in parser.lines]
-    if graph and graph.edges:
-        story.extend([Spacer(1, 8 * mm), Paragraph("Схема связей подграфа", normal)])
-        nodes = {node.id: node for node in graph.nodes}
-        for edge in graph.edges:
-            cells = [nodes[edge.source].label, "→ " + edge.type + " →", nodes[edge.target].label]
-            table = Table(
-                [[Paragraph(escape(cell), center) for cell in cells]],
-                colWidths=[64 * mm, 46 * mm, 64 * mm],
-            )
-            table.setStyle(
-                TableStyle(
-                    [
-                        ("BACKGROUND", (0, 0), (0, 0), colors.HexColor("#e8f2fa")),
-                        ("BACKGROUND", (2, 0), (2, 0), colors.HexColor("#e8f2fa")),
-                        ("BOX", (0, 0), (0, 0), 0.5, colors.HexColor("#31526b")),
-                        ("BOX", (2, 0), (2, 0), 0.5, colors.HexColor("#31526b")),
-                        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-                    ]
-                )
-            )
-            story.extend([table, Spacer(1, 2 * mm)])
+    if graph and graph.nodes:
+        story.extend(
+            [
+                Spacer(1, 8 * mm),
+                Paragraph("Схема связей подграфа", styles["h2"]),
+                _GraphDiagram(graph, font),
+            ]
+        )
 
     def footer(canvas: Any, doc: Any) -> None:
         canvas.saveState()

@@ -136,3 +136,90 @@ def test_pdf_route_attachment_and_invalid_snapshot(monkeypatch):
     with pytest.raises(HTTPException) as exc:
         runs.export_run(run.id, owner, db, "pdf")
     assert exc.value.status_code == 503
+
+
+def test_connected_graph_has_unique_nodes_and_references():
+    run, db = fixture()
+    graph = graph_for(run, db)
+    graph["nodes"].append({"id": "feature", "type": "IdeaFeature", "label": "Признак"})
+    graph["edges"].extend(
+        [
+            {"id": "structure", "source": "idea", "target": "feature", "type": "HAS_FEATURE"},
+            {"id": "semantic", "source": "doc", "target": "feature", "type": "RELATED_TO"},
+            {
+                "id": "factual",
+                "source": "doc",
+                "target": "feature",
+                "type": "DISCLOSES_FEATURE",
+                "evidence_ids": [str(db.rows[0][0].evidence_id)],
+            },
+        ]
+    )
+    run.evidence_snapshot_json["graph_projection"] = graph
+    html = render_export(db, run)
+    assert html.count("data-node=") == 3
+    assert html.count("data-edge=") == 4
+    for label in ("факт", "семантическая", "структурная", "аналитическая", "Узел 3", "Связь 4"):
+        assert label in html
+    assert str(db.rows[0][0].evidence_id) in html
+    assert render_export(db, run) == html
+    assert render_export_pdf(db, run).startswith(b"%PDF-")
+
+
+def test_maximum_graph_and_empty_graph():
+    run, db = fixture()
+    graph = graph_for(run, db)
+    graph["nodes"] = [
+        {"id": str(i), "type": "Technology", "label": ("Длинная подпись " * 14) + str(i)}
+        for i in range(30)
+    ]
+    graph["edges"] = [
+        {"id": str(i), "source": str(i % 25), "target": str((i + 1) % 25), "type": "RELATED_TO"}
+        for i in range(50)
+    ]
+    run.evidence_snapshot_json["graph_projection"] = graph
+    html = render_export(db, run)
+    assert html.count("data-node=") == 30 and html.count("data-edge=") == 25
+    assert "Длинная подпись " * 14 in html
+    assert render_export_pdf(db, run).startswith(b"%PDF-")
+    graph["nodes"] = []
+    graph["edges"] = []
+    assert "Сохранённый подграф пуст" in render_export(db, run)
+    assert render_export_pdf(db, run).startswith(b"%PDF-")
+
+
+def test_parallel_reverse_self_loops_are_separate_or_explained():
+    from app.services.export_graph import edge_curve, graph_layout, read_graph, visible_edges
+
+    run, db = fixture()
+    graph = graph_for(run, db)
+    item = db.rows[0][0]
+    graph["edges"].extend(
+        [
+            {"id": "reverse", "source": "doc", "target": "idea", "type": "RELATED_TO"},
+            {"id": "parallel", "source": "idea", "target": "doc", "type": "RELATED_TO"},
+            {"id": "duplicate", "source": "idea", "target": "doc", "type": "SIMILAR_TO"},
+            {"id": "loop1", "source": "doc", "target": "doc", "type": "RELATED_TO"},
+            {
+                "id": "loop2",
+                "source": "doc",
+                "target": "doc",
+                "type": "MATCHES",
+                "evidence_ids": [str(item.evidence_id)],
+            },
+        ]
+    )
+    run.evidence_snapshot_json["graph_projection"] = graph
+    from app.api.projections import public_run
+
+    model = read_graph(graph, run.id, {item.evidence_id: item}, public_run(run).sources)
+    assert model is not None
+    positions, _ = graph_layout(model)
+    paths = [edge_curve(edge, positions, lane, count) for edge, lane, count in visible_edges(model)]
+    assert len(paths) == 5 and len(set(paths)) == 5
+    html = render_export(db, run)
+    assert html.count("data-node=") == 2 and html.count("data-edge=") == 5
+    assert "совпадающие" in html.lower() and "SIMILAR_TO" in html and "Связь 6" in html
+    assert "И — Idea" in html and "П — Patent" in html
+    assert "Идея &lt;script&gt;" in html
+    assert render_export_pdf(db, run).startswith(b"%PDF-")
