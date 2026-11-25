@@ -323,6 +323,16 @@ class AnalysisRun(Base):
     error_code: Mapped[str | None] = mapped_column(String(128))
 
 
+class ExternalConsent(Base):
+    __tablename__ = "external_consents"
+
+    run_id: Mapped[UUID] = mapped_column(
+        ForeignKey("analysis_runs.id", ondelete="CASCADE"), primary_key=True
+    )
+    notice_version: Mapped[str] = mapped_column(String(64), nullable=False)
+    revision: Mapped[UUID] = mapped_column(Uuid, nullable=False, default=uuid4)
+
+
 class AnalysisJob(Base):
     __tablename__ = "analysis_jobs"
     __table_args__ = (

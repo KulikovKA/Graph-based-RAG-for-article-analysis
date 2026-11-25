@@ -415,3 +415,18 @@ def test_tool_late_return_after_deadline_is_discarded(setup):
         await asyncio.sleep(0)
 
     run(scenario())
+
+
+def test_regrant_during_provider_does_not_authorize_old_result(setup):
+    scope, _, auth, port, budget = setup
+    old_revision, new_revision = uuid4(), uuid4()
+    auth.consent = Consent(scope, "notice-v1", True, old_revision)
+    guard = Guard(authority=auth, provider=port, tools=port, notice_version="notice-v1")
+
+    async def regrant(**kwargs):
+        auth.consent = Consent(scope, "notice-v1", True, new_revision)
+        return {"result": "late"}
+
+    port.generate = regrant
+    with pytest.raises(GuardDenied):
+        run(guard.generate(principal=scope.owner_id, scope=scope, budget=budget))

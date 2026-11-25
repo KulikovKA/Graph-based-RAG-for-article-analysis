@@ -1,7 +1,9 @@
 """Фабрика приложения FastAPI без побочных эффектов при запуске."""
 
+import asyncio
 import hashlib
 import os
+from collections.abc import Callable
 from typing import cast
 
 from fastapi import FastAPI, Request
@@ -16,6 +18,7 @@ from app.api.auth import AuthSettings
 from app.api.auth import router as auth_router
 from app.api.health import router as health_router
 from app.api.middleware import RequestContextMiddleware
+from app.api.routes.consent import router as consent_router
 from app.api.routes.conversations import router as conversations_router
 from app.api.routes.explorer import router as explorer_router
 from app.api.routes.graph import router as graph_router
@@ -24,6 +27,7 @@ from app.api.routes.sources import router as sources_router
 from app.domain.explorer import ExplorerPort
 from app.integrations.redis_cache import RedisCache, RedisClient
 from app.services.auth import AuthService
+from app.services.guard import Provider
 from app.services.memory_cache import ScopedStageCache
 
 
@@ -43,11 +47,13 @@ def create_app(
     auth_settings: AuthSettings | None = None,
     explorer: ExplorerPort | None = None,
     stage_cache: ScopedStageCache | None = None,
+    synthetic_guard_port: Callable[[float, asyncio.Event], Provider] | None = None,
 ) -> FastAPI:
     application = FastAPI(title="Article Analysis API", version="0.1.0")
     application.state.auth_service = auth
     application.state.auth_settings = auth_settings or AuthSettings.from_env()
     application.state.explorer_port = explorer
+    application.state.synthetic_guard_port = synthetic_guard_port
     application.state.stage_cache = stage_cache if stage_cache is not None else _stage_cache()
 
     application.add_middleware(
@@ -85,6 +91,7 @@ def create_app(
     application.include_router(auth_router)
     application.include_router(conversations_router)
     application.include_router(runs_router)
+    application.include_router(consent_router)
     application.include_router(graph_router)
     application.include_router(explorer_router)
     application.include_router(sources_router)

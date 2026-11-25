@@ -36,6 +36,7 @@ class Consent:
     scope: Scope
     notice_version: str
     granted: bool
+    revision: UUID | None = None
 
 
 @dataclass(frozen=True)
@@ -235,7 +236,7 @@ class Guard:
         except (TypeError, ValueError, UnicodeError):
             raise GuardDenied("GUARD_PORT_FAILURE") from None
 
-    async def _authorize(self, principal: UUID, scope: Scope, budget: GuardBudget) -> None:
+    async def _authorize(self, principal: UUID, scope: Scope, budget: GuardBudget) -> Consent:
         consent = await _bounded(self._authority.check(principal, scope), budget)
         if (
             principal != scope.owner_id
@@ -245,6 +246,7 @@ class Guard:
             or consent.granted is not True
         ):
             raise GuardDenied("GUARD_SCOPE_OR_CONSENT")
+        return consent
 
     async def generate(self, *, principal: UUID, scope: Scope, budget: GuardBudget) -> Any:
         if self._provider is None:
@@ -271,7 +273,7 @@ class Guard:
         )
         if len(data.encode("utf-8")) > 16000:
             raise GuardDenied("GUARD_CONTEXT_LIMIT")
-        await self._authorize(principal, scope, budget)
+        consent = await self._authorize(principal, scope, budget)
         timeout = budget.reserve()
         result = await _bounded(
             self._provider.generate(
@@ -279,7 +281,8 @@ class Guard:
             ),
             budget,
         )
-        await self._authorize(principal, scope, budget)
+        if await self._authorize(principal, scope, budget) != consent:
+            raise GuardDenied("GUARD_SCOPE_OR_CONSENT")
         self._safe_output(result)
         return result
 
@@ -313,7 +316,7 @@ class Guard:
             args.start_id not in references.nodes or args.end_id not in references.nodes
         ):
             raise GuardDenied("GUARD_REFERENCE")
-        await self._authorize(principal, scope, budget)
+        consent = await self._authorize(principal, scope, budget)
         timeout = budget.reserve()
         result = await _bounded(
             self._tools.dispatch(
@@ -325,7 +328,8 @@ class Guard:
             ),
             budget,
         )
-        await self._authorize(principal, scope, budget)
+        if await self._authorize(principal, scope, budget) != consent:
+            raise GuardDenied("GUARD_SCOPE_OR_CONSENT")
         self._safe_output(result)
         return result
 
