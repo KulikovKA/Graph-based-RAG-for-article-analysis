@@ -3,6 +3,7 @@
 import hashlib
 import os
 from datetime import timedelta
+from unittest.mock import patch
 from uuid import uuid4
 
 import pytest
@@ -11,6 +12,7 @@ from fastapi.testclient import TestClient
 from app.api.auth import AuthSettings
 from app.main import create_app
 from app.services.auth import AuthService
+from app.services.memory_cache import build_stage_cache
 from app.storage.jobs import JobRepository
 from app.storage.repositories import make_session_factory
 
@@ -26,6 +28,8 @@ def test_graph_api_owner_scope_and_bounds(engine) -> None:  # type: ignore[no-un
     service.create_account("graph-a@example.test", PASSWORD)
     service.create_account("graph-b@example.test", PASSWORD)
     app = create_app(auth=service, auth_settings=AuthSettings(origins=(ORIGIN,)))
+    if os.getenv("TEST_REDIS_URL"):
+        app.state.stage_cache = build_stage_cache(os.environ["TEST_REDIS_URL"], str(uuid4()))
     clients = [TestClient(app, base_url=ORIGIN), TestClient(app, base_url=ORIGIN)]
     for client, email in zip(
         clients, ("graph-a@example.test", "graph-b@example.test"), strict=True
@@ -72,7 +76,13 @@ def test_graph_api_owner_scope_and_bounds(engine) -> None:  # type: ignore[no-un
         )
     detail = owner.get(f"/api/v1/runs/{run_id}").json()
     assert detail["graph_url"].endswith(f"/runs/{run_id}/graph")
-    graph = owner.get(detail["graph_url"]).json()
+    from app.api.routes.graph import _snapshot
+
+    with patch("app.api.routes.graph._snapshot", wraps=_snapshot) as snapshot:
+        graph = owner.get(detail["graph_url"]).json()
+        assert owner.get(detail["graph_url"]).json() == graph
+        if os.getenv("TEST_REDIS_URL"):
+            assert snapshot.call_count == 1
     assert len(graph["nodes"]) <= 30 and len(graph["edges"]) <= 50
     assert graph["run_id"] == run_id
     assert other.get(detail["graph_url"]).status_code == 404

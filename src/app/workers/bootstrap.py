@@ -23,6 +23,7 @@ from app.integrations.reranker_local import LocalQwenReranker
 from app.services.analysis_run import AnalysisRunConfig, AnalysisRunService
 from app.services.analyst import Analyst
 from app.services.evidence_pack import TokenizerJsonCounter
+from app.services.memory_cache import build_stage_cache
 from app.services.relation_classifier import RelationClassifier
 from app.services.retrieval import CandidateRetrievalService
 from app.storage.repositories import make_engine, make_session_factory
@@ -174,6 +175,9 @@ def build_worker() -> tuple[AnalysisWorker, list[object]]:
         token_counter=tokenizer,
         retrieval_config_hash=retrieval_config_hash,
         analyst_tokenizer_version=tokenizer_version,
+        stage_cache=build_stage_cache(
+            os.getenv("REDIS_URL"), os.getenv("STAGE_CACHE_SCOPE_SECRET")
+        ),
         config=AnalysisRunConfig(
             deadline_seconds=_positive_float("ANALYSIS_RUN_DEADLINE_SECONDS", 1800),
         ),

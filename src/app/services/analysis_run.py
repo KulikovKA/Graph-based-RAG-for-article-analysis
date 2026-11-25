@@ -9,11 +9,12 @@ from __future__ import annotations
 import asyncio
 import hashlib
 import json
+import math
 import time
 from collections.abc import Awaitable, Callable, Sequence
-from dataclasses import asdict, dataclass
+from dataclasses import asdict, dataclass, replace
 from datetime import UTC, datetime
-from typing import Literal, Protocol, TypeVar
+from typing import Any, Literal, Protocol, TypeVar
 from uuid import UUID
 
 from pydantic import ValidationError
@@ -27,7 +28,7 @@ from app.domain.contracts import (
     CoverageV1,
     PublicAnalysisV1,
 )
-from app.domain.evidence import CandidateEvidence, RetrievalUnavailable
+from app.domain.evidence import CandidateEvidence, RetrievalResult, RetrievalUnavailable
 from app.domain.inference import InferenceCancelled, InferenceConfigurationError
 from app.domain.planner import IdeaV1, IntentPlanner, PlannerContext, PlannerResult
 from app.services.analyst import (
@@ -56,12 +57,13 @@ from app.services.idea_state import (
     PlannerDecision,
     PlannerFenceLost,
 )
+from app.services.memory import MemoryService
+from app.services.memory_cache import ScopedStageCache, conversation_write_guard
 from app.services.rerank import RankedCandidate
-from app.services.retrieval import CandidateRetrievalService
+from app.services.retrieval import CandidateRetrievalService, build_retrieval_query
 from app.storage.jobs import JobRepository
 from app.storage.models import (
     AnalysisRun,
-    Conversation,
     DocumentRevision,
     EvidenceChunk,
     IdeaVersion,
@@ -139,6 +141,7 @@ T = TypeVar("T")
 class _RunInput:
     run_id: UUID
     owner_id: UUID
+    conversation_id: UUID
     query: str
     message: str
     summary: str
@@ -167,6 +170,7 @@ class AnalysisRunService:
         retrieval_config_hash: str,
         analyst_tokenizer_version: str,
         config: AnalysisRunConfig | None = None,
+        stage_cache: ScopedStageCache | None = None,
     ) -> None:
         if len(retrieval_config_hash) != 64 or not analyst_tokenizer_version:
             raise ValueError("retrieval and tokenizer versions are required")
@@ -179,6 +183,7 @@ class AnalysisRunService:
         self.retrieval_config_hash = retrieval_config_hash
         self.analyst_tokenizer_version = analyst_tokenizer_version
         self.config = config or AnalysisRunConfig()
+        self.stage_cache = stage_cache
 
     async def execute(
         self,
@@ -282,7 +287,6 @@ class AnalysisRunService:
             generation_id = decision.retrieval_key.generation_id if decision.retrieval_key else None
             if generation_id is None:
                 raise TerminalJobFailure("INDEX_GENERATION_UNAVAILABLE")
-            request_id = data.request_id
             started = self._now()
             await self._stage(
                 run_id,
@@ -299,12 +303,7 @@ class AnalysisRunService:
             )
             try:
                 retrieval = await self._within_deadline(
-                    self.retrieval.search(
-                        original_query=data.query,
-                        idea=idea,
-                        generation_id=generation_id,
-                        request_id=request_id,
-                    ),
+                    self._cached_retrieval(data, idea, generation_id, worker, lease_token),
                     deadline,
                 )
             except asyncio.CancelledError:
@@ -356,13 +355,12 @@ class AnalysisRunService:
                 )
                 try:
                     scores = await self._within_deadline(
-                        self.rerank(
-                            data.query,
-                            [
-                                f"{item.title}\n{item.section}\n{item.text}"
-                                for item in retrieval.candidates
-                            ],
-                            request_id,
+                        self._cached_rerank(
+                            data,
+                            retrieval.candidates,
+                            generation_id,
+                            worker,
+                            lease_token,
                             self._remaining(deadline),
                             cancel,
                         ),
@@ -506,6 +504,183 @@ class AnalysisRunService:
         )
         return result
 
+    def _authorize_cache(self, data: _RunInput, worker: str, token: int) -> None:
+        with self.session_factory() as session:
+            run = JobRepository(session).fenced_run(data.run_id, worker=worker, token=token)
+            if (
+                run is None
+                or run.owner_user_id != data.owner_id
+                or run.conversation_id != data.conversation_id
+            ):
+                raise LeaseLost("lease or conversation lost")
+            if OwnedRepository(session).conversation(data.owner_id, data.conversation_id) is None:
+                raise LeaseLost("conversation lost")
+
+    async def _cached_retrieval(
+        self, data: _RunInput, idea: IdeaV1, generation: UUID, worker: str, token: int
+    ) -> RetrievalResult:
+        async def search() -> RetrievalResult:
+            return await self.retrieval.search(
+                original_query=data.query,
+                idea=idea,
+                generation_id=generation,
+                request_id=data.request_id,
+            )
+
+        if self.stage_cache is None:
+            return await search()
+
+        async def compute() -> dict[str, Any]:
+            result = await search()
+            return {
+                "candidates": [
+                    {
+                        "chunk": str(c.chunk_id),
+                        "revision": str(c.revision_id),
+                        "channels": list(c.channels),
+                        "score": c.score,
+                    }
+                    for c in result.candidates
+                ],
+                "coverage": result.coverage.model_dump(mode="json"),
+            }
+
+        def validate(value: object) -> dict[str, Any]:
+            if not isinstance(value, dict) or not isinstance(value.get("candidates"), list):
+                raise ValueError("invalid retrieval cache")
+            refs = value["candidates"]
+            if len(refs) > 50:
+                raise ValueError("invalid retrieval cache")
+            try:
+                ids = [UUID(item["chunk"]) for item in refs]
+                loaded = self.retrieval._load_candidates_by_chunk_ids(set(ids), generation, "cache")
+                by_id = {c.chunk_id: c for c in loaded}
+                if len(by_id) != len(ids) or len(set(ids)) != len(ids):
+                    raise ValueError("invalid membership")
+                for item, identifier in zip(refs, ids, strict=True):
+                    if (
+                        str(by_id[identifier].revision_id) != item["revision"]
+                        or not isinstance(item["channels"], list)
+                        or not all(
+                            c in {"qdrant", "metadata", "domain_graph", "lightrag_context"}
+                            for c in item["channels"]
+                        )
+                        or not math.isfinite(float(item["score"]))
+                    ):
+                        raise ValueError("invalid reference")
+                CoverageV1.model_validate(value["coverage"])
+            except (KeyError, TypeError, ValueError, ValidationError):
+                raise ValueError("invalid retrieval cache") from None
+            return value
+
+        payload = await self.stage_cache.get_or_compute_async(
+            "retrieval",
+            data.owner_id,
+            data.conversation_id,
+            version={"generation": str(generation)},
+            models=self.retrieval_config_hash,
+            params={},
+            inputs={"query": data.query, "idea": idea.model_dump(mode="json")},
+            authorize=lambda: self._authorize_cache(data, worker, token),
+            validate=validate,
+            compute=compute,
+            should_cache=lambda v: not v["coverage"]["partial"],
+            write_guard=lambda: conversation_write_guard(
+                self.session_factory,
+                data.owner_id,
+                data.conversation_id,
+                missing_error=lambda: LeaseLost("conversation lost"),
+            ),
+        )
+        refs = payload["candidates"]
+        loaded = self.retrieval._load_candidates_by_chunk_ids(
+            {UUID(item["chunk"]) for item in refs}, generation, "cache"
+        )
+        by_id = {c.chunk_id: c for c in loaded}
+        if len(by_id) != len(refs):
+            return await search()
+        candidates = tuple(
+            replace(
+                by_id[UUID(item["chunk"])],
+                channels=tuple(item["channels"]),
+                score=float(item["score"]),
+            )
+            for item in refs
+        )
+        return RetrievalResult(
+            generation,
+            build_retrieval_query(
+                data.query, idea, max_features=self.retrieval.config.max_features
+            ),
+            candidates,
+            CoverageV1.model_validate(payload["coverage"]),
+        )
+
+    async def _cached_rerank(
+        self,
+        data: _RunInput,
+        candidates: tuple[CandidateEvidence, ...],
+        generation_id: UUID,
+        worker: str,
+        token: int,
+        timeout: float,
+        cancel: asyncio.Event,
+    ) -> Sequence[float]:
+        async def compute() -> list[float]:
+            return list(
+                await self.rerank(
+                    data.query,
+                    [f"{item.title}\n{item.section}\n{item.text}" for item in candidates],
+                    data.request_id,
+                    timeout,
+                    cancel,
+                )
+            )
+
+        if self.stage_cache is None:
+            return await compute()
+
+        def validate(value: object) -> list[float]:
+            if (
+                not isinstance(value, list)
+                or len(value) != len(candidates)
+                or not all(
+                    isinstance(v, int | float) and not isinstance(v, bool) and math.isfinite(v)
+                    for v in value
+                )
+            ):
+                raise ValueError("invalid scores")
+            return value
+
+        return await self.stage_cache.get_or_compute_async(
+            "rerank",
+            data.owner_id,
+            data.conversation_id,
+            version={"generation": str(generation_id)},
+            models=self.retrieval_config_hash,
+            params={},
+            inputs={
+                "query": data.query,
+                "candidates": [
+                    (
+                        str(c.chunk_id),
+                        str(c.revision_id),
+                        hashlib.sha256(f"{c.title}\n{c.section}\n{c.text}".encode()).hexdigest(),
+                    )
+                    for c in candidates
+                ],
+            },
+            authorize=lambda: self._authorize_cache(data, worker, token),
+            validate=validate,
+            compute=compute,
+            write_guard=lambda: conversation_write_guard(
+                self.session_factory,
+                data.owner_id,
+                data.conversation_id,
+                missing_error=lambda: LeaseLost("conversation lost"),
+            ),
+        )
+
     def _read_input(self, run_id: UUID, *, worker: str, token: int) -> _RunInput:
         with self.session_factory() as session, session.begin():
             repo = JobRepository(session)
@@ -517,19 +692,39 @@ class AnalysisRunService:
             )
             if message is None:
                 raise TerminalJobFailure("RUN_MESSAGE_NOT_FOUND")
-            conversation = session.get(Conversation, run.conversation_id)
+            memory = MemoryService(session)
+            context_memory = memory.context(run.owner_user_id, run.conversation_id, query=run.query)
+            previous = [
+                m
+                for m in (*context_memory.recent, *context_memory.relevant)
+                if m.id != run.message_id
+            ]
             summary = ""
-            if conversation and isinstance(conversation.summary_json, dict):
-                value = conversation.summary_json.get("text", "")
+            if isinstance(context_memory.summary, dict):
+                value = context_memory.summary.get("text")
                 if isinstance(value, str):
                     summary = value[:4000]
+                elif isinstance(context_memory.summary.get("messages"), list):
+                    summary = "\n".join(
+                        str(m.get("excerpt", ""))
+                        for m in context_memory.summary["messages"]
+                        if isinstance(m, dict)
+                    )[:2000]
+            history = "\n".join(f"{m.role}: {m.content[:256]}" for m in previous)
+            summary = (history + "\n" + summary).strip()[:4000]
+            if len(context_memory.recent) >= 10:
+                memory.rebuild_summary(
+                    run.owner_user_id,
+                    run.conversation_id,
+                    until_message_id=context_memory.recent[-2].id,
+                )
             applied = None
             context = None
             generation_id = run.index_generation_id
             if run.planner_applied_at is not None:
                 try:
-                    decision = PlannerDecision.model_validate(
-                        run.config_versions_json["planner_v1"]
+                    decision = PlannerDecision.model_validate_json(
+                        json.dumps(run.config_versions_json["planner_v1"])
                     )
                     version = (
                         session.get(IdeaVersion, run.idea_version_id)
@@ -556,6 +751,7 @@ class AnalysisRunService:
             return _RunInput(
                 run_id=run.id,
                 owner_id=run.owner_user_id,
+                conversation_id=run.conversation_id,
                 query=run.query,
                 message=message.content,
                 summary=summary,
@@ -607,7 +803,9 @@ class AnalysisRunService:
             if run.planner_applied_at is None:
                 return fallback
             try:
-                decision = PlannerDecision.model_validate(run.config_versions_json["planner_v1"])
+                decision = PlannerDecision.model_validate_json(
+                    json.dumps(run.config_versions_json["planner_v1"])
+                )
             except (KeyError, TypeError, ValidationError):
                 raise TerminalJobFailure("INVALID_PLANNER_SNAPSHOT") from None
             version = session.get(IdeaVersion, run.idea_version_id) if run.idea_version_id else None
@@ -709,8 +907,8 @@ class AnalysisRunService:
         if version is None:
             return IdeaV1(features=[])
         try:
-            return IdeaV1.model_validate(version.normalized_json)
-        except ValidationError:
+            return IdeaV1.model_validate_json(json.dumps(version.normalized_json))
+        except (ValidationError, TypeError, ValueError):
             raise TerminalJobFailure("INVALID_IDEA_SNAPSHOT") from None
 
     @staticmethod

@@ -6,16 +6,17 @@ import hashlib
 import hmac
 import json
 import os
-from typing import Annotated, Any
+from typing import Annotated, Any, cast
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, sessionmaker
 
 from app.api.auth import require_owner
 from app.api.dependencies import database
 from app.services.auth import Principal
+from app.services.memory_cache import conversation_write_guard
 from app.storage.models import AnalysisRun, GraphFact, IdeaVersion, RunEvidence
 
 router = APIRouter(prefix="/api/v1/runs", tags=["graph"])
@@ -172,9 +173,82 @@ def _snapshot(db: Session, run: AnalysisRun) -> dict[str, Any]:
 
 
 @router.get("/{run_id}/graph")
-def graph(run_id: UUID, owner: Owner, db: DB) -> dict[str, Any]:
+def graph(run_id: UUID, owner: Owner, db: DB, request: Request) -> dict[str, Any]:
     run = _run(db, run_id, owner)
-    return _snapshot(db, run)
+    cache = getattr(request.app.state, "stage_cache", None)
+    if cache is None:
+        return _snapshot(db, run)
+
+    def authorize() -> None:
+        db.expire_all()
+        _run(db, run_id, owner)
+
+    def validate(value: Any) -> dict[str, Any]:
+        if not isinstance(value, dict) or value.get("run_id") != str(run_id):
+            raise ValueError("invalid graph")
+        nodes, edges = value.get("nodes"), value.get("edges")
+        if (
+            not isinstance(nodes, list)
+            or len(nodes) > 30
+            or not isinstance(edges, list)
+            or len(edges) > 50
+            or not isinstance(value.get("graph_version"), str)
+            or value.get("next_cursor") is not None
+            or type(value.get("truncated")) is not bool
+        ):
+            raise ValueError("invalid graph")
+        allowed = {
+            str(eid)
+            for eid in db.scalars(
+                select(RunEvidence.evidence_id).where(RunEvidence.run_id == run_id)
+            )
+        }
+        try:
+            node_ids = {node["id"] for node in nodes}
+            if len(node_ids) != len(nodes):
+                raise ValueError("duplicate nodes")
+            for item in nodes + edges:
+                if not isinstance(item, dict) or not isinstance(item["id"], str):
+                    raise ValueError("invalid item")
+                evidence = item["evidence_ids"]
+                if not isinstance(evidence, list) or not set(evidence) <= allowed:
+                    raise ValueError("invalid evidence")
+            if any(
+                edge["source"] not in node_ids or edge["target"] not in node_ids for edge in edges
+            ):
+                raise ValueError("invalid endpoints")
+        except (KeyError, TypeError):
+            raise ValueError("invalid graph") from None
+        return value
+
+    idea = db.get(IdeaVersion, run.idea_version_id) if run.idea_version_id else None
+    return cast(
+        dict[str, Any],
+        cache.get_or_compute(
+            "graph",
+            owner.user_id,
+            run.conversation_id,
+            version={
+                "run": str(run.id),
+                "config": run.config_versions_json or {},
+                "snapshot": run.evidence_snapshot_json or {},
+                "answer": run.answer_json or {},
+                "idea": idea.normalized_json if idea else None,
+            },
+            models={},
+            params={},
+            inputs={},
+            authorize=authorize,
+            validate=validate,
+            compute=lambda: _snapshot(db, _run(db, run_id, owner)),
+            write_guard=lambda: conversation_write_guard(
+                sessionmaker(bind=db.get_bind()),
+                owner.user_id,
+                run.conversation_id,
+                missing_error=lambda: HTTPException(404, "NOT_FOUND"),
+            ),
+        ),
+    )
 
 
 @router.get("/{run_id}/graph/neighbors")

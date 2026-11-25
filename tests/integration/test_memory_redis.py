@@ -5,12 +5,12 @@ import socket
 from uuid import uuid4
 
 import pytest
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, sessionmaker
 from tests.integration import test_repositories
 
 from app.integrations.redis_cache import RedisCache
 from app.services.conversations import ConversationService
-from app.services.memory_cache import ScopedStageCache
+from app.services.memory_cache import ScopedStageCache, conversation_write_guard
 from app.storage.models import User
 
 pytestmark = pytest.mark.skipif(
@@ -62,13 +62,18 @@ def test_live_cache_hit_isolation_invalidation_and_revocation(engine, redis_clie
             return {"ids": [str(uuid4())]}
 
         return cache.get_or_compute(
-            stage, user, conversation, **{**dimensions, "version": {"generation": version}},
-            authorize=authorize, validate=lambda value: value, compute=compute,
+            stage,
+            user,
+            conversation,
+            **{**dimensions, "version": {"generation": version}},
+            authorize=authorize,
+            validate=lambda value: value,
+            compute=compute,
         )
 
     try:
         first = invoke(owner, chat)
-        key = cache.key(stage, owner, chat, **dimensions)
+        key = cache.key(stage, owner, chat, **dimensions) + ":0"
         assert 0 < redis_client.ttl(key) <= ttl
         assert invoke(owner, chat) == first
         assert len(calls) == 1
@@ -86,7 +91,7 @@ def test_live_cache_hit_isolation_invalidation_and_revocation(engine, redis_clie
         with Session(engine) as session, session.begin():
             ConversationService(session).delete(owner, chat)
         # Даже если физическая очистка задерживается, SQL запрещает cache hit.
-        assert redis_client.get(key) is not None
+        assert redis_client.get(cache.key(stage, owner, chat, **dimensions) + ":1") is not None
         with pytest.raises(LookupError):
             invoke(owner, chat)
         assert len(calls) == 5
@@ -120,11 +125,91 @@ def test_real_connection_failure_degrades_to_miss(engine):
                     ConversationService(session).get(owner, chat)
 
             result = cache.get_or_compute(
-                "retrieval", owner, chat, version={}, models={}, params={}, inputs={},
-                authorize=authorize, validate=lambda value: value,
+                "retrieval",
+                owner,
+                chat,
+                version={},
+                models={},
+                params={},
+                inputs={},
+                authorize=authorize,
+                validate=lambda value: value,
                 compute=lambda: {"ids": ["fallback"]},
             )
             assert result == {"ids": ["fallback"]}
             assert not cache.invalidate_conversation(owner, chat)
         finally:
             client.close()
+
+
+def test_live_late_write_is_atomic_after_revocation(engine, redis_client):
+    owner = uuid4()
+    with Session(engine) as session, session.begin():
+        session.add(User(id=owner, email_normalized=f"{owner}@example.test"))
+        session.flush()
+        chat = ConversationService(session).create(owner).id
+    cache = ScopedStageCache(RedisCache(redis_client, scope_secret=uuid4().bytes + uuid4().bytes))
+    dimensions = {"version": {}, "models": {}, "params": {}, "inputs": {}}
+
+    checks = 0
+
+    def authorize():
+        nonlocal checks
+        with Session(engine) as session:
+            ConversationService(session).get(owner, chat)
+        checks += 1
+        if checks == 2:
+            # ???????? ?????????? ??????????????? ????? ???????? ????? SET.
+            with Session(engine) as session, session.begin():
+                ConversationService(session).delete(owner, chat)
+            assert cache.invalidate_conversation(owner, chat)
+
+    def compute():
+        return {"ids": ["late"]}
+
+    assert cache.get_or_compute(
+        "retrieval",
+        owner,
+        chat,
+        **dimensions,
+        authorize=authorize,
+        validate=lambda value: value,
+        compute=compute,
+    ) == {"ids": ["late"]}
+    assert redis_client.get(cache.key("retrieval", owner, chat, **dimensions) + ":0") is None
+    redis_client.delete(cache._epoch_key(owner, chat))
+
+
+def test_late_write_after_redis_epoch_loss_is_blocked_by_database(engine, redis_client):
+    owner = uuid4()
+    with Session(engine) as session, session.begin():
+        session.add(User(id=owner, email_normalized=f"{owner}@example.test"))
+        session.flush()
+        chat = ConversationService(session).create(owner).id
+    cache = ScopedStageCache(RedisCache(redis_client, scope_secret=uuid4().bytes + uuid4().bytes))
+    dims = {"version": {}, "models": {}, "params": {}, "inputs": {}}
+    checks = 0
+
+    def authorize():
+        nonlocal checks
+        with Session(engine) as session:
+            ConversationService(session).get(owner, chat)
+        checks += 1
+        if checks == 2:
+            with Session(engine) as session, session.begin():
+                ConversationService(session).delete(owner, chat)
+            assert cache.invalidate_conversation(owner, chat)
+            redis_client.delete(cache._epoch_key(owner, chat))
+
+    with pytest.raises(LookupError):
+        cache.get_or_compute(
+            "retrieval",
+            owner,
+            chat,
+            **dims,
+            authorize=authorize,
+            validate=lambda value: value,
+            compute=lambda: {"ids": ["late"]},
+            write_guard=lambda: conversation_write_guard(sessionmaker(bind=engine), owner, chat),
+        )
+    assert redis_client.get(cache.key("retrieval", owner, chat, **dims) + ":0") is None

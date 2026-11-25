@@ -1,3 +1,4 @@
+import json
 from datetime import UTC, datetime, timedelta
 from fnmatch import fnmatch
 from types import SimpleNamespace
@@ -24,6 +25,18 @@ class FakeRedis:
         self.values[name] = value
         self.ttls[name] = ex
 
+    def incr(self, name):
+        value = int(self.values.get(name, 0)) + 1
+        self.values[name] = str(value)
+        return value
+
+    def expire(self, name, time):
+        self.ttls[name] = time
+
+    def eval(self, script, numkeys, epoch_key, key, epoch, payload, ttl):
+        if self.values.get(epoch_key, "0") == epoch:
+            self.set(key, payload, ex=ttl)
+
     def delete(self, *names):
         for name in names:
             self.values.pop(name, None)
@@ -47,12 +60,12 @@ def test_stage_scopes_hit_ttl_corruption_and_outage(stage, ttl):
     cache = ScopedStageCache(RedisCache(backend, scope_secret=b"x" * 32))
     owner, chat = uuid4(), uuid4()
     args = dimensions()
-    key = cache.key(stage, owner, chat, **args)
+    key = cache.key(stage, owner, chat, **args) + ":0"
     assert "sensitive" not in key
-    assert key != cache.key(stage, uuid4(), chat, **args)
-    assert key != cache.key(stage, owner, uuid4(), **args)
+    assert key != cache.key(stage, uuid4(), chat, **args) + ":0"
+    assert key != cache.key(stage, owner, uuid4(), **args) + ":0"
     for dimension in args:
-        assert key != cache.key(stage, owner, chat, **{**args, dimension: {"changed": True}})
+        assert key != cache.key(stage, owner, chat, **{**args, dimension: {"changed": True}}) + ":0"
     compute = Mock(return_value={"ids": ["id"]})
     authorize = Mock()
 
@@ -213,3 +226,307 @@ def test_empty_context():
         None,
         None,
     )
+
+
+def test_late_write_is_fenced_even_after_authorization():
+    backend = FakeRedis()
+    cache = ScopedStageCache(RedisCache(backend, scope_secret=b"x" * 32))
+    owner, chat = uuid4(), uuid4()
+
+    def compute():
+        assert cache.invalidate_conversation(owner, chat)
+        return {"ids": ["late"]}
+
+    result = cache.get_or_compute(
+        "retrieval",
+        owner,
+        chat,
+        **dimensions(),
+        authorize=lambda: None,
+        validate=lambda value: value,
+        compute=compute,
+    )
+    assert result == {"ids": ["late"]}
+    assert not any(key.startswith("stage:v3:") for key in backend.values)
+
+
+def test_worker_rerank_cache_uses_scope_inputs_and_authorizes():
+    import asyncio
+    from unittest.mock import AsyncMock
+
+    from app.domain.evidence import CandidateEvidence
+    from app.services.analysis_run import AnalysisRunService
+
+    backend = FakeRedis()
+    service = AnalysisRunService.__new__(AnalysisRunService)
+    service.stage_cache = ScopedStageCache(RedisCache(backend, scope_secret=b"x" * 32))
+    service.retrieval_config_hash = "a" * 64
+    service.session_factory = Mock()
+    service.rerank = AsyncMock(return_value=[0.5])
+    service._authorize_cache = Mock()
+    from contextlib import nullcontext
+    from unittest.mock import patch
+
+    data = SimpleNamespace(
+        owner_id=uuid4(), conversation_id=uuid4(), query="private canary", request_id="request"
+    )
+    item = CandidateEvidence(
+        uuid4(),
+        uuid4(),
+        uuid4(),
+        "openalex",
+        "x",
+        "url",
+        "title",
+        "paper",
+        None,
+        "section",
+        "en",
+        "text",
+        ("metadata",),
+        1.0,
+    )
+
+    generation = uuid4()
+
+    async def exercise():
+        for _ in range(2):
+            assert await service._cached_rerank(
+                data, (item,), generation, "worker", 1, 5, asyncio.Event()
+            ) == [0.5]
+        assert service.rerank.await_count == 1
+        data.query = "other"
+        await service._cached_rerank(data, (item,), generation, "worker", 1, 5, asyncio.Event())
+        assert service.rerank.await_count == 2
+        from dataclasses import replace
+
+        await service._cached_rerank(
+            data, (replace(item, title="other"),), generation, "worker", 1, 5, asyncio.Event()
+        )
+        await service._cached_rerank(
+            data, (replace(item, section="other"),), generation, "worker", 1, 5, asyncio.Event()
+        )
+        await service._cached_rerank(data, (item,), uuid4(), "worker", 1, 5, asyncio.Event())
+        assert service.rerank.await_count == 5
+
+    with patch("app.services.analysis_run.conversation_write_guard", return_value=nullcontext()):
+        asyncio.run(exercise())
+    assert service._authorize_cache.call_count >= 4
+    assert all(
+        "private canary" not in str(key) and "private canary" not in str(value)
+        for key, value in backend.values.items()
+    )
+
+
+def test_cache_telemetry_contains_only_stage_and_outcome(caplog, monkeypatch):
+    import logging
+
+    backend = FakeRedis()
+    cache = ScopedStageCache(RedisCache(backend, scope_secret=b"x" * 32))
+    owner, chat = uuid4(), uuid4()
+    monkeypatch.setattr(logging.getLogger("app.services.memory_cache"), "disabled", False)
+    caplog.set_level(logging.INFO, logger="app.services.memory_cache")
+
+    def invoke():
+        return cache.get_or_compute(
+            "graph",
+            owner,
+            chat,
+            **dimensions(),
+            authorize=lambda: None,
+            validate=lambda value: value,
+            compute=lambda: {"secret": "canary"},
+        )
+
+    invoke()
+    invoke()
+    backend.get = Mock(side_effect=ConnectionError())
+    invoke()
+    assert [r.message for r in caplog.records] == [
+        "stage_cache stage=graph outcome=miss",
+        "stage_cache stage=graph outcome=hit",
+        "stage_cache stage=graph outcome=unavailable",
+    ]
+    assert all(
+        "canary" not in r.message and str(owner) not in r.message and str(chat) not in r.message
+        for r in caplog.records
+    )
+
+
+def test_worker_retrieval_hit_rechecks_membership_and_generation():
+    import asyncio
+    from contextlib import nullcontext
+    from unittest.mock import AsyncMock, patch
+
+    from app.domain.contracts import CoverageV1
+    from app.domain.evidence import CandidateEvidence, RetrievalResult
+    from app.domain.planner import IdeaV1
+    from app.services.analysis_run import AnalysisRunService
+    from app.services.retrieval import build_retrieval_query
+
+    backend = FakeRedis()
+    service = AnalysisRunService.__new__(AnalysisRunService)
+    service.stage_cache = ScopedStageCache(RedisCache(backend, scope_secret=b"x" * 32))
+    service.retrieval_config_hash = "a" * 64
+    service.session_factory = Mock()
+    service._authorize_cache = Mock()
+    service.retrieval = Mock()
+    service.retrieval.config.max_features = 8
+    data = SimpleNamespace(
+        owner_id=uuid4(), conversation_id=uuid4(), query="canary", request_id="request"
+    )
+    idea = IdeaV1(features=[])
+    generation = uuid4()
+    item = CandidateEvidence(
+        uuid4(),
+        uuid4(),
+        uuid4(),
+        "openalex",
+        "x",
+        "url",
+        "title",
+        "paper",
+        None,
+        "section",
+        "en",
+        "text",
+        ("metadata",),
+        1.0,
+    )
+    coverage = CoverageV1(sources=[], channels=[], partial=False, historical=False)
+    service.retrieval.search = AsyncMock(
+        return_value=RetrievalResult(
+            generation, build_retrieval_query(data.query, idea), (item,), coverage
+        )
+    )
+    service.retrieval._load_candidates_by_chunk_ids.return_value = (item,)
+
+    async def exercise():
+        first = await service._cached_retrieval(data, idea, generation, "worker", 1)
+        second = await service._cached_retrieval(data, idea, generation, "worker", 1)
+        assert first == second
+        assert service.retrieval.search.await_count == 1
+        assert service.retrieval._load_candidates_by_chunk_ids.call_count >= 3
+        await service._cached_retrieval(data, idea, uuid4(), "worker", 1)
+        assert service.retrieval.search.await_count == 2
+
+    with patch("app.services.analysis_run.conversation_write_guard", return_value=nullcontext()):
+        asyncio.run(exercise())
+    assert all(
+        "canary" not in str(key) and "canary" not in str(value)
+        for key, value in backend.values.items()
+    )
+
+
+def test_read_persisted_idea_accepts_uuid_from_jsonb():
+    from app.domain.planner import IdeaV1
+    from app.services.analysis_run import AnalysisRunService
+
+    idea = IdeaV1.model_validate_json(
+        json.dumps({"features": [{"id": str(uuid4()), "text": "fixture", "weight": 1.0}]})
+    )
+    version = SimpleNamespace(normalized_json=idea.model_dump(mode="json"))
+    assert AnalysisRunService._idea(version) == idea
+
+
+@pytest.mark.parametrize("error", ["worker", "graph"])
+def test_removed_conversation_guard_returns_scoped_error(error):
+    from contextlib import nullcontext
+
+    from fastapi import HTTPException
+
+    from app.services.analysis_run import LeaseLost
+    from app.services.memory_cache import conversation_write_guard
+
+    db = Mock()
+    db.scalar.return_value = None
+    sessions = Mock()
+    sessions.begin.return_value = nullcontext(db)
+    expected = (
+        LeaseLost("conversation lost") if error == "worker" else HTTPException(404, "NOT_FOUND")
+    )
+    with pytest.raises(type(expected)) as raised:
+        with conversation_write_guard(sessions, uuid4(), uuid4(), missing_error=lambda: expected):
+            pytest.fail("guard accepted a deleted conversation")
+    assert raised.value is expected
+
+
+def test_worker_cache_write_deletion_is_lease_lost():
+    import asyncio
+    from contextlib import contextmanager
+    from unittest.mock import AsyncMock, patch
+
+    from app.domain.evidence import CandidateEvidence
+    from app.services.analysis_run import AnalysisRunService, LeaseLost
+
+    @contextmanager
+    def missing(*args, missing_error):
+        raise missing_error()
+        yield
+
+    service = AnalysisRunService.__new__(AnalysisRunService)
+    service.stage_cache = ScopedStageCache(RedisCache(FakeRedis(), scope_secret=b"x" * 32))
+    service.session_factory = Mock()
+    service.retrieval_config_hash = "a" * 64
+    service.rerank = AsyncMock(return_value=[0.5])
+    service._authorize_cache = Mock()
+    data = SimpleNamespace(
+        owner_id=uuid4(), conversation_id=uuid4(), query="fixture", request_id="r"
+    )
+    item = CandidateEvidence(
+        uuid4(),
+        uuid4(),
+        uuid4(),
+        "openalex",
+        "x",
+        "url",
+        "title",
+        "paper",
+        None,
+        "section",
+        "en",
+        "text",
+        ("metadata",),
+        1.0,
+    )
+    with patch("app.services.analysis_run.conversation_write_guard", missing):
+        with pytest.raises(LeaseLost):
+            asyncio.run(
+                service._cached_rerank(data, (item,), uuid4(), "worker", 1, 5, asyncio.Event())
+            )
+
+
+def test_graph_cache_write_deletion_is_404():
+    from contextlib import contextmanager
+    from unittest.mock import patch
+
+    from fastapi import HTTPException
+
+    from app.api.routes.graph import graph
+
+    @contextmanager
+    def missing(*args, missing_error):
+        raise missing_error()
+        yield
+
+    cache = ScopedStageCache(RedisCache(FakeRedis(), scope_secret=b"x" * 32))
+    owner = SimpleNamespace(user_id=uuid4())
+    run = SimpleNamespace(
+        id=uuid4(),
+        conversation_id=uuid4(),
+        idea_version_id=None,
+        config_versions_json={},
+        evidence_snapshot_json={},
+        answer_json={},
+    )
+    request = SimpleNamespace(app=SimpleNamespace(state=SimpleNamespace(stage_cache=cache)))
+    db = Mock()
+    db.get_bind.return_value = None
+    with (
+        patch("app.api.routes.graph._run", return_value=run),
+        patch("app.api.routes.graph._snapshot", return_value={}),
+        patch("app.api.routes.graph.conversation_write_guard", missing),
+    ):
+        with pytest.raises(HTTPException) as raised:
+            graph(run.id, owner, db, request)
+    assert raised.value.status_code == 404
