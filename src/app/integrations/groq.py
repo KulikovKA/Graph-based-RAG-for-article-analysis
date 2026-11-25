@@ -20,12 +20,34 @@ from app.domain.inference import (
     InferenceConfigurationError,
     InferenceMetadata,
     InferenceProtocolError,
-    InferenceProvider,
     InferenceTimeout,
     InferenceUnavailable,
     JsonResult,
     ReasoningEffort,
 )
+
+
+class LocalInferencePort(Protocol):
+    async def embed(
+        self,
+        *,
+        model_id: str,
+        request_id: str,
+        texts: list[str],
+        timeout: float = 60,
+        cancel: asyncio.Event | None = None,
+    ) -> list[list[float]]: ...
+
+    async def rerank(
+        self,
+        *,
+        model_id: str,
+        request_id: str,
+        query: str,
+        documents: list[str],
+        timeout: float = 60,
+        cancel: asyncio.Event | None = None,
+    ) -> list[float]: ...
 
 
 class SchemaValidator(Protocol):
@@ -131,7 +153,7 @@ class GroqProvider:
         prices: dict[str, GroqPrice],
         budget: GroqBudget,
         validator: SchemaValidator,
-        local: InferenceProvider,
+        local: LocalInferencePort,
         max_parallel: int = 2,
         max_attempts: int = 3,
         max_response_bytes: int = 1_000_000,
@@ -662,7 +684,7 @@ class GroqProviderFactory:
         roles: dict[str, GroqRole],
         prices: dict[str, GroqPrice],
         validator: SchemaValidator,
-        local: InferenceProvider,
+        local: LocalInferencePort,
         max_parallel: int = 2,
         max_attempts: int = 3,
     ) -> None:

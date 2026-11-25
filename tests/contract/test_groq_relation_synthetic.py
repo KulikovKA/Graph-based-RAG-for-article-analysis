@@ -118,11 +118,21 @@ def test_classifier_uses_frozen_rubric_schema_and_no_probabilities():
 
 
 def test_mock_smoke_has_four_profiles_one_shared_budget_and_no_retries(monkeypatch, capsys):
-    script = runpy.run_path(str(Path(__file__).resolve().parents[2] / "scripts" /
-                                "smoke_groq_synthetic.py"))
-    factory = script["GroqProviderFactory"]
+    script = runpy.run_path(
+        str(Path(__file__).resolve().parents[2] / "scripts" / "smoke_groq_synthetic.py")
+    )
+    from app.integrations import groq_runtime
+
+    factory = groq_runtime.GroqProviderFactory
     original = factory.for_run
     created = []
+    loaded = []
+    original_loader = groq_runtime.load_synthetic_profile
+
+    def capture_profile(path):
+        result = original_loader(path)
+        loaded.append(result)
+        return result
 
     def capture(self, **limits):
         provider = original(self, **limits)
@@ -130,14 +140,19 @@ def test_mock_smoke_has_four_profiles_one_shared_budget_and_no_retries(monkeypat
         return provider
 
     monkeypatch.setattr(factory, "for_run", capture)
+    monkeypatch.setattr(groq_runtime, "load_synthetic_profile", capture_profile)
     assert asyncio.run(script["run"](False)) == 0
     limits, provider = created[0]
     assert limits == {"max_requests": 4, "max_tokens": 50000, "max_cost": Decimal("0.02")}
     assert provider.budget.requests == 4 and provider.budget.reserved_tokens <= 50000
     assert provider.budget.reserved_cost <= Decimal("0.02") and provider._attempts == 1
-    profiles = script["load_profile"]()[0]
+    assert len(loaded) == 1
+    profiles = loaded[0][0]
     assert set(profiles) == {"planner", "analyst", "narrative", "relation_classifier"}
     assert profiles["narrative"].prompt_version == "narrative_synthetic_v1"
     assert profiles["relation_classifier"].prompt_version == PROMPT_VERSION
     output = capsys.readouterr().out
     assert output.count("PASS ") == 4 and "MOCK: requests=4" in output
+    assert "known_input_tokens=40" in output and "known_output_tokens=20" in output
+    assert "known_estimated_usd=0.00000900" in output
+    assert "unknown_usage_attempts=0" in output and "tariff_version=groq-models-" in output
