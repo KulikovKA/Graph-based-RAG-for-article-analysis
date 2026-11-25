@@ -28,11 +28,14 @@ from app.domain.explorer import ExplorerPort
 from app.integrations.redis_cache import RedisCache, RedisClient
 from app.services.auth import AuthService
 from app.services.guard import Provider
-from app.services.memory_cache import ScopedStageCache
+from app.services.memory_cache import ScopedStageCache, build_stage_cache
 
 
 def _stage_cache() -> ScopedStageCache | None:
     url = os.getenv("REDIS_URL")
+    shared_secret = os.getenv("STAGE_CACHE_SCOPE_SECRET")
+    if shared_secret:
+        return build_stage_cache(url, shared_secret)
     secret = os.getenv("AUTH_SESSION_SECRET")
     if not url or not secret:
         return None
