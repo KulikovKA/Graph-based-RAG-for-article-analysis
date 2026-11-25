@@ -22,6 +22,9 @@ JSON UTF-8, даты ISO 8601 UTC, собственные IDs — UUID. Session 
 | `GET /api/v1/runs/{id}` | — | RunV1 |
 | `GET /api/v1/runs/{id}/events` | `Last-Event-ID?` | `text/event-stream` |
 | `POST /api/v1/runs/{id}/cancel` | CSRF header | 202 `{status,cancel_requested:true}`; уже terminal → 200 текущий status |
+| `GET /api/v1/runs/{id}/external-consent` | session cookie | 200 `{notice_version,granted}`, текущее состояние согласия владельца |
+| `POST /api/v1/runs/{id}/external-consent` | `{notice_version:"groq_context_v1"}`, Origin и CSRF | 200 `{notice_version,granted:true}`; иные поля и версии → 422 |
+| `DELETE /api/v1/runs/{id}/external-consent` | Origin и CSRF | 204, идемпотентный отзыв |
 | `GET /api/v1/runs/{id}/evidence/{evidence_id}` | — | EvidenceV1 только из snapshot этого run |
 | `GET /api/v1/runs/{id}/export` | session cookie, `format=html` (по умолчанию) или `format=pdf` | HTML UTF-8 или PDF attachment сохранённого completed run; 409 для своего незавершённого/неуспешного run |
 | `GET /api/v1/runs/{id}/graph` | — | GraphV1, подграф запуска GRAPHUI-001 |
@@ -30,6 +33,8 @@ JSON UTF-8, даты ISO 8601 UTC, собственные IDs — UUID. Session 
 | `GET /health/live`, `/health/ready` | — | 200/503 согласно ARCHITECTURE; без адресов/секретов зависимостей |
 
 Локальные аккаунты создаются операторской CLI-командой в AUTH-001; открытая регистрация и provider-token login вне MVP. OIDC подключается позже через auth interface. Лимит content — 8 KiB UTF-8; request envelope также ограничен. MVP принимает только analyze=true; произвольный client user_id запрещён.
+
+Согласие принадлежит владельцу, диалогу, конкретному запуску и версии уведомления. Отсутствующая запись возвращает `granted:false`. Чужой и неизвестный run дают одинаковый 404. Согласие используется при явной проверке через синтетический порт, который внедряется в тестовый API. Передача пользовательского контекста во внешний провайдер остаётся за I-SEC. [Спецификация Guard](specs/APP-GUARD-001.md)
 
 `expected_idea_version` обязателен для всех новых сообщений: 0 до создания идеи, затем текущий version_no. Проверка синхронная: 409 VERSION_CONFLICT, либо RUN_IN_PROGRESS для второго нетерминального run conversation. Повтор того же idempotency key/payload возвращает тот же run даже после изменения текущей версии; другой payload с тем же ключом — 409 IDEMPOTENCY_CONFLICT. Проверки и unique constraints описаны в [DATA_MODEL](DATA_MODEL.md). `source_run_id` обязателен для объяснения сохранённого источника; UI передаёт run, на карточке которого задан вопрос. Если текст предполагает такой intent без source_run_id, planner возвращает clarification, а не угадывает чужой/случайный snapshot. Поздний worker conflict после 202 возвращается в run.error_code, не новым HTTP 409.
 
