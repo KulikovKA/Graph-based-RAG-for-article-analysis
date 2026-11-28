@@ -188,8 +188,8 @@ services:
     restart: unless-stopped
     environment:
       NEO4J_AUTH: neo4j/${NEO4J_PASSWORD:?Set NEO4J_PASSWORD}
-      NEO4J_server_memory_heap_initial__size: 1G
-      NEO4J_server_memory_heap_max__size: 1G
+      NEO4J_server_memory_heap_initial__size: 3G
+      NEO4J_server_memory_heap_max__size: 3G
       NEO4J_server_memory_pagecache_size: 1G
     volumes: [neo4j_data:/data, neo4j_logs:/logs]
     healthcheck:
@@ -199,7 +199,7 @@ services:
       retries: 10
       start_period: 45s
     networks: [backend]
-    mem_limit: 4g
+    mem_limit: 6g
     mem_reservation: 2g
 
   qdrant:
